@@ -1,0 +1,51 @@
+{
+  "resourceType": "Person",
+  "id": "1",
+  "active": true,
+  "identifier": [
+    {
+      "use": "official",
+      "system": "pshr:sanid",
+      "value": "1007211156666",
+      "assigner": {
+        "display": "SA National"
+      }
+    },
+    {
+      "use": "official",
+      "system": "pshr:passport:za",
+      "value": "1001113555666",
+      "assigner": {
+        "display": "Passport South Africa"
+      }
+    }
+  ],
+  "name": [
+    {
+      "use": "official",
+      "prefix": [
+        "Ms"
+      ],
+      "family": [
+        "Bernhardt"
+      ],
+      "given": [
+        "Chante"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "email",
+      "value": "chante@email.com"
+    },
+    {
+      "system": "phone",
+      "value": "27832348699",
+      "use": "mobile"
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/1"
+  }
+}

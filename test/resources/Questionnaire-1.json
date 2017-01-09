@@ -1,0 +1,58 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "1",
+  "contained": [
+    {
+      "resourceType": "ValueSet",
+      "id": "pain-degree",
+      "status": "active",
+      "codeSystem": {
+        "system": "pshr:questionnaire:pain-degree",
+        "caseSensitive": false,
+        "concept": [
+          {
+            "code": "1",
+            "display": "No pain"
+          },
+          {
+            "code": "2",
+            "display": "Mild pain"
+          },
+          {
+            "code": "3",
+            "display": "Moderate pain"
+          },
+          {
+            "code": "4",
+            "display": "Severe pain"
+          },
+          {
+            "code": "5",
+            "display": "Excruciating pain"
+          }
+        ]
+      }
+    }
+  ],
+  "status": "published",
+  "subjectType": [
+    "Patient"
+  ],
+  "group": {
+    "title": "Postoperative Questionnaire",
+    "group": [
+      {
+        "question": [
+          {
+            "linkId": "1",
+            "text": "Rate the degree of pain you experienced in the first day after surgery",
+            "type": "choice",
+            "options": {
+              "reference": "#pain-degree"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

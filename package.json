@@ -1,0 +1,44 @@
+{
+  "name": "hearth",
+  "version": "0.1.0",
+  "description": "Hearth, a home for FHIR. A fast FHIR-compliant server.",
+  "scripts": {
+    "start": "node lib/server.js",
+    "dev:start": "NODE_ENV='development' npm run start",
+    "test": "npm run test:code && npm -s run test:style",
+    "test:code": "tap --cov --reporter=spec test/**.js",
+    "test:style": "standard -v | snazzy",
+    "cov": "npm run test:code -- --coverage-report=lcov"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "body-parser": "^1.15.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "lodash": "^4.11.2",
+    "moment": "^2.13.0",
+    "mongodb": "^2.1.18",
+    "stdio": "^0.2.7",
+    "urijs": "^1.18.1",
+    "uuid": "^2.0.2",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "request": "^2.79.0",
+    "snazzy": "^3.0.1",
+    "standard": "^6.0.8",
+    "tap": "^5.7.1"
+  },
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "FHIR",
+    "HL7",
+    "IHE",
+    "server"
+  ],
+  "author": "Jembi Health Systems NPC",
+  "license": "MPL-2.0"
+}

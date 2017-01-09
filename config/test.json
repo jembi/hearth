@@ -1,0 +1,16 @@
+{
+  "server": {
+    "hostname": "localhost",
+    "publicFhirBase": "http://localhost:3447/fhir",
+    "port": 3447
+  },
+  "mongodb": {
+    "url": "mongodb://localhost/hearth-test"
+  },
+  "authentication": {
+    "authWindowSeconds": 10
+  },
+  "logger": {
+    "level": "error"
+  }
+}

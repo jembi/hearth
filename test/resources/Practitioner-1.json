@@ -1,0 +1,61 @@
+{
+  "resourceType": "Practitioner",
+  "id": "1",
+  "active": true,
+  "identifier": [
+    {
+      "use": "official",
+      "system": "pshr:sanid",
+      "value": "1007211153444",
+      "assigner": {
+        "display": "SA National"
+      }
+    },
+    {
+      "use": "official",
+      "system": "pshr:passport:za",
+      "value": "1001113555553",
+      "assigner": {
+        "display": "Passport South Africa"
+      }
+    }
+  ],
+  "name": {
+    "use": "official",
+    "prefix": [
+      "Dr"
+    ],
+    "family": [
+      "Tobi"
+    ],
+    "given": [
+      "Alison"
+    ]
+  },
+  "telecom": [
+    {
+      "system": "email",
+      "value": "drtobi@email.com"
+    },
+    {
+      "system": "phone",
+      "value": "27832345678",
+      "use": "mobile"
+    }
+  ],
+  "practitionerRole": [
+    {
+      "managingOrganization": {
+        "reference": "Organization/1"
+      },
+      "role": {
+        "coding": [
+          {
+            "system": "pshr:role",
+            "code": "anaesthetist"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "resourceType": "Organization",
+  "id": "1",
+  "active": true,
+  "name": "Greenwood Clinical Practice",
+  "identifier": [
+    {
+      "system": "pshr:practice:number",
+      "value": "123456"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "email",
+      "value": "notifications@email.com",
+      "rank": "1"
+    },
+    {
+      "system": "email",
+      "value": "practice@email.com",
+      "rank": "2"
+    },
+    {
+      "system": "phone",
+      "value": "27211234567"
+    }
+  ],
+  "address": [
+    {
+      "type": "physical",
+      "line": [
+        "6060 Green Park Avenue",
+        "Constantia"
+      ],
+      "city": "Cape Town",
+      "postalCode": "7777"
+    }
+  ],
+  "extension": [
+    {
+      "url": "pshr:website",
+      "valueUri": "http://www.jembi.org"
+    }
+  ]
+}

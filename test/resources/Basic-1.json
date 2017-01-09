@@ -1,0 +1,41 @@
+{
+  "resourceType": "Basic",
+  "id": "1",
+  "code": {
+    "coding": [
+      {
+        "system": "pshr:basic",
+        "code": "consent"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Encounter/1"
+  },
+  "author": {
+    "reference": "Patient/1"
+  },
+  "created": "2016-07-06",
+  "extension": [
+    {
+      "url": "pshr:consent",
+      "extension": [
+        {
+          "url": "pshr:consent:patient:accepted",
+          "valueBoolean": true
+        },
+        {
+          "url": "pshr:consent:patient:narrative",
+          "valueString": "I am undergoing a procedure to have my appendix removed"
+        },
+        {
+          "url": "pshr:consent:conditions",
+          "valueAttachment": {
+            "contentType": "text/html",
+            "data": "PHA+dGVybXMgYW5kIGNvbmRpdGlvbnM8L3A+"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "resourceType": "Location",
+  "id": "1",
+  "status": "active",
+  "mode": "instance",
+  "name": "Greenwood Clinical Practice",
+  "type": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v3/RoleCode",
+        "code": "PROFF"
+      }
+    ]
+  },
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "27211234567"
+    }
+  ],
+  "address": [
+    {
+      "type": "physical",
+      "line": [
+        "6060 Green Park Avenue",
+        "Constantia"
+      ],
+      "city": "Cape Town",
+      "postalCode": "7777"
+    }
+  ],
+  "position": {
+    "longitude": 18.4392,
+    "latitude": -34.08002
+  },
+  "managingOrganization": {
+    "reference": "Organization/1"
+  }
+}

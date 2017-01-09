@@ -1,0 +1,49 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "1",
+  "status": "completed",
+  "questionnaire": {
+    "reference": "Questionnaire/1"
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "source": {
+    "reference": "Patient/1"
+  },
+  "encounter": {
+    "reference": "Encounter/1"
+  },
+  "group": {
+    "title": "Postoperative Questionnaire",
+    "question": [
+      {
+        "text": "a question",
+        "answer": [
+          {
+            "valueString": "an answer"
+          }
+        ]
+      }
+    ]
+  },
+  "extension": [
+    {
+      "url": "pshr:workflow:reviewed",
+      "extension": [
+        {
+          "url": "pshr:practitioner",
+          "valueReference": {
+            "reference": "Practitioner/1"
+          }
+        },
+        {
+          "url": "pshr:practitioner",
+          "valueReference": {
+            "reference": "Practitioner/2"
+          }
+        }
+      ]
+    }
+  ]
+}
