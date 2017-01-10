@@ -9,7 +9,7 @@
     "test:code": "tap --cov --reporter=spec test/**.js",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
-    "posttest": "tap --coverage-report=lcov && codecov"
+    "test:upload-cov": "tap --coverage-report=lcov && codecov"
   },
   "dependencies": {
     "async": "^2.0.0-rc.6",
