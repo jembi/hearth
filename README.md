@@ -13,7 +13,7 @@ To run in development mode use the followng commands. First Mongo needs to be av
 ```
 docker run --name hearth-mongo -d -p 27017:27017 mongo
 ```
-Now start the server is dev mode (which uses a dev namespaced database)
+Now start the server in dev mode (which uses a dev namespaced database)
 ```
 npm run dev:start
 ```
