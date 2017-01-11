@@ -5,16 +5,7 @@ const tap = require('tap')
 const request = require('request')
 const _ = require('lodash')
 
-// TODO these test should use the test data provided by env
-// They currently 'break the glass' so that permissions don't kick in
-// (the test data used here are insufficient)
-
-const headers = _.assign(
-  env.getTestAuthHeaders(env.users.sysadminUser.email),
-  {
-    Category: 'http://hl7.org/fhir/security-label#break-the-glass; scheme="http://hl7.org/fhir/tag/security"; label="Break The Glass"'
-  }
-)
+const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
 let basicPatientTest = (t, test) => {
   env.initDB((err, db) => {
@@ -23,21 +14,9 @@ let basicPatientTest = (t, test) => {
     server.start((err) => {
       t.error(err)
 
-      let patient = _.cloneDeep(require('./resources/Patient-1.json'))
-      delete patient.id
-
-      let c = db.collection('Patient')
-      c.insert({ latest: patient }, (err) => {
-        t.error(err)
-
-        // insert a second patient that should be filtered in searches
-        patient.identifier[0].value = 'FILTER-ME'
-        patient.name = [{ given: ['FILTER-ME'], family: ['FILTER-ME'] }]
-
-        c.insertOne({ latest: patient }, (err, r) => {
-          t.error(err)
-
-          test(() => {
+      env.createPatient(t, env.testPatients().charlton, () => {
+        env.createPatient(t, env.testPatients().emmarentia, () => { // use emmarentia for filtering
+          test(db, () => {
             env.clearDB((err) => {
               t.error(err)
               server.stop(() => {
@@ -52,7 +31,7 @@ let basicPatientTest = (t, test) => {
 }
 
 tap.test('patient should support searches on identifier', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902',
       headers: headers,
@@ -71,7 +50,7 @@ tap.test('patient should support searches on identifier', (t) => {
 })
 
 tap.test('patient should support searches on identifier with a system specified', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=pshr:sanid|1007211154902',
       headers: headers,
@@ -90,7 +69,7 @@ tap.test('patient should support searches on identifier with a system specified'
 })
 
 tap.test('patient should respond with en empty searchset if no matches', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=NOTTHERE',
       headers: headers,
@@ -108,7 +87,7 @@ tap.test('patient should respond with en empty searchset if no matches', (t) => 
 })
 
 tap.test('patient should support basic given name searches', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?given=Charlton',
       headers: headers,
@@ -127,7 +106,7 @@ tap.test('patient should support basic given name searches', (t) => {
 })
 
 tap.test('patient should support basic family name searches', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?family=Matinyana',
       headers: headers,
@@ -146,7 +125,7 @@ tap.test('patient should support basic family name searches', (t) => {
 })
 
 tap.test('name searches should be case-insensitive', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?given=charlton',
       headers: headers,
@@ -165,7 +144,7 @@ tap.test('name searches should be case-insensitive', (t) => {
 })
 
 tap.test('name searches should match the first part of the string', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     // search for 'cha' should match 'Charlton'
     request({
       url: 'http://localhost:3447/fhir/Patient?given=cha',
@@ -185,7 +164,7 @@ tap.test('name searches should match the first part of the string', (t) => {
 })
 
 tap.test('should search on both given and family name', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?given=charlton&family=matinyana',
       headers: headers,
@@ -218,7 +197,7 @@ tap.test('should search on both given and family name', (t) => {
 })
 
 tap.test('should search on identifier and name', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902&given=charlton',
       headers: headers,
@@ -374,7 +353,7 @@ tap.test('patient should support read', (t) => {
 })
 
 tap.test('patient read should respond with 404 if not found', (t) => {
-  basicPatientTest(t, (done) => {
+  basicPatientTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Patient/573aff9fed5696d633aaaaaa',
       headers: headers,

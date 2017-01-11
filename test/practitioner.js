@@ -12,23 +12,12 @@ let basicPractitionerTest = (t, test) => {
     server.start((err) => {
       t.error(err)
 
-      let practitioner = _.cloneDeep(require('./resources/Practitioner-1.json'))
-      delete practitioner.id
+      const pracs = env.testPractitioners()
+      const orgs = env.testOrganizations()
 
-      let c = db.collection('Practitioner')
-      c.insert({ latest: practitioner }, (err) => {
-        t.error(err)
-
-        // insert a second practitioner that should be filtered in searches
-        practitioner.identifier[0].value = 'FILTER-ME'
-        practitioner.name.given[0] = 'FILTER-ME'
-        practitioner.name.family[0] = 'FILTER-ME'
-        practitioner.practitionerRole[0].role.coding[0].code = 'FILTER-ME'
-
-        c.insert({ latest: practitioner }, (err) => {
-          t.error(err)
-
-          test(() => {
+      env.createPractitioner(t, pracs.alison, orgs.greenwood, () => {
+        env.createPractitioner(t, pracs.henry, orgs.redwood, () => { // use henry for filtering
+          test(db, () => {
             env.clearDB((err) => {
               t.error(err)
               server.stop(() => {
@@ -43,7 +32,7 @@ let basicPractitionerTest = (t, test) => {
 }
 
 tap.test('practitioner should support searches on identifier', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?identifier=1007211153444',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -62,7 +51,7 @@ tap.test('practitioner should support searches on identifier', (t) => {
 })
 
 tap.test('practitioner should support searches on identifier with a system specified', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?identifier=pshr:sanid|1007211153444',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -81,7 +70,7 @@ tap.test('practitioner should support searches on identifier with a system speci
 })
 
 tap.test('practitioner should respond with en empty searchset if no matches', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?identifier=NOTTHERE',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -99,7 +88,7 @@ tap.test('practitioner should respond with en empty searchset if no matches', (t
 })
 
 tap.test('practitioner should support basic given name searches', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?given=Alison',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -118,7 +107,7 @@ tap.test('practitioner should support basic given name searches', (t) => {
 })
 
 tap.test('practitioner should support basic family name searches', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?family=Tobi',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -137,7 +126,7 @@ tap.test('practitioner should support basic family name searches', (t) => {
 })
 
 tap.test('name searches should be case-insensitive', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?given=alison',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -156,7 +145,7 @@ tap.test('name searches should be case-insensitive', (t) => {
 })
 
 tap.test('name searches should match the first part of the string', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     // search for 'ali' should match 'Alison'
     request({
       url: 'http://localhost:3447/fhir/Practitioner?given=ali',
@@ -176,7 +165,7 @@ tap.test('name searches should match the first part of the string', (t) => {
 })
 
 tap.test('should search on both given and family name', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?given=alison&family=tobi',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -209,7 +198,7 @@ tap.test('should search on both given and family name', (t) => {
 })
 
 tap.test('should search on identifier and name', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?identifier=1007211153444&given=alison',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -242,7 +231,7 @@ tap.test('should search on identifier and name', (t) => {
 })
 
 tap.test('should respond with bad request OperationOutcome if unsupported query parameter used', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?address=notsupported',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
@@ -339,7 +328,7 @@ tap.test('practitioner endpoint should return an error', (t) => {
 })
 
 tap.test('practitioner should support searches on role', (t) => {
-  basicPractitionerTest(t, (done) => {
+  basicPractitionerTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Practitioner?role=anaesthetist',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),

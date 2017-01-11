@@ -145,16 +145,16 @@ module.exports = () => {
     testOrganizations: () => {
       let testOrgs = {
         greenwood: {
-          organization: _.cloneDeep(require('../../fhir-modelling/Organization-1.json')),
-          location: _.cloneDeep(require('../../fhir-modelling/Location-1.json'))
+          organization: _.cloneDeep(require('../resources/Organization-1.json')),
+          location: _.cloneDeep(require('../resources/Location-1.json'))
         },
         redwood: {
-          organization: _.cloneDeep(require('../../fhir-modelling/Organization-1.json')),
-          location: _.cloneDeep(require('../../fhir-modelling/Location-1.json'))
+          organization: _.cloneDeep(require('../resources/Organization-1.json')),
+          location: _.cloneDeep(require('../resources/Location-1.json'))
         },
         goodhealth: {
-          organization: _.cloneDeep(require('../../fhir-modelling/Organization-1.json')),
-          location: _.cloneDeep(require('../../fhir-modelling/Location-1.json'))
+          organization: _.cloneDeep(require('../resources/Organization-1.json')),
+          location: _.cloneDeep(require('../resources/Location-1.json'))
         }
       }
       delete testOrgs.greenwood.organization.id
@@ -179,22 +179,22 @@ module.exports = () => {
         alison: {
           email: 'drtobi@email.com',
           password: 'alison',
-          practitioner: _.cloneDeep(require('.././resources/Practitioner-1.json'))
+          practitioner: _.cloneDeep(require('../resources/Practitioner-1.json'))
         },
         henry: {
           email: 'drbaron@email.com',
           password: 'alison',
-          practitioner: _.cloneDeep(require('.././resources/Practitioner-1.json'))
+          practitioner: _.cloneDeep(require('../resources/Practitioner-1.json'))
         },
         edwino: {
           email: 'drrolles@email.com',
           password: 'edwino',
-          practitioner: _.cloneDeep(require('.././resources/Practitioner-1.json'))
+          practitioner: _.cloneDeep(require('../resources/Practitioner-1.json'))
         },
         ashmene: {
           email: 'drdavis@email.com',
           password: 'ashmene',
-          practitioner: _.cloneDeep(require('.././resources/Practitioner-1.json'))
+          practitioner: _.cloneDeep(require('../resources/Practitioner-1.json'))
         }
       }
       delete testPrac.alison.practitioner.id
@@ -203,14 +203,17 @@ module.exports = () => {
       delete testPrac.ashmene.practitioner.id
       testPrac.henry.practitioner.name.given = ['Henry']
       testPrac.henry.practitioner.name.family = ['Baron']
+      testPrac.henry.practitioner.identifier[0].value = '1007211122222'
       testPrac.henry.practitioner.telecom[0].value = testPrac.henry.email
       testPrac.henry.practitioner.practitionerRole[0].role.coding[0].code = 'surgeon'
       testPrac.edwino.practitioner.name.given = ['Edwino']
       testPrac.edwino.practitioner.name.family = ['Rolles']
+      testPrac.edwino.practitioner.identifier[0].value = '1007211133333'
       testPrac.edwino.practitioner.telecom[0].value = testPrac.edwino.email
       testPrac.edwino.practitioner.practitionerRole[0].role.coding[0].code = 'anaesthetist'
       testPrac.ashmene.practitioner.name.given = ['Ashmene']
       testPrac.ashmene.practitioner.name.family = ['Davis']
+      testPrac.ashmene.practitioner.identifier[0].value = '1007211144444'
       testPrac.ashmene.practitioner.telecom[0].value = testPrac.ashmene.email
       testPrac.ashmene.practitioner.practitionerRole[0].role.coding[0].code = 'anaesthetist'
 
@@ -224,42 +227,42 @@ module.exports = () => {
         charlton: {
           email: 'charlton@email.com',
           password: 'charlton',
-          patient: _.cloneDeep(require('../../fhir-modelling/Patient-1.json')),
-          allergy: _.cloneDeep(require('../../fhir-modelling/AllergyIntolerance-1.json')),
-          encounter: _.cloneDeep(require('../../fhir-modelling/Encounter-1.json')),
-          procedure: _.cloneDeep(require('../../fhir-modelling/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../../fhir-modelling/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../../fhir-modelling/Basic-1.json'))
+          patient: _.cloneDeep(require('../resources/Patient-1.json')),
+          allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
+          encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
+          procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
+          consent: _.cloneDeep(require('../resources/Basic-1.json'))
         },
         emmarentia: {
           email: 'emmarentia@email.com',
           password: 'emmarentia',
-          patient: _.cloneDeep(require('../../fhir-modelling/Patient-1.json')),
-          allergy: _.cloneDeep(require('../../fhir-modelling/AllergyIntolerance-1.json')),
-          encounter: _.cloneDeep(require('../../fhir-modelling/Encounter-1.json')),
-          procedure: _.cloneDeep(require('../../fhir-modelling/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../../fhir-modelling/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../../fhir-modelling/Basic-1.json'))
+          patient: _.cloneDeep(require('../resources/Patient-1.json')),
+          allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
+          encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
+          procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
+          consent: _.cloneDeep(require('../resources/Basic-1.json'))
         },
         nikita: {
           email: 'nikita@email.com',
           password: 'nikita',
-          patient: _.cloneDeep(require('../../fhir-modelling/Patient-1.json')),
-          allergy: _.cloneDeep(require('../../fhir-modelling/AllergyIntolerance-1.json')),
-          encounter: _.cloneDeep(require('../../fhir-modelling/Encounter-1.json')),
-          procedure: _.cloneDeep(require('../../fhir-modelling/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../../fhir-modelling/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../../fhir-modelling/Basic-1.json'))
+          patient: _.cloneDeep(require('../resources/Patient-1.json')),
+          allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
+          encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
+          procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
+          consent: _.cloneDeep(require('../resources/Basic-1.json'))
         },
         mwawi: {
           email: 'mwawi@email.com',
           password: 'mwawi',
-          patient: _.cloneDeep(require('../../fhir-modelling/Patient-1.json')),
-          allergy: _.cloneDeep(require('../../fhir-modelling/AllergyIntolerance-1.json')),
-          encounter: _.cloneDeep(require('../../fhir-modelling/Encounter-1.json')),
-          procedure: _.cloneDeep(require('../../fhir-modelling/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../../fhir-modelling/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../../fhir-modelling/Basic-1.json'))
+          patient: _.cloneDeep(require('../resources/Patient-1.json')),
+          allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
+          encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
+          procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
+          consent: _.cloneDeep(require('../resources/Basic-1.json'))
         }
       }
 
@@ -298,18 +301,21 @@ module.exports = () => {
       testPatients.emmarentia.patient.name[0].prefix = ['Ms']
       testPatients.emmarentia.patient.name[0].given = ['Emmarentia']
       testPatients.emmarentia.patient.name[0].family = ['Cook']
+      testPatients.emmarentia.patient.identifier[0].value = '1007211152222'
       testPatients.emmarentia.patient.gender = 'female'
       testPatients.emmarentia.patient.telecom[0].value = testPatients.emmarentia.email
       testPatients.emmarentia.encounter.period.start = moment().format('YYYY-MM-DD')
       testPatients.nikita.patient.name[0].prefix = ['Mrs']
       testPatients.nikita.patient.name[0].given = ['Nikita', 'Becky']
       testPatients.nikita.patient.name[0].family = ['Sekhotla']
+      testPatients.nikita.patient.identifier[0].value = '1007211153333'
       testPatients.nikita.patient.gender = 'female'
       testPatients.nikita.patient.telecom[0].value = testPatients.nikita.email
       testPatients.nikita.encounter.period.start = moment().format('YYYY-MM-DD')
       testPatients.mwawi.patient.name[0].prefix = ['Ms']
       testPatients.mwawi.patient.name[0].given = ['Mwawi', 'Scot']
       testPatients.mwawi.patient.name[0].family = ['Ntshwanti']
+      testPatients.mwawi.patient.identifier[0].value = '1007211154444'
       testPatients.mwawi.patient.gender = 'female'
       testPatients.mwawi.patient.telecom[0].value = testPatients.mwawi.email
       testPatients.mwawi.encounter.period.start = moment().format('YYYY-MM-DD')
@@ -361,35 +367,32 @@ module.exports = () => {
 
         let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
         updateTestPractitionerReferences(testPrac, ref)
-
-        request.post({
-          url: 'http://localhost:3447/api/user',
-          body: {
-            email: testPrac.email,
-            password: testPrac.password,
-            type: 'practitioner',
-            resource: ref
-          },
-          headers: getTestAuthHeaders(sysadminUser.email),
-          json: true
-        }, (err, res, body) => {
-          t.error(err)
-          t.equal(res.statusCode, 201)
-
-          getAuthHeaders(testPrac.email, testPrac.password, (err, authHeaders) => {
-            t.error(err)
-            testPrac.authHeaders = authHeaders
-            callback()
-          })
-        })
+        callback()
       })
     },
 
-    createPatient: (t, testPatient, anaesthetist, surgeon, hospital, callback) => {
+    createPatient: (t, testPatient, callback) => {
       request.post({
         url: 'http://localhost:3447/fhir/Patient',
         body: testPatient.patient,
-        headers: anaesthetist.authHeaders,
+        headers: getTestAuthHeaders(sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201)
+
+        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        updateTestPatientReferences(testPatient, ref)
+        callback()
+      })
+    },
+
+    // create a test patient with several clinical resources
+    createPatientWithResources: (t, testPatient, provider1, provider2, hospital, callback) => {
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        body: testPatient.patient,
+        headers: getTestAuthHeaders(sysadminUser.email),
         json: true
       }, (err, res, body) => {
         t.error(err)
@@ -401,7 +404,7 @@ module.exports = () => {
         request.post({
           url: 'http://localhost:3447/fhir/AllergyIntolerance',
           body: testPatient.allergy,
-          headers: anaesthetist.authHeaders,
+          headers: getTestAuthHeaders(sysadminUser.email),
           json: true
         }, (err, res, body) => {
           t.error(err)
@@ -410,14 +413,14 @@ module.exports = () => {
           let id = res.headers.location.replace('/fhir/AllergyIntolerance/', '').replace('/_history/1', '')
           testPatient.allergy.id = id
 
-          testPatient.encounter.participant[0].individual.reference = anaesthetist.resource
-          testPatient.encounter.participant[1].individual.reference = surgeon.resource
+          testPatient.encounter.participant[0].individual.reference = provider1.resource
+          testPatient.encounter.participant[1].individual.reference = provider2.resource
           testPatient.encounter.location[0].location.reference = `Location/${hospital.location.id}`
 
           request.post({
             url: 'http://localhost:3447/fhir/Encounter',
             body: testPatient.encounter,
-            headers: anaesthetist.authHeaders,
+            headers: getTestAuthHeaders(sysadminUser.email),
             json: true
           }, (err, res, body) => {
             t.error(err)
@@ -431,7 +434,7 @@ module.exports = () => {
             request.post({
               url: 'http://localhost:3447/fhir/ProcedureRequest',
               body: testPatient.procedure,
-              headers: anaesthetist.authHeaders,
+              headers: getTestAuthHeaders(sysadminUser.email),
               json: true
             }, (err, res, body) => {
               t.error(err)
@@ -444,7 +447,7 @@ module.exports = () => {
               request.post({
                 url: 'http://localhost:3447/fhir/QuestionnaireResponse',
                 body: testPatient.preop,
-                headers: anaesthetist.authHeaders,
+                headers: getTestAuthHeaders(sysadminUser.email),
                 json: true
               }, (err, res, body) => {
                 t.error(err)
@@ -452,27 +455,7 @@ module.exports = () => {
 
                 let id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace('/_history/1', '')
                 testPatient.preop.id = id
-
-                request.post({
-                  url: 'http://localhost:3447/api/user',
-                  body: {
-                    email: testPatient.email,
-                    password: testPatient.password,
-                    type: 'patient',
-                    resource: ref
-                  },
-                  headers: getTestAuthHeaders(sysadminUser.email),
-                  json: true
-                }, (err, res, body) => {
-                  t.error(err)
-                  t.equal(res.statusCode, 201)
-
-                  getAuthHeaders(testPatient.email, testPatient.password, (err, authHeaders) => {
-                    t.error(err)
-                    testPatient.authHeaders = authHeaders
-                    callback()
-                  })
-                })
+                callback()
               })
             })
           })
