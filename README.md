@@ -8,16 +8,21 @@ This project aim to provide a fast and lightweight FHIR server that also support
 Our high level plan for the project can be found [here](https://docs.google.com/document/d/1wJr-A0xJFEwwR9y5c5tVGb0_rH7IQFBJRhMNRU31Fis/edit?usp=sharing).
 
 ## Usage
-To run in development mode (mongodb needs to be available on your system)
+To run in development mode use the followng commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
+
+```
+docker run --name hearth-mongo -d -p 27017:27017 mongo
+```
+Now start the server is dev mode (which uses a dev namespaced database)
 ```
 npm run dev:start
 ```
-otherwise for production
+otherwise for production just run:
 ```
 npm start
 ```
 
-To run the tests
+To run the tests:
 ```
 npm test
 ```
