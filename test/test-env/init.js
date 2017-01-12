@@ -9,7 +9,7 @@ const moment = require('moment')
 const _ = require('lodash')
 
 const sysadminUser = {
-  email: 'sysadmin@test.org',
+  email: 'sysadmin@jembi.org',
   hash: '4956a991e772edd0576e62eae92f9c94fc693a2d0ee07f8f46ccce9c343d0836304f4de2ea64a41932fe0a6adc83d853a964fb785930fb4293fef8ee37448ac8',
   salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
   type: 'sysadmin'
@@ -91,7 +91,13 @@ module.exports = () => {
   return {
     mongo: () => mongo,
 
-    initDB: (callback) => {
+    initDB: (createSysadmin, callback) => {
+      // createSysadmin is optional - defaults to true
+      if (typeof createSysadmin === 'function') {
+        callback = createSysadmin
+        createSysadmin = true
+      }
+
       if (!mongo) {
         mongo = Mongo()
       }
@@ -107,15 +113,20 @@ module.exports = () => {
           }
           db = _db
 
-          let user = db.collection('user')
-          user.insert(sysadminUser, (err) => {
-            if (err) {
-              return callback(err)
-            }
+          if (createSysadmin) {
+            let user = db.collection('user')
+            user.insert(sysadminUser, (err) => {
+              if (err) {
+                return callback(err)
+              }
 
+              // all done
+              callback(null, db)
+            })
+          } else {
             // all done
             callback(null, db)
-          })
+          }
         })
       })
     },
@@ -323,6 +334,30 @@ module.exports = () => {
       return testPatients
     },
 
+    testUsers: () => {
+      return {
+        jane: {
+          email: 'jane@test.org',
+          hash: '4956a991e772edd0576e62eae92f9c94fc693a2d0ee07f8f46ccce9c343d0836304f4de2ea64a41932fe0a6adc83d853a964fb785930fb4293fef8ee37448ac8',
+          salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
+          type: 'sysadmin'
+        },
+        john: {
+          email: 'john@test.org',
+          hash: '4956a991e772edd0576e62eae92f9c94fc693a2d0ee07f8f46ccce9c343d0836304f4de2ea64a41932fe0a6adc83d853a964fb785930fb4293fef8ee37448ac8',
+          salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
+          type: 'sysadmin'
+        },
+        locked: {
+          email: 'locked@test.org',
+          hash: '4956a991e772edd0576e62eae92f9c94fc693a2d0ee07f8f46ccce9c343d0836304f4de2ea64a41932fe0a6adc83d853a964fb785930fb4293fef8ee37448ac8',
+          salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
+          type: 'sysadmin',
+          locked: true
+        }
+      }
+    },
+
     updateTestPatientReferences: updateTestPatientReferences,
 
     createOrganization: (t, testOrg, callback) => {
@@ -460,6 +495,20 @@ module.exports = () => {
             })
           })
         })
+      })
+    },
+
+    createUser: (t, testUser, callback) => {
+      request.post({
+        url: 'http://localhost:3447/api/user',
+        body: testUser,
+        headers: getTestAuthHeaders(sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201)
+
+        callback()
       })
     }
   }
