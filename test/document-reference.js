@@ -166,3 +166,75 @@ tap.test('document reference should support searches on type', (t) => {
     })
   })
 })
+
+tap.test('document reference should support searches on setting', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/DocumentReference?setting=General+Medicine`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on facility', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/DocumentReference?facility=225732001`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on event', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/DocumentReference?event=ANNGEN`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on security label', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/DocumentReference?securityLabel=N`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})

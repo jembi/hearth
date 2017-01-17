@@ -41,6 +41,15 @@
   "indexed": "2013-07-01T23:11:33+10:00",
   "status": "current",
   "description": "Physical",
+  "securityLabel": [{
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v3/Confidentiality",
+        "code": "N",
+        "display": "normal"
+      }
+    ]
+  }],
   "content": [
     {
       "attachment": {
@@ -67,6 +76,24 @@
           "system": "http://ihe.net/connectathon/practiceSettingCodes",
           "code": "General Medicine",
           "display": "General Medicine"
+        }
+      ]
+    },
+    "event": [{
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/ValueSet/v3-ActCode",
+          "code": "ANNGEN",
+          "display": "general note"
+        }
+      ]
+    }],
+    "facilityType": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/ValueSet/c80-facilitycodes",
+          "code": "225732001",
+          "display": "Hospital-community"
         }
       ]
     }
