@@ -96,6 +96,14 @@
           "display": "Hospital-community"
         }
       ]
-    }
+    },
+    "related": [{
+      "identifier": [
+        {
+          "system": "hearth:tests",
+          "value": "docRef2"
+        }
+      ]
+    }]
   }
 }

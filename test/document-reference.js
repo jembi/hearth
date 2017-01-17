@@ -34,6 +34,7 @@ let docRefTestEnv = (t, test) => {
                   docRef2.class.coding[0].display = 'Inpatient Admission history and physical note'
 
                   env.createResource(t, 'DocumentReference', docRef, (err, ref) => {
+                    t.error(err)
                     env.createResource(t, 'DocumentReference', docRef2, (err, ref2) => {
                       t.error(err)
                       test(db, patients, pracs, orgs, [ref, ref2], () => {
@@ -78,7 +79,7 @@ tap.test('document reference should support searches on patient reference', (t) 
 tap.test('document reference should support searches on status (matching)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?status=current`,
+      url: 'http://localhost:3447/fhir/DocumentReference?status=current',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -96,7 +97,7 @@ tap.test('document reference should support searches on status (matching)', (t) 
 tap.test('document reference should support searches on status (non-matching)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?status=superseded`,
+      url: 'http://localhost:3447/fhir/DocumentReference?status=superseded',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -114,7 +115,7 @@ tap.test('document reference should support searches on status (non-matching)', 
 tap.test('document reference should support searches on class', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?class=34117-2`,
+      url: 'http://localhost:3447/fhir/DocumentReference?class=34117-2',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -133,7 +134,7 @@ tap.test('document reference should support searches on class', (t) => {
 tap.test('document reference should support searches on class with system', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?class=http%3A%2F%2Fhl7.org%2Ffhir%2FValueSet%2Fc80-doc-classcodes|34117-2`,
+      url: 'http://localhost:3447/fhir/DocumentReference?class=http%3A%2F%2Fhl7.org%2Ffhir%2FValueSet%2Fc80-doc-classcodes|34117-2',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -152,7 +153,7 @@ tap.test('document reference should support searches on class with system', (t) 
 tap.test('document reference should support searches on type', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?type=History+and+Physical`,
+      url: 'http://localhost:3447/fhir/DocumentReference?type=History+and+Physical',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -170,7 +171,7 @@ tap.test('document reference should support searches on type', (t) => {
 tap.test('document reference should support searches on setting', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?setting=General+Medicine`,
+      url: 'http://localhost:3447/fhir/DocumentReference?setting=General+Medicine',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -188,7 +189,7 @@ tap.test('document reference should support searches on setting', (t) => {
 tap.test('document reference should support searches on facility', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?facility=225732001`,
+      url: 'http://localhost:3447/fhir/DocumentReference?facility=225732001',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -206,7 +207,7 @@ tap.test('document reference should support searches on facility', (t) => {
 tap.test('document reference should support searches on event', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?event=ANNGEN`,
+      url: 'http://localhost:3447/fhir/DocumentReference?event=ANNGEN',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -224,7 +225,43 @@ tap.test('document reference should support searches on event', (t) => {
 tap.test('document reference should support searches on security label', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: `http://localhost:3447/fhir/DocumentReference?securityLabel=N`,
+      url: 'http://localhost:3447/fhir/DocumentReference?securityLabel=N',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on format', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?format=urn:ihe:pcc:handp:2008',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on related-id', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?related-id=docRef2',
       headers: headers,
       json: true
     }, (err, res, body) => {
