@@ -510,6 +510,22 @@ module.exports = () => {
 
         callback()
       })
+    },
+
+    createResource: (t, type, resource, callback) => {
+      request.post({
+        url: `http://localhost:3447/fhir/${type}`,
+        body: resource,
+        headers: getTestAuthHeaders(sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        if (err) {
+          return callback(err)
+        }
+
+        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        callback(null, ref)
+      })
     }
   }
 }
