@@ -75,6 +75,25 @@ tap.test('document reference should support searches on patient reference', (t) 
   })
 })
 
+tap.test('document reference should support searches on patient identifier', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?patient.identifier=1007211154902',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
 tap.test('document reference should support searches on status (matching)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
