@@ -286,3 +286,77 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
     })
   })
 })
+
+tap.test('DocumentManifest - should search by type', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = Object.assign({}, testDocManifest)
+    findMe.type = {
+      coding: [
+        {
+          system: 'otherSys',
+          code: 'otherCode'
+        }, {
+          system: 'testSys',
+          code: 'testCode'
+        }
+      ],
+      text: 'a test code'
+    }
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?type=testSys|testCode',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(1, body.total, 'total should be one')
+          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
+          t.equals('testSys', body.entry[0].resource.type.coding[1].system, 'should have correct type system')
+          t.equals('testCode', body.entry[0].resource.type.coding[1].code, 'should have correct type code')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by status', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = Object.assign({}, testDocManifest)
+    findMe.status = 'superseded'
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?status=superseded',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(1, body.total, 'total should be one')
+          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
+          t.equals('superseded', body.entry[0].resource.status, 'should have correct status')
+          done()
+        })
+      })
+    })
+  })
+})
