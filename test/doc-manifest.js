@@ -154,7 +154,7 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
   })
 })
 
-tap.test('DocumentManifest - should perform chained search by patient.identifier and return multiple document for multiple matching patients', (t) => {
+tap.test('DocumentManifest - should perform chained search by patient.identifier and return multiple documents for multiple matching patients', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
     let testPatients = env.testPatients()
@@ -182,6 +182,76 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
               t.equals(body.total, 2, 'total should be two')
               done()
             })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should perform chained search by author.given', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    let testPractitioners = env.testPractitioners()
+    let testOrganizations = env.testOrganizations()
+    const findMe = Object.assign({}, testDocManifest)
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createPractitioner(t, testPractitioners.alison, testOrganizations.greenwood, () => {
+      findMe.author = `Practitioner/${testPractitioners.alison.practitioner.id}`
+      env.createResource(t, findMe, 'DocumentManifest', () => {
+        env.createResource(t, skipMe, 'DocumentManifest', () => {
+          // when
+          request({
+            url: 'http://localhost:3447/fhir/DocumentManifest?author.given=Alison',
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            // then
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equals(1, body.total, 'total should be one')
+            t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
+            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author, 'should have correct author reference')
+            done()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should perform chained search by author.family', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    let testPractitioners = env.testPractitioners()
+    let testOrganizations = env.testOrganizations()
+    const findMe = Object.assign({}, testDocManifest)
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createPractitioner(t, testPractitioners.alison, testOrganizations.greenwood, () => {
+      findMe.author = `Practitioner/${testPractitioners.alison.practitioner.id}`
+      env.createResource(t, findMe, 'DocumentManifest', () => {
+        env.createResource(t, skipMe, 'DocumentManifest', () => {
+          // when
+          request({
+            url: 'http://localhost:3447/fhir/DocumentManifest?author.family=Tobi',
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            // then
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equals(1, body.total, 'total should be one')
+            t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
+            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author, 'should have correct author reference')
+            done()
           })
         })
       })
