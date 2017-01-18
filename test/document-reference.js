@@ -407,3 +407,114 @@ tap.test('document reference should support searches on indexed date (ge and le 
     })
   })
 })
+
+tap.test('document reference should support searches on indexed date (ge and le ymdhm)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=ge2013-07-01T23:11&indexed=le2013-07-01T23:12',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on indexed date (ge and le ymdhm - no match)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=ge2013-07-01T23%3A12%3A00%2B02%3A00&indexed=le2013-07-01T23%3A13%3A00%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain no results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on indexed date (eq ymdhm)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=eq2013-07-01T23%3A11%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on indexed date (eq ymdhm - no match)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=eq2013-07-01T23%3A12%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain no results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on indexed date (eq ymdhms)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=eq2013-07-01T23%3A11%3A33%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on indexed date (eq ymdhms - no match)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=eq2013-07-01T23%3A11%3A34%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain no results')
+      done()
+    })
+  })
+})
