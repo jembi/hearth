@@ -189,6 +189,34 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
   })
 })
 
+tap.test('DocumentManifest - should perform chained search by patient.identifier and return no results if the reference doesn\'t exist', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = Object.assign({}, testDocManifest)
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?patient.identifier=pshr:sanid|no-exist',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(0, body.total, 'total should be one')
+          done()
+        })
+      })
+    })
+  })
+})
+
 tap.test('DocumentManifest - should perform chained search by author.given', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
