@@ -360,3 +360,34 @@ tap.test('DocumentManifest - should search by status', (t) => {
     })
   })
 })
+
+tap.test('DocumentManifest - should support searches on created date (ymd)', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = Object.assign({}, testDocManifest)
+    findMe.created = '2013-07-01'
+    delete findMe.id
+    const skipMe = Object.assign({}, testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?created=2013-07-01',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+          t.equal(body.total, 1, 'body should contain one result')
+          t.equals('2013-07-01', body.entry[0].resource.created, 'should have correct created date')
+          done()
+        })
+      })
+    })
+  })
+})
