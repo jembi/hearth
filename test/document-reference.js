@@ -32,9 +32,9 @@ let docRefTestEnv = (t, test) => {
                   docRef2.class.coding[0].code = '47039-3'
                   docRef2.class.coding[0].display = 'Inpatient Admission history and physical note'
 
-                  env.createResource(t, 'DocumentReference', docRef, (err, ref) => {
+                  env.createResource(t, docRef, 'DocumentReference', (err, ref) => {
                     t.error(err)
-                    env.createResource(t, 'DocumentReference', docRef2, (err, ref2) => {
+                    env.createResource(t, docRef2, 'DocumentReference', (err, ref2) => {
                       t.error(err)
                       test(db, patients, pracs, orgs, [ref, ref2], () => {
                         env.clearDB((err) => {
