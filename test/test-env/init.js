@@ -510,6 +510,20 @@ module.exports = () => {
 
         callback()
       })
+    },
+
+    createResource: (t, resource, resourceType, callback) => {
+      request.post({
+        url: `http://localhost:3447/fhir/${resourceType}`,
+        body: resource,
+        headers: getTestAuthHeaders(sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201, `should save test resource of type ${resourceType}`)
+
+        callback()
+      })
     }
   }
 }
