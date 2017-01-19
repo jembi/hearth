@@ -597,7 +597,7 @@ tap.test('document reference should support searches on period (ymdhm)', (t) => 
   })
 })
 
-tap.test('document reference should support searches on period (gt lt ymdhm - 1 match)', (t) => {
+tap.test('document reference should support searches on period (gt lt ymd - 1 match)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
       url: 'http://localhost:3447/fhir/DocumentReference?period=gt2004-01-01&period=lt2014-01-01',
@@ -616,7 +616,7 @@ tap.test('document reference should support searches on period (gt lt ymdhm - 1 
   })
 })
 
-tap.test('document reference should support searches on period (gt lt ymdhm - 2 matches)', (t) => {
+tap.test('document reference should support searches on period (gt lt ymd - 2 matches)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
       url: 'http://localhost:3447/fhir/DocumentReference?period=gt2004-01-01&period=lt2016-01-01',
