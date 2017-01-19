@@ -430,7 +430,7 @@ tap.test('document reference should support searches on indexed date (ge and le 
 tap.test('document reference should support searches on indexed date (ge and le ymdhm)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: 'http://localhost:3447/fhir/DocumentReference?indexed=ge2013-07-01T23:11&indexed=le2013-07-01T23:12',
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=ge2013-07-01T23:11:00%2B02:00&indexed=le2013-07-01T23:12:00%2B02:00',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
