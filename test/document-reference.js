@@ -25,12 +25,14 @@ let docRefTestEnv = (t, test) => {
                   const docRef = _.cloneDeep(require('./resources/DocumentReference-1'))
                   const docRef2 = _.cloneDeep(require('./resources/DocumentReference-1'))
                   docRef.subject.reference = patients.charlton.resource
-                  docRef.author.reference = pracs.alison.resource
+                  docRef.author[0].reference = pracs.alison.resource
                   docRef2.subject.reference = patients.emmarentia.resource
-                  docRef2.author.reference = pracs.henry.resource
+                  docRef2.author[0].reference = pracs.henry.resource
                   docRef2.indexed = '2014-03-22T17:00:20+02:00'
                   docRef2.class.coding[0].code = '47039-3'
                   docRef2.class.coding[0].display = 'Inpatient Admission history and physical note'
+                  docRef2.context.period.start = '2014-02-22T10:00:00+02:00'
+                  docRef2.context.period.end = '2014-02-22T11:00:00+02:00'
 
                   env.createResource(t, docRef, 'DocumentReference', (err, ref) => {
                     t.error(err)
@@ -79,6 +81,44 @@ tap.test('document reference should support searches on patient identifier', (t)
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
       url: 'http://localhost:3447/fhir/DocumentReference?patient.identifier=1007211154902',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on author first name', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?author.given=Alison',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on author last name', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?author.family=Tobi',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -533,6 +573,62 @@ tap.test('document reference should support searches on indexed date (eq ymdhms 
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 0, 'body should contain no results')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on period (ymdhm)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?period=2004-12-23T09:00:00%2B02%3A00',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on period (gt lt ymdhm - 1 match)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?period=gt2004-01-01&period=lt2014-01-01',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equal(`DocumentReference/${body.entry[0].resource.id}`, docRefs[0], 'body should contain correct match')
+      done()
+    })
+  })
+})
+
+tap.test('document reference should support searches on period (gt lt ymdhm - 2 matches)', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?period=gt2004-01-01&period=lt2016-01-01',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two result')
       done()
     })
   })
