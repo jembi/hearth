@@ -1,6 +1,7 @@
 'use strict'
 const tap = require('tap')
 const request = require('request')
+const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
@@ -30,9 +31,9 @@ let docManifestTestEnv = (t, test) => {
 tap.test('DocumentManifest - should return all results when there are no parameters', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe1 = Object.assign({}, testDocManifest)
+    const findMe1 = _.cloneDeep(testDocManifest)
     delete findMe1.id
-    const findMe2 = Object.assign({}, testDocManifest)
+    const findMe2 = _.cloneDeep(testDocManifest)
     delete findMe2.id
     env.createResource(t, findMe1, 'DocumentManifest', () => {
       env.createResource(t, findMe2, 'DocumentManifest', () => {
@@ -61,10 +62,10 @@ tap.test('DocumentManifest - should return all results when there are no paramet
 tap.test('DocumentManifest - should search by subject', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe = Object.assign({}, testDocManifest)
-    findMe.subject = 'Patient/123'
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.subject.reference = 'Patient/123'
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createResource(t, findMe, 'DocumentManifest', () => {
       env.createResource(t, skipMe, 'DocumentManifest', () => {
@@ -79,9 +80,9 @@ tap.test('DocumentManifest - should search by subject', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(1, body.total, 'total should be one')
+          t.equals(body.total, 1, 'total should be one')
           t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-          t.equals('Patient/123', body.entry[0].resource.subject, 'should have a subject of Patient/123')
+          t.equals('Patient/123', body.entry[0].resource.subject.reference, 'should have a subject of Patient/123')
           done()
         })
       })
@@ -89,47 +90,16 @@ tap.test('DocumentManifest - should search by subject', (t) => {
   })
 })
 
-// tap.test('DocumentManifest - should search by subject, even if it is a full URL', (t) => {
-//   // given
-//   docManifestTestEnv(t, (db, done) => {
-//     const findMe = Object.assign({}, testDocManifest)
-//     findMe.subject = 'Patient/123'
-//     delete findMe.id
-//     const skipMe = Object.assign({}, testDocManifest)
-//     delete skipMe.id
-//     env.createResource(t, findMe, 'DocumentManifest', () => {
-//       env.createResource(t, skipMe, 'DocumentManifest', () => {
-//         // when
-//         request({
-//           url: 'http://localhost:3447/fhir/DocumentManifest?patient=http://localhost:3447/fhir/Patient/123',
-//           headers: headers,
-//           json: true
-//         }, (err, res, body) => {
-//           // then
-//           t.error(err)
-//
-//           t.equal(res.statusCode, 200, 'response status code should be 200')
-//           t.ok(body)
-//           t.equals(1, body.total, 'total should be one')
-//           t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-//           t.equals('Patient/123', body.entry[0].resource.subject, 'should have a subject of Patient/123')
-//           done()
-//         })
-//       })
-//     })
-//   })
-// })
-
 tap.test('DocumentManifest - should perform chained search by patient.identifier', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
     let testPatients = env.testPatients()
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createPatient(t, testPatients.charlton, () => {
-      findMe.subject = `Patient/${testPatients.charlton.patient.id}`
+      findMe.subject.reference = `Patient/${testPatients.charlton.patient.id}`
       env.createResource(t, findMe, 'DocumentManifest', () => {
         env.createResource(t, skipMe, 'DocumentManifest', () => {
           // when
@@ -145,7 +115,7 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
             t.ok(body)
             t.equals(1, body.total, 'total should be one')
             t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Patient/${testPatients.charlton.patient.id}`, body.entry[0].resource.subject, 'should have correct subject reference')
+            t.equals(`Patient/${testPatients.charlton.patient.id}`, body.entry[0].resource.subject.reference, 'should have correct subject reference')
             done()
           })
         })
@@ -158,14 +128,14 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
   // given
   docManifestTestEnv(t, (db, done) => {
     let testPatients = env.testPatients()
-    const findMe1 = Object.assign({}, testDocManifest)
+    const findMe1 = _.cloneDeep(testDocManifest)
     delete findMe1.id
-    const findMe2 = Object.assign({}, testDocManifest)
+    const findMe2 = _.cloneDeep(testDocManifest)
     delete findMe2.id
     env.createPatient(t, testPatients.charlton, () => {
-      findMe1.subject = `Patient/${testPatients.charlton.patient.id}`
+      findMe1.subject.reference = `Patient/${testPatients.charlton.patient.id}`
       env.createPatient(t, testPatients.emmarentia, () => {
-        findMe2.subject = `Patient/${testPatients.emmarentia.patient.id}`
+        findMe2.subject.reference = `Patient/${testPatients.emmarentia.patient.id}`
         env.createResource(t, findMe1, 'DocumentManifest', () => {
           env.createResource(t, findMe2, 'DocumentManifest', () => {
             // when
@@ -192,9 +162,9 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 tap.test('DocumentManifest - should perform chained search by patient.identifier and return no results if the reference doesn\'t exist', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createResource(t, findMe, 'DocumentManifest', () => {
       env.createResource(t, skipMe, 'DocumentManifest', () => {
@@ -222,12 +192,12 @@ tap.test('DocumentManifest - should perform chained search by author.given', (t)
   docManifestTestEnv(t, (db, done) => {
     let testPractitioners = env.testPractitioners()
     let testOrganizations = env.testOrganizations()
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createPractitioner(t, testPractitioners.alison, testOrganizations.greenwood, () => {
-      findMe.author = `Practitioner/${testPractitioners.alison.practitioner.id}`
+      findMe.author.push({ reference: `Practitioner/${testPractitioners.alison.practitioner.id}` })
       env.createResource(t, findMe, 'DocumentManifest', () => {
         env.createResource(t, skipMe, 'DocumentManifest', () => {
           // when
@@ -243,7 +213,7 @@ tap.test('DocumentManifest - should perform chained search by author.given', (t)
             t.ok(body)
             t.equals(1, body.total, 'total should be one')
             t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author, 'should have correct author reference')
+            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author[1].reference, 'should have correct author reference')
             done()
           })
         })
@@ -257,12 +227,12 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
   docManifestTestEnv(t, (db, done) => {
     let testPractitioners = env.testPractitioners()
     let testOrganizations = env.testOrganizations()
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createPractitioner(t, testPractitioners.alison, testOrganizations.greenwood, () => {
-      findMe.author = `Practitioner/${testPractitioners.alison.practitioner.id}`
+      findMe.author.push({ reference: `Practitioner/${testPractitioners.alison.practitioner.id}` })
       env.createResource(t, findMe, 'DocumentManifest', () => {
         env.createResource(t, skipMe, 'DocumentManifest', () => {
           // when
@@ -278,7 +248,7 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
             t.ok(body)
             t.equals(1, body.total, 'total should be one')
             t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author, 'should have correct author reference')
+            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author[1].reference, 'should have correct author reference')
             done()
           })
         })
@@ -290,7 +260,7 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
 tap.test('DocumentManifest - should search by type', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     findMe.type = {
       coding: [
         {
@@ -304,7 +274,7 @@ tap.test('DocumentManifest - should search by type', (t) => {
       text: 'a test code'
     }
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createResource(t, findMe, 'DocumentManifest', () => {
       env.createResource(t, skipMe, 'DocumentManifest', () => {
@@ -333,10 +303,10 @@ tap.test('DocumentManifest - should search by type', (t) => {
 tap.test('DocumentManifest - should search by status', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     findMe.status = 'superseded'
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createResource(t, findMe, 'DocumentManifest', () => {
       env.createResource(t, skipMe, 'DocumentManifest', () => {
@@ -364,10 +334,10 @@ tap.test('DocumentManifest - should search by status', (t) => {
 tap.test('DocumentManifest - should support searches on created date (ymd)', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    const findMe = Object.assign({}, testDocManifest)
+    const findMe = _.cloneDeep(testDocManifest)
     findMe.created = '2013-07-01'
     delete findMe.id
-    const skipMe = Object.assign({}, testDocManifest)
+    const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
     env.createResource(t, findMe, 'DocumentManifest', () => {
       env.createResource(t, skipMe, 'DocumentManifest', () => {
