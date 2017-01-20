@@ -28,5 +28,5 @@ npm test
 ```
 
 # Pro tips:
-* Change the `test:code` script in the package'json to only run the tests you are interested in (just don't commit this!).
+* Change the `test:code` script in the package.json to only run the tests you are interested in (just don't commit this!).
 * Run `npm run cov` to show coverage details in your browser.
