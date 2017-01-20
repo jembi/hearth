@@ -633,3 +633,21 @@ tap.test('document reference should support searches on period (gt lt ymd - 2 ma
     })
   })
 })
+
+// TODO change this to a bad request outcome when the functionality is implemented
+tap.test('document reference search should respond with an error outcome if unsupported prefix is used', (t) => {
+  docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/DocumentReference?period=xy2004-01-01',
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 500, 'response status code should be 500')
+      t.ok(body)
+      t.equal(body.resourceType, 'OperationOutcome', 'result should be an operation outcome')
+      done()
+    })
+  })
+})
