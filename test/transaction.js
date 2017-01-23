@@ -2,7 +2,7 @@
 
 const tap = require('tap')
 
-const Transaction = require('../lib/fhir/resources/transaction')
+const Transaction = require('../lib/fhir/transaction')
 const testBundle = require('./resources/Transaction-1.json')
 
 tap.test('Transaction resource .sortTransactionBundle() should sort interactions correctly', (t) => {
