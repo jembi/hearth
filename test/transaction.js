@@ -1,6 +1,9 @@
 'use strict'
 
 const tap = require('tap')
+const env = require('./test-env/init')()
+const server = require('../lib/server')
+const request = require('request')
 
 const Transaction = require('../lib/fhir/transaction')
 const testBundle = require('./resources/Transaction-1.json')
@@ -76,4 +79,56 @@ tap.test('Transaction resource .sortTransactionBundle() should throw and error i
       entry: []
     })
   }, /Bundle is not of type transaction/, 'should throw the correct error')
+})
+
+tap.test('Transaction resource .revertCreate() should remove a newly created resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    server.start((err) => {
+      t.error(err)
+
+      const patients = env.testPatients()
+      env.createPatient(t, patients.charlton, () => {
+        const idToDelete = patients.charlton.patient.id
+        const transaction = Transaction(env.mongo())
+
+        transaction.revertCreate('Patient', idToDelete, (err, success) => {
+          t.error(err)
+          t.true(success, 'should respond with success status as true')
+
+          request({
+            url: `http://localhost:3447/fhir/Patient/${idToDelete}`,
+            headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 404, 'resource should not be available')
+
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertCreate() should respond with success=false if unknown resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    const transaction = Transaction(env.mongo())
+    transaction.revertCreate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
+      t.error(err)
+      t.false(success, 'should respond with success status as false')
+
+      env.clearDB((err) => {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
 })
