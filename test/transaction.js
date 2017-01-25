@@ -141,7 +141,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
     server.start((err) => {
       t.error(err)
 
-       // create a new patient
+       // create a new resource
       const resourceType = 'Patient'
       const patients = env.testPatients()
       env.createPatient(t, patients.charlton, () => {
@@ -153,7 +153,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
           t.error(err)
           t.equals('' + doc._id, idToUpdate, 'Patient has been created')
 
-           // update the created patient
+           // update the created resource
           patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
           request.put({
             url: `http://localhost:3447/fhir/${resourceType}/${idToUpdate}`,
@@ -167,9 +167,10 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
 
             c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
               t.error(err)
-              t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Patient has been updated')
+              t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Resource latest has been updated')
+              t.equals(doc.request.method, 'PUT', 'Resource request has been updated')
 
-               // revert the update
+               // revert the updated resource
               const idToRevert = idToUpdate
               transaction.revertUpdate(resourceType, idToRevert, (err, success) => {
                 t.error(err)
@@ -177,7 +178,8 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
 
                 c.findOne({ _id: ObjectID(idToRevert) }, {}, (err, doc) => {
                   t.error(err)
-                  t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Patient update has been reverted')
+                  t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Resource latest has been reverted')
+                  t.equals(doc.request.method, 'POST', 'Resource request has been reverted')
                   t.equals(doc.history, undefined, 'Resource history has been reverted')
 
                   request({
@@ -186,7 +188,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
                     json: true
                   }, (err, res) => {
                     t.error(err)
-                    t.equal(res.statusCode, 200, 'resource should be available')
+                    t.equal(res.statusCode, 200, 'Resource should be available')
 
                     env.clearDB((err) => {
                       t.error(err)
