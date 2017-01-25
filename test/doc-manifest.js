@@ -48,7 +48,7 @@ tap.test('DocumentManifest - should return all results when there are no paramet
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(2, body.total, 'total should be one')
+          t.equals(2, body.total, 'total should be two')
           t.equals('Bundle', body.resourceType, 'should return a Bundle')
           t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
           t.equals('DocumentManifest', body.entry[1].resource.resourceType, 'should return a resource of type DocumentManifest')
@@ -179,7 +179,7 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(0, body.total, 'total should be one')
+          t.equals(0, body.total, 'total should be zero')
           done()
         })
       })

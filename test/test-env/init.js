@@ -7,6 +7,7 @@ const crypto = require('crypto')
 const request = require('request')
 const moment = require('moment')
 const _ = require('lodash')
+const fs = require('fs')
 
 const sysadminUser = {
   email: 'sysadmin@jembi.org',
@@ -86,6 +87,11 @@ module.exports = () => {
     testPatient.procedure.subject.reference = resource
     testPatient.preop.subject.reference = resource
     testPatient.preop.source.reference = resource
+  }
+
+  let updateTestBinaryReferences = (testBinaryFile, resource) => {
+    testBinaryFile.resource = resource
+    testBinaryFile.id = resource.replace('Patient/', '')
   }
 
   return {
@@ -358,6 +364,36 @@ module.exports = () => {
       }
     },
 
+    testBinaryFiles: () => {
+      // read binary data
+      var binaryFileBase64 = fs.readFileSync(`${process.cwd()}/test/resources/sampleBase64File`)
+
+      return {
+        doc1: {
+          resourceType: 'Binary',
+          contentType: 'application/json',
+          content: binaryFileBase64
+        },
+        doc2: {
+          resourceType: 'Binary',
+          contentType: 'application/pdf',
+          content: binaryFileBase64
+        },
+        doc3: {
+          resourceType: 'Binary',
+          contentType: 'application/pdf',
+          content: binaryFileBase64
+        },
+        doc4: {
+          resourceType: 'Binary',
+          contentType: 'application/xml',
+          content: binaryFileBase64
+        }
+      }
+    },
+
+    updateTestBinaryReferences: updateTestBinaryReferences,
+
     updateTestPatientReferences: updateTestPatientReferences,
 
     createOrganization: (t, testOrg, callback) => {
@@ -418,6 +454,22 @@ module.exports = () => {
 
         let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
         updateTestPatientReferences(testPatient, ref)
+        callback()
+      })
+    },
+
+    createBinary: (t, testBinaryFile, callback) => {
+      request.post({
+        url: 'http://localhost:3447/fhir/Binary',
+        body: testBinaryFile,
+        headers: getTestAuthHeaders(sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201)
+
+        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        updateTestBinaryReferences(testBinaryFile, ref)
         callback()
       })
     },
