@@ -82,89 +82,141 @@ tap.test('Transaction resource .sortTransactionBundle() should throw and error i
   }, /Bundle is not of type transaction/, 'should throw the correct error')
 })
 
-tap.test('Transaction resource .revertUpdate() should remove a newly updated resource', (t) => {
-   env.initDB((err, db) => {
-     t.error(err)
-     
-     server.start((err) => {
-       t.error(err)
-       
-       // create a new patient
-       const resourceType = 'Patient'
-       const patients = env.testPatients()
-       env.createPatient(t, patients.charlton, () => {
-         const idToUpdate = patients.charlton.patient.id
-         const transaction = Transaction(env.mongo())
-         
-         let c = db.collection(resourceType)
-         c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
-           t.error(err)
-           t.equals('' + doc._id, idToUpdate, 'Patient has been created')
-           
-           // update the created patient
-           patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
-           request.put({
-             url: `http://localhost:3447/fhir/${resourceType}/${idToUpdate}`,
-             body: patients.charlton.patient,
-             headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
-             json: true
-           }, (err, res) => {
-             t.error(err)
-             t.equal(res.statusCode, 200)
-             t.equal(res.body, 'OK')
-             
-             c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
-               t.error(err)
-               t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Patient has been updated')
-             
-               // revert the update
-               const idToRevert = idToUpdate
-               transaction.revertUpdate(resourceType, idToRevert, (err, success) => {
-                 t.error(err)
-                 t.true(success, 'should respond with success status as true')
-                 
-                 c.findOne({ _id: ObjectID(idToRevert) }, {}, (err, doc) => {
-                   t.error(err)
-                   t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Patient update has been reverted')
-                   t.equals(doc.history, undefined, 'Resource history has been reverted')
-       
-                   request({
-                     url: `http://localhost:3447/fhir/Patient/${idToRevert}`,
-                     headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
-                     json: true
-                   }, (err, res) => {
-                     t.error(err)
-                     t.equal(res.statusCode, 200, 'resource should be available')
-         
-                     env.clearDB((err) => {
-                       t.error(err)
-                       server.stop(() => {
-                         t.end()
-                       })
-                     })
-                   })
-                 })
-               })
-             })
-           })
-         })
-       })
-     })
-   })
- })
- 
- tap.test('Transaction resource .revertUpdate() should respond with success=false if unknown resource', (t) => {
-    env.initDB((err, db) => {
+tap.test('Transaction resource .revertCreate() should remove a newly created resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    server.start((err) => {
       t.error(err)
-      const transaction = Transaction(env.mongo())
-      transaction.revertUpdate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
-        t.error(err)
-        t.false(success, 'should respond with success status as false')
-  
-        env.clearDB((err) => {
+
+      const patients = env.testPatients()
+      env.createPatient(t, patients.charlton, () => {
+        const idToDelete = patients.charlton.patient.id
+        const transaction = Transaction(env.mongo())
+
+        transaction.revertCreate('Patient', idToDelete, (err, success) => {
           t.error(err)
-          t.end()
+          t.true(success, 'should respond with success status as true')
+
+          request({
+            url: `http://localhost:3447/fhir/Patient/${idToDelete}`,
+            headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 404, 'resource should not be available')
+
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
+            })
+          })
         })
       })
     })
   })
+})
+
+tap.test('Transaction resource .revertCreate() should respond with success=false if unknown resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    const transaction = Transaction(env.mongo())
+    transaction.revertCreate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
+      t.error(err)
+      t.false(success, 'should respond with success status as false')
+
+      env.clearDB((err) => {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertUpdate() should remove a newly updated resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+       // create a new patient
+      const resourceType = 'Patient'
+      const patients = env.testPatients()
+      env.createPatient(t, patients.charlton, () => {
+        const idToUpdate = patients.charlton.patient.id
+        const transaction = Transaction(env.mongo())
+
+        let c = db.collection(resourceType)
+        c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+          t.error(err)
+          t.equals('' + doc._id, idToUpdate, 'Patient has been created')
+
+           // update the created patient
+          patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
+          request.put({
+            url: `http://localhost:3447/fhir/${resourceType}/${idToUpdate}`,
+            body: patients.charlton.patient,
+            headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 200)
+            t.equal(res.body, 'OK')
+
+            c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+              t.error(err)
+              t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Patient has been updated')
+
+               // revert the update
+              const idToRevert = idToUpdate
+              transaction.revertUpdate(resourceType, idToRevert, (err, success) => {
+                t.error(err)
+                t.true(success, 'should respond with success status as true')
+
+                c.findOne({ _id: ObjectID(idToRevert) }, {}, (err, doc) => {
+                  t.error(err)
+                  t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Patient update has been reverted')
+                  t.equals(doc.history, undefined, 'Resource history has been reverted')
+
+                  request({
+                    url: `http://localhost:3447/fhir/Patient/${idToRevert}`,
+                    headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+                    json: true
+                  }, (err, res) => {
+                    t.error(err)
+                    t.equal(res.statusCode, 200, 'resource should be available')
+
+                    env.clearDB((err) => {
+                      t.error(err)
+                      server.stop(() => {
+                        t.end()
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertUpdate() should respond with success=false if unknown resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    const transaction = Transaction(env.mongo())
+    transaction.revertUpdate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
+      t.error(err)
+      t.false(success, 'should respond with success status as false')
+
+      env.clearDB((err) => {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
+})
