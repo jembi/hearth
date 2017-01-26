@@ -88,11 +88,6 @@ module.exports = () => {
     testPatient.preop.source.reference = resource
   }
 
-  let updateTestBinaryReferences = (testBinaryFile, resource) => {
-    testBinaryFile.resource = resource
-    testBinaryFile.id = resource.replace('Patient/', '')
-  }
-
   return {
     mongo: () => mongo,
 
