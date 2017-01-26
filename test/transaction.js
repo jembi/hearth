@@ -4,6 +4,7 @@ const tap = require('tap')
 const env = require('./test-env/init')()
 const server = require('../lib/server')
 const request = require('request')
+const ObjectID = require('mongodb').ObjectID
 
 const Transaction = require('../lib/fhir/transaction')
 const testBundle = require('./resources/Transaction-1.json')
@@ -122,6 +123,95 @@ tap.test('Transaction resource .revertCreate() should respond with success=false
     t.error(err)
     const transaction = Transaction(env.mongo())
     transaction.revertCreate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
+      t.error(err)
+      t.false(success, 'should respond with success status as false')
+
+      env.clearDB((err) => {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertUpdate() should remove a newly updated resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+       // create a new resource
+      const resourceType = 'Patient'
+      const patients = env.testPatients()
+      env.createPatient(t, patients.charlton, () => {
+        const idToUpdate = patients.charlton.patient.id
+        const transaction = Transaction(env.mongo())
+
+        let c = db.collection(resourceType)
+        c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+          t.error(err)
+          t.equals('' + doc._id, idToUpdate, 'Patient has been created')
+
+           // update the created resource
+          patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
+          request.put({
+            url: `http://localhost:3447/fhir/${resourceType}/${idToUpdate}`,
+            body: patients.charlton.patient,
+            headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 200)
+            t.equal(res.body, 'OK')
+
+            c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+              t.error(err)
+              t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Resource latest has been updated')
+              t.equals(doc.request.method, 'PUT', 'Resource request has been updated')
+
+               // revert the updated resource
+              const idToRevert = idToUpdate
+              transaction.revertUpdate(resourceType, idToRevert, (err, success) => {
+                t.error(err)
+                t.true(success, 'should respond with success status as true')
+
+                c.findOne({ _id: ObjectID(idToRevert) }, {}, (err, doc) => {
+                  t.error(err)
+                  t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Resource latest has been reverted')
+                  t.equals(doc.request.method, 'POST', 'Resource request has been reverted')
+                  t.equals(doc.history, undefined, 'Resource history has been reverted')
+
+                  request({
+                    url: `http://localhost:3447/fhir/Patient/${idToRevert}`,
+                    headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+                    json: true
+                  }, (err, res) => {
+                    t.error(err)
+                    t.equal(res.statusCode, 200, 'Resource should be available')
+
+                    env.clearDB((err) => {
+                      t.error(err)
+                      server.stop(() => {
+                        t.end()
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertUpdate() should respond with success=false if unknown resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    const transaction = Transaction(env.mongo())
+    transaction.revertUpdate('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
       t.error(err)
       t.false(success, 'should respond with success status as false')
 
