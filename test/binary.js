@@ -14,10 +14,10 @@ let binaryTestEnv = (t, test) => {
     server.start((err) => {
       t.error(err)
 
-      env.createBinary(t, env.testBinaryFiles().doc1, () => { // contenttype = application/json
-        env.createBinary(t, env.testBinaryFiles().doc2, () => { // contenttype = application/pdf
-          env.createBinary(t, env.testBinaryFiles().doc3, () => { // contenttype = application/pdf
-            env.createBinary(t, env.testBinaryFiles().doc4, () => { // contenttype = application/xml
+      env.createResource(t, env.testBinaryFiles().doc1, 'Binary', () => { // contenttype = application/json
+        env.createResource(t, env.testBinaryFiles().doc2, 'Binary', () => { // contenttype = application/pdf
+          env.createResource(t, env.testBinaryFiles().doc3, 'Binary', () => { // contenttype = application/pdf
+            env.createResource(t, env.testBinaryFiles().doc4, 'Binary', () => { // contenttype = application/xml
               test(db, () => {
                 env.clearDB((err) => {
                   t.error(err)

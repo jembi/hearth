@@ -7,7 +7,6 @@ const crypto = require('crypto')
 const request = require('request')
 const moment = require('moment')
 const _ = require('lodash')
-const fs = require('fs')
 
 const sysadminUser = {
   email: 'sysadmin@jembi.org',
@@ -366,28 +365,28 @@ module.exports = () => {
 
     testBinaryFiles: () => {
       // read binary data
-      var binaryFileBase64 = fs.readFileSync(`${process.cwd()}/test/resources/sampleBase64File`)
+      var base64EncodedText = 'TG9yZW0gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50aW5nIGFuZCB0eXBlc2V0dGluZyBpbmR1c3RyeS4gTG9yZW0gSXBzdW0gaGFzIGJlZW4gdGhlIGluZHVzdHJ5J3Mgc3RhbmRhcmQgZHVtbXkgdGV4dCBldmVyIHNpbmNlIHRoZSAxNTAwcywgd2hlbiBhbiB1bmtub3duIHByaW50ZXIgdG9vayBhIGdhbGxleSBvZiB0eXBlIGFuZCBzY3JhbWJsZWQgaXQgdG8gbWFrZSBhIHR5cGUgc3BlY2ltZW4gYm9vay4g'
 
       return {
         doc1: {
           resourceType: 'Binary',
           contentType: 'application/json',
-          content: binaryFileBase64
+          content: base64EncodedText
         },
         doc2: {
           resourceType: 'Binary',
           contentType: 'application/pdf',
-          content: binaryFileBase64
+          content: base64EncodedText
         },
         doc3: {
           resourceType: 'Binary',
           contentType: 'application/pdf',
-          content: binaryFileBase64
+          content: base64EncodedText
         },
         doc4: {
           resourceType: 'Binary',
           contentType: 'application/xml',
-          content: binaryFileBase64
+          content: base64EncodedText
         }
       }
     },
@@ -454,22 +453,6 @@ module.exports = () => {
 
         let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
         updateTestPatientReferences(testPatient, ref)
-        callback()
-      })
-    },
-
-    createBinary: (t, testBinaryFile, callback) => {
-      request.post({
-        url: 'http://localhost:3447/fhir/Binary',
-        body: testBinaryFile,
-        headers: getTestAuthHeaders(sysadminUser.email),
-        json: true
-      }, (err, res, body) => {
-        t.error(err)
-        t.equal(res.statusCode, 201)
-
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
-        updateTestBinaryReferences(testBinaryFile, ref)
         callback()
       })
     },
