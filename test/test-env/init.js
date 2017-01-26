@@ -391,8 +391,6 @@ module.exports = () => {
       }
     },
 
-    updateTestBinaryReferences: updateTestBinaryReferences,
-
     updateTestPatientReferences: updateTestPatientReferences,
 
     createOrganization: (t, testOrg, callback) => {
