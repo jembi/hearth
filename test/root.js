@@ -5,7 +5,8 @@ const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
-const testTransaction = require('./resources/Transaction-1.json')
+const testTransaction1 = require('./resources/Transaction-1.json')
+const testTransaction2 = require('./resources/Transaction-2.json')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
@@ -36,7 +37,26 @@ tap.test('Transaction should process all entries correctly', (t) => {
       url: 'http://localhost:3447/fhir',
       method: 'POST',
       headers: headers,
-      body: _.cloneDeep(testTransaction),
+      body: _.cloneDeep(testTransaction1),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+      console.log(JSON.stringify(body, null, 2))
+      t.equals(res.statusCode, 200, 'should return a 200 status')
+      done()
+    })
+  })
+})
+
+tap.test('Transaction should resolve references correctly when processing a transaction', (t) => {
+  // given
+  testEnv(t, (db, done) => {
+    // when
+    request({
+      url: 'http://localhost:3447/fhir',
+      method: 'POST',
+      headers: headers,
+      body: _.cloneDeep(testTransaction2),
       json: true
     }, (err, res, body) => {
       t.error(err)
