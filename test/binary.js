@@ -177,38 +177,50 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
         // then
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
-        let c = db.collection('Binary')
+        
+        let c = db.collection('fs.files')
         c.findOne({}, {}, (err, doc) => {
           t.error(err)
-          
-          let idToUpdate = String(doc._id)
-          let br = JSON.parse(JSON.stringify(binaryResource))
-          br.id = idToUpdate
-          br.contentType = 'image/jpeg'
-          request.put({
-            url: 'http://localhost:3447/fhir/Binary/' + idToUpdate,
-            headers: headers,
-            body: br,
-            json: true
-          }, (err, res, body) => {
-            // then
+          let firstFileRef = String(doc._id)
+        
+          let c = db.collection('Binary')
+          c.findOne({}, {}, (err, doc) => {
             t.error(err)
-            t.equal(res.statusCode, 200, 'response status code should be 200')
-
-            let c = db.collection('Binary')
-            c.findOne({ _id: doc._id }, {}, (err, doc) => {
+            
+            let idToUpdate = String(doc._id)
+            let br = JSON.parse(JSON.stringify(binaryResource))
+            br.id = idToUpdate
+            br.contentType = 'image/jpeg'
+            request.put({
+              url: 'http://localhost:3447/fhir/Binary/' + idToUpdate,
+              headers: headers,
+              body: br,
+              json: true
+            }, (err, res, body) => {
+              // then
               t.error(err)
+              t.equal(res.statusCode, 200, 'response status code should be 200')
 
-              t.equal(doc.latest.resourceType, 'Binary')
-              t.equal(doc.latest.contentType, 'image/jpeg')
-              t.equal(doc.latest.content, undefined)
-              t.ok(doc.latest._transforms.content, 'Binary resource link updated')
-              t.ok(doc.history['1'].resource._transforms.content, 'Binary resource history saved')
-
-              env.clearDB((err) => {
+              let c = db.collection('Binary')
+              c.findOne({ _id: doc._id }, {}, (err, doc) => {
                 t.error(err)
-                server.stop(() => {
-                  t.end()
+
+                t.equal(doc.latest.resourceType, 'Binary')
+                t.equal(doc.latest.contentType, 'image/jpeg')
+                t.equal(doc.latest.content, undefined)
+                t.equal('' + doc.history['1'].resource._transforms.content, firstFileRef, 'Binary resource history saved')
+                
+                let c = db.collection('fs.files')
+                c.findOne({ _id: doc.latest._transforms.content }, {}, (err, file) => {
+                  t.error(err)
+                  t.ok(file, 'Binary resource link updated')
+
+                  env.clearDB((err) => {
+                    t.error(err)
+                    server.stop(() => {
+                      t.end()
+                    })
+                  })
                 })
               })
             })
