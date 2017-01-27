@@ -5,6 +5,7 @@ const request = require('request')
 const env = require('./test-env/init')()
 const server = require('../lib/server')
 
+const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
 let binaryTestEnv = (t, test) => {
@@ -98,6 +99,39 @@ tap.test('Binary - should search by contentType - none found', (t) => {
       t.equals(0, body.total, 'total should be zero')
       t.equals('Bundle', body.resourceType, 'should return a Bundle')
       done()
+    })
+  })
+})
+
+tap.test('Binary - preInteractionHandlers.create - should insert binary data', (t) => {
+  // given
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      // when
+      request.post({
+        url: 'http://localhost:3447/fhir/Binary',
+        headers: headers,
+        body: binaryResource,
+        json: true
+      }, (err, res, body) => {
+        // then
+        t.error(err)
+
+        t.equal(res.statusCode, 201, 'response status code should be 200')
+        
+        // TODO test gridfs 
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
+          })
+        })
+      })
     })
   })
 })
