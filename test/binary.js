@@ -1,6 +1,7 @@
 'use strict'
 const tap = require('tap')
 const request = require('request')
+const mongodb = require('mongodb')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
@@ -122,13 +123,95 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
         t.error(err)
 
         t.equal(res.statusCode, 201, 'response status code should be 200')
-        
-        // TODO test gridfs 
 
-        env.clearDB((err) => {
+        let c = db.collection('Binary')
+        c.findOne({}, {}, (err, doc) => {
           t.error(err)
-          server.stop(() => {
-            t.end()
+
+          t.equal(doc.latest.resourceType, 'Binary')
+          t.equal(doc.latest.contentType, 'image/jpg')
+          t.equal(doc.latest.content, undefined)
+          t.ok(doc.latest._transforms.content, 'Binary resource successfully inserted')
+
+          var bucket = new mongodb.GridFSBucket(db)
+          let data = ''
+
+          bucket.openDownloadStream(doc.latest._transforms.content)
+          .on('data', (chunk) => {
+            data += chunk
+          })
+          .on('error', (err) => {
+            t.error(err)
+          })
+          .on('end', () => {
+            t.equal(data, binaryResource.content, 'GridFS returns expected binary data')
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+
+tap.test('Binary - preInteractionHandlers.update - should update reference to binary data', (t) => {
+  // given
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      // when
+      request.post({
+        url: 'http://localhost:3447/fhir/Binary',
+        headers: headers,
+        body: binaryResource,
+        json: true
+      }, (err, res, body) => {
+        // then
+        t.error(err)
+        t.equal(res.statusCode, 201, 'response status code should be 201')
+        let c = db.collection('Binary')
+        c.findOne({}, {}, (err, doc) => {
+          t.error(err)
+          
+          let idToUpdate = String(doc._id)
+          let br = JSON.parse(JSON.stringify(binaryResource))
+          br.id = idToUpdate
+          br.contentType = 'image/jpeg'
+          request.put({
+            url: 'http://localhost:3447/fhir/Binary/' + idToUpdate,
+            headers: headers,
+            body: br,
+            json: true
+          }, (err, res, body) => {
+            // then
+            t.error(err)
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+
+            let c = db.collection('Binary')
+            c.findOne({ _id: doc._id }, {}, (err, doc) => {
+              t.error(err)
+
+              t.equal(doc.latest.resourceType, 'Binary')
+              t.equal(doc.latest.contentType, 'image/jpeg')
+              t.equal(doc.latest.content, undefined)
+              t.ok(doc.latest._transforms.content, 'Binary resource link updated')
+              t.ok(doc.history['1'].resource._transforms.content, 'Binary resource history saved')
+
+              env.clearDB((err) => {
+                t.error(err)
+                server.stop(() => {
+                  t.end()
+                })
+              })
+            })
           })
         })
       })
