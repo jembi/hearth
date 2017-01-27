@@ -158,7 +158,6 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
   })
 })
 
-
 tap.test('Binary - preInteractionHandlers.update - should update reference to binary data', (t) => {
   // given
   env.initDB((err, db) => {
@@ -177,16 +176,16 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
         // then
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
-        
+
         let c = db.collection('fs.files')
         c.findOne({}, {}, (err, doc) => {
           t.error(err)
           let firstFileRef = String(doc._id)
-        
+
           let c = db.collection('Binary')
           c.findOne({}, {}, (err, doc) => {
             t.error(err)
-            
+
             let idToUpdate = String(doc._id)
             let br = JSON.parse(JSON.stringify(binaryResource))
             br.id = idToUpdate
@@ -209,7 +208,7 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
                 t.equal(doc.latest.contentType, 'image/jpeg')
                 t.equal(doc.latest.content, undefined)
                 t.equal('' + doc.history['1'].resource._transforms.content, firstFileRef, 'Binary resource history saved')
-                
+
                 let c = db.collection('fs.files')
                 c.findOne({ _id: doc.latest._transforms.content }, {}, (err, file) => {
                   t.error(err)
