@@ -129,23 +129,23 @@ tap.test('Binary - should search for a specific Binary document', (t) => {
       url: 'http://localhost:3447/fhir/Binary?contenttype=application/xml',
       headers: headers,
       json: true
-    }, (err, res, body) => {
+    }, (err, res, searchBody) => {
       // then
       t.error(err)
 
       request({
-        url: `http://localhost:3447/fhir/Binary/${body.entry[0].resource.id}`,
+        url: `http://localhost:3447/fhir/Binary/${searchBody.entry[0].resource.id}`,
         headers: headers,
         json: true
-      }, (err, res, body) => {
+      }, (err, res, readBody) => {
         // then
         t.error(err)
 
         t.equal(res.statusCode, 200, 'response status code should be 200')
-        t.ok(body)
-        t.ok(body.content, 'should have field "content"')
-        t.equals('Binary', body.resourceType, 'should return a resource of type Binary')
-        t.equals('application/xml', body.contentType, 'should return a contentType of application/xml')
+        t.ok(readBody)
+        t.ok(readBody.content, 'should have field "content"')
+        t.equals('Binary', readBody.resourceType, 'should return a resource of type Binary')
+        t.equals('application/xml', readBody.contentType, 'should return a contentType of application/xml')
         done()
       })
     })
