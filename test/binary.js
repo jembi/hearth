@@ -230,7 +230,6 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
   })
 })
 
-
 tap.test('Binary - preInteractionHandlers writeToGridFS - should return bad request when no content in binary resource', (t) => {
   // given
   env.initDB((err, db) => {
