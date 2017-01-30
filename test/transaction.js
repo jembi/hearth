@@ -69,19 +69,6 @@ tap.test('Transaction resource .sortTransactionBundle() should throw an error if
   }, {}, 'should throw an error object')
 })
 
-tap.test('Transaction resource .sortTransactionBundle() should throw and error if the Bundle.type isn\'t \'transaction\'', (t) => {
-  t.plan(1)
-  // given
-  const transaction = Transaction()
-  // when and then
-  t.throws(() => {
-    transaction.sortTransactionBundle({
-      type: 'Meh',
-      entry: []
-    })
-  }, /Bundle is not of type transaction/, 'should throw the correct error')
-})
-
 tap.test('Transaction resource .revertCreate() should remove a newly created resource', (t) => {
   env.initDB((err, db) => {
     t.error(err)
