@@ -229,3 +229,39 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
     })
   })
 })
+
+
+tap.test('Binary - preInteractionHandlers writeToGridFS - should return bad request when no content in binary resource', (t) => {
+  // given
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      // when
+      let testResource = JSON.parse(JSON.stringify(binaryResource))
+      delete testResource.content
+      request.post({
+        url: 'http://localhost:3447/fhir/Binary',
+        headers: headers,
+        body: testResource,
+        json: true
+      }, (err, res, body) => {
+        // then
+        t.error(err)
+        t.equal(res.statusCode, 400, 'response status code should be 400')
+        t.equal(body.issue[0].severity, 'error', 'Should return correct issue severity')
+        t.equal(body.issue[0].code, 'invalid', 'Should return correct issue code')
+        t.equal(body.issue[0].details.text, 'No content in binary resource', 'Should return correct issue text')
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
