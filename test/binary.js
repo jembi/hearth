@@ -101,3 +101,53 @@ tap.test('Binary - should search by contentType - none found', (t) => {
     })
   })
 })
+
+tap.test('Binary - should fail for invalid Binary resource ID', (t) => {
+  // given
+  binaryTestEnv(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Binary/77ssssssssssssssssssssss',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      // then
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      t.ok(body)
+      t.equals('not-found', body.issue[0].code, 'should return binary "not-found"')
+      t.equals('OperationOutcome', body.resourceType, 'should return a OperationOutcome')
+      done()
+    })
+  })
+})
+
+tap.test('Binary - should search for a specific Binary document', (t) => {
+  // given
+  binaryTestEnv(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Binary?contenttype=application/xml',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      // then
+      t.error(err)
+
+      request({
+        url: `http://localhost:3447/fhir/Binary/${body.entry[0].resource.id}`,
+        headers: headers,
+        json: true
+      }, (err, res, body) => {
+        // then
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.ok(body.content, 'should have field "content"')
+        t.equals('Binary', body.resourceType, 'should return a resource of type Binary')
+        t.equals('application/xml', body.contentType, 'should return a contentType of application/xml')
+        done()
+      })
+    })
+  })
+})
