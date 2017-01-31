@@ -60,7 +60,7 @@ tap.test('Transaction should process all entries correctly', (t) => {
         t.equals(body.entry[3].resource.meta.versionId, '1', 'should return patient with correct version id on vread')
         t.equals(body.entry[4].response.status, 200, 'should return 200 for search')
         t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
-        t.equals(body.entry[4].resource.entry.length, 2, 'should return correct search results')
+        t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
         const c = db.collection('Patient')
         c.findOne({ _id: new ObjectID(body.entry[0].response.location.split('/')[3]) }, (err, result) => {
           t.error(err)
@@ -94,24 +94,17 @@ tap.test('Transaction should revert when an operation (excluding reads) fails', 
         body: transaction,
         json: true
       }, (err, res, body) => {
+        console.log(JSON.stringify(body))
         t.error(err)
-        t.equals(res.statusCode, 400, 'should return a 400 status')
-        t.equals(body.resourceType, 'Bundle', 'should return a Bundle')
-        t.equals(body.entry[0].response.status, 201, 'should return 201 for create')
-        t.ok(body.entry[0].response.location, 'should return the location')
-        t.equals(body.entry[1].response.status, 200, 'should return 200 for update')
-        t.ok(body.entry[1].response.location, 'should return the location')
-        t.equals(body.entry[2].response.status, 404, 'should return 404 for 2nd update')
-        t.equals(body.entry[3].response.status, 200, 'should return 200 for read')
-        t.equals(body.entry[3].resource.id, pats.charlton.patient.id, 'should return patient with correct id on get')
+        t.equals(res.statusCode, 404, 'should return a 404 status')
+        t.equals(body.resourceType, 'OperationOutcome', 'should return an OperationOutcome of the failing request')
         const c = db.collection('Patient')
-        c.findOne({ _id: new ObjectID(body.entry[0].response.location.split('/')[3]) }, (err, result) => {
+        c.findOne({ 'latest.name.given': 'Peter' }, (err, result) => {
           t.error(err)
           t.notOk(result, 'should have reverted the created patient')
-          c.findOne({ _id: new ObjectID(body.entry[1].response.location.split('/')[3]) }, (err, result) => {
+          c.findOne({ 'latest.name.given': 'Charlton' }, (err, result) => {
             t.error(err)
-            t.equals(result.latest.name[0].given[0], 'Charlton', 'should have reverted the updated a patient')
-            t.equals(result.latest.name[0].family[0], 'Matinyana', 'should have reverted the updated a patient')
+            t.ok(result, 'should have reverted the updated patient')
             done()
           })
         })
@@ -148,7 +141,7 @@ tap.test('Transaction should pass even when reads fail', (t) => {
         t.equals(body.entry[3].response.status, 404, 'should return 200 for vread')
         t.equals(body.entry[4].response.status, 200, 'should return 200 for search')
         t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
-        t.equals(body.entry[4].resource.entry.length, 2, 'should return correct search results')
+        t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
         const c = db.collection('Patient')
         c.findOne({ _id: new ObjectID(body.entry[0].response.location.split('/')[3]) }, (err, result) => {
           t.error(err)

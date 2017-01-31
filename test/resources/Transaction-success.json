@@ -81,7 +81,7 @@
       "fullUrl": "urn:uuid:c5b5d1b5-8d77-477e-a73a-81b75bd74e19",
       "request": {
         "method": "GET",
-        "url": "Patient?given=Charlton"
+        "url": "Patient?given=John"
       }
     }
   ]
