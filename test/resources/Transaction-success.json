@@ -1,0 +1,88 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-transaction",
+  "meta": {
+    "lastUpdated": "2014-08-18T01:43:30Z"
+  },
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:61ebe359-bfdc-4613-8bf2-c5e300945f0a",
+      "resource": {
+        "resourceType": "Patient",
+        "text": {
+          "status": "generated",
+          "div": "<div>Some narrative</div>"
+        },
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Chalmers"
+            ],
+            "given": [
+              "Peter",
+              "James"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1974-12-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e268f67f-241f-43db-97b4-42cfcf795452",
+      "resource": {
+        "resourceType": "Patient",
+        "text": {
+          "status": "generated",
+          "div": "<div>Some narrative</div>"
+        },
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Doe"
+            ],
+            "given": [
+              "John"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1970-11-05"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/xyz"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c5b5d1b5-8d77-477e-a73a-81b75bd74e19",
+      "request": {
+        "method": "GET",
+        "url": "Patient/xyz"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c5b5d1b5-8d77-477e-a73a-81b75bd74e19",
+      "request": {
+        "method": "GET",
+        "url": "Patient/xyz/_history/abc"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c5b5d1b5-8d77-477e-a73a-81b75bd74e19",
+      "request": {
+        "method": "GET",
+        "url": "Patient?given=John"
+      }
+    }
+  ]
+}
