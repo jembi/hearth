@@ -1,0 +1,58 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-transaction",
+  "meta": {
+    "lastUpdated": "2014-08-18T01:43:30Z"
+  },
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:61ebe359-bfdc-4613-8bf2-c5e300945f0a",
+      "resource": {
+        "resourceType": "Patient",
+        "text": {
+          "status": "generated",
+          "div": "<div>Some narrative</div>"
+        },
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": [
+              "Chalmers"
+            ],
+            "given": [
+              "Peter",
+              "James"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1974-12-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:88f151c0-a954-468a-88bd-5ae15c08e059",
+      "resource": {
+        "resourceType": "Encounter",
+        "text": {
+          "status": "generated",
+          "div": "<div>Encounter with patient @example</div>"
+        },
+        "status": "in-progress",
+        "class": "inpatient",
+        "patient": {
+          "reference": "urn:uuid:61ebe359-bfdc-4613-8bf2-c5e300945f0a"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      }
+    }
+  ]
+}
