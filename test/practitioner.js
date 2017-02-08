@@ -268,7 +268,7 @@ tap.test('practitioner should be saved correctly', (t) => {
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
         t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w\-]+\/_history\/1/, 'should return a location with both id and vid present')
+        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w-]+\/_history\/1/, 'should return a location with both id and vid present')
 
         let c = db.collection('Practitioner')
         c.findOne((err, result) => {
