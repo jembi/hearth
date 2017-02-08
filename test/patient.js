@@ -346,6 +346,7 @@ tap.test('patient should support read', (t) => {
 
           t.notOk(body._transforms, 'should not expose _transforms')
           t.notOk(body._request, 'should not expose _request')
+          t.notOk(body._id, 'should not expose mongo _id')
 
           env.clearDB((err) => {
             t.error(err)
