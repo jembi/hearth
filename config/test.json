@@ -13,5 +13,5 @@
   "logger": {
     "level": "error"
   },
-  "uuidVersion": "1"
+  "idGenerator": "uuidv1"
 }

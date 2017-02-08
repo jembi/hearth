@@ -13,5 +13,5 @@
   "logger": {
     "level": "info"
   },
-  "uuidVersion": "1"
+  "idGenerator": "uuidv1"
 }
