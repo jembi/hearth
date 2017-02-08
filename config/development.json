@@ -12,5 +12,6 @@
   },
   "logger": {
     "level": "debug"
-  }
+  },
+  "uuidVersion": "1"
 }
