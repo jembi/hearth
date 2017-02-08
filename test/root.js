@@ -93,7 +93,6 @@ tap.test('Transaction should revert when an operation (excluding reads) fails', 
         body: transaction,
         json: true
       }, (err, res, body) => {
-        console.log(JSON.stringify(body))
         t.error(err)
         t.equals(res.statusCode, 400, 'should return a 400 status')
         t.equals(body.resourceType, 'OperationOutcome', 'should return an OperationOutcome of the failing request')

@@ -242,8 +242,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../resources/Basic-1.json'))
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         emmarentia: {
           email: 'emmarentia@email.com',
@@ -252,8 +251,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../resources/Basic-1.json'))
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         nikita: {
           email: 'nikita@email.com',
@@ -262,8 +260,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../resources/Basic-1.json'))
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         mwawi: {
           email: 'mwawi@email.com',
@@ -272,8 +269,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json')),
-          consent: _.cloneDeep(require('../resources/Basic-1.json'))
+          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         }
       }
 
@@ -282,33 +278,21 @@ module.exports = () => {
       delete testPatients.charlton.encounter.id
       delete testPatients.charlton.procedure.id
       delete testPatients.charlton.preop.id
-      delete testPatients.charlton.consent.id
-      delete testPatients.charlton.consent.author
-      delete testPatients.charlton.consent.created
       delete testPatients.emmarentia.patient.id
       delete testPatients.emmarentia.allergy.id
       delete testPatients.emmarentia.encounter.id
       delete testPatients.emmarentia.procedure.id
       delete testPatients.emmarentia.preop.id
-      delete testPatients.emmarentia.consent.id
-      delete testPatients.emmarentia.consent.author
-      delete testPatients.emmarentia.consent.created
       delete testPatients.nikita.patient.id
       delete testPatients.nikita.allergy.id
       delete testPatients.nikita.encounter.id
       delete testPatients.nikita.procedure.id
       delete testPatients.nikita.preop.id
-      delete testPatients.nikita.consent.id
-      delete testPatients.nikita.consent.author
-      delete testPatients.nikita.consent.created
       delete testPatients.mwawi.patient.id
       delete testPatients.mwawi.allergy.id
       delete testPatients.mwawi.encounter.id
       delete testPatients.mwawi.procedure.id
       delete testPatients.mwawi.preop.id
-      delete testPatients.mwawi.consent.id
-      delete testPatients.mwawi.consent.author
-      delete testPatients.mwawi.consent.created
       testPatients.emmarentia.patient.name[0].prefix = ['Ms']
       testPatients.emmarentia.patient.name[0].given = ['Emmarentia']
       testPatients.emmarentia.patient.name[0].family = ['Cook']
@@ -492,7 +476,6 @@ module.exports = () => {
             let encounterRef = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
             testPatient.procedure.encounter.reference = encounterRef
             testPatient.encounter.id = encounterRef.replace('Encounter/', '')
-            testPatient.consent.subject.reference = encounterRef
 
             request.post({
               url: 'http://localhost:3447/fhir/ProcedureRequest',
