@@ -541,3 +541,150 @@ tap.test('patient should support update', (t) => {
     })
   })
 })
+
+tap.test('patient should support multiple updates', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      // save
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        let update = {
+          resourceType: 'Patient',
+          id: id,
+          active: true,
+          name: [
+            {
+              given: ['Update1']
+            }
+          ]
+        }
+
+        // update
+        request.put({
+          url: `http://localhost:3447/fhir/Patient/${id}`,
+          headers: headers,
+          body: update,
+          json: true
+        }, (err, res) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+
+          // read
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equal(body.resourceType, 'Patient', 'result should be a patient')
+            t.equal(body.name[0].given[0], 'Update1', 'body should contain the latest patient')
+
+            // vread - history should contain original
+            request({
+              url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+              headers: headers,
+              json: true
+            }, (err, res, body) => {
+              t.error(err)
+
+              t.equal(res.statusCode, 200, 'response status code should be 200')
+              t.ok(body)
+              t.equal(body.resourceType, 'Patient', 'result should be a patient')
+              t.equal(body.name[0].given[0], 'Charlton', 'body should contain the original patient')
+
+              let update2 = {
+                resourceType: 'Patient',
+                id: id,
+                active: true,
+                name: [
+                  {
+                    given: ['Update2']
+                  }
+                ]
+              }
+
+              // update
+              request.put({
+                url: `http://localhost:3447/fhir/Patient/${id}`,
+                headers: headers,
+                body: update2,
+                json: true
+              }, (err, res) => {
+                t.error(err)
+
+                t.equal(res.statusCode, 200, 'response status code should be 200')
+
+                // read
+                request({
+                  url: `http://localhost:3447/fhir/Patient/${id}`,
+                  headers: headers,
+                  json: true
+                }, (err, res, body) => {
+                  t.error(err)
+
+                  t.equal(res.statusCode, 200, 'response status code should be 200')
+                  t.ok(body)
+                  t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                  t.equal(body.name[0].given[0], 'Update2', 'body should contain the latest patient')
+
+                  // vread - history should contain original
+                  request({
+                    url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+                    headers: headers,
+                    json: true
+                  }, (err, res, body) => {
+                    t.error(err)
+
+                    t.equal(res.statusCode, 200, 'response status code should be 200')
+                    t.ok(body)
+                    t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                    t.equal(body.name[0].given[0], 'Charlton', 'body should contain the original patient')
+
+                    // vread - history should contain the first update
+                    request({
+                      url: `http://localhost:3447/fhir/Patient/${id}/_history/2`,
+                      headers: headers,
+                      json: true
+                    }, (err, res, body) => {
+                      t.error(err)
+
+                      t.equal(res.statusCode, 200, 'response status code should be 200')
+                      t.ok(body)
+                      t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                      t.equal(body.name[0].given[0], 'Update1', 'body should contain the original patient')
+
+                      env.clearDB((err) => {
+                        t.error(err)
+                        server.stop(() => {
+                          t.end()
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
