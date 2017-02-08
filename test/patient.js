@@ -418,6 +418,47 @@ tap.test('patient should support vread', (t) => {
   })
 })
 
+tap.test('vread should respond with 404 if version not found', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+
+        request({
+          url: `http://localhost:3447/fhir/Patient/${id}/_history/2`,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 404, 'response status code should be 404')
+
+          env.clearDB((err) => {
+            t.error(err)
+            server.stop(() => {
+              t.end()
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
 // we'll never have history with non-integer values
 tap.test('should respond with 404 Not Found if vid param is not an integer', (t) => {
   env.initDB((err, db) => {
