@@ -249,7 +249,7 @@ tap.test('patient should be saved correctly', (t) => {
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
         t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Patient\/[\w-]+\/_history\/1/, 'should return a location with both id and vid present')
+        t.match(res.headers['location'], /\/fhir\/Patient\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
         let c = db.collection('Patient')
         c.findOne((err, result) => {
@@ -260,9 +260,9 @@ tap.test('patient should be saved correctly', (t) => {
           t.equal(result.identifier[1].value, '1001113333933', 'should have correct identifier')
 
           t.ok(result.meta, 'should have meta set')
+          t.ok(result.meta.versionId, 'should have meta.versionId set')
           t.ok(result.meta.lastUpdated, 'should have meta.lastUpdated set')
           t.ok(result._transforms, 'should have _transforms set')
-          t.ok(result._versionId, 'should have _versionId set')
           t.ok(result._request, 'should have _request set')
           t.equal(result._request.method, 'POST', 'should have _request.method set to POST')
 
@@ -326,7 +326,7 @@ tap.test('patient should support read', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -342,7 +342,6 @@ tap.test('patient should support read', (t) => {
 
           t.ok(body.meta, 'should have meta set')
           t.ok(body.meta.versionId, 'should have versionId set')
-          t.notOk(body._versionId, 'should not expose internal _versionId')
 
           t.notOk(body._transforms, 'should not expose _transforms')
           t.notOk(body._request, 'should not expose _request')
@@ -404,7 +403,7 @@ tap.test('patient should support vread', (t) => {
           t.ok(body)
           t.equal(body.resourceType, 'Patient', 'result should be a patient')
           t.equal(body.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-          t.equal(body.meta.versionId, '1', 'body should contain the versionId')
+          t.ok(body.meta.versionId, 'body should contain the versionId')
 
           env.clearDB((err) => {
             t.error(err)
@@ -436,55 +435,13 @@ tap.test('vread should respond with 404 if version not found', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
-          url: `http://localhost:3447/fhir/Patient/${id}/_history/2`,
+          url: `http://localhost:3447/fhir/Patient/${id}/_history/2222`,
           headers: headers,
           json: true
         }, (err, res, body) => {
-          t.error(err)
-
-          t.equal(res.statusCode, 404, 'response status code should be 404')
-
-          env.clearDB((err) => {
-            t.error(err)
-            server.stop(() => {
-              t.end()
-            })
-          })
-        })
-      })
-    })
-  })
-})
-
-// we'll never have history with non-integer values
-tap.test('should respond with 404 Not Found if vid param is not an integer', (t) => {
-  env.initDB((err, db) => {
-    t.error(err)
-
-    server.start((err) => {
-      t.error(err)
-
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
-      delete pat.id
-
-      request.post({
-        url: 'http://localhost:3447/fhir/Patient',
-        headers: headers,
-        body: pat,
-        json: true
-      }, (err, res, body) => {
-        t.error(err)
-
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
-
-        request({
-          url: `http://localhost:3447/fhir/Patient/${id}/_history/bad`,
-          headers: headers,
-          json: true
-        }, (err, res) => {
           t.error(err)
 
           t.equal(res.statusCode, 404, 'response status code should be 404')
@@ -520,7 +477,8 @@ tap.test('patient should support update', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        let originalLocation = res.headers['location']
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
         let update = {
           resourceType: 'Patient',
           id: id,
@@ -558,7 +516,7 @@ tap.test('patient should support update', (t) => {
 
             // vread - history should contain original
             request({
-              url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+              url: `http://localhost:3447${originalLocation}`,
               headers: headers,
               json: true
             }, (err, res, body) => {
@@ -602,7 +560,8 @@ tap.test('patient should support multiple updates', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        let originalLocation = res.headers['location']
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
         let update = {
           resourceType: 'Patient',
           id: id,
@@ -625,6 +584,8 @@ tap.test('patient should support multiple updates', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
 
+          let updateLocation = res.headers['location']
+
           // read
           request({
             url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -640,7 +601,7 @@ tap.test('patient should support multiple updates', (t) => {
 
             // vread - history should contain original
             request({
-              url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+              url: `http://localhost:3447${originalLocation}`,
               headers: headers,
               json: true
             }, (err, res, body) => {
@@ -688,7 +649,7 @@ tap.test('patient should support multiple updates', (t) => {
 
                   // vread - history should contain original
                   request({
-                    url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+                    url: `http://localhost:3447${originalLocation}`,
                     headers: headers,
                     json: true
                   }, (err, res, body) => {
@@ -701,7 +662,7 @@ tap.test('patient should support multiple updates', (t) => {
 
                     // vread - history should contain the first update
                     request({
-                      url: `http://localhost:3447/fhir/Patient/${id}/_history/2`,
+                      url: `http://localhost:3447${updateLocation}`,
                       headers: headers,
                       json: true
                     }, (err, res, body) => {
@@ -721,6 +682,81 @@ tap.test('patient should support multiple updates', (t) => {
                     })
                   })
                 })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('update should replace existing documents', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      // save
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        let update = {
+          resourceType: 'Patient',
+          id: id,
+          active: true,
+          name: [
+            {
+              given: ['Update']
+            }
+          ]
+        }
+
+        // update
+        request.put({
+          url: `http://localhost:3447/fhir/Patient/${id}`,
+          headers: headers,
+          body: update,
+          json: true
+        }, (err, res) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+
+          // read
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equal(body.resourceType, 'Patient', 'result should be a patient')
+            t.equal(body.name[0].given[0], 'Update', 'body should contain the latest patient')
+
+            // resource should be completely replaced by the updated document
+            // should not contain fields from the original document that aren't present in the update
+            t.notOk(body.name[0].family, 'body should not contain the family name')
+            t.notOk(body.identifier, 'body should not contain the identifier')
+            t.notOk(body.gender, 'body should not contain gender')
+            t.notOk(body.address, 'body should not contain address')
+
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
               })
             })
           })

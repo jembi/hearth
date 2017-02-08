@@ -78,9 +78,12 @@ module.exports = () => {
     testPrac.practitioner.id = resource.replace('Practitioner/', '')
   }
 
-  let updateTestPatientReferences = (testPatient, resource) => {
+  let updateTestPatientReferences = (testPatient, location) => {
+    const resource = location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
+    const vid = location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
     testPatient.resource = resource
     testPatient.patient.id = resource.replace('Patient/', '')
+    testPatient.patient.meta = {versionId: vid}
     testPatient.allergy.patient.reference = resource
     testPatient.encounter.patient.reference = resource
     testPatient.procedure.subject.reference = resource
@@ -382,7 +385,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        let ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         updateTestOrganizationReferences(testOrg, ref)
 
         request.post({
@@ -393,7 +396,7 @@ module.exports = () => {
         }, (err, res, body) => {
           t.error(err)
           t.equal(res.statusCode, 201)
-          let id = res.headers.location.replace('/fhir/Location/', '').replace('/_history/1', '')
+          let id = res.headers.location.replace('/fhir/Location/', '').replace(/\/_history\/.*/, '')
           testOrg.location.id = id
           callback()
         })
@@ -412,7 +415,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        let ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         updateTestPractitionerReferences(testPrac, ref)
         callback()
       })
@@ -428,8 +431,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
-        updateTestPatientReferences(testPatient, ref)
+        updateTestPatientReferences(testPatient, res.headers.location)
         callback()
       })
     },
@@ -445,8 +447,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
-        updateTestPatientReferences(testPatient, ref)
+        updateTestPatientReferences(testPatient, res.headers.location)
 
         request.post({
           url: 'http://localhost:3447/fhir/AllergyIntolerance',
@@ -457,7 +458,7 @@ module.exports = () => {
           t.error(err)
           t.equal(res.statusCode, 201)
 
-          let id = res.headers.location.replace('/fhir/AllergyIntolerance/', '').replace('/_history/1', '')
+          let id = res.headers.location.replace('/fhir/AllergyIntolerance/', '').replace(/\/_history\/.*/, '')
           testPatient.allergy.id = id
 
           testPatient.encounter.participant[0].individual.reference = provider1.resource
@@ -473,7 +474,7 @@ module.exports = () => {
             t.error(err)
             t.equal(res.statusCode, 201)
 
-            let encounterRef = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+            let encounterRef = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
             testPatient.procedure.encounter.reference = encounterRef
             testPatient.encounter.id = encounterRef.replace('Encounter/', '')
 
@@ -486,7 +487,7 @@ module.exports = () => {
               t.error(err)
               t.equal(res.statusCode, 201)
 
-              let id = res.headers.location.replace('/fhir/ProcedureRequest/', '').replace('/_history/1', '')
+              let id = res.headers.location.replace('/fhir/ProcedureRequest/', '').replace(/\/_history\/.*/, '')
               testPatient.procedure.id = id
               testPatient.preop.encounter.reference = encounterRef
 
@@ -499,7 +500,7 @@ module.exports = () => {
                 t.error(err)
                 t.equal(res.statusCode, 201)
 
-                let id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace('/_history/1', '')
+                let id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace(/\/_history\/.*/, '')
                 testPatient.preop.id = id
                 callback()
               })
@@ -536,7 +537,7 @@ module.exports = () => {
 
         t.equal(res.statusCode, 201, `should save test resource of type ${resourceType}`)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        let ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         callback(null, ref)
       })
     }

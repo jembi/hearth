@@ -268,7 +268,7 @@ tap.test('practitioner should be saved correctly', (t) => {
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
         t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w-]+\/_history\/1/, 'should return a location with both id and vid present')
+        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
         let c = db.collection('Practitioner')
         c.findOne((err, result) => {
@@ -280,8 +280,8 @@ tap.test('practitioner should be saved correctly', (t) => {
 
           t.ok(result.meta, 'should have meta set')
           t.ok(result.meta.lastUpdated, 'should have meta.lastUpdated set')
+          t.ok(result.meta.versionId, 'should have meta.versionId set')
           t.ok(result._transforms, 'should have _transforms set')
-          t.ok(result._versionId, 'should have _versionId set')
           t.ok(result._request, 'should have _request set')
           t.equal(result._request.method, 'POST', 'should have _request.method set to POST')
 

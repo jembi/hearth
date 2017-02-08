@@ -36,7 +36,7 @@ tap.test('Transaction should process all entries correctly', (t) => {
       transaction.entry[1].request.url = `Patient/${pats.charlton.patient.id}`
       transaction.entry[1].resource.id = pats.charlton.patient.id
       transaction.entry[2].request.url = `Patient/${pats.charlton.patient.id}`
-      transaction.entry[3].request.url = `Patient/${pats.charlton.patient.id}/_history/1`
+      transaction.entry[3].request.url = `Patient/${pats.charlton.patient.id}/_history/${pats.charlton.patient.meta.versionId}`
       // when
       request({
         url: 'http://localhost:3447/fhir',
@@ -56,7 +56,7 @@ tap.test('Transaction should process all entries correctly', (t) => {
         t.equals(body.entry[2].resource.id, pats.charlton.patient.id, 'should return patient with correct id on read')
         t.equals(body.entry[3].response.status, '200', 'should return 200 for vread')
         t.equals(body.entry[3].resource.id, pats.charlton.patient.id, 'should return patient with correct id on vread')
-        t.equals(body.entry[3].resource.meta.versionId, '1', 'should return patient with correct version id on vread')
+        t.equals(body.entry[3].resource.meta.versionId, pats.charlton.patient.meta.versionId, 'should return patient with correct version id on vread')
         t.equals(body.entry[4].response.status, '200', 'should return 200 for search')
         t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
         t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
