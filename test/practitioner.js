@@ -268,22 +268,22 @@ tap.test('practitioner should be saved correctly', (t) => {
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
         t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\da-f]+\/_history\/1/, 'should return a location with both id and vid present')
+        t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w\-]+\/_history\/1/, 'should return a location with both id and vid present')
 
         let c = db.collection('Practitioner')
         c.findOne((err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in the mongo')
-          t.ok(result.latest, 'result should have a latest property')
 
-          let prac = result.latest
+          t.equal(result.identifier[0].value, '1007211153444', 'should have correct identifier')
+          t.equal(result.identifier[1].value, '1001113555553', 'should have correct identifier')
 
-          t.equal(prac.identifier[0].value, '1007211153444', 'should have correct identifier')
-          t.equal(prac.identifier[1].value, '1001113555553', 'should have correct identifier')
-
-          t.ok(prac.meta, 'should have meta set')
-          t.ok(prac.meta.versionId, 'should have meta.versionId set')
-          t.ok(prac.meta.lastUpdated, 'should have meta.lastUpdated set')
+          t.ok(result.meta, 'should have meta set')
+          t.ok(result.meta.lastUpdated, 'should have meta.lastUpdated set')
+          t.ok(result._transforms, 'should have _transforms set')
+          t.ok(result._versionId, 'should have _versionId set')
+          t.ok(result._request, 'should have _request set')
+          t.equal(result._request.method, 'POST', 'should have _request.method set to POST')
 
           env.clearDB((err) => {
             t.error(err)

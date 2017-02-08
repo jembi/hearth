@@ -182,15 +182,15 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
         c.findOne({}, {}, (err, doc) => {
           t.error(err)
 
-          t.equal(doc.latest.resourceType, 'Binary')
-          t.equal(doc.latest.contentType, 'image/jpg')
-          t.equal(doc.latest.content, undefined)
-          t.ok(doc.latest._transforms.content, 'Binary resource successfully inserted')
+          t.equal(doc.resourceType, 'Binary')
+          t.equal(doc.contentType, 'image/jpg')
+          t.equal(doc.content, undefined)
+          t.ok(doc._transforms.content, 'Binary resource successfully inserted')
 
           var bucket = new mongodb.GridFSBucket(db)
           let data = ''
 
-          bucket.openDownloadStream(doc.latest._transforms.content)
+          bucket.openDownloadStream(doc._transforms.content)
           .on('data', (chunk) => {
             data += chunk
           })
@@ -231,16 +231,15 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
-        let c = db.collection('fs.files')
-        c.findOne({}, {}, (err, doc) => {
+        const cFiles = db.collection('fs.files')
+        cFiles.findOne({}, {}, (err, file) => {
           t.error(err)
-          let firstFileRef = String(doc._id)
 
-          let c = db.collection('Binary')
+          const c = db.collection('Binary')
           c.findOne({}, {}, (err, doc) => {
             t.error(err)
 
-            let idToUpdate = String(doc._id)
+            let idToUpdate = doc.id
             let br = JSON.parse(JSON.stringify(binaryResource))
             br.id = idToUpdate
             br.contentType = 'image/jpeg'
@@ -254,24 +253,27 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
               t.error(err)
               t.equal(res.statusCode, 200, 'response status code should be 200')
 
-              let c = db.collection('Binary')
-              c.findOne({ _id: doc._id }, {}, (err, doc) => {
+              c.findOne({ id: doc.id }, {}, (err, doc) => {
                 t.error(err)
 
-                t.equal(doc.latest.resourceType, 'Binary')
-                t.equal(doc.latest.contentType, 'image/jpeg')
-                t.equal(doc.latest.content, undefined)
-                t.equal('' + doc.history['1'].resource._transforms.content, firstFileRef, 'Binary resource history saved')
+                t.equal(doc.resourceType, 'Binary')
+                t.equal(doc.contentType, 'image/jpeg')
+                t.notOk(doc.content)
 
-                let c = db.collection('fs.files')
-                c.findOne({ _id: doc.latest._transforms.content }, {}, (err, file) => {
+                const cHistory = db.collection('Binary_history')
+                cHistory.findOne({ id: doc.id }, (err, history) => {
                   t.error(err)
-                  t.ok(file, 'Binary resource link updated')
+                  t.ok(history, 'Binary resource history saved')
 
-                  env.clearDB((err) => {
+                  cFiles.findOne({ _id: doc._transforms.content }, {}, (err, file) => {
                     t.error(err)
-                    server.stop(() => {
-                      t.end()
+                    t.ok(file, 'Binary resource link updated')
+
+                    env.clearDB((err) => {
+                      t.error(err)
+                      server.stop(() => {
+                        t.end()
+                      })
                     })
                   })
                 })

@@ -4,7 +4,6 @@ const tap = require('tap')
 const env = require('./test-env/init')()
 const server = require('../lib/server')
 const request = require('request')
-const ObjectID = require('mongodb').ObjectID
 
 const Transaction = require('../lib/fhir/transaction')
 const testBundle = require('./resources/Transaction-1.json')
@@ -136,9 +135,9 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
         const transaction = Transaction(env.mongo())
 
         let c = db.collection(resourceType)
-        c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+        c.findOne({ id: idToUpdate }, { fields: { id: 1 } }, (err, doc) => {
           t.error(err)
-          t.equals('' + doc._id, idToUpdate, 'Patient has been created')
+          t.equals('' + doc.id, idToUpdate, 'Patient has been created')
 
            // update the created resource
           patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
@@ -152,10 +151,10 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
             t.equal(res.statusCode, 200)
             t.equal(res.body, 'OK')
 
-            c.findOne({ _id: ObjectID(idToUpdate) }, {}, (err, doc) => {
+            c.findOne({ id: idToUpdate }, {}, (err, doc) => {
               t.error(err)
-              t.equals(doc.latest.telecom[0].value, 'charliebrown@fanmail.com', 'Resource latest has been updated')
-              t.equals(doc.request.method, 'PUT', 'Resource request has been updated')
+              t.equals(doc.telecom[0].value, 'charliebrown@fanmail.com', 'Resource latest has been updated')
+              t.equals(doc._request.method, 'PUT', 'Resource request has been updated')
 
                // revert the updated resource
               const idToRevert = idToUpdate
@@ -163,11 +162,10 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
                 t.error(err)
                 t.true(success, 'should respond with success status as true')
 
-                c.findOne({ _id: ObjectID(idToRevert) }, {}, (err, doc) => {
+                c.findOne({ id: idToRevert }, {}, (err, doc) => {
                   t.error(err)
-                  t.equals(doc.latest.telecom[0].value, 'charlton@email.com', 'Resource latest has been reverted')
-                  t.equals(doc.request.method, 'POST', 'Resource request has been reverted')
-                  t.equals(doc.history, undefined, 'Resource history has been reverted')
+                  t.equals(doc.telecom[0].value, 'charlton@email.com', 'Resource latest has been reverted')
+                  t.equals(doc._request.method, 'POST', 'Resource request has been reverted')
 
                   request({
                     url: `http://localhost:3447/fhir/Patient/${idToRevert}`,
