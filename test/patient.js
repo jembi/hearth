@@ -7,7 +7,7 @@ const _ = require('lodash')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let basicPatientTest = (t, test) => {
+const basicPatientTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -236,7 +236,7 @@ tap.test('patient should be saved correctly', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -249,22 +249,22 @@ tap.test('patient should be saved correctly', (t) => {
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
         t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Patient\/[\da-f]+\/_history\/1/, 'should return a location with both id and vid present')
+        t.match(res.headers['location'], /\/fhir\/Patient\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
-        let c = db.collection('Patient')
+        const c = db.collection('Patient')
         c.findOne((err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in the mongo')
-          t.ok(result.latest, 'result should have a latest property')
 
-          let pat = result.latest
+          t.equal(result.identifier[0].value, '1007211154902', 'should have correct identifier')
+          t.equal(result.identifier[1].value, '1001113333933', 'should have correct identifier')
 
-          t.equal(pat.identifier[0].value, '1007211154902', 'should have correct identifier')
-          t.equal(pat.identifier[1].value, '1001113333933', 'should have correct identifier')
-
-          t.ok(pat.meta, 'should have meta set')
-          t.ok(pat.meta.versionId, 'should have meta.versionId set')
-          t.ok(pat.meta.lastUpdated, 'should have meta.lastUpdated set')
+          t.ok(result.meta, 'should have meta set')
+          t.ok(result.meta.versionId, 'should have meta.versionId set')
+          t.ok(result.meta.lastUpdated, 'should have meta.lastUpdated set')
+          t.ok(result._transforms, 'should have _transforms set')
+          t.ok(result._request, 'should have _request set')
+          t.equal(result._request.method, 'POST', 'should have _request.method set to POST')
 
           env.clearDB((err) => {
             t.error(err)
@@ -285,7 +285,7 @@ tap.test('patient endpoint should return an error', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
       request.post({
         url: 'http://localhost:3447/fhir/Patient',
@@ -315,7 +315,7 @@ tap.test('patient should support read', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -326,7 +326,7 @@ tap.test('patient should support read', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -339,6 +339,13 @@ tap.test('patient should support read', (t) => {
           t.ok(body)
           t.equal(body.resourceType, 'Patient', 'result should be a patient')
           t.equal(body.identifier[0].value, '1007211154902', 'body should contain the matching patient')
+
+          t.ok(body.meta, 'should have meta set')
+          t.ok(body.meta.versionId, 'should have versionId set')
+
+          t.notOk(body._transforms, 'should not expose _transforms')
+          t.notOk(body._request, 'should not expose _request')
+          t.notOk(body._id, 'should not expose mongo _id')
 
           env.clearDB((err) => {
             t.error(err)
@@ -374,7 +381,7 @@ tap.test('patient should support vread', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -396,7 +403,48 @@ tap.test('patient should support vread', (t) => {
           t.ok(body)
           t.equal(body.resourceType, 'Patient', 'result should be a patient')
           t.equal(body.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-          t.equal(body.meta.versionId, '1', 'body should contain the versionId')
+          t.ok(body.meta.versionId, 'body should contain the versionId')
+
+          env.clearDB((err) => {
+            t.error(err)
+            server.stop(() => {
+              t.end()
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('vread should respond with 404 if version not found', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
+        request({
+          url: `http://localhost:3447/fhir/Patient/${id}/_history/2222`,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 404, 'response status code should be 404')
 
           env.clearDB((err) => {
             t.error(err)
@@ -417,7 +465,7 @@ tap.test('patient should support update', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       // save
@@ -429,8 +477,9 @@ tap.test('patient should support update', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace('/_history/1', '')
-        let update = {
+        const originalLocation = res.headers['location']
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
           resourceType: 'Patient',
           id: id,
           active: true,
@@ -467,7 +516,7 @@ tap.test('patient should support update', (t) => {
 
             // vread - history should contain original
             request({
-              url: `http://localhost:3447/fhir/Patient/${id}/_history/1`,
+              url: `http://localhost:3447${originalLocation}`,
               headers: headers,
               json: true
             }, (err, res, body) => {
@@ -488,6 +537,261 @@ tap.test('patient should support update', (t) => {
           })
         })
       })
+    })
+  })
+})
+
+tap.test('patient should support multiple updates', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      // save
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        const originalLocation = res.headers['location']
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
+          resourceType: 'Patient',
+          id: id,
+          active: true,
+          name: [
+            {
+              given: ['Update1']
+            }
+          ]
+        }
+
+        // update
+        request.put({
+          url: `http://localhost:3447/fhir/Patient/${id}`,
+          headers: headers,
+          body: update,
+          json: true
+        }, (err, res) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+
+          const updateLocation = res.headers['location']
+
+          // read
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equal(body.resourceType, 'Patient', 'result should be a patient')
+            t.equal(body.name[0].given[0], 'Update1', 'body should contain the latest patient')
+
+            // vread - history should contain original
+            request({
+              url: `http://localhost:3447${originalLocation}`,
+              headers: headers,
+              json: true
+            }, (err, res, body) => {
+              t.error(err)
+
+              t.equal(res.statusCode, 200, 'response status code should be 200')
+              t.ok(body)
+              t.equal(body.resourceType, 'Patient', 'result should be a patient')
+              t.equal(body.name[0].given[0], 'Charlton', 'body should contain the original patient')
+
+              const update2 = {
+                resourceType: 'Patient',
+                id: id,
+                active: true,
+                name: [
+                  {
+                    given: ['Update2']
+                  }
+                ]
+              }
+
+              // update
+              request.put({
+                url: `http://localhost:3447/fhir/Patient/${id}`,
+                headers: headers,
+                body: update2,
+                json: true
+              }, (err, res) => {
+                t.error(err)
+
+                t.equal(res.statusCode, 200, 'response status code should be 200')
+
+                // read
+                request({
+                  url: `http://localhost:3447/fhir/Patient/${id}`,
+                  headers: headers,
+                  json: true
+                }, (err, res, body) => {
+                  t.error(err)
+
+                  t.equal(res.statusCode, 200, 'response status code should be 200')
+                  t.ok(body)
+                  t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                  t.equal(body.name[0].given[0], 'Update2', 'body should contain the latest patient')
+
+                  // vread - history should contain original
+                  request({
+                    url: `http://localhost:3447${originalLocation}`,
+                    headers: headers,
+                    json: true
+                  }, (err, res, body) => {
+                    t.error(err)
+
+                    t.equal(res.statusCode, 200, 'response status code should be 200')
+                    t.ok(body)
+                    t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                    t.equal(body.name[0].given[0], 'Charlton', 'body should contain the original patient')
+
+                    // vread - history should contain the first update
+                    request({
+                      url: `http://localhost:3447${updateLocation}`,
+                      headers: headers,
+                      json: true
+                    }, (err, res, body) => {
+                      t.error(err)
+
+                      t.equal(res.statusCode, 200, 'response status code should be 200')
+                      t.ok(body)
+                      t.equal(body.resourceType, 'Patient', 'result should be a patient')
+                      t.equal(body.name[0].given[0], 'Update1', 'body should contain the original patient')
+
+                      env.clearDB((err) => {
+                        t.error(err)
+                        server.stop(() => {
+                          t.end()
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('update should replace existing documents', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      // save
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
+          resourceType: 'Patient',
+          id: id,
+          active: true,
+          name: [
+            {
+              given: ['Update']
+            }
+          ]
+        }
+
+        // update
+        request.put({
+          url: `http://localhost:3447/fhir/Patient/${id}`,
+          headers: headers,
+          body: update,
+          json: true
+        }, (err, res) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+
+          // read
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            t.ok(body)
+            t.equal(body.resourceType, 'Patient', 'result should be a patient')
+            t.equal(body.name[0].given[0], 'Update', 'body should contain the latest patient')
+
+            // resource should be completely replaced by the updated document
+            // should not contain fields from the original document that aren't present in the update
+            t.notOk(body.name[0].family, 'body should not contain the family name')
+            t.notOk(body.identifier, 'body should not contain the identifier')
+            t.notOk(body.gender, 'body should not contain gender')
+            t.notOk(body.address, 'body should not contain address')
+
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('read should respond with 404 not found if invalid value for id is used', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient/th%21s%21sb%24d',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      done()
+    })
+  })
+})
+
+tap.test('vread should respond with 404 not found if invalid value for vid is used', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient/1234/_history/th%21s%21sb%24d',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      done()
     })
   })
 })

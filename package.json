@@ -12,24 +12,24 @@
     "test:upload-cov": "tap --coverage-report=lcov && codecov"
   },
   "dependencies": {
-    "async": "^2.0.0-rc.6",
-    "body-parser": "^1.15.0",
-    "cors": "^2.7.1",
-    "express": "^4.13.4",
-    "lodash": "^4.11.2",
-    "moment": "^2.13.0",
-    "mongodb": "^2.1.18",
+    "async": "^2.1.4",
+    "body-parser": "^1.16.0",
+    "cors": "^2.8.1",
+    "express": "^4.14.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "mongodb": "^2.2.22",
     "stdio": "^0.2.7",
-    "urijs": "^1.18.1",
-    "uuid": "^2.0.2",
-    "winston": "^2.2.0"
+    "urijs": "^1.18.5",
+    "uuid": "^3.0.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "codecov": "^1.0.1",
     "request": "^2.79.0",
-    "snazzy": "^3.0.1",
-    "standard": "^6.0.8",
-    "tap": "^5.7.1"
+    "snazzy": "^6.0.0",
+    "standard": "^8.6.0",
+    "tap": "^10.1.0"
   },
   "main": "server.js",
   "directories": {

@@ -12,5 +12,6 @@
   },
   "logger": {
     "level": "info"
-  }
+  },
+  "idGenerator": "uuidv1"
 }

@@ -21,15 +21,15 @@ module.exports = () => {
 
   // adapted from
   // https://github.com/jembi/openhim-core-js/blob/f69547897660983b07a16444ddff40e2ff47c548/test/testUtils.coffee#L165-L180
-  let getTestAuthHeaders = (username) => {
-    let authTS = new Date().toISOString()
-    let requestsalt = '842cd4a0-1a91-45a7-bf76-c292cb36b2e8'
-    let tokenhash = crypto.createHash('sha512')
+  const getTestAuthHeaders = (username) => {
+    const authTS = new Date().toISOString()
+    const requestsalt = '842cd4a0-1a91-45a7-bf76-c292cb36b2e8'
+    const tokenhash = crypto.createHash('sha512')
     tokenhash.update(sysadminUser.hash)
     tokenhash.update(requestsalt)
     tokenhash.update(authTS)
 
-    let auth = {
+    const auth = {
       'auth-username': username,
       'auth-ts': authTS,
       'auth-salt': requestsalt,
@@ -39,7 +39,7 @@ module.exports = () => {
     return auth
   }
 
-  let getAuthHeaders = (username, password, callback) => {
+  const getAuthHeaders = (username, password, callback) => {
     request({
       url: `http://localhost:3447/api/authenticate/${username}`,
       json: true
@@ -48,15 +48,15 @@ module.exports = () => {
         return callback(err)
       }
 
-      let passhash = crypto.createHash('sha512')
+      const passhash = crypto.createHash('sha512')
       passhash.update(body.salt)
       passhash.update(password)
-      let tokenhash = crypto.createHash('sha512')
+      const tokenhash = crypto.createHash('sha512')
       tokenhash.update(passhash.digest('hex'))
       tokenhash.update(body.salt)
       tokenhash.update(body.ts)
 
-      let auth = {
+      const auth = {
         'auth-username': username,
         'auth-ts': body.ts,
         'auth-salt': body.salt,
@@ -67,20 +67,23 @@ module.exports = () => {
     })
   }
 
-  let updateTestOrganizationReferences = (testOrg, resource) => {
+  const updateTestOrganizationReferences = (testOrg, resource) => {
     testOrg.resource = resource
     testOrg.organization.id = resource.replace('Organization/', '')
     testOrg.location.managingOrganization.reference = resource
   }
 
-  let updateTestPractitionerReferences = (testPrac, resource) => {
+  const updateTestPractitionerReferences = (testPrac, resource) => {
     testPrac.resource = resource
     testPrac.practitioner.id = resource.replace('Practitioner/', '')
   }
 
-  let updateTestPatientReferences = (testPatient, resource) => {
+  const updateTestPatientReferences = (testPatient, location) => {
+    const resource = location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
+    const vid = location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
     testPatient.resource = resource
     testPatient.patient.id = resource.replace('Patient/', '')
+    testPatient.patient.meta = {versionId: vid}
     testPatient.allergy.patient.reference = resource
     testPatient.encounter.patient.reference = resource
     testPatient.procedure.subject.reference = resource
@@ -114,7 +117,7 @@ module.exports = () => {
           db = _db
 
           if (createSysadmin) {
-            let user = db.collection('user')
+            const user = db.collection('user')
             user.insert(sysadminUser, (err) => {
               if (err) {
                 return callback(err)
@@ -154,7 +157,7 @@ module.exports = () => {
     getAuthHeaders: getAuthHeaders,
 
     testOrganizations: () => {
-      let testOrgs = {
+      const testOrgs = {
         greenwood: {
           organization: _.cloneDeep(require('../resources/Organization-1.json')),
           location: _.cloneDeep(require('../resources/Location-1.json'))
@@ -186,7 +189,7 @@ module.exports = () => {
     updateTestOrganizationReferences: updateTestOrganizationReferences,
 
     testPractitioners: () => {
-      let testPrac = {
+      const testPrac = {
         alison: {
           email: 'drtobi@email.com',
           password: 'alison',
@@ -234,7 +237,7 @@ module.exports = () => {
     updateTestPractitionerReferences: updateTestPractitionerReferences,
 
     testPatients: () => {
-      let testPatients = {
+      const testPatients = {
         charlton: {
           email: 'charlton@email.com',
           password: 'charlton',
@@ -382,7 +385,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        const ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         updateTestOrganizationReferences(testOrg, ref)
 
         request.post({
@@ -393,7 +396,7 @@ module.exports = () => {
         }, (err, res, body) => {
           t.error(err)
           t.equal(res.statusCode, 201)
-          let id = res.headers.location.replace('/fhir/Location/', '').replace('/_history/1', '')
+          const id = res.headers.location.replace('/fhir/Location/', '').replace(/\/_history\/.*/, '')
           testOrg.location.id = id
           callback()
         })
@@ -412,7 +415,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        const ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         updateTestPractitionerReferences(testPrac, ref)
         callback()
       })
@@ -428,8 +431,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
-        updateTestPatientReferences(testPatient, ref)
+        updateTestPatientReferences(testPatient, res.headers.location)
         callback()
       })
     },
@@ -445,8 +447,7 @@ module.exports = () => {
         t.error(err)
         t.equal(res.statusCode, 201)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
-        updateTestPatientReferences(testPatient, ref)
+        updateTestPatientReferences(testPatient, res.headers.location)
 
         request.post({
           url: 'http://localhost:3447/fhir/AllergyIntolerance',
@@ -457,7 +458,7 @@ module.exports = () => {
           t.error(err)
           t.equal(res.statusCode, 201)
 
-          let id = res.headers.location.replace('/fhir/AllergyIntolerance/', '').replace('/_history/1', '')
+          const id = res.headers.location.replace('/fhir/AllergyIntolerance/', '').replace(/\/_history\/.*/, '')
           testPatient.allergy.id = id
 
           testPatient.encounter.participant[0].individual.reference = provider1.resource
@@ -473,7 +474,7 @@ module.exports = () => {
             t.error(err)
             t.equal(res.statusCode, 201)
 
-            let encounterRef = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+            const encounterRef = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
             testPatient.procedure.encounter.reference = encounterRef
             testPatient.encounter.id = encounterRef.replace('Encounter/', '')
 
@@ -486,7 +487,7 @@ module.exports = () => {
               t.error(err)
               t.equal(res.statusCode, 201)
 
-              let id = res.headers.location.replace('/fhir/ProcedureRequest/', '').replace('/_history/1', '')
+              const id = res.headers.location.replace('/fhir/ProcedureRequest/', '').replace(/\/_history\/.*/, '')
               testPatient.procedure.id = id
               testPatient.preop.encounter.reference = encounterRef
 
@@ -499,7 +500,7 @@ module.exports = () => {
                 t.error(err)
                 t.equal(res.statusCode, 201)
 
-                let id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace('/_history/1', '')
+                const id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace(/\/_history\/.*/, '')
                 testPatient.preop.id = id
                 callback()
               })
@@ -536,7 +537,7 @@ module.exports = () => {
 
         t.equal(res.statusCode, 201, `should save test resource of type ${resourceType}`)
 
-        let ref = res.headers.location.replace('/fhir/', '').replace('/_history/1', '')
+        const ref = res.headers.location.replace('/fhir/', '').replace(/\/_history\/.*/, '')
         callback(null, ref)
       })
     }
