@@ -7,7 +7,7 @@ const _ = require('lodash')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let basicPatientTest = (t, test) => {
+const basicPatientTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -236,7 +236,7 @@ tap.test('patient should be saved correctly', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -251,7 +251,7 @@ tap.test('patient should be saved correctly', (t) => {
         t.ok(res.headers['location'], 'should have a location header set')
         t.match(res.headers['location'], /\/fhir\/Patient\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
-        let c = db.collection('Patient')
+        const c = db.collection('Patient')
         c.findOne((err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in the mongo')
@@ -285,7 +285,7 @@ tap.test('patient endpoint should return an error', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
       request.post({
         url: 'http://localhost:3447/fhir/Patient',
@@ -315,7 +315,7 @@ tap.test('patient should support read', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -326,7 +326,7 @@ tap.test('patient should support read', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -381,7 +381,7 @@ tap.test('patient should support vread', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -424,7 +424,7 @@ tap.test('vread should respond with 404 if version not found', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       request.post({
@@ -435,7 +435,7 @@ tap.test('vread should respond with 404 if version not found', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}/_history/2222`,
@@ -465,7 +465,7 @@ tap.test('patient should support update', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       // save
@@ -477,9 +477,9 @@ tap.test('patient should support update', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let originalLocation = res.headers['location']
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
-        let update = {
+        const originalLocation = res.headers['location']
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
           resourceType: 'Patient',
           id: id,
           active: true,
@@ -548,7 +548,7 @@ tap.test('patient should support multiple updates', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       // save
@@ -560,9 +560,9 @@ tap.test('patient should support multiple updates', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let originalLocation = res.headers['location']
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
-        let update = {
+        const originalLocation = res.headers['location']
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
           resourceType: 'Patient',
           id: id,
           active: true,
@@ -584,7 +584,7 @@ tap.test('patient should support multiple updates', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
 
-          let updateLocation = res.headers['location']
+          const updateLocation = res.headers['location']
 
           // read
           request({
@@ -612,7 +612,7 @@ tap.test('patient should support multiple updates', (t) => {
               t.equal(body.resourceType, 'Patient', 'result should be a patient')
               t.equal(body.name[0].given[0], 'Charlton', 'body should contain the original patient')
 
-              let update2 = {
+              const update2 = {
                 resourceType: 'Patient',
                 id: id,
                 active: true,
@@ -698,7 +698,7 @@ tap.test('update should replace existing documents', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
       delete pat.id
 
       // save
@@ -710,8 +710,8 @@ tap.test('update should replace existing documents', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        let id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
-        let update = {
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const update = {
           resourceType: 'Patient',
           id: id,
           active: true,
@@ -762,6 +762,36 @@ tap.test('update should replace existing documents', (t) => {
           })
         })
       })
+    })
+  })
+})
+
+tap.test('read should respond with 404 not found if invalid value for id is used', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient/th%21s%21sb%24d',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      done()
+    })
+  })
+})
+
+tap.test('vread should respond with 404 not found if invalid value for vid is used', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient/1234/_history/th%21s%21sb%24d',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      done()
     })
   })
 })
