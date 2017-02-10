@@ -61,7 +61,7 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.notOk(common.util.validateID('$a$$'), '$a$$ -> false')
   t.notOk(common.util.validateID('a$$$'), 'a$$$ -> false')
   t.ok(common.util.validateID('a'.repeat(64)), 'len(64) -> true')
-  t.ok(common.util.validateID('a'.repeat(65)), 'len(65) -> false')
+  t.notOk(common.util.validateID('a'.repeat(65)), 'len(65) -> false')
 
   t.end()
 })
