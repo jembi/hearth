@@ -11,7 +11,7 @@
     "authWindowSeconds": 10
   },
   "logger": {
-    "level": "info"
+    "level": "debug"
   },
   "idGenerator": "uuidv1"
 }
