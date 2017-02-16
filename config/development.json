@@ -1,17 +1,8 @@
 {
-  "server": {
-    "hostname": "0.0.0.0",
-    "publicFhirBase": "http://localhost:3447/fhir",
-    "port": 3447
-  },
   "mongodb": {
     "url": "mongodb://localhost/hearth-dev"
   },
-  "authentication": {
-    "authWindowSeconds": 10
-  },
   "logger": {
     "level": "debug"
-  },
-  "idGenerator": "uuidv1"
+  }
 }
