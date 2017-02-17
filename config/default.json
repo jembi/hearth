@@ -1,7 +1,7 @@
 {
   "server": {
     "hostname": "0.0.0.0",
-    "publicFhirBase": "https://localhost:3447/fhir",
+    "publicFhirBase": "http://localhost:3447/fhir",
     "port": 3447
   },
   "mongodb": {

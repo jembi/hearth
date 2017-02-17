@@ -7,11 +7,7 @@
   "mongodb": {
     "url": "mongodb://localhost/hearth-test"
   },
-  "authentication": {
-    "authWindowSeconds": 10
-  },
   "logger": {
     "level": "error"
-  },
-  "idGenerator": "uuidv1"
+  }
 }
