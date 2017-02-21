@@ -1,3 +1,5 @@
+/* global db */
+
 // Create simple unique indexes for IDs of all resources
 db.Allergy_intolerance.createIndex({'id': 1}, {unique: true})
 db.Basic.createIndex({'id': 1}, {unique: true})
