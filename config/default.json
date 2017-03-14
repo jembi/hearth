@@ -13,5 +13,15 @@
   "logger": {
     "level": "info"
   },
-  "idGenerator": "uuidv1"
+  "idGenerator": "uuidv1",
+  "atnaAudit": {
+    "enabled": true,
+    "interface": "udp",
+    "host": "localhost",
+    "port": 5050,
+    "certOptions": {
+      "key": "/path/to/file",
+      "cert": "/path/to/file"
+    }
+  }
 }
