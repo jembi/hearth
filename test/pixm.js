@@ -98,7 +98,7 @@ const requestAndAssertParameters = (tp, t, done) => {
   const sourceIdentifier = tp.sourceIdentifier
   const targetSystem = tp.targetSystem
   const escapedQueryString = querystring.stringify({ sourceIdentifier, targetSystem })
-  console.log(escapedQueryString)
+
   request({
     url: `http://localhost:3447/fhir/Patient/$ihe-pix?${escapedQueryString}`,
     headers: headers,
@@ -109,7 +109,6 @@ const requestAndAssertParameters = (tp, t, done) => {
     t.error(err)
     t.equal(res.statusCode, tp.statusCode, 'response status code should be 200')
     t.ok(body)
-    console.log(body)
     t.ok(body.parameter)
     t.equal(body.resourceType, 'Parameters', 'Should return a parameters resource')
 
