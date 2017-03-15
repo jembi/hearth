@@ -246,6 +246,8 @@ const requestAndAssertOperationOutcome = (tp, t, done) => {
     t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
     t.equal(body.issue[0].severity, tp.severity)
     t.equal(body.issue[0].code, tp.code)
+    console.log(tp.details)
+    console.log(body.issue[0].details.text)
     t.equal(body.issue[0].details.text, tp.details)
     done()
   })
@@ -260,7 +262,7 @@ tap.test('PIXm query, should return 400 bad request if missing required query pa
       targetSystem: 'targetSystem=test',
       severity: 'error',
       code: 'invalid',
-      details: 'This endpoint has the following required query parameter: [sourceIdentifier]'
+      details: 'This endpoint has the following required query parameters: [\'sourceIdentifier\']'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)

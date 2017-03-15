@@ -65,3 +65,27 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
 
   t.end()
 })
+
+tap.test('.util.validateSearchParams should validate searchParams', (t) => {
+  const common = Common(env.mongo())
+  
+  let queryParams = { test1: '1', test2: 2 }
+  let supported = ['test1', 'test2', 'test3']
+  let required = []
+  t.equal(
+    common.util.validateSearchParams(queryParams, supported),
+    null,
+    'Should return null if query params are supported'
+  )
+
+  { test1: '1' }
+  supported = ['test1', 'test2', 'test3']
+  required = ['test2', 'test3']
+  t.equal(
+    common.util.validateSearchParams(queryParams, supported, required),
+    `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`,
+    'Should return error message if required params are missing'
+  )
+
+  t.end()
+})
