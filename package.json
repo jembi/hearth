@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "codecov": "^1.0.1",
+    "crypto": "^0.0.3",
     "request": "^2.79.0",
     "snazzy": "^6.0.0",
     "standard": "^8.6.0",
