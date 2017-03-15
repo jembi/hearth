@@ -166,7 +166,7 @@ tap.test('PIXm Query, should return 200 and the identifiers from the fhir server
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       expectedParameters: hashAndSortParameters(parameters.filter((v, i) => i !== 0 && i !== 6)),
-      sourceIdentifier: 'http://localhost:3447|123456789',
+      sourceIdentifier: 'http://localhost:3447/fhir|123456789',
       targetSystem: '',
       statusCode: 200
     }
@@ -180,8 +180,8 @@ tap.test('PIXm Query, should return 200 and an empty response when the target sy
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       expectedParameters: [],
-      sourceIdentifier: 'http://localhost:3447|123456789',
-      targetSystem: 'http://localhost:3447',
+      sourceIdentifier: 'http://localhost:3447/fhir|123456789',
+      targetSystem: 'http://localhost:3447/fhir',
       statusCode: 200
     }
 
@@ -194,7 +194,7 @@ tap.test('PIXm Query, should return 200 and empty parameters when recognises the
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       expectedParameters: [],
-      sourceIdentifier: 'http://localhost:3447|987654321',
+      sourceIdentifier: 'http://localhost:3447/fhir|987654321',
       targetSystem: '',
       statusCode: 200
     }
@@ -208,7 +208,7 @@ tap.test('PIXm Query, should return 200 and the relevant parameters resource whe
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       expectedParameters: hashAndSortParameters(parameters.filter((v, i) => i === 1 || i === 4)),
-      sourceIdentifier: 'http://localhost:3447|123456789',
+      sourceIdentifier: 'http://localhost:3447/fhir|123456789',
       targetSystem: ['http://xyz-server', 'pshr:passport:za'],
       statusCode: 200
     }
