@@ -16,8 +16,9 @@
     "host": "localhost",
     "port": 5050,
     "certOptions": {
-      "key": "/path/to/file",
-      "cert": "/path/to/file"
+      "key": null,
+      "cert": null,
+      "ca": null
     }
   }
 }
