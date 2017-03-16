@@ -21,20 +21,30 @@ const basicPIXmTest = (t, test) => {
       charlton.patient.identifier[0].value = '888888'
       delete charlton.patient.link
 
-      env.createPatient(t, charlton, () => {
-        const emmarentia = env.testPatients().emmarentia
-        emmarentia.patient.identifier[0].value = '222222'
-        emmarentia.patient.identifier[1].value = '888888'
-        emmarentia.patient.identifier[2].value = '999999'
-        emmarentia.patient.id = '123456789'
+      const emmarentia = env.testPatients().emmarentia
+      emmarentia.patient.identifier[0].value = '222222'
+      emmarentia.patient.identifier[1].value = '888888'
+      emmarentia.patient.identifier[2].value = '999999'
+      emmarentia.patient.id = '123456789'
 
-        env.updatePatient(t, emmarentia, '123456789', () => {
-          const nikita = env.testPatients().nikita
-          delete nikita.patient.identifier
-          delete nikita.patient.link
-          nikita.patient.id = '987654321'
+      const nikita = env.testPatients().nikita
+      delete nikita.patient.identifier
+      delete nikita.patient.link
+      nikita.patient.id = '987654321'
 
-          env.updatePatient(t, nikita, '987654321', () => {
+      const c = db.collection('Patient')
+      c.insertOne(charlton.patient, (err, doc) => {
+        t.error(err)
+        t.ok(doc)
+
+        c.insertOne(emmarentia.patient, (err, doc) => {
+          t.error(err)
+          t.ok(doc)
+
+          c.insertOne(nikita.patient, (err, doc) => {
+            t.error(err)
+            t.ok(doc)
+
             test(db, () => {
               env.clearDB((err) => {
                 t.error(err)

@@ -421,19 +421,6 @@ module.exports = () => {
       })
     },
 
-    updatePatient: (t, testPatient, id, callback) => {
-      request.put({
-        url: 'http://localhost:3447/fhir/Patient/' + id,
-        body: testPatient.patient,
-        headers: getTestAuthHeaders(sysadminUser.email),
-        json: true
-      }, (err, res, body) => {
-        t.error(err)
-        t.equal(res.statusCode, 200)
-        callback()
-      })
-    },
-
     createPatient: (t, testPatient, callback) => {
       request.post({
         url: 'http://localhost:3447/fhir/Patient',
