@@ -246,8 +246,6 @@ const requestAndAssertOperationOutcome = (tp, t, done) => {
     t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
     t.equal(body.issue[0].severity, tp.severity)
     t.equal(body.issue[0].code, tp.code)
-    console.log(tp.details)
-    console.log(body.issue[0].details.text)
     t.equal(body.issue[0].details.text, tp.details)
     done()
   })
