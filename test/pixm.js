@@ -227,6 +227,34 @@ tap.test('PIXm Query, should return 200 and the relevant parameters resource whe
   })
 })
 
+tap.test('PIXm Query, should return 200 and the relevant parameters resource when sourceIdentifier is a link', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      expectedParameters: hashAndSortParameters(parameters.filter((v, i) => i !== 1 && i !== 6)),
+      sourceIdentifier: 'http://xyz-server/xxx|444444',
+      targetSystem: [],
+      statusCode: 200
+    }
+
+    requestAndAssertParameters(testParams, t, done)
+  })
+})
+
+tap.test('PIXm Query, should return 200 and the relevant parameters resource when sourceIdentifier is a link with trailing forwardslash', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      expectedParameters: hashAndSortParameters(parameters.filter((v, i) => i !== 1 && i !== 6)),
+      sourceIdentifier: 'http://xyz-server/xxx/|444444',
+      targetSystem: [],
+      statusCode: 200
+    }
+
+    requestAndAssertParameters(testParams, t, done)
+  })
+})
+
 tap.test('PIXm Query, should return 404 and empty parameters when recognises the domain but can\'t find the id', (t) => {
   // Given
   basicPIXmTest(t, (db, done) => {
