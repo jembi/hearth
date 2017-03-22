@@ -13,6 +13,20 @@ tap.test('.util .collapseWhenSingleClause should collapse nested single clauses'
   t.end()
 })
 
+tap.test('.util .collapseWhenSingleClause should collapse multiple single clauses', (t) => {
+  const query = {
+    $and: [
+      { field1: 'hello1' }
+    ],
+    $or: [
+      { field2: 'hello2' }
+    ]
+  }
+
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { field1: 'hello1', field2: 'hello2' })
+  t.end()
+})
+
 tap.test('.util .collapseWhenSingleClause should collapse nested single clauses', (t) => {
   let query = {
     $and: [
