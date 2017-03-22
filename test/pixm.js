@@ -241,6 +241,20 @@ tap.test('PIXm Query, should return 404 and empty parameters when recognises the
   })
 })
 
+tap.test('PIXm Query, should return 404 and empty parameters when recognises the domain but can\'t find the id', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      expectedParameters: [],
+      sourceIdentifier: 'http://localhost:3447/fhir|non-existent-id',
+      targetSystem: '',
+      statusCode: 404
+    }
+
+    requestAndAssertParameters(testParams, t, done)
+  })
+})
+
 const requestAndAssertOperationOutcome = (tp, t, done) => {
   // When
   request({
@@ -309,24 +323,21 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
   })
 })
 
-// TODO - This test needs to pass to conform to PIXm spec, no easy way to do it
-// For now it is returning 404 - not found, and an empty parameters resource
+tap.test('PIXm query, should return 400 bad request if assigning authority not found', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      statusCode: 400,
+      sourceIdentifier: 'sourceIdentifier=12345|12345',
+      targetSystem: '',
+      severity: 'error',
+      code: 'invalid',
+      details: 'sourceIdentifier Assigning Authority not found'
+    }
 
-// tap.test('PIXm query, should return 400 bad request if assigning authority not found', (t) => {
-//   // Given
-//   basicPIXmTest(t, (db, done) => {
-//     const testParams = {
-//       statusCode: 400,
-//       sourceIdentifier: 'sourceIdentifier=12345|12345',
-//       targetSystem: '',
-//       severity: 'error',
-//       code: 'invalid',
-//       details: 'sourceIdentifier Assigning Authority not found'
-//     }
-//
-//     requestAndAssertOperationOutcome(testParams, t, done)
-//   })
-// })
+    requestAndAssertOperationOutcome(testParams, t, done)
+  })
+})
 
 tap.test('PIXm query, should return 403 forbidden if target system not found', (t) => {
   // Given
