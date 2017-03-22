@@ -35,7 +35,7 @@ tap.test('.util .collapseWhenSingleClause should collapse nested single clauses'
       { $or: [ { field2: 'hello2' } ] }
     ]
   }
-  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { field1: 'hello1' }, { field2: 'hello2' } ] } )
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { field1: 'hello1' }, { field2: 'hello2' } ] })
   t.end()
 })
 
@@ -46,6 +46,6 @@ tap.test('.util .collapseWhenSingleClause should collapse nested single clauses'
       { $or: [ { field2: 'hello2' } ] }
     ]
   }
-  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { $and: [ { field1: 'hello1' }, { field3: 'hello3' } ] }, { field2: 'hello2' } ] } )
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { $and: [ { field1: 'hello1' }, { field3: 'hello3' } ] }, { field2: 'hello2' } ] })
   t.end()
 })
