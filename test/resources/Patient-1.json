@@ -18,6 +18,14 @@
       "assigner": {
         "display": "Passport South Africa"
       }
+    },
+    {
+      "use": "official",
+      "system": "pshr:passport:gbr",
+      "value": "1111111111111",
+      "assigner": {
+        "display": "Passport South Africa"
+      }
     }
   ],
   "name": [
@@ -137,5 +145,12 @@
       "url": "pshr:gapcover",
       "valueBoolean": true
     }
-  ]
+  ],
+  "link": [{
+    "other": "http://xyz-server/xxx/Patient/444444",
+    "type": "refer"
+  }, {
+    "other": "http://abc-server/Patient/333333",
+    "type": "refer"
+  }]
 }
