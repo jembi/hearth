@@ -2,12 +2,13 @@ language: node_js
 sudo: false
 node_js:
   - "6"
+services:
+  - mongodb
 addons:
   apt:
     sources:
-      - mongodb-3.2-precise
+      - ubuntu-toolchain-r-test
     packages:
-      - mongodb-org-server
       - gcc-4.8
       - g++-4.8
 env:
