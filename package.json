@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "codecov": "^1.0.1",
-    "rewire": "^2.5.2",
+    "glossy": "^0.1.7",
+    "libxmljs": "^0.18.4",
     "snazzy": "^6.0.0",
     "standard": "^8.6.0",
     "tap": "^10.1.0"
