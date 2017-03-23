@@ -8,6 +8,10 @@ addons:
       - mongodb-3.2-precise
     packages:
       - mongodb-org-server
+      - gcc-4.8
+      - g++-4.8
+env:
+  - CXX=g++-4.8
 after_success:
   - npm run test:upload-cov
 addon:
