@@ -103,3 +103,12 @@ tap.test('.util .collapseWhenSingleClause should collapse multiple nested clause
   t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { $and: [ { $not: { field1: 'hello1' } }, { field3: 'hello3' } ] }, { field2: 'hello2' }, { field4: 'hello4' } ] })
   t.end()
 })
+
+tap.test('.util .collapseWhenSingleClause should not interfere with exact array queries', (t) => {
+  let query = {
+    tag: [ 'red' ]
+  }
+
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { tag: [ 'red' ] })
+  t.end()
+})
