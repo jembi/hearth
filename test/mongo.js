@@ -22,8 +22,36 @@ tap.test('.util .collapseWhenSingleClause should collapse multiple single clause
       { field2: 'hello2' }
     ]
   }
-
   t.deepEqual(mongo.util.collapseWhenSingleClause(query), { field1: 'hello1', field2: 'hello2' })
+  t.end()
+})
+
+tap.test('.util .collapseWhenSingleClause should collapse multiple multiple clauses', (t) => {
+  const query = {
+    $and: [
+      { field1: 'hello1' }
+    ],
+    $or: [
+      { field2: 'hello2' },
+      { field3: 'hello3' }
+    ]
+  }
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { field1: 'hello1', $or: [ { field2: 'hello2' }, { field3: 'hello3' } ] })
+  t.end()
+})
+
+tap.test('.util .collapseWhenSingleClause should collapse multiple multiple clauses', (t) => {
+  const query = {
+    $and: [
+      { field1: 'hello1' },
+      { field2: 'hello2' }
+    ],
+    $or: [
+      { field3: 'hello3' },
+      { field4: 'hello4' }
+    ]
+  }
+  t.deepEqual(mongo.util.collapseWhenSingleClause(query), { $and: [ { field1: 'hello1' }, { field2: 'hello2' } ], $or: [ { field3: 'hello3' }, { field4: 'hello4' } ] })
   t.end()
 })
 
