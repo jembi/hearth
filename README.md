@@ -27,6 +27,25 @@ To run the tests:
 npm test
 ```
 
-# Pro tips:
+## Supported Resources
+* Allergy Intolerance
+* Basic
+* Binary
+* Document Manifest
+* Document Reference
+* Encounter
+* Location
+* Patient
+* Practitioner
+* Procedure Request
+* Procedure
+* Questionnaire Response
+* Questionnaire
+
+## Supported Services
+* Patient Identity Cross Reference ([PIXm](http://ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_Suppl_PIXm.pdf))
+* Terminology Service
+
+## Pro tips:
 * Change the `test:code` script in the package.json to only run the tests you are interested in (just don't commit this!).
 * Run `npm run cov` to show coverage details in your browser.
