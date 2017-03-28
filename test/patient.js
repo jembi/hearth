@@ -16,11 +16,15 @@ const basicPatientTest = (t, test) => {
 
       env.createPatient(t, env.testPatients().charlton, () => {
         env.createPatient(t, env.testPatients().emmarentia, () => { // use emmarentia for filtering
-          test(db, () => {
-            env.clearDB((err) => {
-              t.error(err)
-              server.stop(() => {
-                t.end()
+          env.createPatient(t, env.testPatients().nikita, () => {
+            env.createPatient(t, env.testPatients().mwawi, () => { // use emmarentia for filtering
+              test(db, () => {
+                env.clearDB((err) => {
+                  t.error(err)
+                  server.stop(() => {
+                    t.end()
+                  })
+                })
               })
             })
           })
@@ -225,6 +229,172 @@ tap.test('should search on identifier and name', (t) => {
         t.equal(body.total, 0, 'body should contain zero results')
         done()
       })
+    })
+  })
+})
+
+// birthDate query paramaters
+tap.test('should search on patient birthdate and find two matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=eq1970-07-21',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient') // Charlton
+      t.equal(body.entry[0].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // Charlton
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient') // emmarentia
+      t.equal(body.entry[1].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // emmarentia
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate (year) and find three matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=eq1970',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 3, 'body should contain three results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient') // Charlton
+      t.equal(body.entry[0].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // Charlton
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient') // emmarentia
+      t.equal(body.entry[1].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // emmarentia
+      t.equal(body.entry[2].resource.identifier[0].value, '1007211153333', 'body should contain the matching patient') // Nikita Becky
+      t.equal(body.entry[2].resource.birthDate, '1970-01-16', 'should contain birthDate of "1970-01-16"') // Nikita Becky
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate not equal to a specifc date and find two matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=ne1970-07-21',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211153333', 'body should contain the matching patient') // Nikita Becky
+      t.equal(body.entry[0].resource.birthDate, '1970-01-16', 'should contain birthDate of "1970-01-16"') // Nikita Becky
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211154444', 'body should contain the matching patient') // Mwawi Scot
+      t.equal(body.entry[1].resource.birthDate, '1980-09-12', 'should contain birthDate of "1980-09-12"') // Mwawi Scot
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate within a specifc year but not equal to a specifc date and find two matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=eq1970&birthDate=ne1970-01-16',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient') // Charlton
+      t.equal(body.entry[0].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // Charlton
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient') // emmarentia
+      t.equal(body.entry[1].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // emmarentia
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate between two dates and find three matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate  greater/equal than '1970-07-21' and less/equal than '1970-10-31' and  should match 'Charlton/emmarentia/Nikita Becky'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=ge1970-01-01&birthDate=le1970-10-31',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 3, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient') // Charlton
+      t.equal(body.entry[0].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // Charlton
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient') // emmarentia
+      t.equal(body.entry[1].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // emmarentia
+      t.equal(body.entry[2].resource.identifier[0].value, '1007211153333', 'body should contain the matching patient') // Nikita Becky
+      t.equal(body.entry[2].resource.birthDate, '1970-01-16', 'should contain birthDate of "1970-01-16"') // Nikita Becky
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate less/equal than a specific date and find three matches', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=le1970-10-31',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 3, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient') // Charlton
+      t.equal(body.entry[0].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // Charlton
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient') // emmarentia
+      t.equal(body.entry[1].resource.birthDate, '1970-07-21', 'should contain birthDate of "1970-07-21"') // emmarentia
+      t.equal(body.entry[2].resource.identifier[0].value, '1007211153333', 'body should contain the matching patient') // Nikita Becky
+      t.equal(body.entry[2].resource.birthDate, '1970-01-16', 'should contain birthDate of "1970-01-16"') // Nikita Becky
+      done()
+    })
+  })
+})
+
+tap.test('should search on patient birthdate greater/equal than a specific date and find one match', (t) => {
+  basicPatientTest(t, (db, done) => {
+    // search for birthdate '1970-07-21' should match 'Charlton/emmarentia'
+    request({
+      url: 'http://localhost:3447/fhir/Patient?birthDate=ge1970-10-31',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain two results')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154444', 'body should contain the matching patient') // Mwawi Scot
+      t.equal(body.entry[0].resource.birthDate, '1980-09-12', 'should contain birthDate of "1980-09-12"') // Mwawi Scot
+      done()
     })
   })
 })
