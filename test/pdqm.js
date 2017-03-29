@@ -18,6 +18,7 @@ charlton.identifier[1].value = '222222'
 delete charlton.identifier[2].system
 charlton.identifier[2].value = '333333'
 delete charlton.link
+charlton.gender = 'male'
 
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = 2222222222
@@ -72,7 +73,9 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
 
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
-    t.deepEqual(body.entry, tp.expectedResponse.entry, 'Response contains expected entries')
+    if (!tp.expectedResponse.ignoreEntry) {
+      t.deepEqual(body.entry, tp.expectedResponse.entry, 'Response contains expected entries')
+    }
     done()
   })
 }
@@ -160,9 +163,73 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('gender query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle of patients when patient gender matches gender query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.gender = 'male'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient gender matches gender query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.gender = 'female'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 2,
+          ignoreEntry: true
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an empty bundle no patient gender matches gender query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.gender = 'not-a-gender'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 

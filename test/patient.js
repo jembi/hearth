@@ -233,48 +233,6 @@ tap.test('should search on identifier and name', (t) => {
   })
 })
 
-// search on patient gender
-tap.test('should search on gender (male)', (t) => {
-  basicPatientTest(t, (db, done) => {
-    request({
-      url: 'http://localhost:3447/fhir/Patient?gender=male',
-      headers: headers,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.equal(res.statusCode, 200, 'response status code should be 200')
-      t.ok(body)
-      console.log(body)
-      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-      t.equal(body.total, 1, 'body should contain one result')
-      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-      done()
-    })
-  })
-})
-
-tap.test('should search on gender (female)', (t) => {
-  basicPatientTest(t, (db, done) => {
-    request({
-      url: 'http://localhost:3447/fhir/Patient?gender=female',
-      headers: headers,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.equal(res.statusCode, 200, 'response status code should be 200')
-      t.ok(body)
-      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-      t.equal(body.total, 3, 'body should contain tree results')
-      t.equal(body.entry[0].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient')
-      t.equal(body.entry[1].resource.identifier[0].value, '1007211153333', 'body should contain the matching patient')
-      t.equal(body.entry[2].resource.identifier[0].value, '1007211154444', 'body should contain the matching patient')
-      done()
-    })
-  })
-})
-
 tap.test('patient should be saved correctly', (t) => {
   env.initDB((err, db) => {
     t.error(err)
