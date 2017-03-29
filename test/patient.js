@@ -16,15 +16,11 @@ const basicPatientTest = (t, test) => {
 
       env.createPatient(t, env.testPatients().charlton, () => {
         env.createPatient(t, env.testPatients().emmarentia, () => { // use emmarentia for filtering
-          env.createPatient(t, env.testPatients().nikita, () => {
-            env.createPatient(t, env.testPatients().mwawi, () => {
-              test(db, () => {
-                env.clearDB((err) => {
-                  t.error(err)
-                  server.stop(() => {
-                    t.end()
-                  })
-                })
+          test(db, () => {
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
               })
             })
           })
