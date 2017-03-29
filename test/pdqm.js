@@ -20,6 +20,8 @@ charlton.identifier[2].value = '333333'
 delete charlton.link
 
 const emmarentia = testPatients.emmarentia.patient
+emmarentia.name[0].given = ['Emmarentia', 'Gerherda']
+emmarentia.name[0].family = ['Cook', 'Spray']
 emmarentia.id = 2222222222
 
 const nikita = testPatients.nikita.patient
@@ -72,7 +74,9 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
 
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
-    t.deepEqual(body.entry, tp.expectedResponse.entry, 'Response contains expected entries')
+    if (!tp.expectedResponse.ignoreEntry) {
+      t.deepEqual(body.entry, tp.expectedResponse.entry, 'Response contains expected entries')
+    }
     done()
   })
 }
@@ -132,16 +136,196 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('family query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle of patients when multiple patient family names match family query parameter', (t) => {
+      // Given
+      charlton.name[0].family = ['Cook']
+      basicPDQmTest(t, (db, done) => {
+        delete charlton.name[0].family
+        const testQueryParams = {}
+        testQueryParams.family = 'Cook'
+
+        const expectedResponse = {
+          total: 2,
+          ignoreEntry: true
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient family name matches family query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.family = 'Cook'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when multiple patient family names match multiple family query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.family = [ 'Cook', 'Spray' ]
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an empty bundle when no patient name matches family query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.family = ['Surnamey']
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 
   t.test('given query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle of patients when multiple patient given names match given query parameter', (t) => {
+      // Given
+      charlton.name[0].given = ['Gerherda']
+      basicPDQmTest(t, (db, done) => {
+        delete charlton.name[0].given
+        const testQueryParams = {}
+        testQueryParams.given = 'Gerherda'
+
+        const expectedResponse = {
+          total: 2,
+          ignoreEntry: true
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient given name matches given query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.given = 'Emmarentia'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when multiple patient given names match multiple given query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.given = ['Emmarentia', 'Gerherda']
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an empty bundle when no patient name matches given query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.given = ['Emmarentia', 'Kurtus']
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 
