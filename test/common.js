@@ -70,8 +70,12 @@ tap.test('.util.validateSearchParams should validate searchParams', (t) => {
   const common = Common(env.mongo())
 
   let queryParams = { test1: '1', test2: 2 }
-  let supported = ['test1', 'test2', 'test3']
-  let required = []
+  let supported = {
+    test1: { allowArray: true, required: false },
+    test2: { allowArray: true, required: false },
+    test3: { allowArray: true, required: false }
+  }
+
   t.equal(
     common.util.validateSearchParams(queryParams, supported),
     null,
@@ -79,11 +83,15 @@ tap.test('.util.validateSearchParams should validate searchParams', (t) => {
   )
 
   queryParams = { test1: '1' }
-  supported = ['test1', 'test2', 'test3']
-  required = ['test2', 'test3']
+  supported = {
+    test1: { allowArray: true, required: true },
+    test2: { allowArray: true, required: true },
+    test3: { allowArray: true, required: false }
+  }
+
   t.equal(
-    common.util.validateSearchParams(queryParams, supported, required),
-    `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`,
+    common.util.validateSearchParams(queryParams, supported),
+    `This endpoint has the following required query parameters: ["test1","test2"]`,
     'Should return error message if required params are missing'
   )
 
