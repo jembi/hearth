@@ -86,6 +86,67 @@ tap.test('.util.validateSearchParams should validate searchParams', (t) => {
     `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`,
     'Should return error message if required params are missing'
   )
+tap.test('.util.tokenToSystemValueElemMatch should match token to system and value according to FHIR spec', (t) => {
+  let token = 'test:assigning:auth|123456'
+  let split = token.split('|')
+  let expected = { identifier: { $elemMatch: { system: split[0], value: split[1] } } }
+  let actual = common.util.tokenToSystemValueElemMatch('identifier', token)
+  t.deepEqual(actual, expected, 'Single system|value token')
+
+  token = [ 'test:assigning:auth|123456', 'another:assigning:auth|111111' ]
+  split = []
+  token.forEach((t) => {
+    split = split.concat(t.split('|'))
+  })
+  expected = { $and: [
+    { identifier: { $elemMatch: { system: split[0], value: split[1] } } },
+    { identifier: { $elemMatch: { system: split[2], value: split[3] } } }
+  ] }
+  actual = common.util.tokenToSystemValueElemMatch('identifier', token)
+  t.deepEqual(actual, expected, 'Multiple system|value tokens')
+
+  token = '123456'
+  expected = { identifier: { $elemMatch: { value: token } } }
+  actual = common.util.tokenToSystemValueElemMatch('identifier', token)
+  t.deepEqual(actual, expected, 'Single value without system token')
+
+  token = [ '123456', '111111' ]
+  expected = { $and: [
+    { identifier: { $elemMatch: { value: token[0] } } },
+    { identifier: { $elemMatch: { value: token[1] } } }
+  ] }
+  actual = common.util.tokenToSystemValueElemMatch('identifier', token)
+  t.deepEqual(actual, expected, 'Multiple value without system tokens')
+
+  token = '|123456'
+  split = token.split('|')
+  expected = { identifier: { $elemMatch: { system: { $exists: false }, value: split[1] } } }
+  actual = common.util.tokenToSystemValueElemMatch('identifier', token)
+  t.deepEqual(actual, expected, 'Single value with non existent system token')
+
+  t.end()
+})
+
+tap.test('.util.removeIdentifiersFromTokens should remove identifier part of token query parameter', (t) => {
+  let token = 'test:assigning:auth|123456'
+  let expected = 'test:assigning:auth|'
+  let actual = common.util.removeIdentifiersFromTokens(token)
+  t.deepEqual(actual, expected)
+
+  token = 'domain1|,domain2|'
+  expected = 'domain1|,domain2|'
+  actual = common.util.removeIdentifiersFromTokens(token)
+  t.deepEqual(actual, expected)
+
+  token = [ 'domain1|,domain2|', 'test1|1111' ]
+  expected = [ 'domain1|,domain2|', 'test1|' ]
+  actual = common.util.removeIdentifiersFromTokens(token)
+  t.deepEqual(actual, expected)
+
+  token = [ '11111', 'test1|1111', 'test2|2222' ]
+  expected = [ 'test1|', 'test2|' ]
+  actual = common.util.removeIdentifiersFromTokens(token)
+  t.deepEqual(actual, expected)
 
   t.end()
 })
