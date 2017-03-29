@@ -129,7 +129,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       // Given
       basicPDQmTest(t, (db, done) => {
         const testQueryParams = {}
-        testQueryParams._id = '1111111111'
+        testQueryParams['_id:exact'] = '1111111111'
 
         delete charlton._id
         const expectedResponse = {
