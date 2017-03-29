@@ -4,38 +4,22 @@ const tap = require('tap')
 
 const Common = require('../lib/fhir/common')
 const env = require('./test-env/init')()
+const common = Common(env.mongo())
 
 tap.test('should resolve references', (t) => {
   // given
-  const common = Common(env.mongo())
   let testResource = {
     resourceType: 'Test',
     patient: {
       reference: 'Test/123'
     },
     list: [
-      {
-        author: {
-          reference: 'Test/123'
-        }
-      },
-      {
-        author: {
-          reference: 'Test/123'
-        }
-      },
-      {
-        author: 'blank'
-      }
+      { author: { reference: 'Test/123' } },
+      { author: { reference: 'Test/123' } },
+      { author: 'blank' }
     ],
-    nested: {
-      patient: {
-        reference: 'Test/123'
-      }
-    },
-    nochange: {
-      reference: 'Test/456'
-    }
+    nested: { patient: { reference: 'Test/123' } },
+    nochange: { reference: 'Test/456' }
   }
   // when
   common.util.resolveReferences(testResource, 'Test/123', 'Test/321')
@@ -51,8 +35,6 @@ tap.test('should resolve references', (t) => {
 })
 
 tap.test('.util.validateID should validate FHIR id types', (t) => {
-  const common = Common(env.mongo())
-
   t.ok(common.util.validateID('123'), '123 -> true')
   t.ok(common.util.validateID('1.2.3'), '1.2.3 -> true')
   t.ok(common.util.validateID('bcba5f3d-7bc5-4271-b8f8-e817b5052e23'), 'UUID -> true')
@@ -67,25 +49,24 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
 })
 
 tap.test('.util.validateSearchParams should validate searchParams', (t) => {
-  const common = Common(env.mongo())
-
   let queryParams = { test1: '1', test2: 2 }
   let supported = ['test1', 'test2', 'test3']
   let required = []
-  t.equal(
-    common.util.validateSearchParams(queryParams, supported),
-    null,
-    'Should return null if query params are supported'
-  )
+  let expected = null
+  let actual = common.util.validateSearchParams(queryParams, supported)
+
+  t.equal(actual, expected, 'Should return null if query params are supported')
 
   queryParams = { test1: '1' }
   supported = ['test1', 'test2', 'test3']
   required = ['test2', 'test3']
-  t.equal(
-    common.util.validateSearchParams(queryParams, supported, required),
-    `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`,
-    'Should return error message if required params are missing'
-  )
+  expected = `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`
+  actual = common.util.validateSearchParams(queryParams, supported, required)
+
+  t.equal(actual, expected, 'Should return error message if required params are missing')
+  t.end()
+})
+
 tap.test('.util.tokenToSystemValueElemMatch should match token to system and value according to FHIR spec', (t) => {
   let token = 'test:assigning:auth|123456'
   let split = token.split('|')
