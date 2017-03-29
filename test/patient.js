@@ -30,59 +30,6 @@ const basicPatientTest = (t, test) => {
   })
 }
 
-// PDQm query on Patient _id
-tap.test('patient should support searches on resource _id', (t) => {
-  env.initDB((err, db) => {
-    t.error(err)
-
-    server.start((err) => {
-      t.error(err)
-
-      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
-      delete pat.id
-
-      request.post({
-        url: 'http://localhost:3447/fhir/Patient',
-        headers: headers,
-        body: pat,
-        json: true
-      }, (err, res, body) => {
-        t.error(err)
-
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
-
-        request({
-          url: `http://localhost:3447/fhir/Patient?_id=${id}`,
-          headers: headers,
-          json: true
-        }, (err, res, body) => {
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equal(body.resourceType, 'Bundle', 'result should be a Bundle')
-          t.equal(body.entry[0].resource.resourceType, 'Patient', 'entry[0] should be a Patient')
-          t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-
-          t.ok(body.entry[0].resource.meta, 'should have meta set')
-          t.ok(body.entry[0].resource.meta.versionId, 'should have versionId set')
-
-          t.notOk(body.entry[0].resource._transforms, 'should not expose _transforms')
-          t.notOk(body.entry[0].resource._request, 'should not expose _request')
-          t.notOk(body.entry[0].resource._id, 'should not expose mongo _id')
-
-          env.clearDB((err) => {
-            t.error(err)
-            server.stop(() => {
-              t.end()
-            })
-          })
-        })
-      })
-    })
-  })
-})
-
 tap.test('patient should support searches on identifier', (t) => {
   basicPatientTest(t, (db, done) => {
     request({
