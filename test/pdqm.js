@@ -150,6 +150,31 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       })
     })
 
+    t.test('should return 200 and bundle with a single patient when patient id matches _id query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams._id = '2222222222'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
     t.test('should return 200 and an empty bundle of patients when patient id does not match _id query parameter', (t) => {
       // Given
       basicPDQmTest(t, (db, done) => {
