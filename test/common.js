@@ -48,7 +48,7 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.end()
 })
 
-tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParams', (t) => {
+tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) => {
   const common = Common(env.mongo())
 
   let queryParams = { test1: '1', test2: 2 }
@@ -58,7 +58,7 @@ tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParam
     test3: { operators: { } }
   }
 
-  common.util.validateQueryParamsReturnQueryObject(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.error(badRequest)
     const expected = {
       'test1': {
@@ -84,10 +84,12 @@ tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParam
     test3: { allowArray: true, required: false, operators: { exact: true } }
   }
 
-  common.util.validateQueryParamsReturnQueryObject(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.ok(badRequest)
     t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
   })
+
+  t.end()
 })
 
 tap.test('.util.tokenToSystemValueElemMatch should match token to system and value according to FHIR spec', (t) => {
