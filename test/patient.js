@@ -33,7 +33,7 @@ const basicPatientTest = (t, test) => {
 tap.test('patient should support searches on identifier', (t) => {
   basicPatientTest(t, (db, done) => {
     request({
-      url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902',
+      url: 'http://localhost:3447/fhir/Patient?identifier:exact=1007211154902',
       headers: headers,
       json: true
     }, (err, res, body) => {

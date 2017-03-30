@@ -66,34 +66,42 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.end()
 })
 
-tap.test('.util.validateSearchParams should validate searchParams', (t) => {
+tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParams', (t) => {
   const common = Common(env.mongo())
 
   let queryParams = { test1: '1', test2: 2 }
   let supported = {
-    test1: { allowArray: true, required: false },
-    test2: { allowArray: true, required: false },
-    test3: { allowArray: true, required: false }
+    test1: { allowArray: true, required: false, operators: { exact: true } },
+    test2: { allowArray: true, required: false, operators: { exact: true } },
+    test3: { allowArray: true, required: false, operators: { exact: true } }
   }
 
-  t.equal(
-    common.util.validateSearchParams(queryParams, supported),
-    null,
-    'Should return null if query params are supported'
-  )
+  common.util.validateQueryParamsReturnQueryObject(queryParams, supported, (badRequest, queryObject) => {
+    t.error(badRequest)
+    const expected = {
+      'test1': {
+        'value': '1',
+        'exact': true
+      },
+      'test2': {
+        'value': 2,
+        'exact': true
+      }
+    }
+    t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
+  })
 
   queryParams = { test1: '1' }
   supported = {
-    test1: { allowArray: true, required: true },
-    test2: { allowArray: true, required: true },
-    test3: { allowArray: true, required: false }
+    test1: { allowArray: true, required: true, operators: { exact: true } },
+    test2: { allowArray: true, required: true, operators: { exact: true } },
+    test3: { allowArray: true, required: false, operators: { exact: true } }
   }
 
-  t.equal(
-    common.util.validateSearchParams(queryParams, supported),
-    `This endpoint has the following required query parameters: ["test1","test2"]`,
-    'Should return error message if required params are missing'
-  )
+  common.util.validateQueryParamsReturnQueryObject(queryParams, supported, (badRequest, queryObject) => {
+    t.ok(badRequest)
+    t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
+  })
 
   t.end()
 })
