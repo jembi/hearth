@@ -4,6 +4,7 @@ const server = require('../lib/server')
 const tap = require('tap')
 const request = require('request')
 const querystring = require('querystring')
+const crypto = require('crypto')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
@@ -18,6 +19,7 @@ charlton.identifier[1].value = '222222'
 delete charlton.identifier[2].system
 charlton.identifier[2].value = '333333'
 delete charlton.link
+charlton.birthDate = '1980-09-12'
 charlton.gender = 'male'
 
 const emmarentia = testPatients.emmarentia.patient
@@ -60,6 +62,12 @@ const basicPDQmTest = (t, test) => {
   })
 }
 
+const hashAndSortEntryArray = (entry) => {
+  return entry.map((entry) => {
+    return crypto.createHash('sha256').update(JSON.stringify(entry), 'utf-8').digest('hex')
+  }).sort()
+}
+
 const requestAndAssertResponseBundle = (tp, t, done) => {
   // When
   request({
@@ -73,9 +81,9 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
 
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
-    if (!tp.expectedResponse.ignoreEntry) {
-      t.deepEqual(body.entry, tp.expectedResponse.entry, 'Response contains expected entries')
-    }
+
+    const actual = hashAndSortEntryArray(body.entry)
+    t.deepEqual(actual, tp.expectedResponse.entry, 'Response contains expected entries')
     done()
   })
 }
@@ -115,6 +123,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -140,6 +149,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -165,6 +175,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -190,6 +201,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -215,6 +227,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -240,6 +253,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -342,9 +356,216 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('birthdate query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle of patients when patient birthDate matches date birthDate query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = 'eq1970-07-21'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate matches year birthDate query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = 'eq1970'
+
+        delete emmarentia._id
+        delete nikita._id
+        const expectedResponse = {
+          total: 2,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+              resource: nikita
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate does not match date birthDate query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = 'ne1970-07-21'
+
+        delete charlton._id
+        delete nikita._id
+        const expectedResponse = {
+          total: 2,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+              resource: charlton
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+              resource: nikita
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate matches multiple birthDate query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = [ 'eq1970', 'ne1970-01-16' ]
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate matches multiple date birthDate query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = [ 'ge1970-01', 'le1970-10-31' ]
+
+        delete emmarentia._id
+        delete nikita._id
+        const expectedResponse = {
+          total: 2,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+              resource: nikita
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate less-than/equal date birthDate query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = 'le1970-10-31'
+
+        delete emmarentia._id
+        delete nikita._id
+        const expectedResponse = {
+          total: 2,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+              resource: nikita
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient birthDate greater/equal date birthDate query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.birthDate = [ 'ge1970-10-31' ]
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+              resource: charlton
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 
@@ -370,6 +591,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
             resource: charlton
           } ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
@@ -387,11 +609,21 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
         const testQueryParams = {}
         testQueryParams.gender = 'female'
 
-        delete charlton._id
+        delete nikita._id
+        delete emmarentia._id
         const expectedResponse = {
           total: 2,
-          ignoreEntry: true
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+              resource: nikita
+            }
+          ]
         }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
         const testParams = {
           queryParams: testQueryParams,
