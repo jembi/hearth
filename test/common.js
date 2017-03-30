@@ -55,7 +55,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
   let supported = {
     test1: { allowArray: true, required: false, operators: { exact: true } },
     test2: { allowArray: false, required: false, operators: { exact: true } },
-    test3: { operators: { } }
+    test3: { }
   }
 
   common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
@@ -81,12 +81,40 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
   supported = {
     test1: { allowArray: true, required: true, operators: { exact: true } },
     test2: { allowArray: true, required: true, operators: { exact: true } },
-    test3: { allowArray: true, required: false, operators: { exact: true } }
+    test3: { required: false, operators: { exact: true } }
   }
 
   common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.ok(badRequest)
     t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
+  })
+
+  queryParams = { 'test1:exact': '1' }
+  supported = {
+    test1: { operators: { exact: true } }
+  }
+
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.error(badRequest)
+    const expected = {
+      test1: {
+        value: '1',
+        operators: {
+          exact: true
+        }
+      }
+    }
+    t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid operator is supplied')
+  })
+
+  queryParams = { 'test1:fakeoperator': '1' }
+  supported = {
+    test1: { operators: { exact: true } }
+  }
+
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.ok(badRequest)
+    t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakeoperator\' operator', 'Should return error message if operator is not supported')
   })
 
   t.end()
