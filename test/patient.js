@@ -163,65 +163,6 @@ tap.test('name searches should match the first part of the string', (t) => {
   })
 })
 
-tap.test('name searches should match the any part of the string', (t) => {
-  basicPatientTest(t, (db, done) => {
-    // search for 'arlto' should match 'Charlton' and 'tinya' should match 'matinyana'
-    request({
-      url: 'http://localhost:3447/fhir/Patient?given=arlto&family=tinya',
-      headers: headers,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.equal(res.statusCode, 200, 'response status code should be 200')
-      t.ok(body)
-      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-      t.equal(body.total, 1, 'body should contain one result')
-      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-      done()
-    })
-  })
-})
-
-tap.test('should search on both given and family name with multiple options', (t) => {
-  basicPatientTest(t, (db, done) => {
-    // search for 'Charlton Joseph' should match 'Charlton Joseph' and 'matinyana' should match 'matinyana'
-    request({
-      url: 'http://localhost:3447/fhir/Patient?given=Charlton&given=Joseph&family=matinyana',
-      headers: headers,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.equal(res.statusCode, 200, 'response status code should be 200')
-      t.ok(body)
-      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-      t.equal(body.total, 1, 'body should contain one result')
-      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient')
-      done()
-    })
-  })
-})
-
-tap.test('should search on both given and family name with multiple options but not find a result', (t) => {
-  basicPatientTest(t, (db, done) => {
-    // search for 'Charlton Joseph' should match 'Charlton Joseph' and 'matinyana notexist' should not return any results'
-    request({
-      url: 'http://localhost:3447/fhir/Patient?given=Charlton&given=Joseph&family=matinyana&family=notexist',
-      headers: headers,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.equal(res.statusCode, 200, 'response status code should be 200')
-      t.ok(body)
-      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-      t.equal(body.total, 0, 'body should contain one result')
-      done()
-    })
-  })
-})
-
 tap.test('should search on both given and family name', (t) => {
   basicPatientTest(t, (db, done) => {
     request({
