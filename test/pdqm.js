@@ -281,7 +281,7 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       // Given
       basicPDQmTest(t, (db, done) => {
         const testQueryParams = {}
-        testQueryParams.birthDate = [ 'ge1970-01-01', 'le1970-10-31' ]
+        testQueryParams.birthDate = [ 'ge1970-01', 'le1970-10-31' ]
 
         delete emmarentia._id
         delete nikita._id
