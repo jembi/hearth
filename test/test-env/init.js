@@ -300,6 +300,7 @@ module.exports = () => {
       testPatients.emmarentia.patient.name[0].given = ['Emmarentia']
       testPatients.emmarentia.patient.name[0].family = ['Cook']
       testPatients.emmarentia.patient.identifier[0].value = '1007211152222'
+      testPatients.emmarentia.patient.birthDate = '1970-07-21'
       testPatients.emmarentia.patient.gender = 'female'
       testPatients.emmarentia.patient.telecom[0].value = testPatients.emmarentia.email
       testPatients.emmarentia.encounter.period.start = moment().format('YYYY-MM-DD')
@@ -307,6 +308,7 @@ module.exports = () => {
       testPatients.nikita.patient.name[0].given = ['Nikita', 'Becky']
       testPatients.nikita.patient.name[0].family = ['Sekhotla']
       testPatients.nikita.patient.identifier[0].value = '1007211153333'
+      testPatients.nikita.patient.birthDate = '1970-01-16'
       testPatients.nikita.patient.gender = 'female'
       testPatients.nikita.patient.telecom[0].value = testPatients.nikita.email
       testPatients.nikita.encounter.period.start = moment().format('YYYY-MM-DD')
