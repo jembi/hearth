@@ -48,22 +48,75 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.end()
 })
 
-tap.test('.util.validateSearchParams should validate searchParams', (t) => {
-  let queryParams = { test1: '1', test2: 2 }
-  let supported = ['test1', 'test2', 'test3']
-  let required = []
-  let expected = null
-  let actual = common.util.validateSearchParams(queryParams, supported)
+tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) => {
+  const common = Common(env.mongo())
 
-  t.equal(actual, expected, 'Should return null if query params are supported')
+  let queryParams = { test1: '1', test2: 2 }
+  let supported = {
+    test1: { allowArray: true, required: false, operators: { exact: true } },
+    test2: { allowArray: false, required: false, operators: { exact: true } },
+    test3: { }
+  }
+
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.error(badRequest)
+    const expected = {
+      'test1': {
+        'value': '1',
+        'operators': {
+          'exact': true
+        }
+      },
+      'test2': {
+        'value': 2,
+        'operators': {
+          'exact': true
+        }
+      }
+    }
+    t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
+  })
 
   queryParams = { test1: '1' }
-  supported = ['test1', 'test2', 'test3']
-  required = ['test2', 'test3']
-  expected = `This endpoint has the following required query parameters: [${required.map((e) => `'${e}'`).join(', ')}]`
-  actual = common.util.validateSearchParams(queryParams, supported, required)
+  supported = {
+    test1: { allowArray: true, required: true, operators: { exact: true } },
+    test2: { allowArray: true, required: true, operators: { exact: true } },
+    test3: { required: false, operators: { exact: true } }
+  }
 
-  t.equal(actual, expected, 'Should return error message if required params are missing')
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.ok(badRequest)
+    t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
+  })
+
+  queryParams = { 'test1:exact': '1' }
+  supported = {
+    test1: { operators: { exact: true } }
+  }
+
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.error(badRequest)
+    const expected = {
+      test1: {
+        value: '1',
+        operators: {
+          exact: true
+        }
+      }
+    }
+    t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid operator is supplied')
+  })
+
+  queryParams = { 'test1:fakeoperator': '1' }
+  supported = {
+    test1: { operators: { exact: true } }
+  }
+
+  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+    t.ok(badRequest)
+    t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakeoperator\' operator', 'Should return error message if operator is not supported')
+  })
+
   t.end()
 })
 
