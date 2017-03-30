@@ -316,7 +316,6 @@ module.exports = () => {
       testPatients.mwawi.patient.name[0].given = ['Mwawi', 'Scot']
       testPatients.mwawi.patient.name[0].family = ['Ntshwanti']
       testPatients.mwawi.patient.identifier[0].value = '1007211154444'
-      testPatients.mwawi.patient.birthDate = '1980-09-12'
       testPatients.mwawi.patient.gender = 'female'
       testPatients.mwawi.patient.telecom[0].value = testPatients.mwawi.email
       testPatients.mwawi.encounter.period.start = moment().format('YYYY-MM-DD')
