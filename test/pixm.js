@@ -312,7 +312,7 @@ tap.test('PIXm query, should return 400 bad request if missing required query pa
       targetSystem: 'targetSystem=test',
       severity: 'error',
       code: 'invalid',
-      details: 'This endpoint has the following required query parameters: [\'sourceIdentifier\']'
+      details: 'This endpoint has the following required query parameters: ["sourceIdentifier"]'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
