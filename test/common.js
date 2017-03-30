@@ -72,8 +72,8 @@ tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParam
   let queryParams = { test1: '1', test2: 2 }
   let supported = {
     test1: { allowArray: true, required: false, operators: { exact: true } },
-    test2: { allowArray: true, required: false, operators: { exact: true } },
-    test3: { allowArray: true, required: false, operators: { exact: true } }
+    test2: { allowArray: false, required: false, operators: { exact: true } },
+    test3: { operators: { } }
   }
 
   common.util.validateQueryParamsReturnQueryObject(queryParams, supported, (badRequest, queryObject) => {
@@ -81,11 +81,15 @@ tap.test('.util.validateQueryParamsReturnQueryObject should validate searchParam
     const expected = {
       'test1': {
         'value': '1',
-        'exact': true
+        'operators': {
+          'exact': true
+        }
       },
       'test2': {
         'value': 2,
-        'exact': true
+        'operators': {
+          'exact': true
+        }
       }
     }
     t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
