@@ -80,24 +80,24 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
   })
 }
 
-// const requestAndAssertResponseOperationOutcome = (tp, t, done) => {
-//   // When
-//   request({
-//     url: `http://localhost:3447/fhir/Patient?${querystring.stringify(tp.queryParams)}`,
-//     headers: headers,
-//     json: true
-//   }, (err, res, body) => {
-//     // Then
-//     t.error(err)
-//     t.equal(res.statusCode, tp.statusCode, 'response status code should be 400')
-//
-//     t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
-//     t.equal(body.issue[0].severity, tp.expectedResponse.severity)
-//     t.equal(body.issue[0].code, tp.expectedResponse.code)
-//     t.equal(body.issue[0].details.text, tp.expectedResponse.details)
-//     done()
-//   })
-// }
+const requestAndAssertResponseOperationOutcome = (tp, t, done) => {
+  // When
+  request({
+    url: `http://localhost:3447/fhir/Patient?${querystring.stringify(tp.queryParams)}`,
+    headers: headers,
+    json: true
+  }, (err, res, body) => {
+    // Then
+    t.error(err)
+    t.equal(res.statusCode, tp.statusCode, 'response status code should be 400')
+
+    t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+    t.equal(body.issue[0].severity, tp.expectedResponse.severity)
+    t.equal(body.issue[0].code, tp.expectedResponse.code)
+    t.equal(body.issue[0].details.text, tp.expectedResponse.details)
+    done()
+  })
+}
 
 tap.test('PDQm Query', { autoend: true }, (t) => {
   t.test('indentifier query parameter', { autoend: true }, (t) => {
@@ -123,6 +123,199 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
         }
 
         requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient identifier matches multiple full identifier token query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = [ 'test:assigning:auth|111111', 'another:assigning:auth|222222' ]
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient identifier matches identifier token query parameter regardless of system property', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = '111111'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient identifier matches full identifier token query parameter where system property is not defined', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = '|333333'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient identifier matches multiple identifier token query parameters regardless of system property', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = [ '111111', '222222' ]
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an operation outcome when patient identifier matches multiple identifier domain token query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = 'test:assigning:auth|,another:assigning:auth|'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an empty bundle when patient identifier does not match identifier token query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = 'test:assigning:auth|000000'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 404 and an operation outcome when no patient identifier matches identifier domain token query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = 'non:existent:domain|'
+
+        delete charlton._id
+        const expectedResponse = {
+          severity: 'error',
+          code: 'invalid',
+          details: 'targetSystem not found'
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 404
+        }
+
+        requestAndAssertResponseOperationOutcome(testParams, t, done)
+      })
+    })
+
+    t.test('should return 404 and an operation outcome when no patient identifier matches multiple identifier domain token query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.identifier = 'test:assigning:authority|,non:existent:domain|'
+
+        delete charlton._id
+        const expectedResponse = {
+          severity: 'error',
+          code: 'invalid',
+          details: 'targetSystem not found'
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 404
+        }
+
+        requestAndAssertResponseOperationOutcome(testParams, t, done)
       })
     })
   })
