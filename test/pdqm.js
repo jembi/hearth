@@ -11,7 +11,7 @@ const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 const testPatients = env.testPatients()
 
 const charlton = testPatients.charlton.patient
-charlton.id = 1111111111
+charlton.id = '1111111111'
 charlton.identifier[0].system = 'test:assigning:auth'
 charlton.identifier[0].value = '111111'
 charlton.identifier[1].system = 'another:assigning:auth'
@@ -23,12 +23,12 @@ charlton.birthDate = '1980-09-12'
 charlton.gender = 'male'
 
 const emmarentia = testPatients.emmarentia.patient
+emmarentia.id = '2222222222'
 emmarentia.name[0].given = ['Emmarentia', 'Gerherda']
 emmarentia.name[0].family = ['Cook', 'Spray']
-emmarentia.id = 2222222222
 
 const nikita = testPatients.nikita.patient
-nikita.id = 3333333333
+nikita.id = '3333333333'
 
 const basicPDQmTest = (t, test) => {
   env.initDB((err, db) => {
@@ -337,9 +337,78 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('_id query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle with a single patient when patient id matches _id query parameter allow :exact', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['_id:exact'] = '1111111111'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle with a single patient when patient id matches _id query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams._id = '2222222222'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and an empty bundle of patients when patient id does not match _id query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams._id = 'non-existant-id'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 
