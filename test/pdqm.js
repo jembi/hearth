@@ -21,11 +21,14 @@ charlton.identifier[2].value = '333333'
 delete charlton.link
 charlton.birthDate = '1980-09-12'
 charlton.gender = 'male'
+charlton.address[0].line[0] = '1st Street'
+charlton.address[0].line[1] = 'Block 1'
 
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
 emmarentia.name[0].given = ['Emmarentia', 'Gerherda']
 emmarentia.name[0].family = ['Cook', 'Spray']
+emmarentia.address[0].line[0] = '1st'
 
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
@@ -912,9 +915,138 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('address query parameter', { autoend: true }, (t) => {
-    // TODO
-    t.test('TODO', (t) => {
-      t.end()
+    t.test('should return 200 and bundle of patients when patient address matches address query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.address = '1st Street'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient address matches address query parameter', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['address:exact'] = '1st'
+
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient address matches address query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.address = [ '1st', 'Western Cape' ]
+        testQueryParams['address:exact'] = 'Block 1'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient address matches address query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.address = [ '1st', 'Eastern Cape' ]
+        testQueryParams['address:exact'] = 'Block 1'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('should return 200 and bundle of patients when patient address matches address query parameters', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.address = [ '1st', 'Western Cape' ]
+
+        delete charlton._id
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 2,
+          entry: [
+            {
+              fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+              resource: charlton
+            }, {
+              fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+              resource: emmarentia
+            }
+          ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
     })
   })
 
