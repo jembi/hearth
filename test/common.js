@@ -62,12 +62,10 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     t.error(badRequest)
     const expected = {
       test1: {
-        value: '1',
-        operator: null
+        default: '1'
       },
       test2: {
-        value: 2,
-        operator: null
+        default: 2
       }
     }
     t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
@@ -94,8 +92,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     t.error(badRequest)
     const expected = {
       test1: {
-        value: '1',
-        operator: 'exact'
+        exact: '1'
       }
     }
     t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid operator is supplied')
