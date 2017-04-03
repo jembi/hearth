@@ -44,9 +44,9 @@ const requestAndAssertResponseOperationOutcome = (tp, t, done) => {
   })
 }
 
-tap.test('core.js', { autoend: true }, (t) => {
-  t.test('read', { autoend: true }, (t) => {
-    t.test('Read a non existent patient should return 404 - not found', (t) => {
+tap.test('Core', { autoend: true }, (t) => {
+  t.test('Read function', { autoend: true }, (t) => {
+    t.test('should read a non existent patient should return 404 - not found', (t) => {
       basicCoreTest(t, (db, done) => {
         const expectedResponse = {
           severity: 'information',
@@ -65,8 +65,8 @@ tap.test('core.js', { autoend: true }, (t) => {
     })
   })
 
-  t.test('delete', { autoend: true }, (t) => {
-    t.test('Read a deleted patient should return 410 - gone', (t) => {
+  t.test('Delete function', { autoend: true }, (t) => {
+    t.test('should read a deleted patient should return 410 - gone', (t) => {
       basicCoreTest(t, (db, done) => {
         const charlton = testPatients.charlton.patient
         charlton.id = '1111111111'
