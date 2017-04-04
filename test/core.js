@@ -67,16 +67,17 @@ tap.test('Core', { autoend: true }, (t) => {
 
   t.test('Delete function', { autoend: true }, (t) => {
     t.test('should read a deleted patient should return 410 - gone', (t) => {
+      const id = '1111111111'
       basicCoreTest(t, (db, done) => {
         const charlton = testPatients.charlton.patient
-        charlton.id = '1111111111'
+        charlton.id = id
 
         const c = db.collection('Patient')
         c.insertOne(charlton, (err, doc) => {
           t.error(err)
 
           request({
-            url: `http://localhost:3447/fhir/Patient/1111111111`,
+            url: `http://localhost:3447/fhir/Patient/${id}`,
             method: 'DELETE',
             headers: headers,
             json: true
@@ -84,19 +85,31 @@ tap.test('Core', { autoend: true }, (t) => {
             t.error(err)
             t.equal(res.statusCode, 204)
 
-            const expectedResponse = {
-              severity: 'information',
-              code: 'gone',
-              details: 'Gone'
-            }
+            c.findOne({ id: id }, (err, doc) => {
+              t.error(err)
+              t.notOk(doc)
 
-            const testParams = {
-              id: '1111111111',
-              expectedResponse: expectedResponse,
-              statusCode: 410
-            }
+              const ch = db.collection('Patient_history')
+              ch.findOne({ id: id }, (err, doc) => {
+                t.error(err)
+                t.ok(doc)
+                t.equal(doc.id, id, 'Deleted doc should exist in history')
 
-            requestAndAssertResponseOperationOutcome(testParams, t, done)
+                const expectedResponse = {
+                  severity: 'information',
+                  code: 'gone',
+                  details: 'Gone'
+                }
+
+                const testParams = {
+                  id: '1111111111',
+                  expectedResponse: expectedResponse,
+                  statusCode: 410
+                }
+
+                requestAndAssertResponseOperationOutcome(testParams, t, done)
+              })
+            })
           })
         })
       })
