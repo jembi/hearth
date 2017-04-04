@@ -21,6 +21,15 @@ charlton.identifier[2].value = '333333'
 delete charlton.link
 charlton.birthDate = '1980-09-12'
 charlton.gender = 'male'
+charlton.extension = [
+  {
+    url: 'http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName',
+    valueHumanName: {
+      family: [ 'Smith' ],
+      given: [ 'Mary' ]
+    }
+  }
+]
 
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
@@ -1001,17 +1010,97 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
   })
 
   t.test('pediatrics query parameters', { autoend: true }, (t) => {
-    t.test('mothersMaidenName.given query parameter', { autoend: true }, (t) => {
-      // TODO
-      t.test('TODO', (t) => {
-        t.end()
+    t.test('mothersMaidenName.given query parameter should filter response', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.given'] = 'Mary'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
       })
     })
 
-    t.test('mothersMaidenName.family query parameter', { autoend: true }, (t) => {
-      // TODO
-      t.test('TODO', (t) => {
-        t.end()
+    t.test('mothersMaidenName.given query parameter should return no results if there are no matches', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.given'] = 'NoMatch'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('mothersMaidenName.family query parameter should filter response', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.family'] = 'Smith'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('mothersMaidenName.family query parameter should return no results if there are no matches', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.family'] = 'NoMatch'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
       })
     })
 
