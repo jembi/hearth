@@ -48,7 +48,7 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.end()
 })
 
-tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) => {
+tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) => {
   const common = Common(env.mongo())
 
   let queryParams = { test1: '1', test2: 2 }
@@ -58,7 +58,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     test3: { }
   }
 
-  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.error(badRequest)
     const expected = {
       test1: {
@@ -78,7 +78,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     test3: { required: false, operators: { exact: true } }
   }
 
-  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.ok(badRequest)
     t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
   })
@@ -88,7 +88,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     test1: { operators: { exact: true } }
   }
 
-  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.error(badRequest)
     const expected = {
       test1: {
@@ -103,7 +103,7 @@ tap.test('.util.validateAndModifyQueryParams should validate searchParams', (t) 
     test1: { operators: { exact: true } }
   }
 
-  common.util.validateAndModifyQueryParams(queryParams, supported, (badRequest, queryObject) => {
+  common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.ok(badRequest)
     t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakeoperator\' operator', 'Should return error message if operator is not supported')
   })
