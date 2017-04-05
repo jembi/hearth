@@ -53,8 +53,8 @@ tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) =
 
   let queryParams = { test1: '1', test2: 2 }
   let supported = {
-    test1: { allowArray: true, required: false, operators: { exact: true } },
-    test2: { allowArray: false, required: false, operators: { exact: true } },
+    test1: { allowArray: true, required: false, modifiers: { exact: true } },
+    test2: { allowArray: false, required: false, modifiers: { exact: true } },
     test3: { }
   }
 
@@ -73,9 +73,9 @@ tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) =
 
   queryParams = { test1: '1' }
   supported = {
-    test1: { allowArray: true, required: true, operators: { exact: true } },
-    test2: { allowArray: true, required: true, operators: { exact: true } },
-    test3: { required: false, operators: { exact: true } }
+    test1: { allowArray: true, required: true, modifiers: { exact: true } },
+    test2: { allowArray: true, required: true, modifiers: { exact: true } },
+    test3: { required: false, modifiers: { exact: true } }
   }
 
   common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
@@ -85,7 +85,7 @@ tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) =
 
   queryParams = { 'test1:exact': '1' }
   supported = {
-    test1: { operators: { exact: true } }
+    test1: { modifiers: { exact: true } }
   }
 
   common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
@@ -95,17 +95,17 @@ tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) =
         exact: '1'
       }
     }
-    t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid operator is supplied')
+    t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid modifier is supplied')
   })
 
-  queryParams = { 'test1:fakeoperator': '1' }
+  queryParams = { 'test1:fakemodifier': '1' }
   supported = {
-    test1: { operators: { exact: true } }
+    test1: { modifiers: { exact: true } }
   }
 
   common.util.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
     t.ok(badRequest)
-    t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakeoperator\' operator', 'Should return error message if operator is not supported')
+    t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakemodifier\' modifier', 'Should return error message if modifier is not supported')
   })
 
   t.end()
