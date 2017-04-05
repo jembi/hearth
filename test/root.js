@@ -32,43 +32,67 @@ tap.test('Transaction should process all entries correctly', (t) => {
   testEnv(t, (db, done) => {
     const pats = env.testPatients()
     env.createPatient(t, pats.charlton, () => {
-      const transaction = _.cloneDeep(require('./resources/Transaction-success.json'))
-      transaction.entry[1].request.url = `Patient/${pats.charlton.patient.id}`
-      transaction.entry[1].resource.id = pats.charlton.patient.id
-      transaction.entry[2].request.url = `Patient/${pats.charlton.patient.id}`
-      transaction.entry[3].request.url = `Patient/${pats.charlton.patient.id}/_history/${pats.charlton.patient.meta.versionId}`
-      // when
-      request({
-        url: 'http://localhost:3447/fhir',
-        method: 'POST',
-        headers: headers,
-        body: transaction,
-        json: true
-      }, (err, res, body) => {
-        t.error(err)
-        t.equals(res.statusCode, 200, 'should return a 200 status')
-        t.equals(body.resourceType, 'Bundle', 'should return a Bundle')
-        t.equals(body.entry[0].response.status, '201', 'should return 201 for create')
-        t.ok(body.entry[0].response.location, 'should return the location')
-        t.equals(body.entry[1].response.status, '200', 'should return 200 for update')
-        t.ok(body.entry[1].response.location, 'should return the location')
-        t.equals(body.entry[2].response.status, '200', 'should return 200 for read')
-        t.equals(body.entry[2].resource.id, pats.charlton.patient.id, 'should return patient with correct id on read')
-        t.equals(body.entry[3].response.status, '200', 'should return 200 for vread')
-        t.equals(body.entry[3].resource.id, pats.charlton.patient.id, 'should return patient with correct id on vread')
-        t.equals(body.entry[3].resource.meta.versionId, pats.charlton.patient.meta.versionId, 'should return patient with correct version id on vread')
-        t.equals(body.entry[4].response.status, '200', 'should return 200 for search')
-        t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
-        t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
+      env.createPatient(t, pats.emmarentia, () => {
         const c = db.collection('Patient')
-        c.findOne({ id: body.entry[0].response.location.split('/')[3] }, (err, result) => {
+        const cHistory = db.collection('Patient_history')
+        const emmarentiaId = pats.emmarentia.patient.id
+
+        c.findOne({ id: emmarentiaId }, (err, doc) => {
           t.error(err)
-          t.ok(result, 'should have created a patient')
-          c.findOne({ id: body.entry[1].response.location.split('/')[3] }, (err, result) => {
+          t.equal('' + doc.id, emmarentiaId, 'Ensure emmarentia exists before deletion')
+
+          const transaction = _.cloneDeep(require('./resources/Transaction-success.json'))
+          transaction.entry[1].request.url = `Patient/${pats.charlton.patient.id}`
+          transaction.entry[1].resource.id = pats.charlton.patient.id
+          transaction.entry[2].request.url = `Patient/${pats.charlton.patient.id}`
+          transaction.entry[3].request.url = `Patient/${pats.charlton.patient.id}/_history/${pats.charlton.patient.meta.versionId}`
+          transaction.entry[5].request.url = `Patient/${emmarentiaId}`
+          // when
+          request({
+            url: 'http://localhost:3447/fhir',
+            method: 'POST',
+            headers: headers,
+            body: transaction,
+            json: true
+          }, (err, res, body) => {
             t.error(err)
-            t.equals(result.name[0].given[0], 'John', 'should have updated a patient correctly')
-            t.equals(result.name[0].family[0], 'Doe', 'should have updated a patient correctly')
-            done()
+            t.equals(res.statusCode, 200, 'should return a 200 status')
+            t.equals(body.resourceType, 'Bundle', 'should return a Bundle')
+            t.equals(body.entry[0].response.status, '201', 'should return 201 for create')
+            t.ok(body.entry[0].response.location, 'should return the location')
+            t.equals(body.entry[1].response.status, '200', 'should return 200 for update')
+            t.ok(body.entry[1].response.location, 'should return the location')
+            t.equals(body.entry[2].response.status, '200', 'should return 200 for read')
+            t.equals(body.entry[2].resource.id, pats.charlton.patient.id, 'should return patient with correct id on read')
+            t.equals(body.entry[3].response.status, '200', 'should return 200 for vread')
+            t.equals(body.entry[3].resource.id, pats.charlton.patient.id, 'should return patient with correct id on vread')
+            t.equals(body.entry[3].resource.meta.versionId, pats.charlton.patient.meta.versionId, 'should return patient with correct version id on vread')
+            t.equals(body.entry[4].response.status, '200', 'should return 200 for search')
+            t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
+            t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
+            t.equals(body.entry[5].response.status, '204', 'should delete resource')
+
+            c.findOne({ id: body.entry[0].response.location.split('/')[3] }, (err, result) => {
+              t.error(err)
+              t.ok(result, 'should have created a patient')
+              c.findOne({ id: body.entry[1].response.location.split('/')[3] }, (err, result) => {
+                t.error(err)
+                t.equals(result.name[0].given[0], 'John', 'should have updated a patient correctly')
+                t.equals(result.name[0].family[0], 'Doe', 'should have updated a patient correctly')
+
+                c.findOne({ id: emmarentiaId }, (err, doc) => {
+                  t.error(err)
+                  t.notOk(doc, 'Resource should be deleted')
+
+                  cHistory.findOne({ id: emmarentiaId }, (err, doc) => {
+                    t.error(err)
+                    t.equal('' + doc.id, emmarentiaId, 'Deleted resource should appear in history')
+
+                    done()
+                  })
+                })
+              })
+            })
           })
         })
       })
@@ -140,6 +164,7 @@ tap.test('Transaction should pass even when reads fail', (t) => {
         t.equals(body.entry[4].response.status, '200', 'should return 200 for search')
         t.equals(body.entry[4].resource.type, 'searchset', 'should return a searchset for search')
         t.equals(body.entry[4].resource.entry.length, 1, 'should return correct search results')
+        t.equals(body.entry[5].response.status, '204', 'should return 204 for not found delete')
         const c = db.collection('Patient')
         c.findOne({ id: body.entry[0].response.location.split('/')[3] }, (err, result) => {
           t.error(err)
@@ -228,7 +253,47 @@ tap.test('Batch should succeed even when an operation fails', (t) => {
         t.equals(body.entry[2].response.status, '400', 'should return 400 for 2nd update')
         t.equals(body.entry[3].response.status, '200', 'should return 200 for read')
         t.equals(body.entry[3].resource.id, pats.charlton.patient.id, 'should return patient with correct id on get')
+        t.equals(body.entry[4].response.status, '204', 'should return 204 for not found delete')
         done()
+      })
+    })
+  })
+})
+
+tap.test('Transaction should revert delete operation when operation (other than read) fails', (t) => {
+  // given
+  testEnv(t, (db, done) => {
+    const pats = env.testPatients()
+    env.createPatient(t, pats.emmarentia, () => {
+      const idToDelete = pats.emmarentia.patient.id
+
+      const c = db.collection('Patient')
+      c.findOne({ id: idToDelete }, (err, result) => {
+        t.error(err)
+        t.equal('' + result.id, idToDelete, 'Patient should be created')
+
+        const transaction = _.cloneDeep(require('./resources/Transaction-fail.json'))
+        transaction.entry[4].request.url = `Patient/${pats.emmarentia.patient.id}`
+
+        // when
+        request({
+          url: 'http://localhost:3447/fhir',
+          method: 'POST',
+          headers: headers,
+          body: transaction,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+          t.equals(res.statusCode, 400, 'should return a 400 status')
+          t.equals(body.resourceType, 'OperationOutcome', 'should return an OperationOutcome of the failing request')
+
+          c.findOne({ id: idToDelete }, (err, result) => {
+            t.error(err)
+            t.equal('' + result.id, idToDelete, 'should have reverted the deleted patient')
+
+            done()
+          })
+        })
       })
     })
   })

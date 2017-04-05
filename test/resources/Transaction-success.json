@@ -83,6 +83,12 @@
         "method": "GET",
         "url": "Patient?given=John"
       }
+    },
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "Patient/def"
+      }
     }
   ]
 }
