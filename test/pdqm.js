@@ -30,6 +30,7 @@ charlton.extension = [
     }
   }
 ]
+charlton.multipleBirthInteger = 2
 
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
@@ -1104,17 +1105,122 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       })
     })
 
-    t.test('telecom query parameter', { autoend: true }, (t) => {
-      // TODO
-      t.test('TODO', (t) => {
-        t.end()
+    t.test('telecom query parameter should filter results correctly', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.telecom = 'email|charlton@email.com'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
       })
     })
 
-    t.test('multipleBirthInteger query parameter', { autoend: true }, (t) => {
-      // TODO
-      t.test('TODO', (t) => {
-        t.end()
+    t.test('telecom query parameter should filter results correctly when there are multiple telecom params', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.telecom = [ 'email|charlton@email.com', 'phone|27831234567' ]
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('telecom query parameter should return no results if no matches are found', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.telecom = 'email|not-mine@email.com'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('multipleBirthInteger query parameter should filter results correctly', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.multipleBirthInteger = 2
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('multipleBirthInteger query parameter should return no results if no matches are found', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.multipleBirthInteger = 5
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 0,
+          entry: []
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
       })
     })
   })
