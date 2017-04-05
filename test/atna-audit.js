@@ -42,7 +42,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   t.equals('IHE Transactions', EventIdentificationEventTypeCode.attr('codeSystemName').value(), 'EventIdentificationEventTypeCode: codeSystemName should have a value of "IHE Transactions"')
 
   const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]')  // Source is the PIXm consumer
-  t.equals(ctx.authenticatedUser, ActiveParticipant2.attr('UserID').value(), `ActiveParticipant2: UserID should have a value of "${ctx.authenticatedUser}"`)
+  t.equals(ctx.authenticatedUser, ActiveParticipant1.attr('UserID').value(), `ActiveParticipant1: UserID should have a value of "${ctx.authenticatedUser}"`)
   t.equals('', ActiveParticipant1.attr('AlternativeUserID').value(), 'ActiveParticipant1: AlternativeUserID should have a value of ""')
   t.equals('', ActiveParticipant1.attr('UserIsRequestor').value(), 'ActiveParticipant1: UserIsRequestor should have a value of ""')
   t.equals(ctx.requestorIp, ActiveParticipant1.attr('NetworkAccessPointID').value(), `ActiveParticipant1: NetworkAccessPointID should have a value of "${ctx.requestorIp}"`)
@@ -53,11 +53,11 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   t.equals('DCM', ActiveParticipant1RoleIDCode.attr('codeSystemName').value(), 'ActiveParticipant1RoleIDCode: codeSystemName should have a value of "DCM"')
 
   const ActiveParticipant2 = xmlDoc.get('//ActiveParticipant[2]') // Destination is the PIXm manager
-  t.equals('HEARTH', ActiveParticipant1.attr('UserID').value(), 'ActiveParticipant1: UserID should have a value of "HEARTH"')
+  t.equals('HEARTH', ActiveParticipant2.attr('UserID').value(), 'ActiveParticipant2: UserID should have a value of "HEARTH"')
   t.equals('', ActiveParticipant2.attr('AlternativeUserID').value(), 'ActiveParticipant2: AlternativeUserID should have a value of ""')
   t.equals('', ActiveParticipant2.attr('UserIsRequestor').value(), 'ActiveParticipant2: UserIsRequestor should have a value of ""')
-  t.equals(ctx.fullUrl, ActiveParticipant1.attr('NetworkAccessPointID').value(), `ActiveParticipant1: NetworkAccessPointID should have a value of "${ctx.fullUrl}"`)
-  t.equals('1', ActiveParticipant1.attr('NetworkAccessPointTypeCode').value(), 'ActiveParticipant1: NetworkAccessPointTypeCode should have a value of "1"')
+  t.equals(ctx.fullUrl, ActiveParticipant2.attr('NetworkAccessPointID').value(), `ActiveParticipant2: NetworkAccessPointID should have a value of "${ctx.fullUrl}"`)
+  t.equals('1', ActiveParticipant2.attr('NetworkAccessPointTypeCode').value(), 'ActiveParticipant2: NetworkAccessPointTypeCode should have a value of "1"')
   const ActiveParticipant2RoleIDCode = xmlDoc.get('//ActiveParticipant[2]/RoleIDCode')
   t.equals('110152', ActiveParticipant2RoleIDCode.attr('csd-code').value(), 'ActiveParticipant2RoleIDCode: csd-code should have a value of "110152"')
   t.equals('DCM', ActiveParticipant2RoleIDCode.attr('originalText').value(), 'ActiveParticipant2RoleIDCode: originalText should have a value of "DCM"')
@@ -131,7 +131,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
   t.equals('IHE Transactions', EventIdentificationEventTypeCode.attr('codeSystemName').value(), 'EventIdentificationEventTypeCode: codeSystemName should have a value of "IHE Transactions"')
 
   const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]')  // Source is the PDQm consumer
-  t.equals(ctx.authenticatedUser, ActiveParticipant2.attr('UserID').value(), `ActiveParticipant2: UserID should have a value of "${ctx.authenticatedUser}"`)
+  t.equals(ctx.authenticatedUser, ActiveParticipant1.attr('UserID').value(), `ActiveParticipant1: UserID should have a value of "${ctx.authenticatedUser}"`)
   t.equals('', ActiveParticipant1.attr('AlternativeUserID').value(), 'ActiveParticipant1: AlternativeUserID should have a value of ""')
   t.equals('', ActiveParticipant1.attr('UserIsRequestor').value(), 'ActiveParticipant1: UserIsRequestor should have a value of ""')
   t.equals(ctx.requestorIp, ActiveParticipant1.attr('NetworkAccessPointID').value(), `ActiveParticipant1: NetworkAccessPointID should have a value of "${ctx.requestorIp}"`)
@@ -142,11 +142,11 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
   t.equals('DCM', ActiveParticipant1RoleIDCode.attr('codeSystemName').value(), 'ActiveParticipant1RoleIDCode: codeSystemName should have a value of "DCM"')
 
   const ActiveParticipant2 = xmlDoc.get('//ActiveParticipant[2]') // Destination is the PDQm supplier
-  t.equals('HEARTH', ActiveParticipant1.attr('UserID').value(), 'ActiveParticipant1: UserID should have a value of "HEARTH"')
+  t.equals('HEARTH', ActiveParticipant2.attr('UserID').value(), 'ActiveParticipant2: UserID should have a value of "HEARTH"')
   t.equals('', ActiveParticipant2.attr('AlternativeUserID').value(), 'ActiveParticipant2: AlternativeUserID should have a value of ""')
   t.equals('', ActiveParticipant2.attr('UserIsRequestor').value(), 'ActiveParticipant2: UserIsRequestor should have a value of ""')
-  t.equals(ctx.fullUrl, ActiveParticipant1.attr('NetworkAccessPointID').value(), `ActiveParticipant1: NetworkAccessPointID should have a value of "${ctx.fullUrl}"`)
-  t.equals('1', ActiveParticipant1.attr('NetworkAccessPointTypeCode').value(), 'ActiveParticipant1: NetworkAccessPointTypeCode should have a value of "1"')
+  t.equals(ctx.fullUrl, ActiveParticipant2.attr('NetworkAccessPointID').value(), `ActiveParticipant2: NetworkAccessPointID should have a value of "${ctx.fullUrl}"`)
+  t.equals('1', ActiveParticipant2.attr('NetworkAccessPointTypeCode').value(), 'ActiveParticipant2: NetworkAccessPointTypeCode should have a value of "1"')
   const ActiveParticipant2RoleIDCode = xmlDoc.get('//ActiveParticipant[2]/RoleIDCode')
   t.equals('110152', ActiveParticipant2RoleIDCode.attr('csd-code').value(), 'ActiveParticipant2RoleIDCode: csd-code should have a value of "110152"')
   t.equals('DCM', ActiveParticipant2RoleIDCode.attr('originalText').value(), 'ActiveParticipant2RoleIDCode: originalText should have a value of "DCM"')
