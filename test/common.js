@@ -62,10 +62,10 @@ tap.test('.util.validateAndParseQueryParams should validate searchParams', (t) =
     t.error(badRequest)
     const expected = {
       test1: {
-        default: '1'
+        'no-modifier': '1'
       },
       test2: {
-        default: 2
+        'no-modifier': 2
       }
     }
     t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
