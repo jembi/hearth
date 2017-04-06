@@ -27,8 +27,8 @@ charlton.extension = [
   {
     url: 'http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName',
     valueHumanName: {
-      family: [ 'Smith' ],
-      given: [ 'Mary' ]
+      family: [ 'Smith', 'Mc', 'extra' ],
+      given: [ 'Mary', 'Jane' ]
     }
   }
 ]
@@ -1168,6 +1168,31 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       })
     })
 
+    t.test('mothersMaidenName.given query parameter should filter response even with multiple values', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.given'] = [ 'Mary', 'Jane' ]
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
     t.test('mothersMaidenName.given query parameter should return no results if there are no matches', (t) => {
       basicPDQmTest(t, (db, done) => {
         const testQueryParams = {}
@@ -1194,6 +1219,31 @@ tap.test('PDQm Query', { autoend: true }, (t) => {
       basicPDQmTest(t, (db, done) => {
         const testQueryParams = {}
         testQueryParams['mothersMaidenName.family'] = 'Smith'
+
+        delete charlton._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+
+    t.test('mothersMaidenName.family query parameter should filter response even with multiple values', (t) => {
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams['mothersMaidenName.family'] = [ 'Smith', 'Mc' ]
 
         delete charlton._id
         const expectedResponse = {
