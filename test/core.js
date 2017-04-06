@@ -46,7 +46,7 @@ const requestAndAssertResponseOperationOutcome = (tp, t, done) => {
 
 tap.test('Core', { autoend: true }, (t) => {
   t.test('Read function', { autoend: true }, (t) => {
-    t.test('should read a non existent patient should return 404 - not found', (t) => {
+    t.test('should return 404 - not found when non existent patient is read', (t) => {
       basicCoreTest(t, (db, done) => {
         const expectedResponse = {
           severity: 'information',
@@ -63,10 +63,37 @@ tap.test('Core', { autoend: true }, (t) => {
         requestAndAssertResponseOperationOutcome(testParams, t, done)
       })
     })
+
+    t.test('should return 410 - gone when a deleted patient is read', (t) => {
+      const id = '1111111111'
+      basicCoreTest(t, (db, done) => {
+        const charlton = testPatients.charlton.patient
+        charlton.id = id
+        const cHistory = db.collection('Patient_history')
+        cHistory.insertOne(charlton, (err, doc) => {
+          t.error(err)
+          t.ok(doc)
+
+          const expectedResponse = {
+            severity: 'information',
+            code: 'gone',
+            details: 'Gone'
+          }
+
+          const testParams = {
+            id: id,
+            expectedResponse: expectedResponse,
+            statusCode: 410
+          }
+
+          requestAndAssertResponseOperationOutcome(testParams, t, done)
+        })
+      })
+    })
   })
 
   t.test('Delete function', { autoend: true }, (t) => {
-    t.test('should read a deleted patient should return 410 - gone', (t) => {
+    t.test('should return 204 - no content when a patient is deleted', (t) => {
       const id = '1111111111'
       basicCoreTest(t, (db, done) => {
         const charlton = testPatients.charlton.patient
