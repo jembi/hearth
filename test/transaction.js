@@ -207,3 +207,89 @@ tap.test('Transaction resource .revertUpdate() should respond with success=false
     })
   })
 })
+
+tap.test('Transaction resource .revertDelete() should restore a newly deleted resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+       // create a new resource
+      const resourceType = 'Patient'
+      const patients = env.testPatients()
+      env.createPatient(t, patients.charlton, () => {
+        const id = patients.charlton.patient.id
+        const transaction = Transaction(env.mongo())
+
+        const c = db.collection(resourceType)
+        const cHistory = db.collection(`${resourceType}_history`)
+
+        c.findOne({ id: id }, { fields: { id: 1 } }, (err, doc) => {
+          t.error(err)
+          t.equals('' + doc.id, id, 'Patient has been created')
+
+          // delete the created resource
+          request({
+            url: `http://localhost:3447/fhir/${resourceType}/${id}`,
+            method: 'DELETE',
+            headers: env.getTestAuthHeaders(env.users.sysadminUser.email)
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 204)
+            t.notOk(res.body, 'Does not return body')
+
+            c.findOne({ id: id }, {}, (err, doc) => {
+              t.error(err)
+              t.notOk(doc, 'Resource should be deleted')
+
+              cHistory.findOne({ id: id }, (err, doc) => {
+                t.error(err)
+                t.equals('' + doc.id, id, 'Deleted resource should be in history collection')
+
+                // revert the deleted resource
+                transaction.revertDelete(resourceType, id, (err, success) => {
+                  t.error(err)
+                  t.true(success, 'should respond with success status as true')
+
+                  c.findOne({ id: id }, {}, (err, doc) => {
+                    t.error(err)
+                    t.equals('' + doc.id, id, 'Deleted resource has been restored')
+
+                    cHistory.findOne({ id: id }, (err, doc) => {
+                      t.error(err)
+                      t.notOk(doc, 'Deleted resource history reverted')
+
+                      env.clearDB((err) => {
+                        t.error(err)
+                        server.stop(() => {
+                          t.end()
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Transaction resource .revertDelete() should respond with success=false if unknown resource', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+    const transaction = Transaction(env.mongo())
+    transaction.revertDelete('Patient', '5aaaaaaaaaaaaaaaaaaaaaaa', (err, success) => {
+      t.error(err)
+      t.false(success, 'should respond with success status as false')
+
+      env.clearDB((err) => {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
+})
