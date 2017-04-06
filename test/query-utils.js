@@ -2,7 +2,7 @@
 
 const tap = require('tap')
 
-const queryUtils = require('../lib/fhir/query-utils')
+const queryUtils = require('../lib/fhir/query-utils')()
 
 tap.test('.validateAndParseQueryParams should validate searchParams', (t) => {
   let queryParams = { test1: '1', test2: 2 }
