@@ -13,7 +13,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
     domain: 'http://localhost:3447/fhir',
     authenticatedUser: 'sysadmin',
     fullUrl: 'http://localhost:3447/fhir',
-    requestorIp: 'http://localhost:3447/fhir',
+    requestorIp: 'http://192.168.10.10:5001/fhir',
     headers: {
       'auth-username': 'sysadmin@hearth.org',
       'auth-ts': '2017-03-23T11:40:18.229Z',
@@ -29,7 +29,6 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   const xmlDoc = libxmljs.parseXml(parsedMessage.message)
 
   t.equal(xmlDoc.errors.length, 0)
-  console.log(parsedMessage.message)
 
   const EventIdentification = xmlDoc.get('//EventIdentification')
   t.equals(EventIdentification.attr('EventActionCode').value(), 'E', 'EventIdentification: EventActionCode should have a value of "E"')
@@ -102,7 +101,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
     domain: 'http://localhost:3447/fhir',
     authenticatedUser: 'sysadmin',
     fullUrl: 'http://localhost:3447/fhir',
-    requestorIp: 'http://localhost:3447/fhir',
+    requestorIp: 'http://192.168.10.10:5001/fhir',
     headers: {
       'auth-username': 'sysadmin@hearth.org',
       'auth-ts': '2017-03-23T11:40:18.229Z',
