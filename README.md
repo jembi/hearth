@@ -47,5 +47,5 @@ npm test
 * Terminology Service
 
 ## Pro tips:
-* Change the `test:code` script in the package.json to only run the tests you are interested in (just don't commit this!).
+* To run only specific test files use `npm run test:these-files -- test/pdqm.js`. Note the `--` is important!
 * Run `npm run cov` to show coverage details in your browser.

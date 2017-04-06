@@ -7,13 +7,14 @@
     "dev:start": "NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
     "test:code": "tap --cov --reporter=spec test/**.js",
+    "test:these-files": "tap --cov --reporter=spec",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov"
   },
   "dependencies": {
     "async": "^2.1.4",
-    "atna-audit": "^1.0.0",
+    "atna-audit": "^1.0.1",
     "body-parser": "^1.16.0",
     "cors": "^2.8.1",
     "express": "^4.14.1",

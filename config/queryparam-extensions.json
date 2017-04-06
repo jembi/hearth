@@ -1,0 +1,12 @@
+{
+  "Patient": {
+    "mothersMaidenName.given": {
+      "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
+      "valuePropPath": "valueHumanName.given"
+    },
+    "mothersMaidenName.family": {
+      "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
+      "valuePropPath": "valueHumanName.family"
+    }
+  }
+}
