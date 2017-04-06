@@ -89,28 +89,32 @@ tap.test('Core', { autoend: true }, (t) => {
               t.error(err)
               t.notOk(doc)
 
-              const ch = db.collection('Patient_history')
-              ch.findOne({ id: id }, (err, doc) => {
+              const cHistory = db.collection('Patient_history')
+              cHistory.findOne({ id: id }, (err, doc) => {
                 t.error(err)
                 t.ok(doc)
                 t.equal(doc.id, id, 'Deleted doc should exist in history')
 
-                const expectedResponse = {
-                  severity: 'information',
-                  code: 'gone',
-                  details: 'Gone'
-                }
-
-                const testParams = {
-                  id: '1111111111',
-                  expectedResponse: expectedResponse,
-                  statusCode: 410
-                }
-
-                requestAndAssertResponseOperationOutcome(testParams, t, done)
+                done()
               })
             })
           })
+        })
+      })
+    })
+
+    t.test('should return 204 - no content when a non existent patient is deleted', (t) => {
+      basicCoreTest(t, (db, done) => {
+        request({
+          url: `http://localhost:3447/fhir/Patient/non-existent-id`,
+          method: 'DELETE',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+          t.equal(res.statusCode, 204)
+
+          done()
         })
       })
     })
