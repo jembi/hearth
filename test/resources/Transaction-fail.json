@@ -97,6 +97,12 @@
         "method": "GET",
         "url": "Patient/xyz"
       }
+    },
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "Patient/def"
+      }
     }
   ]
 }
