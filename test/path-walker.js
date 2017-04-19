@@ -61,7 +61,6 @@ tap.test('should walk the path over multiple levels', (t) => {
     ]
   })
 
-  console.log(result)
   t.equals(result[0], 'z1')
   t.equals(result[1], 'z2')
   t.equals(result[2], 'z3')
