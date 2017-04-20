@@ -1,0 +1,33 @@
+{
+  "Patient": {
+    "matchingProperties": {
+      "name.given": {
+        "phonetic": "exact",
+        "metric": "exact",
+        "weight": "0.5"
+      },
+      "name.family": {
+        "phonetic": "exact",
+        "metric": "exact",
+        "weight": "0.5"
+      }
+    }
+  },
+  "Location": {
+    "matchingProperties": {
+      "name": {
+        "phonetic": "exact",
+        "metric": "levenshtein",
+        "weight": "1"
+      }
+    }
+  },
+  "Practitioner": {
+    "matchingProperties": {
+      "name.given": {
+        "phonetic": "exact",
+        "weight": "1"
+      }
+    }
+  }
+}
