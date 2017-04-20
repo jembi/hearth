@@ -156,6 +156,9 @@ tap.test('Core', { autoend: true }, (t) => {
           resource: {
             resourceType: 'Binary'
           }
+        }, {
+          name: 'count',
+          valueInteger: 100
         }
       ]
     }
@@ -180,6 +183,56 @@ tap.test('Core', { autoend: true }, (t) => {
           t.equal(body.issue[0].severity, 'error')
           t.equal(body.issue[0].code, 'invalid')
           t.equal(body.issue[0].details.text, 'Expected Parameters resource type')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resource has an unexpected parameter', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      testBody.parameter = testBody.parameter.concat([{ name: 'shouldNotExist' }])
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'Unexpected query parameter: shouldNotExist')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resource no resource parameter', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      testBody.parameter = testBody.parameter.slice(1)
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'No resource parameter in parameters resource')
           done()
         })
       })
