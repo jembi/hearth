@@ -146,4 +146,144 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
   })
+
+  t.test('Match function', { autoend: true }, (t) => {
+    const matchOperationBodyTemplate = {
+      resourceType: 'Parameters',
+      parameter: [
+        {
+          name: 'resource',
+          resource: {
+            resourceType: 'Binary'
+          }
+        }, {
+          name: 'count',
+          valueInteger: 100
+        }
+      ]
+    }
+
+    t.test('should return 400 if posted parameters resourceType is not of type Parameters', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      testBody.resourceType = 'Patient'
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'Expected Parameters resource type')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resource has an unexpected parameter', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      testBody.parameter = testBody.parameter.concat([{ name: 'shouldNotExist' }])
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'Unexpected query parameter: shouldNotExist')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resource no resource parameter', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      testBody.parameter = testBody.parameter.slice(1)
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'No resource parameter in parameters resource')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resourceType does not match url resourceType', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'Invalid resource type')
+          done()
+        })
+      })
+    })
+
+    t.test('should return 400 if posted parameters resource resourceType does not have matching config', (t) => {
+      // Given
+      const testBody = Object.assign({}, matchOperationBodyTemplate)
+      basicCoreTest(t, (db, done) => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Binary/$match`,
+          method: 'POST',
+          body: testBody,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(res.statusCode, 400, 'response status code should be 400')
+          t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+          t.equal(body.issue[0].severity, 'error')
+          t.equal(body.issue[0].code, 'invalid')
+          t.equal(body.issue[0].details.text, 'Match operation not supported on resource type')
+          done()
+        })
+      })
+    })
+  })
 })
