@@ -1,33 +1,41 @@
 {
-  "Patient": {
-    "matchingProperties": {
-      "name.given": {
-        "phonetic": "exact",
-        "metric": "exact",
-        "weight": "0.5"
-      },
-      "name.family": {
-        "phonetic": "exact",
-        "metric": "exact",
-        "weight": "0.5"
-      }
+  "matchSettings": {
+    "defaultCount": 1000,
+    "algorithmMap": {
+      "exact": "exact",
+      "double-metaphone": "exact",
+      "levenshtein": "distance"
     }
   },
-  "Location": {
-    "matchingProperties": {
-      "name": {
-        "phonetic": "exact",
-        "metric": "levenshtein",
-        "weight": "1"
+  "resourceConfig": {
+    "Patient": {
+      "matchingProperties": {
+        "name.given": {
+          "algorithm": "exact",
+          "weight": "0.5"
+        },
+        "name.family": {
+          "algorithm": "exact",
+          "weight": "0.5"
+        }
       }
-    }
-  },
-  "Practitioner": {
-    "matchingProperties": {
-      "name.given": {
-        "phonetic": "exact",
-        "weight": "1"
+    },
+    "Location": {
+      "matchingProperties": {
+        "name": {
+          "algorithm": "exact",
+          "weight": "1"
+        }
+      }
+    },
+    "Practitioner": {
+      "matchingProperties": {
+        "name.given": {
+          "algorithm": "exact",
+          "weight": "1"
+        }
       }
     }
   }
 }
+  
