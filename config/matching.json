@@ -12,11 +12,11 @@
       "matchingProperties": {
         "name.given": {
           "algorithm": "exact",
-          "weight": "0.5"
+          "weight": 0.5
         },
         "name.family": {
           "algorithm": "exact",
-          "weight": "0.5"
+          "weight": 0.5
         }
       }
     },
@@ -24,7 +24,7 @@
       "matchingProperties": {
         "name": {
           "algorithm": "exact",
-          "weight": "1"
+          "weight": 1
         }
       }
     },
@@ -32,7 +32,7 @@
       "matchingProperties": {
         "name.given": {
           "algorithm": "exact",
-          "weight": "1"
+          "weight": 1
         }
       }
     }

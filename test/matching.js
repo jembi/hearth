@@ -84,12 +84,12 @@ const matchOperationBodyTemplate = {
       name: 'resource',
       resource: {
         resourceType: 'Patient',
-        'name': [
+        name: [
           {
-            'family': [
+            family: [
               'Matinyana'
             ],
-            'given': [
+            given: [
               'Charlton'
             ]
           }
@@ -98,13 +98,69 @@ const matchOperationBodyTemplate = {
     }, {
       name: 'count',
       valueInteger: 2
+    }, {
+      name: 'onlyCertainMatches',
+      valueBoolean: false
     }
   ]
 }
 
+tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
+  // Given
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[2].valueBoolean = true
+  testBody.parameter[0].resource.name[0].family[0] = 'NotCertainMatch'
+  basicMatchingTest(t, (db, done) => {
+    // When
+    request({
+      url: `http://localhost:3447/fhir/Patient/$match`,
+      method: 'POST',
+      body: testBody,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      // Then
+      t.error(err)
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+      t.equal(body.issue[0].severity, 'info')
+      t.equal(body.issue[0].code, 'not-found')
+      t.equal(body.issue[0].details.text, 'No certain matches found')
+      done()
+    })
+  })
+})
+
+tap.test('should return 409 if multiple certain matches found and onlyCertainMatches parameter true', (t) => {
+  // Given
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[2].valueBoolean = true
+  testBody.parameter[0].resource.name[0].family.push('Cook')
+  testBody.parameter[0].resource.name[0].given.push('Emmarentia')
+  basicMatchingTest(t, (db, done) => {
+    // When
+    request({
+      url: `http://localhost:3447/fhir/Patient/$match`,
+      method: 'POST',
+      body: testBody,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      // Then
+      t.error(err)
+      t.equal(res.statusCode, 409, 'response status code should be 409')
+      t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+      t.equal(body.issue[0].severity, 'info')
+      t.equal(body.issue[0].code, 'conflict')
+      t.equal(body.issue[0].details.text, 'More than one certain match found')
+      done()
+    })
+  })
+})
+
 tap.test('should return 200 and a bundle of patients with search scores exactly matching the posted parameters resource', (t) => {
   // Given
-  const testBody = Object.assign({}, matchOperationBodyTemplate)
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
   basicMatchingTest(t, (db, done) => {
     delete charlton._id
