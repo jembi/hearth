@@ -1,6 +1,11 @@
 {
   "matchSettings": {
     "defaultCount": 1000,
+    "scores": {
+      "certain": 1,
+      "probable": 0.9,
+      "possible": 0.5
+    },
     "algorithmMap": {
       "exact": "exact",
       "double-metaphone": "exact",
