@@ -123,7 +123,7 @@ const matchOperationConfigTemplate = {
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = Object.assign({}, matchOperationConfigTemplate)
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family[0] = 'NotCertainMatch'
@@ -150,7 +150,7 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
 
 tap.test('should return 409 if multiple certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = Object.assign({}, matchOperationConfigTemplate)
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family.push('Cook')
@@ -176,9 +176,43 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
   })
 })
 
+tap.test('should return 200 if no matches are found and onlyCertainMatches not true', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+
+  env.initDB((err, db) => {
+    t.error(err)
+    server.start((err) => {
+      t.error(err)
+      // When
+      request({
+        url: `http://localhost:3447/fhir/Patient/$match`,
+        method: 'POST',
+        body: testBody,
+        headers: headers,
+        json: true
+      }, (err, res, body) => {
+        // Then
+        t.error(err)
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.equal(body.resourceType, 'Bundle', 'Reponse body should be a Bundle')
+        t.equal(body.entry.length, 0, 'The bundle entries should be empty')
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
 tap.test('should return 200 and a bundle of patients with search scores exactly matching the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = Object.assign({}, matchOperationConfigTemplate)
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
   basicMatchingTest(t, (db, done) => {
@@ -211,9 +245,9 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
   })
 })
 
-tap.test('should return 200 and a bundle of patients with search scores matching the levenshtein algorithm', (t) => {
+tap.test('should return 200 and a bundle of patients matching on name.given=levenshtein(weight 0.5) and name.family=exact(weight 0.5)', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = Object.assign({}, matchOperationConfigTemplate)
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
   matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
