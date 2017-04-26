@@ -2,9 +2,9 @@
   "matchSettings": {
     "defaultCount": 1000,
     "algorithmTypeMap": {
-      "exact": "exact",
-      "double-metaphone": "exact",
-      "levenshtein": "distance"
+      "exact": "exact-match-representation",
+      "double-metaphone": "exact-match-representation",
+      "levenshtein": "realtime"
     }
   },
   "resourceConfig": {
