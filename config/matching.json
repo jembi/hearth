@@ -7,7 +7,7 @@
       "possible": 0.5
     },
     "algorithmTypeMap": {
-      "exact": "exact-match-representation",
+      "exact": "exact-match",
       "double-metaphone": "exact-match-representation",
       "levenshtein": "realtime"
     }
@@ -43,4 +43,3 @@
     }
   }
 }
-  
