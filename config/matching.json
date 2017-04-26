@@ -1,5 +1,46 @@
 {
-  "defaultCount": 1000,
-  "Patient": {},
-  "Location": {}
+  "matchSettings": {
+    "defaultCount": 1000,
+    "scores": {
+      "certain": 1,
+      "probable": 0.9,
+      "possible": 0.5
+    },
+    "algorithmTypeMap": {
+      "exact": "exact-match-representation",
+      "double-metaphone": "exact-match-representation",
+      "levenshtein": "realtime"
+    }
+  },
+  "resourceConfig": {
+    "Patient": {
+      "matchingProperties": {
+        "name.given": {
+          "algorithm": "exact",
+          "weight": 0.5
+        },
+        "name.family": {
+          "algorithm": "exact",
+          "weight": 0.5
+        }
+      }
+    },
+    "Location": {
+      "matchingProperties": {
+        "name": {
+          "algorithm": "exact",
+          "weight": 1
+        }
+      }
+    },
+    "Practitioner": {
+      "matchingProperties": {
+        "name.given": {
+          "algorithm": "exact",
+          "weight": 1
+        }
+      }
+    }
+  }
 }
+  
