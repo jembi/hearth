@@ -1,7 +1,7 @@
 {
   "matchSettings": {
     "defaultCount": 1000,
-    "algorithmMap": {
+    "algorithmTypeMap": {
       "exact": "exact",
       "double-metaphone": "exact",
       "levenshtein": "distance"
