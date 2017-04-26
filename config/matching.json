@@ -6,10 +6,10 @@
       "probable": 0.9,
       "possible": 0.5
     },
-    "algorithmMap": {
-      "exact": "exact",
-      "double-metaphone": "exact",
-      "levenshtein": "distance"
+    "algorithmTypeMap": {
+      "exact": "exact-match-representation",
+      "double-metaphone": "exact-match-representation",
+      "levenshtein": "realtime"
     }
   },
   "resourceConfig": {
