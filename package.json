@@ -7,7 +7,7 @@
     "dev:start": "NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
     "test:code": "tap --cov --reporter=spec test/**.js",
-    "test:these-files": "tap --cov --reporter=spec",
+    "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov"
