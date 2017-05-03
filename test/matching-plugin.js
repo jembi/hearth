@@ -54,8 +54,8 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching['name.given'], [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
-      t.same(resource._transforms.matching['name.family'], [ ['MTNN', 'MTNN'] ])
+      t.same(resource._transforms.matching.name.given, [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
+      t.same(resource._transforms.matching.name.family, [ ['MTNN', 'MTNN'] ])
 
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.family'].algorithm = oldFamilyAlgorithm
@@ -78,8 +78,8 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching['name.given'], [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
-      t.notOk(resource._transforms.matching['name.family'])
+      t.same(resource._transforms.matching.name.given, [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
+      t.notOk(resource._transforms.matching.name.family)
 
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
       t.end()
