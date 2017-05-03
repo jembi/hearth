@@ -1,6 +1,6 @@
 {
   "mongodb": {
-    "url": "mongodb://localhost/hearth-dev"
+    "url": "mongodb://hearth-mongo/hearth-dev"
   },
   "logger": {
     "level": "debug"
