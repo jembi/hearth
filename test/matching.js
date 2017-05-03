@@ -32,7 +32,6 @@ const basicMatchingTest = (t, test) => {
         emmarentia,
         nikita
       )
-
       const c = db.collection('Patient')
       c.insertMany(patients, (err, doc) => {
         t.error(err)
@@ -300,5 +299,87 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
     }
 
     requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should return 200 and a bundle of patients exactly matching the phonetic representation of the posted parameters resource', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'double-metaphone'
+  matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm = 'double-metaphone'
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.name[0].given = ['Mwawi']
+  testBody.parameter[0].resource.name[0].family = ['Ntshwanti']
+
+  env.initDB((err, db) => {
+    t.error(err)
+    server.start((err) => {
+      t.error(err)
+      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          headers: headers,
+          method: 'POST',
+          body: testBody,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(body.entry[0].search.score, 1, 'Patient should be found')
+
+          env.clearDB((err) => {
+            t.error(err)
+            server.stop(() => {
+              t.end()
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('should return 200 and a bundle of patients matching the phonetic representation of a property in the posted parameters resource', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = {
+    matchingProperties: {
+      'name.given': {
+        algorithm: 'double-metaphone',
+        weight: 1
+      }
+    }
+  }
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.name[0].given = ['Grant', 'Maw'] // [KRNT, KRNT], [M, MF]
+
+  env.initDB((err, db) => {
+    t.error(err)
+    server.start((err) => {
+      t.error(err)
+      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+        // When
+        request({
+          url: `http://localhost:3447/fhir/Patient/$match`,
+          headers: headers,
+          method: 'POST',
+          body: testBody,
+          json: true
+        }, (err, res, body) => {
+          // Then
+          t.error(err)
+          t.equal(body.entry[0].search.score, 1, 'Patient Mwawi should be found')
+
+          env.clearDB((err) => {
+            t.error(err)
+            server.stop(() => {
+              t.end()
+            })
+          })
+        })
+      })
+    })
   })
 })
