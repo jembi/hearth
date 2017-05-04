@@ -14,7 +14,7 @@ module.exports = {
       requestParams.headers = {}
     }
     Object.assign(requestParams.headers, env.getTestAuthHeaders('sysadmin@jembi.org'))
-    return next()
+    next()
   },
 
   createUniquePatient: (requestParams, context, ee, next) => {
@@ -28,6 +28,6 @@ module.exports = {
     patient.gender = chance.gender()
     patient.birthDate = moment(chance.birthday()).format('YYYY-MM-DD')
     requestParams.json = patient
-    module.exports.setAuthHeaders(requestParams, context, ee, next)
+    next()
   }
 }

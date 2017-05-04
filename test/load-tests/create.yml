@@ -5,9 +5,12 @@ config:
       arrivalCount: 1
   processor: './load-test-utils.js'
 scenarios:
-  - flow:
+  - name: 'Basic creating load test'
+    flow:
     - loop:
       - post:
-          url: "/fhir/Patient"
-          beforeRequest: 'createUniquePatient'
+          url: '/fhir/Patient'
+          beforeRequest:
+            - 'setAuthHeaders'
+            - 'createUniquePatient'
       count: 1000

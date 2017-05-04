@@ -13,7 +13,7 @@
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
     "test:load": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
-    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop"
+    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)"
   },
   "dependencies": {
     "async": "^2.1.4",
