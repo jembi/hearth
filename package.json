@@ -12,7 +12,7 @@
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
-    "test:load": "npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop"
+    "test:load": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)"
   },
   "dependencies": {
     "async": "^2.1.4",
