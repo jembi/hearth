@@ -6,7 +6,8 @@ config:
   processor: './load-test-utils.js'
 
 scenarios:
-  - flow:
+  - name: 'Basic matching load test'
+    flow:
     - post:
         url: '/fhir/Patient/$match'
         beforeRequest: 'setAuthHeaders'
