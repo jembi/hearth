@@ -1,0 +1,27 @@
+config:
+  target: 'http://localhost:3447'
+  phases:
+    - duration: 10
+      arrivalRate: 20
+  processor: './load-test-utils.js'
+
+scenarios:
+  - flow:
+    - post:
+        url: '/fhir/Patient/$match'
+        beforeRequest: 'setAuthHeaders'
+        json:
+          resourceType: Parameters
+          parameter:
+          - name: resource
+            resource:
+              resourceType: Patient
+              name:
+              - family:
+                - Matinyana
+                given:
+                - Charlton
+          - name: count
+            valueInteger: 100
+          - name: onlyCertainMatches
+            valueBoolean: false

@@ -4,13 +4,15 @@
   "description": "Hearth, a home for FHIR. A fast FHIR-compliant server.",
   "scripts": {
     "start": "node lib/server.js",
+    "stop": "pkill --signal SIGINT Hearth",
     "dev:start": "NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
     "test:code": "tap --cov --reporter=spec test/**.js",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
-    "test:upload-cov": "tap --coverage-report=lcov && codecov"
+    "test:upload-cov": "tap --coverage-report=lcov && codecov",
+    "test:load": "npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -30,6 +32,7 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "artillery": "^1.5.8-3",
     "codecov": "^1.0.1",
     "glossy": "^0.1.7",
     "libxmljs": "^0.18.4",
