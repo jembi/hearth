@@ -5,7 +5,7 @@
     "port": 3447
   },
   "mongodb": {
-    "url": "mongodb://localhost/hearth-test"
+    "url": "mongodb://hearth-mongo/hearth-test"
   },
   "authentication": {
     "authWindowSeconds": 30
