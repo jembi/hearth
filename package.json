@@ -4,7 +4,7 @@
   "description": "Hearth, a home for FHIR. A fast FHIR-compliant server.",
   "scripts": {
     "start": "node lib/server.js",
-    "stop": "pkill --signal SIGINT Hearth",
+    "stop": "pkill -SIGINT Hearth",
     "dev:start": "NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
     "test:code": "tap --cov --reporter=spec test/**.js",
@@ -13,8 +13,8 @@
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
     "test:load": "npm run test:load-create && npm run test:load-matching && npm run test:clean-db",
-    "test:load-matching": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
-    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
+    "test:load-matching": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_*.json | sort | tail -n 1)",
+    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_*.json | sort | tail -n 1)",
     "test:clean-db": "mongo hearth-test --eval 'db.dropDatabase()'"
   },
   "dependencies": {
