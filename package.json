@@ -12,8 +12,10 @@
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
-    "test:load": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
-    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)"
+    "test:load": "npm run test:load-create && npm run test:load-matching && npm run test:clean-db",
+    "test:load-matching": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
+    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
+    "test:clean-db": "mongo hearth-test --eval 'db.dropDatabase()'"
   },
   "dependencies": {
     "async": "^2.1.4",

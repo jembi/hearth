@@ -16,28 +16,20 @@
     "Patient": {
       "matchingProperties": {
         "name.given": {
-          "algorithm": "exact",
-          "weight": 0.5
+          "algorithm": "double-metaphone",
+          "weight": 0.25
         },
         "name.family": {
+          "algorithm": "double-metaphone",
+          "weight": 0.25
+        },
+        "gender": {
           "algorithm": "exact",
-          "weight": 0.5
-        }
-      }
-    },
-    "Location": {
-      "matchingProperties": {
-        "name": {
-          "algorithm": "exact",
-          "weight": 1
-        }
-      }
-    },
-    "Practitioner": {
-      "matchingProperties": {
-        "name.given": {
-          "algorithm": "exact",
-          "weight": 1
+          "weight": 0.25
+        },
+        "birthDate": {
+          "algorithm": "levenshtein",
+          "weight": 0.25
         }
       }
     }
