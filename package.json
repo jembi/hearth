@@ -12,12 +12,14 @@
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
-    "test:load": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)"
+    "test:load": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/matching.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)",
+    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run test/load-tests/create.yml && npm stop && artillery report $(ls artillery_report_* | sort | tail -n 1)"
   },
   "dependencies": {
     "async": "^2.1.4",
     "atna-audit": "^1.0.1",
     "body-parser": "^1.16.0",
+    "chance": "^1.0.8",
     "cors": "^2.8.1",
     "express": "^4.14.1",
     "lodash": "^4.17.4",
