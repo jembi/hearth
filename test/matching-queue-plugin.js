@@ -197,7 +197,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
           t.equal(body.resourceType, 'Patient', 'result should be a patient')
           t.equal(body.name[0].given[0], 'Update', 'body should contain the latest patient')
 
-          let c = db.collection('matchingQueue')      
+          let c = db.collection('matchingQueue')
           c.findOne({ 'payload.id': id }, (err, doc) => {
             t.error(err)
 
