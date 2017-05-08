@@ -79,7 +79,7 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.notOk(badRequest, 'should not return badRequest')
 
       t.same(resource._transforms.matching.name.given, [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
-      t.notOk(resource._transforms.matching.name.family)
+      t.notOk(resource._transforms.matching.name.family, 'there should be no transform for a null family name')
 
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
       t.end()
