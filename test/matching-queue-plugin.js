@@ -64,40 +64,21 @@ let matchingQueuePluginTestEnv = (t, test) => {
   })
 }
 
-tap.test('Matching Queue Plugin - should NOT add the patient resource to the matching queue collection - interaction not supported (read)', (t) => {
-  // given
-  matchingQueuePluginTestEnv(t, (db, done) => {
-    const resource = JSON.parse(JSON.stringify(testResourceTemplate))
-
-    // when
-    matchingQueuePlugin.hooks.after[0].function('read', {}, 'Patient', resource, (err, badRequest) => {
-      // then
-      t.error(err)
-      t.ok(badRequest)
-      t.equal(badRequest.message, 'Supplied interaction "read" is not supported in this plugin', `should return a bad request error: Supplied interaction "read" is not supported in this plugin`)
-
-      done()
-    })
-  })
-})
-
 tap.test('Matching Queue Plugin - should add the patient resource to the matching queue collection', (t) => {
   // given
   matchingQueuePluginTestEnv(t, (db, done) => {
     const resource = JSON.parse(JSON.stringify(testResourceTemplate))
 
     // when
-    matchingQueuePlugin.hooks.after[0].function('create', {}, 'Patient', resource, (err, badRequest, queueObj) => {
+    matchingQueuePlugin.hooks.after[0].function('create', {}, 'Patient', resource, (err, badRequest) => {
       // then
       t.error(err)
       t.error(badRequest)
-      t.ok(queueObj)
 
       let c = db.collection('matchingQueue')
-      c.findOne({ _id: ObjectID(queueObj.queueId) }, (err, doc) => {
+      c.findOne({}, (err, doc) => {
         t.error(err)
 
-        t.equal(doc._id.toString(), queueObj.queueId, `should return a queued document with id: ${queueObj.queueId}`)
         t.equal(doc.payload.active, true, `should return a queued document with a status of: active`)
         t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
         t.equal(doc.payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
@@ -198,12 +179,15 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
           t.equal(body.name[0].given[0], 'Update', 'body should contain the latest patient')
 
           let c = db.collection('matchingQueue')
-          c.findOne({ 'payload.id': id }, (err, doc) => {
+          c.find().toArray((err, results) => {
             t.error(err)
 
-            t.equal(doc.payload.active, true, `should return a queued document with a status of: active`)
-            t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
-            t.equal(doc.payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
+            t.equal(results.length, 2, `should return a results array with 2 resources`)
+            t.equal(results[0].payload.active, true, `should return a queued document with a status of: active`)
+            t.equal(results[0].payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
+            t.equal(results[0].payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
+            t.equal(results[0].payload.name[0].given[0], 'Charlton', `should return a queued document with a given name value of: Charlton`)
+            t.equal(results[1].payload.name[0].given[0], 'Update', `should return a queued document with a given name value of: Update`)
 
             done()
           })
