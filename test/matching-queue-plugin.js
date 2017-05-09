@@ -1,7 +1,6 @@
 'use strict'
 
 const tap = require('tap')
-const ObjectID = require('mongodb').ObjectID
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
