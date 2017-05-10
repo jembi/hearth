@@ -112,11 +112,10 @@ tap.test('Resource Linking - Should update an array Patient resources with a lin
       t.notOk(results[3].link, 0, `should not have a link property`)
 
       // when
-      resourceLinking.processLinkResourcesArray(resource.entry, referenceLink, (err, badRequest, updated) => {
+      resourceLinking.addLinkReferenceToMatches(resource.entry, referenceLink, (err, badRequest) => {
         // then
         t.error(err)
         t.error(badRequest)
-        t.ok(updated)
 
         c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
           t.error(err)
