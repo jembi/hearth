@@ -7,6 +7,7 @@ const server = require('../lib/server')
 const request = require('request')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
+const locationResource = require('./resources/Location-1.json')
 
 const testResourceTemplate = {
   'resourceType': 'Patient',
@@ -191,6 +192,70 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
             done()
           })
         })
+      })
+    })
+  })
+})
+
+
+
+tap.test('Matching Queue Plugin - should return 400 if posted parameters resourceType is not allowed', (t) => {
+  // given
+  matchingQueuePluginTestEnv(t, (db, done) => {
+    const resource = JSON.parse(JSON.stringify(testResourceTemplate))
+
+    // when
+    request.post({
+      url: 'http://localhost:3447/fhir/Procedure',
+      headers: headers,
+      body: resource,
+      json: true
+    }, (err, res, body) => {
+      // then
+      t.error(err)
+      t.ok(body)
+
+      t.error(err)
+      t.equal(res.statusCode, 400, 'response status code should be 400')
+      t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
+      t.equal(body.issue[0].severity, 'error')
+      t.equal(body.issue[0].code, 'invalid')
+      t.equal(body.issue[0].details.text, 'Invalid resource type')
+
+      done()
+    })
+  })
+})
+
+tap.test('Matching Queue Plugin - should add the location resource to the matching queue collection via create API request', (t) => {
+  // given
+  matchingQueuePluginTestEnv(t, (db, done) => {
+    const resource = JSON.parse(JSON.stringify(locationResource))
+    delete resource.id
+
+    // when
+    request.post({
+      url: 'http://localhost:3447/fhir/Location',
+      headers: headers,
+      body: resource,
+      json: true
+    }, (err, res, body) => {
+      // then
+      t.error(err)
+      t.ok(body)
+
+      const locationId = res.headers.location.replace('/fhir/Location/', '').replace(/\/_history\/.*/, '')
+
+      let c = db.collection('matchingQueue')
+      c.findOne({ 'payload.id': locationId }, (err, doc) => {
+        t.error(err)
+
+        t.equal(doc.payload.status, 'active', `should return a queued document with a status of: active`)
+        t.equal(doc.payload.name, resource.name, `should return a queued document with a name of: ${resource.name}`)
+        t.equal(doc.payload.position.longitude, resource.position.longitude, `should return a queued document with a longitude position of: ${resource.position.longitude}`)
+        t.equal(doc.payload.position.latitude, resource.position.latitude, `should return a queued document with a latitude position of: ${resource.position.latitude}`)
+
+        done()
       })
     })
   })
