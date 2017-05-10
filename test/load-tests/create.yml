@@ -1,0 +1,16 @@
+config:
+  target: 'http://localhost:3447'
+  phases:
+    - duration: 1
+      arrivalCount: 1
+  processor: './load-test-utils.js'
+scenarios:
+  - name: 'Creating patient for matching load test'
+    flow:
+    - loop:
+      - post:
+          url: '/fhir/Patient'
+          beforeRequest:
+            - 'setAuthHeaders'
+            - 'createUniquePatient'
+      count: 3000
