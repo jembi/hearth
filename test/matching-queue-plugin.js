@@ -254,7 +254,7 @@ tap.test('Matching Queue Plugin - should add the location resource to the matchi
         t.equal(doc.payload.position.longitude, resource.position.longitude, `should return a queued document with a longitude position of: ${resource.position.longitude}`)
         t.equal(doc.payload.position.latitude, resource.position.latitude, `should return a queued document with a latitude position of: ${resource.position.latitude}`)
 
-        // done()
+        done()
       })
     })
   })
