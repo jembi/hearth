@@ -213,7 +213,6 @@ tap.test('Matching Queue Plugin - should return 400 if posted parameters resourc
       t.error(err)
       t.ok(body)
 
-      t.error(err)
       t.equal(res.statusCode, 400, 'response status code should be 400')
       t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
       t.equal(body.issue[0].severity, 'error')
@@ -248,12 +247,14 @@ tap.test('Matching Queue Plugin - should add the location resource to the matchi
       c.findOne({ 'payload.id': locationId }, (err, doc) => {
         t.error(err)
 
+        console.log(doc)
+
         t.equal(doc.payload.status, 'active', `should return a queued document with a status of: active`)
         t.equal(doc.payload.name, resource.name, `should return a queued document with a name of: ${resource.name}`)
         t.equal(doc.payload.position.longitude, resource.position.longitude, `should return a queued document with a longitude position of: ${resource.position.longitude}`)
         t.equal(doc.payload.position.latitude, resource.position.latitude, `should return a queued document with a latitude position of: ${resource.position.latitude}`)
 
-        done()
+        // done()
       })
     })
   })
