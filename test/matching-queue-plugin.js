@@ -247,8 +247,6 @@ tap.test('Matching Queue Plugin - should add the location resource to the matchi
       c.findOne({ 'payload.id': locationId }, (err, doc) => {
         t.error(err)
 
-        console.log(doc)
-
         t.equal(doc.payload.status, 'active', `should return a queued document with a status of: active`)
         t.equal(doc.payload.name, resource.name, `should return a queued document with a name of: ${resource.name}`)
         t.equal(doc.payload.position.longitude, resource.position.longitude, `should return a queued document with a longitude position of: ${resource.position.longitude}`)

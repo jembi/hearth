@@ -2,8 +2,8 @@
 
 const tap = require('tap')
 
-const server = require('../lib/server')
 const env = require('./test-env/init')()
+const server = require('../lib/server')
 const config = require('../lib/config')
 
 let createWorkersTest = (t, test) => {
