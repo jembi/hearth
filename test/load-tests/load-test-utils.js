@@ -25,7 +25,7 @@ module.exports = {
     patient.name[0].prefix = [chance.prefix()]
     patient.name[0].given = [chance.first()]
     patient.name[0].family = [chance.last()]
-    patient.gender = chance.gender()
+    patient.gender = chance.gender().toLowerCase()
     patient.birthDate = moment(chance.birthday()).format('YYYY-MM-DD')
     requestParams.json = patient
     next()
