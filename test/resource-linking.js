@@ -99,7 +99,7 @@ tap.test('Resource Linking - Should update an array Patient resources with a lin
     const referenceLink = 'http://localhost:3447/fhir/Patient/12345678987654321'
 
     let c = db.collection('Patient')
-    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).toArray((err, results) => {
+    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
       t.error(err)
 
       t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
@@ -118,7 +118,7 @@ tap.test('Resource Linking - Should update an array Patient resources with a lin
         t.error(badRequest)
         t.ok(updated)
 
-        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).toArray((err, results) => {
+        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
           t.error(err)
 
           t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
