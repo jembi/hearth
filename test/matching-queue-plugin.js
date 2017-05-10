@@ -197,8 +197,6 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
   })
 })
 
-
-
 tap.test('Matching Queue Plugin - should return 400 if posted parameters resourceType is not allowed', (t) => {
   // given
   matchingQueuePluginTestEnv(t, (db, done) => {
