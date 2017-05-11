@@ -25,7 +25,6 @@
     }
   },
   "matchingQueue": {
-    "queueCollectionName": "matchingQueue",
     "numberOfWorkers": 0,
     "pollingInterval": 1000
   }
