@@ -213,7 +213,6 @@ tap.test('Matching Queue Plugin - should return 400 if posted parameters resourc
       t.error(err)
       t.ok(body)
 
-      t.error(err)
       t.equal(res.statusCode, 400, 'response status code should be 400')
       t.equal(body.resourceType, 'OperationOutcome', 'Reponse body should be an Operation Outcome')
       t.equal(body.issue[0].severity, 'error')

@@ -7,6 +7,8 @@ const cp = require('child_process')
 const env = require('./test-env/init')()
 const config = require('../lib/config')
 
+const patientResource = require('./resources/Patient-1.json')
+
 let testQueue
 const matchingQueueTest = (queueSize, t, test) => {
   env.initDB((err, db) => {
@@ -15,7 +17,7 @@ const matchingQueueTest = (queueSize, t, test) => {
     testQueue = mongoDbQueue(db, config.getConf('matchingQueue:queueCollectionName'))
     const testArray = []
     for (let i = 0; i < queueSize; i++) {
-      testArray[i] = { test: i }
+      testArray[i] = JSON.parse(JSON.stringify(patientResource))
     }
 
     const promises = []
