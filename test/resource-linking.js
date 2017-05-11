@@ -72,7 +72,7 @@ tap.test('Resource Linking - Should update a Patient resource with a link to a m
       t.equal(doc.link.length, 2, `should have a link total of: 2`)
 
       // when
-      resourceLinking.linkResource(resource, referenceLink, (err, badRequest) => {
+      resourceLinking.linkResource(resource, referenceLink, 'replaces', '0.95', (err, badRequest) => {
         // then
         t.error(err)
         t.error(badRequest)
@@ -82,8 +82,10 @@ tap.test('Resource Linking - Should update a Patient resource with a link to a m
 
           t.equal(doc.link.length, 3, `should have a link total of: 3`)
           // newly added link at index 2
-          t.equal(doc.link[2].type, 'refer', `should have a link type of: refer`)
+          t.equal(doc.link[2].type, 'replaces', `should have a link type of: replaces`)
           t.equal(doc.link[2].other.reference, referenceLink, `should have a reference link of: ${referenceLink}`)
+          t.equals(doc.link[2].extension[0].url, 'http://hearth.org/link-matching-score', 'should add correct extension')
+          t.equals(doc.link[2].extension[0].valueDecimal, '0.95', 'should add correct score')
 
           done()
         })
@@ -122,10 +124,12 @@ tap.test('Resource Linking - Should update an array Patient resources with a lin
 
           t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
           t.equal(results[0].link.length, 3, `should have a link total of: 3`)
+          t.equal(results[0].link[2].type, 'replaces', `should have a link type of: replaces`)
           t.equal(results[1].id, '2222222222', `should have a resource id of: 2222222222`)
           t.equal(results[1].link.length, 1, `should have a link total of 1 - Link already exists`)
           t.equal(results[2].id, '3333333333', `should have a resource id of: 3333333333`)
           t.equal(results[2].link.length, 1, `should have a link total of: 1`)
+          t.equal(results[2].link[0].type, 'probable-duplicate', `should have a link type of: probable-duplicate`)
           t.equal(results[3].id, '4444444444', `should have a resource id of: 4444444444`)
           t.notOk(results[3].link, 0, `should not have a link property`)
 
