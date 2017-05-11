@@ -72,10 +72,9 @@ tap.test('Resource Linking - Should update a Patient resource with a link to a m
       t.equal(doc.link.length, 2, `should have a link total of: 2`)
 
       // when
-      resourceLinking.linkResource(resource, referenceLink, 'replaces', '0.95', (err, badRequest) => {
+      resourceLinking.linkResource(resource, referenceLink, (err) => {
         // then
         t.error(err)
-        t.error(badRequest)
 
         c.findOne({ id: resource.id }, (err, doc) => {
           t.error(err)
@@ -114,10 +113,9 @@ tap.test('Resource Linking - Should update an array Patient resources with a lin
       t.notOk(results[3].link, 0, `should not have a link property`)
 
       // when
-      resourceLinking.addLinkReferenceToMatches(resource.entry, referenceLink, (err, badRequest) => {
+      resourceLinking.addLinkReferenceToMatches(resource.entry, referenceLink, (err) => {
         // then
         t.error(err)
-        t.error(badRequest)
 
         c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
           t.error(err)
