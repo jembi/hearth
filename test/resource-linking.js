@@ -72,7 +72,7 @@ tap.test('Resource Linking - Should update a Patient resource with a link to a m
       t.equal(doc.link.length, 2, `should have a link total of: 2`)
 
       // when
-      resourceLinking.linkResource(resource, referenceLink, (err) => {
+      resourceLinking.linkResource(resource, referenceLink, 'replaces', '0.95', (err) => {
         // then
         t.error(err)
 
