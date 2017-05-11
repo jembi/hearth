@@ -176,7 +176,7 @@
       },
       "search":{
         "extension":{
-          "url":"http://hl7.org/fhir/StructureDefinition/patient-mpi-match",
+          "url":"http://hl7.org/fhir/StructureDefinition/match-grade",
           "valueCode":"certain"
         },
         "score":1
@@ -342,7 +342,7 @@
       },
       "search":{
         "extension":{
-          "url":"http://hl7.org/fhir/StructureDefinition/patient-mpi-match",
+          "url":"http://hl7.org/fhir/StructureDefinition/match-grade",
           "valueCode":"probable"
         },
         "score":0.75
@@ -501,7 +501,7 @@
       },
       "search":{
         "extension":{
-          "url":"http://hl7.org/fhir/StructureDefinition/patient-mpi-match",
+          "url":"http://hl7.org/fhir/StructureDefinition/match-grade",
           "valueCode":"probable"
         },
         "score":0.75
@@ -660,7 +660,7 @@
       },
       "search":{
         "extension":{
-          "url":"http://hl7.org/fhir/StructureDefinition/patient-mpi-match",
+          "url":"http://hl7.org/fhir/StructureDefinition/match-grade",
           "valueCode":"certainly-not"
         },
         "score":0.0625
