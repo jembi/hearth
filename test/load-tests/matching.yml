@@ -1,0 +1,41 @@
+config:
+  target: 'http://localhost:3447'
+  phases:
+    - duration: 30
+      arrivalRate: 1
+      # rampTo: 5
+      name: 'Warm up'
+    # - duration: 60
+    #   arrivalRate: 5
+    #   name: 'Low load'
+    # - duration: 60
+    #   arrivalRate: 10
+    #   name: 'Medium load'
+    # - duration: 60
+    #   arrivalRate: 20
+    #   name: 'High load'
+  processor: './load-test-utils.js'
+
+scenarios:
+  - name: 'Patient matching query'
+    flow:
+    - post:
+        url: '/fhir/Patient/$match'
+        beforeRequest: 'setAuthHeaders'
+        json:
+          resourceType: Parameters
+          parameter:
+          - name: resource
+            resource:
+              resourceType: Patient
+              name:
+              - family:
+                - Matinyana
+                given:
+                - Charlton
+              gender: male
+              birthDate: '1972-02-10'
+          - name: count
+            valueInteger: 100
+          - name: onlyCertainMatches
+            valueBoolean: false
