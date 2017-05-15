@@ -333,7 +333,7 @@
         "link":[
           {
             "other": {
-              "reference": "http://localhost:3447/fhir/Patient/12345678987654321"
+              "reference": "Patient/1111111111"
             },
             "type":"refer"
           }

@@ -14,7 +14,7 @@ const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
-emmarentia.link = [{ 'other': { 'reference': 'http://localhost:3447/fhir/Patient/12345678987654321' }, 'type': constants.LINK_TYPE_CERTAIN_DUPLICATE_SOURCE }]
+emmarentia.link = [{ 'other': { 'reference': 'Patient/1111111111' }, 'type': constants.LINK_TYPE_CERTAIN_DUPLICATE_SOURCE }]
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
 delete nikita.link
@@ -83,7 +83,8 @@ tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an arr
   // given
   resourceLinkingTestEnv(t, (db, done) => {
     const bundle = _.cloneDeep(matchingResultSet)
-    const referenceLink = 'http://localhost:3447/fhir/Patient/12345678987654321'
+    // const referenceLink = 'http://localhost:3447/fhir/Patient/12345678987654321'
+    const resource = charlton
 
     let c = db.collection('Patient')
     c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
@@ -99,7 +100,7 @@ tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an arr
       t.notOk(results[3].link, 0, `should not have a link property`)
 
       // when
-      resourceLinking.addLinkReferenceToMatches(bundle.entry, referenceLink, (err) => {
+      resourceLinking.addLinkReferenceToMatches(bundle.entry, resource, (err) => {
         // then
         t.error(err)
 
