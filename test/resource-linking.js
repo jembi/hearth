@@ -83,7 +83,6 @@ tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an arr
   // given
   resourceLinkingTestEnv(t, (db, done) => {
     const bundle = _.cloneDeep(matchingResultSet)
-    // const referenceLink = 'http://localhost:3447/fhir/Patient/12345678987654321'
     const resource = charlton
 
     let c = db.collection('Patient')
