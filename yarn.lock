@@ -2151,6 +2151,10 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+neo-async@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.1.0.tgz#54e01a060b84b8731c62778b8aa9341892662c89"
+
 node-pre-gyp@~0.6.32:
   version "0.6.34"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.34.tgz#94ad1c798a11d7fc67381b50d47f8cc18d9799f7"
