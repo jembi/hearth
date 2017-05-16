@@ -19,12 +19,23 @@ const matchingQueueTest = (queueSize, t, test) => {
     const testArray = []
     for (let i = 0; i < queueSize; i++) {
       testArray[i] = JSON.parse(JSON.stringify(patientResource))
+      testArray[i].id = i
     }
 
     const promises = []
+    const c = db.collection('Patient')
     testArray.forEach((obj) => {
       promises.push(new Promise((resolve, reject) => {
         testQueue.add(obj, (err) => {
+          if (err) {
+            reject(err)
+          }
+          resolve()
+        })
+      }))
+
+      promises.push(new Promise((resolve, reject) => {
+        c.insertOne(obj, (err) => {
           if (err) {
             reject(err)
           }
@@ -61,6 +72,8 @@ tap.test('should create a size one queue and start one worker to read off the qu
       messages.push(msg)
       if (messages.length === queueSize + 2) {
         messages.forEach((m, i) => {
+          t.error(m.error)
+
           if (i === 0) {
             return t.equal(m, 'testWorker started')
           }
@@ -98,6 +111,8 @@ tap.test('should create a size 10 queue and start 5 workers to read off the queu
 
           if (messages.length === queueSize / amountOfWorkers + 2) {
             messages.forEach((m, i) => {
+              t.error(m.error)
+
               if (i === 0) {
                 return t.equal(m, `${workerName} started`)
               }

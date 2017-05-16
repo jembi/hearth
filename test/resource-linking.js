@@ -5,7 +5,7 @@ const tap = require('tap')
 const env = require('./test-env/init')()
 const server = require('../lib/server')
 const _ = require('lodash')
-const matchingResultSet = require('./resources/matching-resultset.json')
+const matchesArray = require('./resources/matching-resultset.json')
 const constants = require('../lib/constants')
 
 const testPatients = env.testPatients()
@@ -14,7 +14,7 @@ const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
-emmarentia.link = [{ 'other': { 'reference': 'Patient/1111111111' }, 'type': constants.LINK_TYPE_CERTAIN_DUPLICATE_SOURCE }]
+emmarentia.link = [{ other: { reference: 'Patient/1111111111' }, type: constants.LINK_TYPE_CERTAIN_DUPLICATE_SOURCE }]
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
 delete nikita.link
@@ -59,14 +59,14 @@ const resourceLinkingTestEnv = (t, test) => {
   })
 }
 
-tap.test('Resource Linking - .linkResource() - Should update a Patient resource with a matching link to a another patient', (t) => {
+tap.test('Resource Linking - .addLinkToResource() - Should update a Patient resource with a matching link to a another patient', (t) => {
   // given
   resourceLinkingTestEnv(t, (db, done) => {
-    const resource = _.cloneDeep(matchingResultSet).entry[0].resource
+    const resource = _.cloneDeep(matchesArray)[0]
     const referenceLink = 'http://localhost:3447/fhir/Patient/12345678987654321'
 
     // when
-    const doc = resourceLinking.linkResource(resource, referenceLink, 'certain-duplicate-source', '0.95')
+    const doc = resourceLinking.addLinkToResource(resource, referenceLink, 'certain-duplicate-source', '0.95')
 
     t.equal(doc.link.length, 3, `should have a link total of: 3`)
     // newly added link at index 2
@@ -79,10 +79,10 @@ tap.test('Resource Linking - .linkResource() - Should update a Patient resource 
   })
 })
 
-tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an array of Patient resources matches with a link to the patient that was the source of the match', (t) => {
+tap.test('Resource Linking - .addLinkToMatches() - Should update an array of Patient resources matches with a link to the patient that was the source of the match', (t) => {
   // given
   resourceLinkingTestEnv(t, (db, done) => {
-    const bundle = _.cloneDeep(matchingResultSet)
+    const testMatchesArray = _.cloneDeep(matchesArray)
     const resource = charlton
 
     let c = db.collection('Patient')
@@ -99,7 +99,7 @@ tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an arr
       t.notOk(results[3].link, 0, `should not have a link property`)
 
       // when
-      resourceLinking.addLinkReferenceToMatches(bundle.entry, resource, (err) => {
+      resourceLinking.addLinkToMatches(testMatchesArray, resource, (err) => {
         // then
         t.error(err)
 
@@ -127,19 +127,19 @@ tap.test('Resource Linking - .addLinkReferenceToMatches() - Should update an arr
 tap.test('Resource Linking - .addMatchesLinksToResource() - Should update a Patient resource with link to matching patient resources', (t) => {
   // given
   resourceLinkingTestEnv(t, (db, done) => {
-    const bundle = _.cloneDeep(matchingResultSet)
-    bundle.entry[1].search.extension.valueCode = 'certain'
-    bundle.entry[1].search.score = 1
-    bundle.entry[2].search.extension.valueCode = 'probable'
-    bundle.entry[2].search.score = 0.85
-    bundle.entry[3].search.extension.valueCode = 'possible'
-    bundle.entry[3].search.score = 0.56
+    const testMatchesArray = _.cloneDeep(matchesArray)
+    testMatchesArray[1]._mpi.search.extension.valueCode = 'certain'
+    testMatchesArray[1]._mpi.search.score = 1
+    testMatchesArray[2]._mpi.search.extension.valueCode = 'probable'
+    testMatchesArray[2]._mpi.search.score = 0.85
+    testMatchesArray[3]._mpi.search.extension.valueCode = 'possible'
+    testMatchesArray[3]._mpi.search.score = 0.56
 
-    const resource = bundle.entry.shift().resource
+    const resource = testMatchesArray.shift()
     resource.link = []
 
     // when
-    resourceLinking.addMatchesLinksToResource(bundle.entry, resource, (err) => {
+    resourceLinking.addMatchesLinksToResource(testMatchesArray, resource, (err) => {
       t.error(err)
 
       // then
