@@ -62,7 +62,7 @@ const matchingQueueTest = (queueSize, t, test) => {
 
 tap.test('should create a size one queue and start one worker to read off the queue', (t) => {
   config.setConf('matchingQueue:numberOfWorkers', 1)
-  config.setConf('matchingQueue:pollingInterval', 10)
+  config.setConf('matchingQueue:pollingInterval', 10000)
   const queueSize = 1
 
   matchingQueueTest(queueSize, t, (db, done) => {

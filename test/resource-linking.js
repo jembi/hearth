@@ -185,3 +185,62 @@ tap.test('Resource Linking - .addMatchesLinksToResource() - Should update a Pati
     })
   })
 })
+
+tap.test('Resource Linking - .removePreviousMatchingLinks() - Should remove all reference links to and from a resource on update', (t) => {
+  resourceLinkingTestEnv(t, (db, done) => {
+    const testResource = _.cloneDeep(charlton)
+    testResource.link = [
+      { other: { reference: 'Patient/2222222222' }, type: constants.LINK_TYPE_CERTAIN_DUPLICATE_OF },
+      { other: { reference: 'leave me be' }, type: 'should exist' }
+    ]
+
+    const c = db.collection('Patient')
+    c.findOne({ id: '2222222222' }, (err, result) => {
+      t.error(err)
+
+      t.equal(result.link[0].other.reference, 'Patient/1111111111', 'link should exist before test')
+
+      resourceLinking.removePreviousMatchingLinks(testResource, (err, result) => {
+        t.error(err)
+
+        t.equal(result.link[0].other.reference, 'leave me be', 'links with no source should remain')
+        t.equal(result.link.length, 1, 'Links that have sources should be removed')
+
+        c.findOne({ id: '2222222222' }, (err, result) => {
+          t.error(err)
+          t.equal(result.link, null, 'source link should be removed by test')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('Resource Linking - .removePreviousMatchingLinks() - Should return the resource as is on create', (t) => {
+  resourceLinkingTestEnv(t, (db, done) => {
+    const testResource = _.cloneDeep(mwawi)
+    testResource.link = [
+      { other: { reference: 'Patient/2222222222' }, type: constants.LINK_TYPE_CERTAIN_DUPLICATE_OF },
+      { other: { reference: 'leave me be' }, type: 'should exist' }
+    ]
+
+    const c = db.collection('Patient')
+    c.findOne({ id: '2222222222' }, (err, result) => {
+      t.error(err)
+
+      t.equal(result.link[0].other.reference, 'Patient/1111111111', 'link should exist before test')
+
+      resourceLinking.removePreviousMatchingLinks(testResource, (err, result) => {
+        t.error(err)
+
+        t.equal(result.link.length, 2, 'links with no source should remain')
+
+        c.findOne({ id: '2222222222' }, (err, result) => {
+          t.error(err)
+          t.equal(result.link[0].other.reference, 'Patient/1111111111', 'link should exist after test')
+          done()
+        })
+      })
+    })
+  })
+})
