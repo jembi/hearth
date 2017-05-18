@@ -78,8 +78,6 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
 
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
-    // const util = require('util')
-    // console.log(util.inspect(body.entry, false, null))
 
     const actual = hashAndSortEntryArray(body.entry)
     t.deepEqual(actual, tp.expectedResponse.entry, 'Response contains expected entries')
