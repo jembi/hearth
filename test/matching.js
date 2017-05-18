@@ -3,6 +3,7 @@
 const tap = require('tap')
 const request = require('request')
 const crypto = require('crypto')
+const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
@@ -250,55 +251,62 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
   matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
+  const mwawi = _.cloneDeep(testPatients.mwawi.patient)
+  mwawi.id = '4444444444'
+  mwawi.name[0].given = ['Emmarentia']
+  mwawi.name[0].family = ['Matinyana']
+
   basicMatchingTest(t, (db, done) => {
     delete charlton._id
     delete emmarentia._id
     delete nikita._id
-    const expectedResponse = {
-      total: 3,
-      entry: [
-        {
-          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: charlton,
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
-              valueCode: 'certain'
-            },
-            score: 1
-          }
-        }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: emmarentia,
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
-              valueCode: 'certainly-not'
-            },
-            score: 0.15
-          }
-        }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
-          resource: nikita,
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
-              valueCode: 'certainly-not'
-            },
-            score: 0.0625
-          }
-        }
-      ]
-    }
-    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
-    const testParams = {
-      body: testBody,
-      expectedResponse: expectedResponse,
-      statusCode: 200
-    }
 
-    requestAndAssertResponseBundle(testParams, t, done)
+    const c = db.collection('Patient')
+    c.insert(mwawi, (err, doc) => {
+      t.error(err)
+      t.ok(doc)
+
+      delete mwawi._id
+
+      const expectedResponse = {
+        total: 2,
+        entry: [
+          {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton,
+            search: {
+              extension: {
+                url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+                valueCode: 'certain'
+              },
+              score: 1
+            }
+          }, {
+            fullUrl: 'http://localhost:3447/fhir/Patient/4444444444',
+            resource: mwawi,
+            search: {
+              extension: {
+                url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+                valueCode: 'possible'
+              },
+              score: 0.5
+            }
+          }
+        ]
+      }
+      expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+      const testParams = {
+        body: testBody,
+        expectedResponse: expectedResponse,
+        statusCode: 200
+      }
+
+      requestAndAssertResponseBundle(testParams, t, done)
+    })
+
+
   })
 })
 
