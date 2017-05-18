@@ -1,6 +1,6 @@
 {
   "matchSettings": {
-    "defaultBatchSize": 100,
+    "defaultBatchSize": 10,
     "defaultCount": 1000,
     "scores": {
       "certain": 1,
