@@ -261,7 +261,6 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
     delete emmarentia._id
     delete nikita._id
 
-
     const c = db.collection('Patient')
     c.insert(mwawi, (err, doc) => {
       t.error(err)
@@ -305,8 +304,6 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
 
       requestAndAssertResponseBundle(testParams, t, done)
     })
-
-
   })
 })
 
