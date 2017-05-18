@@ -10,6 +10,12 @@
       "exact": "exact-match",
       "double-metaphone": "exact-match-representation",
       "levenshtein": "realtime"
+    },
+    "discriminators": {
+      "gender": true,
+      "birthDate": {
+        "birthYearThreshold": 5
+      }
     }
   },
   "resourceConfig": {

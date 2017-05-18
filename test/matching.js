@@ -13,10 +13,16 @@ const testPatients = env.testPatients()
 
 const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'
+charlton.birthDate = '1991-07-07'
+charlton.gender = 'male'
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
+emmarentia.birthDate = '1937-04-31'
+emmarentia.gender = 'female'
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
+nikita.birthDate = '1965-05-18'
+nikita.gender = 'other'
 
 const basicMatchingTest = (t, test) => {
   env.initDB((err, db) => {
@@ -72,6 +78,8 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
 
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
+    // const util = require('util')
+    // console.log(util.inspect(body.entry, false, null))
 
     const actual = hashAndSortEntryArray(body.entry)
     t.deepEqual(actual, tp.expectedResponse.entry, 'Response contains expected entries')
@@ -381,5 +389,129 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
         })
       })
     })
+  })
+})
+
+const discriminatorMatchingConfig = {
+  matchingProperties: {
+    'name.given': {
+      algorithm: 'exact',
+      weight: 0.5
+    },
+    'name.family': {
+      algorithm: 'levenshtein',
+      weight: 0.5
+    }
+  }
+}
+
+tap.test('should discriminate on birthDate', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(discriminatorMatchingConfig))
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.birthDate = '1991-07-08'
+
+  basicMatchingTest(t, (db, done) => {
+    delete charlton._id
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: charlton,
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on birthDate', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.birthDate = '1938-07-08'
+
+  basicMatchingTest(t, (db, done) => {
+    delete emmarentia._id
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: emmarentia,
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              valueCode: 'certainly-not'
+            },
+            score: 0.15
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on gender', (t) => {
+  // Given
+  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.gender = 'female'
+
+  basicMatchingTest(t, (db, done) => {
+    delete emmarentia._id
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: emmarentia,
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              valueCode: 'certainly-not'
+            },
+            score: 0.15
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
   })
 })
