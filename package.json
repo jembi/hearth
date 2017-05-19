@@ -13,8 +13,8 @@
     "cov": "npm run test:code -- --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
     "test:load": "npm run test:load-create && npm run test:load-matching && npm run test:clean-db",
-    "test:load-matching": "NODE_ENV=test npm start & sleep 2 && artillery run -o artillery/load-matching.json test/load-tests/matching.yml && npm stop && artillery report artillery/load-matching.json",
-    "test:load-create": "NODE_ENV=test npm start & sleep 2 && artillery run -o artillery/load-create.json test/load-tests/create.yml && npm stop && artillery report artillery/load-create.json",
+    "test:load-matching": "NODE_ENV=test npm start -- --createIndexes & sleep 2 && artillery run -o artillery/load-matching.json test/load-tests/matching.yml && npm stop && artillery report artillery/load-matching.json",
+    "test:load-create": "NODE_ENV=test npm start -- --createIndexes & sleep 2 && artillery run -o artillery/load-create.json test/load-tests/create.yml && npm stop && artillery report artillery/load-create.json",
     "test:clean-db": "mongo hearth-test --eval 'db.dropDatabase()'"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "codecov": "^1.0.1",
     "glossy": "^0.1.7",
     "libxmljs": "^0.18.4",
+    "neo-async": "^2.1.0",
     "snazzy": "^6.0.0",
     "standard": "^8.6.0",
     "tap": "^10.1.0"
