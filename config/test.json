@@ -8,7 +8,7 @@
     "url": "mongodb://localhost/hearth-test"
   },
   "authentication": {
-    "authWindowSeconds": 30
+    "authWindowSeconds": 50
   },
   "logger": {
     "level": "error"
@@ -23,5 +23,9 @@
       "cert": null,
       "ca": null
     }
+  },
+  "matchingQueue": {
+    "numberOfWorkers": 0,
+    "pollingInterval": 1000
   }
 }

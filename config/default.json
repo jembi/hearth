@@ -24,5 +24,9 @@
       "cert": null,
       "ca": null
     }
+  },
+  "matchingQueue": {
+    "numberOfWorkers": 2,
+    "pollingInterval": 1000
   }
 }
