@@ -3,12 +3,23 @@
 const mongoDbQueue = require('mongodb-queue')
 const tap = require('tap')
 const cp = require('child_process')
+const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 
 const env = require('./test-env/init')()
 const config = require('../lib/config')
 const constants = require('../lib/constants')
 
 const patientResource = require('./resources/Patient-1.json')
+patientResource._transforms = {
+  matching: {
+    name: [
+      {
+        given: [],
+        family: []
+      }
+    ]
+  }
+}
 
 let testQueue
 const matchingQueueTest = (queueSize, t, test) => {
@@ -153,6 +164,94 @@ tap.test('should create a size 10 queue and start 5 workers to read off the queu
       })
     }).catch((err) => {
       t.error(err)
+    })
+  })
+})
+
+tap.test('should successfully update score of patient links', (t) => {
+  const testPatient1 = JSON.parse(JSON.stringify(patientResource))
+  testPatient1.id = '1111111111'
+  testPatient1._transforms.matching.name[0].given[0] = doubleMetaphone(testPatient1.name[0].given[0])
+  testPatient1._transforms.matching.name[0].family[0] = doubleMetaphone(testPatient1.name[0].family[0])
+  testPatient1.link = [
+    {
+      other: {
+        reference: 'Patient/2222222222'
+      },
+      type: 'possible-duplicate-source',
+      extension: [{
+        url: 'http://hearth.org/link-matching-score',
+        valueDecimal: 0.77
+      }]
+    }
+  ]
+
+  const testPatient2 = JSON.parse(JSON.stringify(patientResource))
+  testPatient2.id = '2222222222'
+  testPatient2._transforms.matching.name[0].given[0] = doubleMetaphone(testPatient2.name[0].given[0])
+  testPatient2._transforms.matching.name[0].family[0] = doubleMetaphone(testPatient2.name[0].family[0])
+  testPatient2.link = [
+    {
+      other: {
+        reference: 'Patient/11111111111'
+      },
+      type: 'possible-duplicate-of',
+      extension: [{
+        url: 'http://hearth.org/link-matching-score',
+        valueDecimal: 0.77
+      }]
+    }
+  ]
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    const c = db.collection('Patient')
+    c.insertMany([testPatient1, testPatient2], (err) => {
+      t.error(err)
+
+      c.find().toArray((err, result) => {
+        t.error(err)
+
+        t.equal(result[0].id, '1111111111', 'Patient1 successfully created')
+        t.equal(result[1].id, '2222222222', 'Patient2 successfully created')
+        const matchingQueue = mongoDbQueue(db, constants.MATCHING_QUEUE_COLLECTION)
+        matchingQueue.add(testPatient2, (err) => {
+          t.error(err)
+
+          const testWorker = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, ['testWorker'])
+          const messages = []
+          testWorker.on('message', (msg) => {
+            messages.push(msg)
+            if (messages.length === 3) {
+              messages.forEach((m, i) => {
+                t.error(m.error)
+
+                if (i === 0) {
+                  return t.equal(m, 'testWorker started')
+                }
+
+                if (i === messages.length - 1) {
+                  return t.equal(m.debug, 'testWorker No records in queue')
+                }
+
+                t.equal(m.info.substring(0, m.info.length - 24), 'testWorker Successfully processed queue element with id: ')
+              })
+
+              c.find().toArray((err, results) => {
+                t.error(err)
+
+                t.equal(results.length, 2, 'should be two patients')
+                env.clearDB((err) => {
+                  t.error(err)
+                  testWorker.kill()
+                  t.end()
+                })
+              })
+            }
+          })
+        })
+      })
     })
   })
 })
