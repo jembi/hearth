@@ -230,7 +230,7 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
           resource: charlton,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certain'
             },
             score: 1
@@ -268,7 +268,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
           resource: charlton,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certain'
             },
             score: 1
@@ -278,7 +278,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
           resource: emmarentia,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certainly-not'
             },
             score: 0.15
@@ -288,7 +288,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
           resource: nikita,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certainly-not'
             },
             score: 0.0625

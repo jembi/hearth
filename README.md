@@ -8,7 +8,7 @@ This project aims to provide a fast and lightweight FHIR server that also suppor
 Our high level plan for the project can be found [here](https://docs.google.com/document/d/1wJr-A0xJFEwwR9y5c5tVGb0_rH7IQFBJRhMNRU31Fis/edit?usp=sharing).
 
 ## Usage
-To run in development mode use the followng commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
+To run in development mode use the following commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
 
 ```
 docker run --name hearth-mongo -d -p 27017:27017 mongo
@@ -27,20 +27,23 @@ To run the tests:
 npm test
 ```
 
-## Supported Resources
-* Allergy Intolerance
-* Basic
-* Binary
-* Document Manifest
-* Document Reference
-* Encounter
-* Location
-* Patient
-* Practitioner
-* Procedure Request
-* Procedure
-* Questionnaire Response
-* Questionnaire
+| Supported Resources | Maturity Level |
+| ------------------- | -------------- |
+| Allergy Intolerance     | 3 | 
+| Basic                   | 1 | 
+| Binary                  | 5 | 
+| Document Manifest       | 2 | 
+| Document Reference      | 3 | 
+| Encounter               | 2 | 
+| Location                | 3 | 
+| Patient                 | 5 | 
+| Practitioner            | 3 | 
+| Procedure Request       | 3 | 
+| Procedure               | 3 | 
+| Questionnaire Response  | 3 | 
+| Questionnaire           | 3 | 
+
+link to FHIR list (https://www.hl7.org/fhir/resourcelist.html)
 
 ## Supported Services
 * Patient Identity Cross Reference ([PIXm](http://ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_Suppl_PIXm.pdf))
