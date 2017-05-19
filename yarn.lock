@@ -2102,6 +2102,10 @@ mongodb-core@2.1.10:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
+mongodb-queue@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/mongodb-queue/-/mongodb-queue-3.1.0.tgz#91f8c18d6d52aceb1c947bb5337c071c67485a8f"
+
 mongodb@^2.2.22:
   version "2.2.26"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.26.tgz#1bd50c557c277c98e1a05da38c9839c4922b034a"

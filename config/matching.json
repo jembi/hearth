@@ -33,6 +33,14 @@
           "weight": 0.25
         }
       }
+    },
+    "Location": {
+      "matchingProperties": {
+        "name": {
+          "algorithm": "exact",
+          "weight": 1
+        }
+      }
     }
   }
 }
