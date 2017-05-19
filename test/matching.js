@@ -420,7 +420,7 @@ tap.test('should discriminate on birthDate', (t) => {
           resource: charlton,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certain'
             },
             score: 1
@@ -457,7 +457,7 @@ tap.test('should discriminate on birthDate', (t) => {
           resource: emmarentia,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certainly-not'
             },
             score: 0.15
@@ -494,7 +494,7 @@ tap.test('should discriminate on gender', (t) => {
           resource: emmarentia,
           search: {
             extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/patient-mpi-match',
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certainly-not'
             },
             score: 0.15
