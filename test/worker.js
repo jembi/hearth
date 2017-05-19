@@ -222,21 +222,13 @@ tap.test('should successfully update score of patient links', (t) => {
           const testWorker = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, ['testWorker'])
           const messages = []
           testWorker.on('message', (msg) => {
+            t.error(msg.error)
+
             messages.push(msg)
             if (messages.length === 3) {
-              messages.forEach((m, i) => {
-                t.error(m.error)
-
-                if (i === 0) {
-                  return t.equal(m, 'testWorker started')
-                }
-
-                if (i === messages.length - 1) {
-                  return t.equal(m.debug, 'testWorker No records in queue')
-                }
-
-                t.equal(m.info.substring(0, m.info.length - 24), 'testWorker Successfully processed queue element with id: ')
-              })
+              t.equal(messages[0], 'testWorker started')
+              t.equal(messages[1].info.substring(0, messages[1].info.length - 24), 'testWorker Successfully processed queue element with id: ')
+              t.equal(messages[2].debug, 'testWorker No records in queue')
 
               c.find().toArray((err, results) => {
                 t.error(err)
