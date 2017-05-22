@@ -289,7 +289,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
                 url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
                 valueCode: 'possible'
               },
-              score: 0.5
+              score: 0.65
             }
           }
         ]
