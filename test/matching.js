@@ -3,6 +3,8 @@
 const tap = require('tap')
 const request = require('request')
 const crypto = require('crypto')
+const sinon = require('sinon')
+const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
@@ -11,38 +13,57 @@ const matchingConfig = require('../config/matching')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 const testPatients = env.testPatients()
 
+const sandbox = sinon.sandbox.create()
+
 const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'
-charlton.birthDate = '1991-07-07'
-charlton.gender = 'male'
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
-emmarentia.birthDate = '1937-04-31'
-emmarentia.gender = 'female'
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
-nikita.birthDate = '1965-05-18'
-nikita.gender = 'other'
 
-const basicMatchingTest = (t, test) => {
+const testPatientsTemplate = [charlton, emmarentia, nikita]
+
+const matchOperationBodyTemplate = {
+  resourceType: 'Parameters',
+  parameter: [
+    {
+      name: 'resource',
+      resource: {
+        resourceType: 'Patient',
+        name: [
+          {
+            family: [
+              'Matinyana'
+            ],
+            given: [
+              'Charlton'
+            ]
+          }
+        ]
+      }
+    }, {
+      name: 'count',
+      valueInteger: 100
+    }, {
+      name: 'onlyCertainMatches',
+      valueBoolean: false
+    }
+  ]
+}
+
+const basicMatchingTest = (testPatients, t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
     server.start((err) => {
       t.error(err)
 
-      const patients = []
-
-      patients.push(
-        charlton,
-        emmarentia,
-        nikita
-      )
       const c = db.collection('Patient')
-      c.insertMany(patients, (err, doc) => {
+      c.insertMany(testPatients, { forceServerObjectId: true }, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, patients.length)
+        t.equal(doc.insertedIds.length, testPatients.length)
 
         test(db, () => {
           env.clearDB((err) => {
@@ -85,54 +106,26 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
   })
 }
 
-const matchOperationBodyTemplate = {
-  resourceType: 'Parameters',
-  parameter: [
-    {
-      name: 'resource',
-      resource: {
-        resourceType: 'Patient',
-        name: [
-          {
-            family: [
-              'Matinyana'
-            ],
-            given: [
-              'Charlton'
-            ]
-          }
-        ]
-      }
-    }, {
-      name: 'count',
-      valueInteger: 100
-    }, {
-      name: 'onlyCertainMatches',
-      valueBoolean: false
-    }
-  ]
-}
-
-const matchOperationConfigTemplate = {
-  matchingProperties: {
-    'name.given': {
-      algorithm: 'exact',
-      weight: 0.5
-    },
-    'name.family': {
-      algorithm: 'exact',
-      weight: 0.5
-    }
-  }
-}
+tap.afterEach((done) => {
+  sandbox.restore()
+  done()
+})
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 1 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family[0] = 'NotCertainMatch'
-  basicMatchingTest(t, (db, done) => {
+
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
       url: `http://localhost:3447/fhir/Patient/$match`,
@@ -155,12 +148,21 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
 
 tap.test('should return 409 if multiple certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family.push('Cook')
   testBody.parameter[0].resource.name[0].given.push('Emmarentia')
-  basicMatchingTest(t, (db, done) => {
+
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
       url: `http://localhost:3447/fhir/Patient/$match`,
@@ -183,8 +185,14 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
 
 tap.test('should return 200 if no matches are found and onlyCertainMatches not true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenstein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
   env.initDB((err, db) => {
@@ -217,17 +225,24 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
 
 tap.test('should return 200 and a bundle of patients with search scores exactly matching the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
-  basicMatchingTest(t, (db, done) => {
-    delete charlton._id
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: charlton,
+          resource: testPatients[0],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -252,20 +267,24 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
 
 tap.test('should return 200 and a bundle of patients matching on name.given=levenshtein(weight 0.5) and name.family=exact(weight 0.5)', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
-  basicMatchingTest(t, (db, done) => {
-    delete charlton._id
-    delete emmarentia._id
-    delete nikita._id
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 3,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: charlton,
+          resource: testPatients[0],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -275,7 +294,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
           }
         }, {
           fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: emmarentia,
+          resource: testPatients[1],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -285,7 +304,7 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
           }
         }, {
           fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
-          resource: nikita,
+          resource: testPatients[2],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -310,9 +329,13 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
 
 tap.test('should return 200 and a bundle of patients exactly matching the phonetic representation of the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'double-metaphone'
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm = 'double-metaphone'
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'double-metaphone', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Mwawi']
@@ -349,14 +372,12 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
 
 tap.test('should return 200 and a bundle of patients matching the phonetic representation of a property in the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = {
-    matchingProperties: {
-      'name.given': {
-        algorithm: 'double-metaphone',
-        weight: 1
-      }
-    }
-  }
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Grant', 'Maw'] // [KRNT, KRNT], [M, MF]
@@ -390,34 +411,32 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
   })
 })
 
-const discriminatorMatchingConfig = {
-  matchingProperties: {
-    'name.given': {
-      algorithm: 'exact',
-      weight: 0.5
-    },
-    'name.family': {
-      algorithm: 'levenshtein',
-      weight: 0.5
-    }
-  }
-}
-
 tap.test('should discriminate on birthDate', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(discriminatorMatchingConfig))
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.birthDate = '1991-07-08'
 
-  basicMatchingTest(t, (db, done) => {
-    delete charlton._id
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].birthDate = '1991-07-07'
+  testPatients[1].birthDate = '1937-04-31'
+  testPatients[2].birthDate = '1965-05-18'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: charlton,
+          resource: testPatients[0],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -442,19 +461,30 @@ tap.test('should discriminate on birthDate', (t) => {
 
 tap.test('should discriminate on birthDate', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.birthDate = '1938-07-08'
 
-  basicMatchingTest(t, (db, done) => {
-    delete emmarentia._id
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].birthDate = '1991-07-07'
+  testPatients[1].birthDate = '1937-04-31'
+  testPatients[2].birthDate = '1965-05-18'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: emmarentia,
+          resource: testPatients[1],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -479,25 +509,218 @@ tap.test('should discriminate on birthDate', (t) => {
 
 tap.test('should discriminate on gender', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.matchSettings.discriminators.gender = true
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.gender = 'female'
 
-  basicMatchingTest(t, (db, done) => {
-    delete emmarentia._id
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].gender = 'male'
+  testPatients[1].gender = 'female'
+  testPatients[2].gender = 'other'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: emmarentia,
+          resource: testPatients[1],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
               valueCode: 'certainly-not'
             },
             score: 0.15
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on first letter of given name', (t) => {
+  // Given
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 1 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].name[0].given = ['Charlton']
+  testPatients[1].name[0].given = ['Chemmarentia']
+  testPatients[2].name[0].given = ['Nikita']
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 2,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: testPatients[1],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certainly-not'
+            },
+            score: 0.4167
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should return patients that match on double-metaphone with no given name discriminators', (t) => {
+  // Given
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
+
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkurt') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    delete testPatients[1]._transforms
+    delete testPatients[2]._transforms
+    const expectedResponse = {
+      total: 3,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: testPatients[1],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+          resource: testPatients[2],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should return patients that match on double-metaphone with a discriminator on the first letter of given name', (t) => {
+  // Given
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+
+  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
+
+  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkert') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
           }
         }
       ]
