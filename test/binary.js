@@ -1,10 +1,13 @@
 'use strict'
+
 const tap = require('tap')
 const request = require('request')
 const mongodb = require('mongodb')
+const sinon = require('sinon')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
+const fhirRoot = require('../lib/fhir/root')
 
 const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
@@ -377,6 +380,37 @@ tap.test('Binary - postInteractionHandlers.search - should fetch searched binary
       t.equals(env.testBinaryFiles().doc2.content, body.entry[0].resource.content, 'should have same binary content as original insert document')
       t.equals(env.testBinaryFiles().doc3.content, body.entry[1].resource.content, 'should have same binary content as original insert document')
       done()
+    })
+  })
+})
+
+tap.test('Binary - postInteractionHandlers.create - should convert the binary to json when content-type is application/json', (t) => {
+  const sandbox = sinon.sandbox.create()
+  sandbox.stub(fhirRoot, 'processRootBundle').callsFake((ctx, jsonObject, callback) => {
+    t.equals(jsonObject.resourceType, 'Bundle')
+    t.equals(jsonObject.type, 'document')
+    t.equals(jsonObject.entry[0].id, 1)
+    t.equals(jsonObject.entry[0].resourceType, 'Patient')
+    callback()
+  })
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      env.createResource(t, env.testBinaryFiles().doc1, 'Binary', (err, ref1) => {
+        t.error(err)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            sandbox.restore()
+            t.end()
+          })
+        })
+      })
     })
   })
 })
