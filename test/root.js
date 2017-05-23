@@ -322,17 +322,16 @@ tap.test('Document bundles should get processed successfully', (t) => {
       comp.count((err, count) => {
         t.error(err)
         t.equals(count, 1)
+        obs.count((err, count) => {
+          t.error(err)
+          t.equals(count, 4)
+          meds.count((err, count) => {
+            t.error(err)
+            t.equals(count, 1)
+            done()
+          })
+        })
       })
-      obs.count((err, count) => {
-        t.error(err)
-        t.equals(count, 4)
-      })
-      meds.count((err, count) => {
-        t.error(err)
-        t.equals(count, 1)
-      })
-
-      done()
     })
   })
 })
