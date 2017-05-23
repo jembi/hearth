@@ -123,32 +123,3 @@ tap.test('should execute mpiQuery() to fetch all records and return a matchesMap
     })
   })
 })
-
-tap.test('should execute mpiQuery() to fetch all records and return a matchesMap object', (t) => {
-  matchingWorkerProcessTest(t, (db, done) => {
-    const c = db.collection('Patient')
-    const query = {}
-
-    // when
-    matchingWorkerProcess.mpiQuery(c, query, (err, results) => {
-      t.error(err)
-      t.ok(results)
-
-      t.notOk(results[charlton.id].name[0].given, 'should not have the given name returned, projection added')
-
-      t.equal(results[charlton.id].name[0].family[0], 'Matinyana', 'should have a name value of: Matinyana')
-      t.equal(results[charlton.id]._mpi.score, 0.25, 'should have a score value of: 0.25')
-
-      t.equal(results[emmarentia.id].name[0].family[0], 'Cook', 'should have a name value of: Cook')
-      t.equal(results[emmarentia.id]._mpi.score, 0, 'should have a score value of: 0')
-
-      t.equal(results[nikita.id].name[0].family[0], 'Sekhotla', 'should have a name value of: Sekhotla')
-      t.equal(results[nikita.id]._mpi.score, 0.027777777777777776, 'should have a score value of: 0.027777777777777776')
-
-      t.equal(results[mwawi.id].name[0].family[0], 'Ntshwanti', 'should have a name value of: Ntshwanti')
-      t.equal(results[mwawi.id]._mpi.score, 0.05555555555555555, 'should have a score value of: 0.05555555555555555')
-
-      done()
-    })
-  })
-})
