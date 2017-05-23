@@ -52,6 +52,18 @@ const matchOperationBodyTemplate = {
   ]
 }
 
+const getCleanMatchingConfig = () => {
+  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  return testMatchingConfig
+}
+
+const stubMatchingConfig = (testMatchingConfig) => {
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+}
+
 const basicMatchingTest = (testPatients, t, test) => {
   env.initDB((err, db) => {
     t.error(err)
@@ -113,12 +125,9 @@ tap.afterEach((done) => {
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 1 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
@@ -148,13 +157,10 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
 
 tap.test('should return 409 if multiple certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[2].valueBoolean = true
@@ -185,13 +191,10 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
 
 tap.test('should return 200 if no matches are found and onlyCertainMatches not true', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenstein', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
@@ -225,13 +228,10 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
 
 tap.test('should return 200 and a bundle of patients with search scores exactly matching the posted parameters resource', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
@@ -267,13 +267,10 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
 
 tap.test('should return 200 and a bundle of patients matching on name.given=levenshtein(weight 0.5) and name.family=exact(weight 0.5)', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
@@ -329,13 +326,10 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
 
 tap.test('should return 200 and a bundle of patients exactly matching the phonetic representation of the posted parameters resource', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'double-metaphone', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Mwawi']
@@ -372,12 +366,9 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
 
 tap.test('should return 200 and a bundle of patients matching the phonetic representation of a property in the posted parameters resource', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Grant', 'Maw'] // [KRNT, KRNT], [M, MF]
@@ -413,14 +404,11 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
 
 tap.test('should discriminate on birthDate', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.birthDate = '1991-07-08'
@@ -461,14 +449,11 @@ tap.test('should discriminate on birthDate', (t) => {
 
 tap.test('should discriminate on birthDate', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.birthDate = '1938-07-08'
@@ -509,14 +494,11 @@ tap.test('should discriminate on birthDate', (t) => {
 
 tap.test('should discriminate on gender', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators.gender = true
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.gender = 'female'
@@ -557,13 +539,10 @@ tap.test('should discriminate on gender', (t) => {
 
 tap.test('should discriminate on first letter of given name', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 1 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
 
@@ -614,12 +593,9 @@ tap.test('should discriminate on first letter of given name', (t) => {
 
 tap.test('should return patients that match on double-metaphone with no given name discriminators', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Kurt']
@@ -688,13 +664,10 @@ tap.test('should return patients that match on double-metaphone with no given na
 
 tap.test('should return patients that match on double-metaphone with a discriminator on the first letter of given name', (t) => {
   // Given
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
-  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
-  testMatchingConfig.matchSettings.discriminators = {}
+  const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
-  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
-  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+  stubMatchingConfig(testMatchingConfig)
 
   const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
   testBody.parameter[0].resource.name[0].given = ['Kurt']
