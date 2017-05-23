@@ -5,6 +5,7 @@ const request = require('request')
 const crypto = require('crypto')
 const sinon = require('sinon')
 const doubleMetaphone = require('talisman/phonetics/double-metaphone')
+const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
@@ -53,7 +54,7 @@ const matchOperationBodyTemplate = {
 }
 
 const getCleanMatchingConfig = () => {
-  const testMatchingConfig = JSON.parse(JSON.stringify(matchingConfig))
+  const testMatchingConfig = _.cloneDeep(matchingConfig)
   testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
   testMatchingConfig.matchSettings.discriminators = {}
   return testMatchingConfig
@@ -129,11 +130,11 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family[0] = 'NotCertainMatch'
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
@@ -162,12 +163,12 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family.push('Cook')
   testBody.parameter[0].resource.name[0].given.push('Emmarentia')
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
@@ -196,7 +197,7 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
   env.initDB((err, db) => {
     t.error(err)
@@ -233,9 +234,9 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
@@ -272,9 +273,9 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 3,
@@ -331,7 +332,7 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'double-metaphone', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Mwawi']
   testBody.parameter[0].resource.name[0].family = ['Ntshwanti']
 
@@ -339,7 +340,7 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
     t.error(err)
     server.start((err) => {
       t.error(err)
-      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+      env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
           url: `http://localhost:3447/fhir/Patient/$match`,
@@ -370,14 +371,14 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Grant', 'Maw'] // [KRNT, KRNT], [M, MF]
 
   env.initDB((err, db) => {
     t.error(err)
     server.start((err) => {
       t.error(err)
-      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+      env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
           url: `http://localhost:3447/fhir/Patient/$match`,
@@ -410,10 +411,10 @@ tap.test('should discriminate on birthDate', (t) => {
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.birthDate = '1991-07-08'
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].birthDate = '1991-07-07'
   testPatients[1].birthDate = '1937-04-31'
   testPatients[2].birthDate = '1965-05-18'
@@ -455,10 +456,10 @@ tap.test('should discriminate on birthDate', (t) => {
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.birthDate = '1938-07-08'
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].birthDate = '1991-07-07'
   testPatients[1].birthDate = '1937-04-31'
   testPatients[2].birthDate = '1965-05-18'
@@ -500,10 +501,10 @@ tap.test('should discriminate on gender', (t) => {
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.gender = 'female'
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].gender = 'male'
   testPatients[1].gender = 'female'
   testPatients[2].gender = 'other'
@@ -544,9 +545,9 @@ tap.test('should discriminate on first letter of given name', (t) => {
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].name[0].given = ['Charlton']
   testPatients[1].name[0].given = ['Chemmarentia']
   testPatients[2].name[0].given = ['Nikita']
@@ -597,10 +598,10 @@ tap.test('should return patients that match on double-metaphone with no given na
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Kurt']
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].name[0].given = ['kurt']
   testPatients[1].name[0].given = ['hkert']
   testPatients[2].name[0].given = ['curt']
@@ -669,10 +670,10 @@ tap.test('should return patients that match on double-metaphone with a discrimin
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Kurt']
 
-  const testPatients = JSON.parse(JSON.stringify(testPatientsTemplate))
+  const testPatients = _.cloneDeep(testPatientsTemplate)
   testPatients[0].name[0].given = ['kurt']
   testPatients[1].name[0].given = ['hkert']
   testPatients[2].name[0].given = ['curt']
