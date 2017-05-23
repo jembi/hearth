@@ -1,0 +1,235 @@
+{
+  "resourceType": "Bundle",
+  "type": "document",
+  "meta": {
+    "lastUpdated": "{{bundledDate}}"
+  },
+  "entry": [
+    {
+      "resource": {
+        "identifier": {
+          "system": "urn:ietf:rfc:3986",
+          "value": "{{urn_uuid}}"
+        },
+        "resourceType": "Composition",
+        "status": "final",
+        "type": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes",
+            "code": "74264-3"
+          },
+          "text": "HIV summary registry report Document"
+        },
+        "class": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes",
+            "code": "47045-0"
+          },
+          "text": "Study report Document"
+        },
+        "subject": {
+          "reference": "Patient/xyz"
+        },
+        "date": "{{logicalCompositionDate}}",
+        "author": [
+          {
+          "reference": "Practitioner/xyz"
+          }
+        ],
+        "title": "HIV case-based surveillance event report",
+        "section": {
+          "entry": [
+            {
+              "title": "",
+              "text": "",
+              "reference": "urn:uuid:xxx"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "{{urn_uuid}}"
+          }
+        ],
+        "status": "final",
+        "category": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/observation-category",
+            "code": "laboratory"
+          },
+          "text": "laboratory"
+        },
+        "code": {
+          "coding": {
+            "system": "http://loinc.org",
+            "code": "33660-2"
+          },
+          "text": "HIV 1 p24 Ag [Presence] in Serum by Neutralization test"
+        },
+        "subject": {
+          "reference": "Patient/xyz"
+        },
+        "effectiveDateTime": "{{testDate}}",
+        "issued": "{{currrentDateTime}}",
+        "performer": [
+          {
+            "reference": "Practitioner/xyz"
+          }
+        ],
+        "valueCodeableConcept": {
+          "coding": {
+            "system": "http://loinc.org",
+            "code": "LA6576-8"
+          },
+          "text": "Positive"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "{{urn_uuid}}"
+          }
+        ],
+        "status": "final",
+        "category": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/observation-category",
+            "code": "laboratory"
+          },
+          "text": "laboratory"
+        },
+        "code": {
+          "coding": {
+            "system": "http://loinc.org",
+            "code": "24467-3"
+          },
+          "text": "CD3+​CD4+​ (T4 helper) cells [#/​volume] in Blood"
+        },
+        "subject": {
+          "reference": "Patient/xyz"
+        },
+        "effectiveDateTime": "{{testDate}}",
+        "issued": "{{currrentDateTime}}",
+        "performer": [
+          {
+            "reference": "Practitioner/xyz"
+          }
+        ],
+        "valueQuantity": {
+          "value": 500,
+          "unit": "mm3"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "{{urn_uuid}}"
+          }
+        ],
+        "status": "final",
+        "category": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/observation-category",
+            "code": "laboratory"
+          },
+          "text": "laboratory"
+        },
+        "code": {
+          "coding": {
+            "system": "http://loinc.org",
+            "code": "23876-6 "
+          },
+          "text": "HIV 1 RNA [Units/​volume] (viral load) in Plasma by Probe and signal amplification method"
+        },
+        "subject": {
+          "reference": "Patient/xyz"
+        },
+        "effectiveDateTime": "{{testDate}}",
+        "issued": "{{currrentDateTime}}",
+        "performer": [
+          {
+            "reference": "Practitioner/xyz"
+          }
+        ],
+        "valueQuantity": {
+          "value": 500,
+          "unit": "IU/mL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationOrder",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "{{urn_uuid}}"
+          }
+        ],
+        "dateWritten": "{{prescriptionDate}}",
+        "status": "active",
+        "patient": {
+          "reference": "Patient/xyz"
+        },
+        "medicationCodeableConcept": {
+          "coding": {
+            "system": "",
+            "code": ""
+          },
+          "text": "ARTs"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "{{urn_uuid}}"
+          }
+        ],
+        "status": "final",
+        "category": {
+          "coding": {
+            "system": "http://hl7.org/fhir/ValueSet/observation-category",
+            "code": "vital-signs"
+          },
+          "text": "Vital Signs"
+        },
+        "code": {
+          "coding": {
+            "system": "http://loinc.org",
+            "code": "81956-5"
+          },
+          "text": "Date and time of death [TimeStamp]"
+        },
+        "subject": {
+          "reference": "Patient/xyz"
+        },
+        "effectiveDateTime": "{{testDate}}",
+        "issued": "{{currrentDateTime}}",
+        "performer": [
+          {
+            "reference": "Practitioner/xyz"
+          }
+        ],
+        "valueDataTime": "{{deathTimestamp}}"
+      }
+    }
+  ]
+}
