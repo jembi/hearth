@@ -42,6 +42,7 @@
     "glossy": "^0.1.7",
     "libxmljs": "^0.18.4",
     "neo-async": "^2.1.0",
+    "sinon": "^2.3.0",
     "snazzy": "^6.0.0",
     "standard": "^8.6.0",
     "tap": "^10.1.0"
