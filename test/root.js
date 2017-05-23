@@ -219,7 +219,7 @@ tap.test('Transaction should return a 400 when the bundle type is incorrect', (t
     }, (err, res, body) => {
       t.error(err)
       t.equals(res.statusCode, 400, 'should return a 400 status')
-      t.equals(body.issue[0].details.text, 'Bundle.type must either be transaction or batch', 'should have correct details')
+      t.equals(body.issue[0].details.text, 'Bundle.type must either be transaction, batch or document', 'should have correct details')
       done()
     })
   })
@@ -291,6 +291,43 @@ tap.test('Transaction should revert delete operation when operation (other than 
             t.error(err)
             t.equal('' + result.id, idToDelete, 'should have reverted the deleted patient')
 
+            done()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Document bundles should get processed successfully', (t) => {
+  // given
+  testEnv(t, (db, done) => {
+    const doc = _.cloneDeep(require('./resources/FHIR-Document.json'))
+
+    // when
+    request({
+      url: 'http://localhost:3447/fhir',
+      method: 'POST',
+      headers: headers,
+      body: doc,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+      t.equals(res.statusCode, 200, 'should return a 200 status')
+
+      const comp = db.collection('Composition')
+      const obs = db.collection('Observation')
+      const meds = db.collection('MedicationOrder')
+
+      comp.count((err, count) => {
+        t.error(err)
+        t.equals(count, 1)
+        obs.count((err, count) => {
+          t.error(err)
+          t.equals(count, 4)
+          meds.count((err, count) => {
+            t.error(err)
+            t.equals(count, 1)
             done()
           })
         })
