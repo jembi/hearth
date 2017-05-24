@@ -1,10 +1,15 @@
 'use strict'
+
 const tap = require('tap')
 const request = require('request')
 const mongodb = require('mongodb')
+const sinon = require('sinon')
+const logger = require('winston')
+const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
+const fhirRoot = require('../lib/fhir/root')()
 
 const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
@@ -376,6 +381,149 @@ tap.test('Binary - postInteractionHandlers.search - should fetch searched binary
 
       t.equals(env.testBinaryFiles().doc2.content, body.entry[0].resource.content, 'should have same binary content as original insert document')
       t.equals(env.testBinaryFiles().doc3.content, body.entry[1].resource.content, 'should have same binary content as original insert document')
+      done()
+    })
+  })
+})
+
+tap.test('Binary - postInteractionHandlers.create - should convert the binary to json when content-type is application/json', (t) => {
+  const sandbox = sinon.sandbox.create()
+  sandbox.stub(fhirRoot, 'processRootBundle').callsFake((ctx, jsonObject, callback) => {
+    t.equals(jsonObject.resourceType, 'Bundle')
+    t.equals(jsonObject.type, 'document')
+    t.equals(jsonObject.entry[0].id, 1)
+    t.equals(jsonObject.entry[0].resourceType, 'Patient')
+    callback()
+  })
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      env.createResource(t, env.testBinaryFiles().doc1, 'Binary', (err, ref1) => {
+        t.error(err)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            sandbox.restore()
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Binary - postInteractionHandlers.create - should not convert the binary to json when content-type is not application/json', (t) => {
+  const sandbox = sinon.sandbox.create()
+  const stub = sandbox.stub(logger, 'debug')
+
+  stub.onCall(1).callsFake((arg) => {
+    t.equals(arg, 'Cannot convert Binary with content type application/xml to Bundle', 'Should log a debug message')
+  })
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const testBinaryFile = _.cloneDeep(env.testBinaryFiles().doc1)
+      testBinaryFile.contentType = 'application/xml'
+
+      env.createResource(t, testBinaryFile, 'Binary', (err, ref1) => {
+        t.error(err)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            sandbox.restore()
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Binary - postInteractionHandlers.create - should log an error when the converted binary is not a valid fhir resource', (t) => {
+  const sandbox = sinon.sandbox.create()
+  sandbox.stub(logger, 'error').callsFake((arg) => {
+    t.equals(arg.message, 'JSON content is not a valid FHIR resource')
+  })
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const base64EncodedJSON = Buffer.from(JSON.stringify({ test: 'Not a fhir resource' })).toString('base64')
+      const testBinaryFile = _.cloneDeep(env.testBinaryFiles().doc1)
+      testBinaryFile.content = base64EncodedJSON
+
+      env.createResource(t, testBinaryFile, 'Binary', (err, ref1) => {
+        t.error(err)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            sandbox.restore()
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Binary - postInteractionHandlers.create - should log an error if resource could not be added to db by core', (t) => {
+  const sandbox = sinon.sandbox.create()
+  sandbox.stub(logger, 'error').callsFake((arg) => {
+    t.equals(arg.message, 'Non 2xx status code: 400 while trying to process binary bundle', 'Should log the correct error')
+  })
+
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const patientClone = _.cloneDeep(require('./resources/Patient-1.json'))
+      const base64EncodedJSON = Buffer.from(JSON.stringify(patientClone)).toString('base64')
+
+      const testBinaryFile = {
+        resourceType: 'Binary',
+        contentType: 'application/json',
+        content: base64EncodedJSON
+      }
+
+      env.createResource(t, testBinaryFile, 'Binary', (err, ref1) => {
+        t.error(err)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            sandbox.restore()
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('Binary - should ensure that the bundle has been saved to the db', (t) => {
+  binaryTestEnv(t, (db, refs, done) => {
+    const c = db.collection('Patient')
+    c.find().toArray((err, docs) => {
+      t.error(err)
+
+      t.equals(docs.length, 1)
+      t.equals(docs[0].name[0].given[0], 'Charlton')
       done()
     })
   })
