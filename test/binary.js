@@ -7,7 +7,7 @@ const sinon = require('sinon')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
-const fhirRoot = require('../lib/fhir/root')
+const fhirRoot = require('../lib/fhir/root')()
 
 const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
