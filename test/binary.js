@@ -515,3 +515,16 @@ tap.test('Binary - postInteractionHandlers.create - should log an error if resou
     })
   })
 })
+
+tap.test('Binary - should ensure that the bundle has been saved to the db', (t) => {
+  binaryTestEnv(t, (db, refs, done) => {
+    const c = db.collection('Patient')
+    c.find().toArray((err, docs) => {
+      t.error(err)
+
+      t.equals(docs.length, 1)
+      t.equals(docs[0].name[0].given[0], 'Charlton')
+      done()
+    })
+  })
+})
