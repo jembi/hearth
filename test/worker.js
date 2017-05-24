@@ -181,7 +181,7 @@ tap.test('should successfully update score of patient links', (t) => {
       type: 'possible-duplicate-source',
       extension: [{
         url: 'http://hearth.org/link-matching-score',
-        valueDecimal: 0.77
+        valueDecimal: 0.67
       }]
     }
   ]
@@ -214,7 +214,9 @@ tap.test('should successfully update score of patient links', (t) => {
         t.error(err)
 
         t.equal(result[0].id, '1111111111', 'Patient1 successfully created')
+        t.equal(result[0].link[0].extension[0].valueDecimal, 0.67)
         t.equal(result[1].id, '2222222222', 'Patient2 successfully created')
+        t.equal(result[1].link[0].extension[0].valueDecimal, 0.77)
         const matchingQueue = mongoDbQueue(db, constants.MATCHING_QUEUE_COLLECTION)
         matchingQueue.add(testPatient2, (err) => {
           t.error(err)
@@ -234,6 +236,10 @@ tap.test('should successfully update score of patient links', (t) => {
                 t.error(err)
 
                 t.equal(results.length, 2, 'should be two patients')
+                t.equal(results[0].id, '1111111111')
+                t.equal(results[0].link[0].extension[0].valueDecimal, 1)
+                t.equal(results[1].id, '2222222222')
+                t.equal(results[1].link[0].extension[0].valueDecimal, 1)
                 env.clearDB((err) => {
                   t.error(err)
                   testWorker.kill()

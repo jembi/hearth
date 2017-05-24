@@ -3,6 +3,8 @@
 const tap = require('tap')
 const request = require('request')
 const crypto = require('crypto')
+const sinon = require('sinon')
+const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 const _ = require('lodash')
 
 const env = require('./test-env/init')()
@@ -12,6 +14,8 @@ const matchingConfig = require('../config/matching')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 const testPatients = env.testPatients()
 
+const sandbox = sinon.sandbox.create()
+
 const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'
 const emmarentia = testPatients.emmarentia.patient
@@ -19,25 +23,60 @@ emmarentia.id = '2222222222'
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
 
-const basicMatchingTest = (t, test) => {
+const testPatientsTemplate = [charlton, emmarentia, nikita]
+
+const matchOperationBodyTemplate = {
+  resourceType: 'Parameters',
+  parameter: [
+    {
+      name: 'resource',
+      resource: {
+        resourceType: 'Patient',
+        name: [
+          {
+            family: [
+              'Matinyana'
+            ],
+            given: [
+              'Charlton'
+            ]
+          }
+        ]
+      }
+    }, {
+      name: 'count',
+      valueInteger: 100
+    }, {
+      name: 'onlyCertainMatches',
+      valueBoolean: false
+    }
+  ]
+}
+
+const getCleanMatchingConfig = () => {
+  const testMatchingConfig = _.cloneDeep(matchingConfig)
+  testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.matchSettings.discriminators = {}
+  return testMatchingConfig
+}
+
+const stubMatchingConfig = (testMatchingConfig) => {
+  sandbox.stub(matchingConfig.resourceConfig, 'Patient').value(testMatchingConfig.resourceConfig.Patient)
+  sandbox.stub(matchingConfig.matchSettings, 'discriminators').value(testMatchingConfig.matchSettings.discriminators)
+}
+
+const basicMatchingTest = (testPatients, t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
     server.start((err) => {
       t.error(err)
 
-      const patients = []
-
-      patients.push(
-        charlton,
-        emmarentia,
-        nikita
-      )
       const c = db.collection('Patient')
-      c.insertMany(patients, (err, doc) => {
+      c.insertMany(testPatients, { forceServerObjectId: true }, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, patients.length)
+        t.equal(doc.insertedIds.length, testPatients.length)
 
         test(db, () => {
           env.clearDB((err) => {
@@ -80,54 +119,23 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
   })
 }
 
-const matchOperationBodyTemplate = {
-  resourceType: 'Parameters',
-  parameter: [
-    {
-      name: 'resource',
-      resource: {
-        resourceType: 'Patient',
-        name: [
-          {
-            family: [
-              'Matinyana'
-            ],
-            given: [
-              'Charlton'
-            ]
-          }
-        ]
-      }
-    }, {
-      name: 'count',
-      valueInteger: 100
-    }, {
-      name: 'onlyCertainMatches',
-      valueBoolean: false
-    }
-  ]
-}
-
-const matchOperationConfigTemplate = {
-  matchingProperties: {
-    'name.given': {
-      algorithm: 'exact',
-      weight: 0.5
-    },
-    'name.family': {
-      algorithm: 'exact',
-      weight: 0.5
-    }
-  }
-}
+tap.afterEach((done) => {
+  sandbox.restore()
+  done()
+})
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 1 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family[0] = 'NotCertainMatch'
-  basicMatchingTest(t, (db, done) => {
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
       url: `http://localhost:3447/fhir/Patient/$match`,
@@ -150,12 +158,18 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
 
 tap.test('should return 409 if multiple certain matches found and onlyCertainMatches parameter true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[2].valueBoolean = true
   testBody.parameter[0].resource.name[0].family.push('Cook')
   testBody.parameter[0].resource.name[0].given.push('Emmarentia')
-  basicMatchingTest(t, (db, done) => {
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
       url: `http://localhost:3447/fhir/Patient/$match`,
@@ -178,9 +192,12 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
 
 tap.test('should return 200 if no matches are found and onlyCertainMatches not true', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenstein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
   env.initDB((err, db) => {
     t.error(err)
@@ -212,17 +229,21 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
 
 tap.test('should return 200 and a bundle of patients with search scores exactly matching the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
 
-  basicMatchingTest(t, (db, done) => {
-    delete charlton._id
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: charlton,
+          resource: testPatients[0],
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -247,73 +268,69 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
 
 tap.test('should return 200 and a bundle of patients matching on name.given=levenshtein(weight 0.5) and name.family=exact(weight 0.5)', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'levenshtein'
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'exact', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
 
-  const mwawi = _.cloneDeep(testPatients.mwawi.patient)
-  mwawi.id = '4444444444'
-  mwawi.name[0].given = ['Emmarentia']
-  mwawi.name[0].family = ['Matinyana']
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
-  basicMatchingTest(t, (db, done) => {
-    delete charlton._id
-    delete emmarentia._id
-    delete nikita._id
+  const mwawiTemp = _.cloneDeep(env.testPatients().mwawi.patient)
+  mwawiTemp.id = '4444444444'
+  mwawiTemp.name[0].given = ['charly']
+  mwawiTemp.name[0].family = ['Matinyana']
 
-    const c = db.collection('Patient')
-    c.insert(mwawi, (err, doc) => {
-      t.error(err)
-      t.ok(doc)
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients.push(mwawiTemp)
 
-      delete mwawi._id
-
-      const expectedResponse = {
-        total: 2,
-        entry: [
-          {
-            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-            resource: charlton,
-            search: {
-              extension: {
-                url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-                valueCode: 'certain'
-              },
-              score: 1
-            }
-          }, {
-            fullUrl: 'http://localhost:3447/fhir/Patient/4444444444',
-            resource: mwawi,
-            search: {
-              extension: {
-                url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-                valueCode: 'possible'
-              },
-              score: 0.65
-            }
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 2,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: charlton,
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
           }
-        ]
-      }
-      expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+        }, {
+          fullUrl: 'http://localhost:3447/fhir/Patient/4444444444',
+          resource: mwawiTemp,
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'possible'
+            },
+            score: 0.75
+          }
+        }
+      ]
+    }
 
-      const testParams = {
-        body: testBody,
-        expectedResponse: expectedResponse,
-        statusCode: 200
-      }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
-      requestAndAssertResponseBundle(testParams, t, done)
-    })
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
   })
 })
 
 tap.test('should return 200 and a bundle of patients exactly matching the phonetic representation of the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = JSON.parse(JSON.stringify(matchOperationConfigTemplate))
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'double-metaphone'
-  matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm = 'double-metaphone'
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'double-metaphone', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Mwawi']
   testBody.parameter[0].resource.name[0].family = ['Ntshwanti']
 
@@ -321,7 +338,7 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
     t.error(err)
     server.start((err) => {
       t.error(err)
-      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+      env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
           url: `http://localhost:3447/fhir/Patient/$match`,
@@ -348,23 +365,18 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
 
 tap.test('should return 200 and a bundle of patients matching the phonetic representation of a property in the posted parameters resource', (t) => {
   // Given
-  matchingConfig.resourceConfig.Patient = {
-    matchingProperties: {
-      'name.given': {
-        algorithm: 'double-metaphone',
-        weight: 1
-      }
-    }
-  }
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  stubMatchingConfig(testMatchingConfig)
 
-  const testBody = JSON.parse(JSON.stringify(matchOperationBodyTemplate))
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
   testBody.parameter[0].resource.name[0].given = ['Grant', 'Maw'] // [KRNT, KRNT], [M, MF]
 
   env.initDB((err, db) => {
     t.error(err)
     server.start((err) => {
       t.error(err)
-      env.createPatient(t, JSON.parse(JSON.stringify(testPatients.mwawi)), () => {
+      env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
           url: `http://localhost:3447/fhir/Patient/$match`,
@@ -386,5 +398,315 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
         })
       })
     })
+  })
+})
+
+tap.test('should discriminate on birthDate', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.birthDate = '1991-07-08'
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].birthDate = '1991-07-07'
+  testPatients[1].birthDate = '1937-04-31'
+  testPatients[2].birthDate = '1965-05-18'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on birthDate', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.birthDate = '1938-07-08'
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].birthDate = '1991-07-07'
+  testPatients[1].birthDate = '1937-04-31'
+  testPatients[2].birthDate = '1965-05-18'
+
+  testPatients[1].name[0].given[0] = 'charly'
+  testPatients[1].name[0].family[0] = 'Madinga'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: testPatients[1],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'possible'
+            },
+            score: 0.5278
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on gender', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.matchSettings.discriminators.gender = true
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 0.5 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.gender = 'female'
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].gender = 'male'
+  testPatients[1].gender = 'female'
+  testPatients[2].gender = 'other'
+
+  testPatients[1].name[0].given[0] = 'charles'
+  testPatients[1].name[0].family[0] = 'Matinama'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: testPatients[1],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'possible'
+            },
+            score: 0.6389
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should discriminate on first letter of given name', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkurt') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    delete testPatients[1]._transforms
+    delete testPatients[2]._transforms
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should return patients that match on double-metaphone with no given name discriminators', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkurt') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    delete testPatients[1]._transforms
+    delete testPatients[2]._transforms
+    const expectedResponse = {
+      total: 3,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+          resource: testPatients[1],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+          resource: testPatients[2],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
+
+tap.test('should return patients that match on double-metaphone with a discriminator on the first letter of given name', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkert') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    const expectedResponse = {
+      total: 1,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
   })
 })
