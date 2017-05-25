@@ -56,6 +56,7 @@ const matchOperationBodyTemplate = {
 const getCleanMatchingConfig = () => {
   const testMatchingConfig = _.cloneDeep(matchingConfig)
   testMatchingConfig.resourceConfig.Patient.matchingProperties = {}
+  testMatchingConfig.resourceConfig.Patient.discriminatorProperties = {}
   return testMatchingConfig
 }
 
