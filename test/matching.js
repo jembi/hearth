@@ -2,7 +2,6 @@
 
 const tap = require('tap')
 const request = require('request')
-const crypto = require('crypto')
 const sinon = require('sinon')
 // const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 const _ = require('lodash')
@@ -90,12 +89,6 @@ const basicMatchingTest = (testPatients, t, test) => {
   })
 }
 
-const hashAndSortEntryArray = (entry) => {
-  return entry.map((entry) => {
-    return crypto.createHash('sha256').update(JSON.stringify(entry), 'utf-8').digest('hex')
-  }).sort()
-}
-
 const requestAndAssertResponseBundle = (tp, t, done) => {
   // When
   request({
@@ -112,7 +105,7 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
     t.equal(body.resourceType, 'Bundle')
     t.equal(body.total, tp.expectedResponse.total)
 
-    const actual = hashAndSortEntryArray(body.entry)
+    const actual = body.entry
     t.deepEqual(actual, tp.expectedResponse.entry, 'Response contains expected entries')
     done()
   })
@@ -253,7 +246,6 @@ tap.test('should return 200 and a bundle of patients with search scores exactly 
         }
       ]
     }
-    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
     const testParams = {
       body: testBody,
@@ -312,7 +304,6 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
         }
       ]
     }
-    expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
     const testParams = {
       body: testBody,
@@ -402,50 +393,64 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
   })
 })
 
-// tap.test('should discriminate on birthDate', (t) => {
-//   // Given
-//   const testMatchingConfig = getCleanMatchingConfig()
-//   testMatchingConfig.matchSettings.discriminators.birthDate = { birthYearThreshold: 5 }
-//   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
-//   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
-//   stubMatchingConfig(testMatchingConfig)
-//
-//   const testBody = _.cloneDeep(matchOperationBodyTemplate)
-//   testBody.parameter[0].resource.birthDate = '1991-07-08'
-//
-//   const testPatients = _.cloneDeep(testPatientsTemplate)
-//   testPatients[0].birthDate = '1991-07-07'
-//   testPatients[1].birthDate = '1937-04-31'
-//   testPatients[2].birthDate = '1965-05-18'
-//
-//   basicMatchingTest(testPatients, t, (db, done) => {
-//     const expectedResponse = {
-//       total: 1,
-//       entry: [
-//         {
-//           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-//           resource: testPatients[0],
-//           search: {
-//             extension: {
-//               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-//               valueCode: 'certain'
-//             },
-//             score: 1
-//           }
-//         }
-//       ]
-//     }
-//     expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
-//
-//     const testParams = {
-//       body: testBody,
-//       expectedResponse: expectedResponse,
-//       statusCode: 200
-//     }
-//
-//     requestAndAssertResponseBundle(testParams, t, done)
-//   })
-// })
+tap.test('should discriminate using an exact match', (t) => {
+  // Given
+  const testMatchingConfig = getCleanMatchingConfig()
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 1 }
+  testMatchingConfig.resourceConfig.Patient.discriminatorProperties['birthDate'] = { algorithm: 'exact' }
+
+  stubMatchingConfig(testMatchingConfig)
+
+  const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.birthDate = '1991-07-08'
+  testBody.parameter[0].resource.name[0].given = 'John'
+
+  const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients[0].birthDate = '1991-07-08'
+  testPatients[1].birthDate = '1937-04-31'
+  testPatients[2].birthDate = '1991-07-08'
+  testPatients[0].name[0].given = 'John'
+  testPatients[1].name[0].given = 'John'
+  testPatients[2].name[0].given = 'John'
+
+  basicMatchingTest(testPatients, t, (db, done) => {
+    const expectedResponse = {
+      total: 2,
+      entry: [
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+          resource: testPatients[0],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        },
+        {
+          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+          resource: testPatients[2],
+          search: {
+            extension: {
+              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
+              valueCode: 'certain'
+            },
+            score: 1
+          }
+        }
+      ]
+    }
+
+    const testParams = {
+      body: testBody,
+      expectedResponse: expectedResponse,
+      statusCode: 200
+    }
+
+    requestAndAssertResponseBundle(testParams, t, done)
+  })
+})
 //
 // tap.test('should discriminate on birthDate', (t) => {
 //   // Given
