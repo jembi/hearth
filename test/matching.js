@@ -275,14 +275,21 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
 
   const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
+  const mwawiTemp = _.cloneDeep(env.testPatients().mwawi.patient)
+  mwawiTemp.id = '4444444444'
+  mwawiTemp.name[0].given = ['charly']
+  mwawiTemp.name[0].family = ['Matinyana']
+
   const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients.push(mwawiTemp)
+
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
-      total: 3,
+      total: 2,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: testPatients[0],
+          resource: charlton,
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -291,28 +298,19 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
             score: 1
           }
         }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: testPatients[1],
+          fullUrl: 'http://localhost:3447/fhir/Patient/4444444444',
+          resource: mwawiTemp,
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
+              valueCode: 'possible'
             },
-            score: 0.15
-          }
-        }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
-          resource: testPatients[2],
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
-            },
-            score: 0.0625
+            score: 0.75
           }
         }
       ]
     }
+
     expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
 
     const testParams = {
@@ -464,6 +462,9 @@ tap.test('should discriminate on birthDate', (t) => {
   testPatients[1].birthDate = '1937-04-31'
   testPatients[2].birthDate = '1965-05-18'
 
+  testPatients[1].name[0].given[0] = 'charly'
+  testPatients[1].name[0].family[0] = 'Madinga'
+
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
@@ -474,9 +475,9 @@ tap.test('should discriminate on birthDate', (t) => {
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
+              valueCode: 'possible'
             },
-            score: 0.15
+            score: 0.5278
           }
         }
       ]
@@ -509,6 +510,9 @@ tap.test('should discriminate on gender', (t) => {
   testPatients[1].gender = 'female'
   testPatients[2].gender = 'other'
 
+  testPatients[1].name[0].given[0] = 'charles'
+  testPatients[1].name[0].family[0] = 'Matinama'
+
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
       total: 1,
@@ -519,9 +523,9 @@ tap.test('should discriminate on gender', (t) => {
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
+              valueCode: 'possible'
             },
-            score: 0.15
+            score: 0.6389
           }
         }
       ]
@@ -542,19 +546,26 @@ tap.test('should discriminate on first letter of given name', (t) => {
   // Given
   const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.matchSettings.discriminators['name.given'] = { firstChar: true }
-  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'levenshtein', weight: 1 }
+  testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'double-metaphone', weight: 1 }
   stubMatchingConfig(testMatchingConfig)
 
   const testBody = _.cloneDeep(matchOperationBodyTemplate)
+  testBody.parameter[0].resource.name[0].given = ['Kurt']
 
   const testPatients = _.cloneDeep(testPatientsTemplate)
-  testPatients[0].name[0].given = ['Charlton']
-  testPatients[1].name[0].given = ['Chemmarentia']
-  testPatients[2].name[0].given = ['Nikita']
+  testPatients[0].name[0].given = ['kurt']
+  testPatients[1].name[0].given = ['hkert']
+  testPatients[2].name[0].given = ['curt']
+  testPatients[0]._transforms = { matching: { name: [ { given: [ doubleMetaphone('kurt') ] } ] } }
+  testPatients[1]._transforms = { matching: { name: [ { given: [ doubleMetaphone('hkurt') ] } ] } }
+  testPatients[2]._transforms = { matching: { name: [ { given: [ doubleMetaphone('curt') ] } ] } }
 
   basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    delete testPatients[1]._transforms
+    delete testPatients[2]._transforms
     const expectedResponse = {
-      total: 2,
+      total: 1,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
@@ -565,17 +576,6 @@ tap.test('should discriminate on first letter of given name', (t) => {
               valueCode: 'certain'
             },
             score: 1
-          }
-        },
-        {
-          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: testPatients[1],
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
-            },
-            score: 0.4167
           }
         }
       ]
