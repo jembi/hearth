@@ -3,7 +3,6 @@
 const tap = require('tap')
 const request = require('request')
 const sinon = require('sinon')
-// const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 const _ = require('lodash')
 
 const env = require('./test-env/init')()
@@ -266,14 +265,21 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
 
   const testBody = _.cloneDeep(matchOperationBodyTemplate)
 
+  const mwawiTemp = _.cloneDeep(env.testPatients().mwawi.patient)
+  mwawiTemp.id = '4444444444'
+  mwawiTemp.name[0].given = ['charly']
+  mwawiTemp.name[0].family = ['Matinyana']
+
   const testPatients = _.cloneDeep(testPatientsTemplate)
+  testPatients.push(mwawiTemp)
+
   basicMatchingTest(testPatients, t, (db, done) => {
     const expectedResponse = {
-      total: 3,
+      total: 2,
       entry: [
         {
           fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
-          resource: testPatients[0],
+          resource: charlton,
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
@@ -282,24 +288,14 @@ tap.test('should return 200 and a bundle of patients matching on name.given=leve
             score: 1
           }
         }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
-          resource: testPatients[1],
+          fullUrl: 'http://localhost:3447/fhir/Patient/4444444444',
+          resource: mwawiTemp,
           search: {
             extension: {
               url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
+              valueCode: 'possible'
             },
-            score: 0.15
-          }
-        }, {
-          fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
-          resource: testPatients[2],
-          search: {
-            extension: {
-              url: 'http://hl7.org/fhir/StructureDefinition/match-grade',
-              valueCode: 'certainly-not'
-            },
-            score: 0.0625
+            score: 0.75
           }
         }
       ]
@@ -474,6 +470,9 @@ tap.test('should discriminate using a partial match', (t) => {
   testPatients[2].name[0].given = 'John'
 
   basicMatchingTest(testPatients, t, (db, done) => {
+    delete testPatients[0]._transforms
+    delete testPatients[1]._transforms
+    delete testPatients[2]._transforms
     const expectedResponse = {
       total: 2,
       entry: [
