@@ -453,7 +453,7 @@ tap.test('should discriminate using a partial match', (t) => {
   const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 0.5 }
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.family'] = { algorithm: 'levenshtein', weight: 0.5 }
-  testMatchingConfig.resourceConfig.Patient.discriminatorProperties['name.family'] = { algorithm: 'partial-first-char' }
+  testMatchingConfig.resourceConfig.Patient.discriminatorProperties['name.family'] = { algorithm: 'partial-1-char' }
 
   stubMatchingConfig(testMatchingConfig)
 

@@ -3,11 +3,11 @@ config:
   phases:
     - duration: 30
       arrivalRate: 1
-      # rampTo: 5
+      rampTo: 3
       name: 'Warm up'
-    # - duration: 60
-    #   arrivalRate: 5
-    #   name: 'Low load'
+    - duration: 60
+      arrivalRate: 3
+      name: 'Low load'
     # - duration: 60
     #   arrivalRate: 10
     #   name: 'Medium load'

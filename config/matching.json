@@ -10,7 +10,9 @@
     "algorithmTypeMap": {
       "exact": "exact-match",
       "double-metaphone": "exact-match-representation",
-      "partial-first-char": "partial-match",
+      "partial-1-char": "partial-match",
+      "partial-2-char": "partial-match",
+      "partial-3-char": "partial-match",
       "levenshtein": "realtime"
     }
   },
@@ -39,7 +41,7 @@
           "algorithm": "exact"
         },
         "name.family": {
-          "algorithm": "partial-first-char"
+          "algorithm": "partial-2-char"
         }
       }
     },
