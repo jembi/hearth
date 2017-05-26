@@ -1,5 +1,6 @@
 {
   "matchSettings": {
+    "defaultBatchSize": 100,
     "defaultCount": 1000,
     "scores": {
       "certain": 1,
@@ -9,6 +10,9 @@
     "algorithmTypeMap": {
       "exact": "exact-match",
       "double-metaphone": "exact-match-representation",
+      "partial-1-char": "partial-match",
+      "partial-2-char": "partial-match",
+      "partial-3-char": "partial-match",
       "levenshtein": "realtime"
     }
   },
@@ -30,6 +34,14 @@
         "birthDate": {
           "algorithm": "levenshtein",
           "weight": 0.25
+        }
+      },
+      "discriminatorProperties": {
+        "gender": {
+          "algorithm": "exact"
+        },
+        "name.family": {
+          "algorithm": "partial-2-char"
         }
       }
     },

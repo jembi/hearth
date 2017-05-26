@@ -13,4 +13,4 @@ scenarios:
           beforeRequest:
             - 'setAuthHeaders'
             - 'createUniquePatient'
-      count: 3000
+      count: 10000

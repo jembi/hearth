@@ -83,12 +83,14 @@ module.exports = () => {
     const vid = location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
     testPatient.resource = resource
     testPatient.patient.id = resource.replace('Patient/', '')
-    testPatient.patient.meta = {versionId: vid}
-    testPatient.allergy.patient.reference = resource
-    testPatient.encounter.patient.reference = resource
-    testPatient.procedure.subject.reference = resource
-    testPatient.preop.subject.reference = resource
-    testPatient.preop.source.reference = resource
+    testPatient.patient.meta = { versionId: vid }
+    if (testPatient.allergy) { testPatient.allergy.patient.reference = resource }
+    if (testPatient.encounter) { testPatient.encounter.patient.reference = resource }
+    if (testPatient.procedure) { testPatient.procedure.subject.reference = resource }
+    if (testPatient.preop) {
+      testPatient.preop.subject.reference = resource
+      testPatient.preop.source.reference = resource
+    }
   }
 
   return {
