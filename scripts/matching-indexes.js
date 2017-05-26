@@ -14,10 +14,18 @@ module.exports = (mongo) => {
         Object.keys(resourceConfig).forEach((collection) => {
           const c = db.collection(collection)
 
-          Object.keys(resourceConfig[collection].matchingProperties).forEach((path) => {
-            promises.push(c.createIndex({ [path]: 1 }))
-            promises.push(c.createIndex({ [`_transforms.matching.${path}`]: 1 }))
-          })
+          if (resourceConfig[collection].matchingProperties) {
+            Object.keys(resourceConfig[collection].matchingProperties).forEach((path) => {
+              promises.push(c.createIndex({ [path]: 1 }))
+              promises.push(c.createIndex({ [`_transforms.matching.${path}`]: 1 }))
+            })
+          }
+          if (resourceConfig[collection].discriminatorProperties) {
+            Object.keys(resourceConfig[collection].discriminatorProperties).forEach((path) => {
+              promises.push(c.createIndex({ [path]: 1 }))
+              promises.push(c.createIndex({ [`_transforms.matching.${path}`]: 1 }))
+            })
+          }
         })
 
         Promise.all(promises).then(() => {

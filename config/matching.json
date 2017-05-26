@@ -10,19 +10,10 @@
     "algorithmTypeMap": {
       "exact": "exact-match",
       "double-metaphone": "exact-match-representation",
+      "partial-1-char": "partial-match",
+      "partial-2-char": "partial-match",
+      "partial-3-char": "partial-match",
       "levenshtein": "realtime"
-    },
-    "discriminators": {
-      "gender": true,
-      "name.given": {
-        "firstChar": true
-      },
-      "name.family": {
-        "firstChar": true
-      },
-      "birthDate": {
-        "birthYearThreshold": 5
-      }
     }
   },
   "resourceConfig": {
@@ -43,6 +34,14 @@
         "birthDate": {
           "algorithm": "levenshtein",
           "weight": 0.25
+        }
+      },
+      "discriminatorProperties": {
+        "gender": {
+          "algorithm": "exact"
+        },
+        "name.family": {
+          "algorithm": "partial-2-char"
         }
       }
     },
