@@ -52,5 +52,4 @@ link to FHIR list (https://www.hl7.org/fhir/resourcelist.html)
 ## Pro tips:
 * To run only specific test files use `npm run test:these-files -- test/pdqm.js`. Note the `--` is important!
 * Run `npm run cov` to show coverage details in your browser.
-* To overwrite json config variables with environment variables it is possible to level down the object with double underscores ( __ ):
- * { mongodb: { url: 'localhost' } } can be overwritten with mongodb__url=foreignhost
+* To overwrite json config variables with environment variables it is possible to level down the object with `__` (double underscore).  For example `{ mongodb: { url: 'localhost' } }` can be overwritten with `mongodb__url=foreignhost`
