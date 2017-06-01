@@ -20,7 +20,6 @@ module.exports = {
   createUniquePatient: (requestParams, context, ee, next) => {
     const patient = Object.assign({}, patientTemplate)
     delete patient.id
-    delete patient.extension
 
     patient.identifier = patient.identifier.slice(0, 1)
     patient.identifier[0].value = chance.ssn({ dashes: false })
@@ -45,8 +44,16 @@ module.exports = {
     patient.contact[0].telecom[0].value = chance.phone({ formatted: false })
     patient.contact[0].telecom[1].value = chance.email()
 
+    patient.extension[0].url = 'pshr:profession'
+    patient.extension[0].valueString = chance.suffix({ full: true })
+    patient.extension[1].url = 'pshr:partnerhiv:status'
+    patient.extension[1].valueBoolean = chance.bool()
+    patient.extension[2].url = 'pshr:firstposivehivtest:date'
+    patient.extension[2].valueDate = moment(chance.birthday()).format('YYYY-MM-DD')
+    patient.extension[3].url = 'pshr:firstposivehivtest:location'
+    patient.extension[3].valueString = chance.address()
+
     requestParams.json = patient
     next()
   }
 }
-
