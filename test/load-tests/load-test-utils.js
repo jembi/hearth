@@ -46,12 +46,13 @@ module.exports = {
 
     patient.extension[0].url = 'pshr:profession'
     patient.extension[0].valueString = chance.suffix({ full: true })
-    patient.extension[1].url = 'pshr:partnerhiv:status'
-    patient.extension[1].valueBoolean = chance.bool()
-    patient.extension[2].url = 'pshr:firstposivehivtest:date'
-    patient.extension[2].valueDate = moment(chance.birthday()).format('YYYY-MM-DD')
-    patient.extension[3].url = 'pshr:firstposivehivtest:location'
-    patient.extension[3].valueString = chance.address()
+    patient.extension[1].url = 'pshr:firstposivehivtest:date'
+    patient.extension[1].valueDate = moment(chance.birthday()).format('YYYY-MM-DD')
+    delete patient.extension[1].valueString
+    patient.extension[2].url = 'pshr:firstposivehivtest:location'
+    patient.extension[2].valueString = chance.address()
+    patient.extension[3].url = 'pshr:partnerhiv:status'
+    patient.extension[3].valueBoolean = chance.bool()
 
     requestParams.json = patient
     next()
