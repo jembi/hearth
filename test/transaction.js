@@ -149,7 +149,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
           }, (err, res) => {
             t.error(err)
             t.equal(res.statusCode, 200)
-            t.equal(res.body, 'OK')
+            t.ok(res.body)
 
             c.findOne({ id: idToUpdate }, {}, (err, doc) => {
               t.error(err)

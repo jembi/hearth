@@ -60,7 +60,7 @@ const matchingQueueTest = (queueSize, t, test) => {
         env.clearDB((err) => {
           t.error(err)
           Object.keys(testWorkers).forEach((key) => {
-            testWorkers[key].kill('SIGINT')
+            testWorkers[key].kill()
           })
           t.end()
         })
