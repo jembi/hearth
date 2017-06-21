@@ -34,25 +34,16 @@ module.exports = {
     patient.telecom[0].value = chance.email()
     patient.telecom[1].value = chance.phone({ formatted: false })
 
-    patient.address[0].line = [chance.address()]
     patient.address[0].state = chance.state({ full: true })
-    patient.address[0].city = chance.city()
-    patient.address[0].postalCode = chance.zip()
+    patient.address[0].district = chance.province({ full: true })
+    patient.address[0].line = [chance.province({ full: true }), chance.city(), chance.address()]
 
     patient.contact[0].name[0].given = [chance.first()]
     patient.contact[0].name[0].family = [chance.last()]
     patient.contact[0].telecom[0].value = chance.phone({ formatted: false })
     patient.contact[0].telecom[1].value = chance.email()
 
-    patient.extension[0].url = 'pshr:profession'
-    patient.extension[0].valueString = chance.suffix({ full: true })
-    patient.extension[1].url = 'pshr:firstposivehivtest:date'
-    patient.extension[1].valueDate = moment(chance.birthday()).format('YYYY-MM-DD')
-    delete patient.extension[1].valueString
-    patient.extension[2].url = 'pshr:firstposivehivtest:location'
-    patient.extension[2].valueString = chance.address()
-    patient.extension[3].url = 'pshr:partnerhiv:status'
-    patient.extension[3].valueBoolean = chance.bool()
+    patient.extension = [ { url: 'rcbs:profession', valueString: chance.suffix({ full: true }) } ]
 
     requestParams.json = patient
     next()
