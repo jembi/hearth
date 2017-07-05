@@ -8,7 +8,8 @@
     "url": "mongodb://localhost/hearth"
   },
   "authentication": {
-    "authWindowSeconds": 10
+    "authWindowSeconds": 10,
+    "type": "openhim-style"
   },
   "logger": {
     "level": "info"
