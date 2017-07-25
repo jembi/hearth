@@ -4,7 +4,8 @@ const request = require('request')
 const _ = require('lodash')
 
 const env = require('./test-env/init')()
-const server = require('../lib/server')
+let server = require('../lib/server')
+const config = require('../lib/config')
 let basic
 
 let serverTestEnv = (t, test) => {
@@ -221,6 +222,107 @@ tap.test('server - should use application/json+fhir when no accept header presen
         t.doesNotThrow(() => JSON.parse(body), 'response body should contain valid json content')
         t.equal(JSON.parse(body).resourceType, 'Basic', 'response body should contain valid fhir content')
 
+        done()
+      })
+    })
+  })
+
+  tap.test('server - should enable openhim-style authentication when correct config is set', (t) => {
+    config.setConf('authentication:type', 'openhim-style')
+
+    // invalidate server file require so we can require a fresh copy of the server
+    // file. This is needed because the auth mechanism is set as soon as the server
+    // file is required.
+    delete require.cache[require.resolve('../lib/server')]
+    server = require('../lib/server')
+
+    serverTestEnv(t, (db, done) => {
+      request.get({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: _.extend(
+          env.getTestAuthHeaders(env.users.sysadminUser.email),
+          {
+            'content-type': 'application/json+fhir'
+          }
+        )
+      }, (err, res) => {
+        t.error(err)
+        t.equals(res.statusCode, 200)
+        done()
+      })
+    })
+  })
+
+  tap.test('server - should disable authentication when correct config is set', (t) => {
+    config.setConf('authentication:type', 'disabled')
+
+    // invalidate server file require so we can require a fresh copy of the server
+    // file. This is needed because the auth mechanism is set as soon as the server
+    // file is required.
+    delete require.cache[require.resolve('../lib/server')]
+    server = require('../lib/server')
+
+    serverTestEnv(t, (db, done) => {
+      request.get({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: {
+          'content-type': 'application/json+fhir'
+        }
+      }, (err, res) => {
+        t.error(err)
+        t.equals(res.statusCode, 200)
+        done()
+      })
+    })
+  })
+
+  tap.test('server - should default to an openhim-style authentication when an invalid config option is present', (t) => {
+    config.setConf('authentication:type', 'not_valid')
+
+    // invalidate server file require so we can require a fresh copy of the server
+    // file. This is needed because the auth mechanism is set as soon as the server
+    // file is required.
+    delete require.cache[require.resolve('../lib/server')]
+    server = require('../lib/server')
+
+    serverTestEnv(t, (db, done) => {
+      request.get({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: _.extend(
+          env.getTestAuthHeaders(env.users.sysadminUser.email),
+          {
+            'content-type': 'application/json+fhir'
+          }
+        )
+      }, (err, res) => {
+        t.error(err)
+        t.equals(res.statusCode, 200)
+        done()
+      })
+    })
+  })
+
+  tap.test('server - should default to an openhim-style authentication when no config option is present', (t) => {
+    config.setConf('authentication:type', undefined)
+
+    // invalidate server file require so we can require a fresh copy of the server
+    // file. This is needed because the auth mechanism is set as soon as the server
+    // file is required.
+    delete require.cache[require.resolve('../lib/server')]
+    server = require('../lib/server')
+
+    serverTestEnv(t, (db, done) => {
+      request.get({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: _.extend(
+          env.getTestAuthHeaders(env.users.sysadminUser.email),
+          {
+            'content-type': 'application/json+fhir'
+          }
+        )
+      }, (err, res) => {
+        t.error(err)
+        t.equals(res.statusCode, 200)
         done()
       })
     })
