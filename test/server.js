@@ -231,7 +231,7 @@ tap.test('server - should use application/json+fhir when no accept header presen
     config.setConf('authentication:type', 'openhim-style')
 
     // invalidate server file require so we can require a fresh copy of the server
-    // file. This is needed because the auth methanism is set as soon as the server
+    // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
     server = require('../lib/server')
@@ -257,7 +257,7 @@ tap.test('server - should use application/json+fhir when no accept header presen
     config.setConf('authentication:type', 'disabled')
 
     // invalidate server file require so we can require a fresh copy of the server
-    // file. This is needed because the auth methanism is set as soon as the server
+    // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
     server = require('../lib/server')
@@ -280,7 +280,7 @@ tap.test('server - should use application/json+fhir when no accept header presen
     config.setConf('authentication:type', 'not_valid')
 
     // invalidate server file require so we can require a fresh copy of the server
-    // file. This is needed because the auth methanism is set as soon as the server
+    // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
     server = require('../lib/server')
@@ -306,7 +306,7 @@ tap.test('server - should use application/json+fhir when no accept header presen
     config.setConf('authentication:type', undefined)
 
     // invalidate server file require so we can require a fresh copy of the server
-    // file. This is needed because the auth methanism is set as soon as the server
+    // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
     server = require('../lib/server')
