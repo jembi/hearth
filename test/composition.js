@@ -151,3 +151,21 @@ tap.test('composition should not find any result with an unknown status', (t) =>
     })
   })
 })
+
+tap.test('composition should find any result with a specific type', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=abc123def`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 1)
+      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body one result found with code abc123def which is compositionClone2')
+
+      done()
+    })
+  })
+})
