@@ -380,6 +380,54 @@ module.exports = () => {
       }
     },
 
+    testCompositions: () => {
+      const compositionClone1 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone1.id
+
+      const compositionClone2 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone2.id
+      compositionClone2.identifier.value = '22222'
+      compositionClone2.identifier.date = '2014-04-12T15:10:14Z'
+      compositionClone2.type.coding[0].code = 'abc123def'
+      compositionClone2.type.coding[0].display = 'Display 22 for type.coding'
+      compositionClone2.status = 'preliminary'
+      compositionClone2.section[0].entry[0].reference = 'Condition/example-one'
+      compositionClone2.section[0].entry[1].reference = 'Condition/example-two'
+      compositionClone2.section[0].entry[2].reference = 'Condition/example-three'
+      compositionClone2.subject.reference = 'Patient/example-patient-id'
+
+      const compositionClone3 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone3.id
+      compositionClone2.identifier.value = '3333333'
+      compositionClone2.identifier.date = '2013-09-25T10:10:14Z'
+      compositionClone2.type.coding[0].code = 's83kf94f'
+      compositionClone2.type.coding[0].display = 'Display 333 for type.coding'
+      compositionClone2.status = 'amended'
+      compositionClone2.section[0].entry[0].reference = 'Condition/example-1'
+      compositionClone2.section[0].entry[1].reference = 'Condition/example-22'
+      compositionClone2.section[0].entry[2].reference = 'Condition/example-333'
+      compositionClone2.subject.reference = 'Person/example-person-id'
+
+      const compositionClone4 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone4.id
+      compositionClone2.identifier.value = '44444444'
+      compositionClone2.identifier.date = '2014-04-12T16:38:14Z'
+      compositionClone2.type.coding[0].code = '7dj298dkf'
+      compositionClone2.type.coding[0].display = 'Display 444 for type.coding'
+      compositionClone2.status = 'preliminary'
+      compositionClone2.section[0].entry[0].reference = 'Condition/example-1111'
+      compositionClone2.section[0].entry[1].reference = 'Condition/example-2222222'
+      compositionClone2.section[0].entry[2].reference = 'Condition/example-3333333333'
+      compositionClone2.subject.reference = 'Practitioner/example-practitioner-id'
+
+      return {
+        doc1: compositionClone1,
+        doc2: compositionClone2,
+        doc3: compositionClone3,
+        doc4: compositionClone4
+      }
+    },
+
     updateTestPatientReferences: updateTestPatientReferences,
 
     createOrganization: (t, testOrg, callback) => {
