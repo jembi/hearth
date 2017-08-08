@@ -8,7 +8,7 @@ const server = require('../lib/server')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let binaryTestEnv = (t, test) => {
+let CompositionTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -41,7 +41,7 @@ let binaryTestEnv = (t, test) => {
 
 tap.test('Composition - should return all results when there are no parameters', (t) => {
   // given
-  binaryTestEnv(t, (db, refs, done) => {
+  CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: 'http://localhost:3447/fhir/Composition',
       headers: headers,
@@ -65,7 +65,7 @@ tap.test('Composition - should return all results when there are no parameters',
 
 tap.test('Composition - should fail for invalid Composition resource ID', (t) => {
   // given
-  binaryTestEnv(t, (db, refs, done) => {
+  CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: 'http://localhost:3447/fhir/Composition/77ssssssssssssssssssssss',
       headers: headers,
@@ -85,7 +85,7 @@ tap.test('Composition - should fail for invalid Composition resource ID', (t) =>
 
 tap.test('Composition - should fetch Composition for valid resource ID', (t) => {
   // given
-  binaryTestEnv(t, (db, refs, done) => {
+  CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: 'http://localhost:3447/fhir/Composition',
       headers: headers,
