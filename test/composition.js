@@ -112,3 +112,42 @@ tap.test('Composition - should fetch Composition for valid resource ID', (t) => 
     })
   })
 })
+
+tap.test('composition should be found with matching status', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?status=final`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equals(body.entry[0].resource.status, 'final')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should not find any result with an unknown status', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?status=invalid`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain no results')
+
+      done()
+    })
+  })
+})
