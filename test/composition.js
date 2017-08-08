@@ -133,10 +133,10 @@ tap.test('composition should be found with matching status', (t) => {
   })
 })
 
-tap.test('composition should be found with matching status', (t) => {
+tap.test('composition should not find any result with an unknown status', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?status=preliminary`,
+      url: `http://localhost:3447/fhir/Composition?status=invalid`,
       headers: headers,
       json: true
     }, (err, res, body) => {
