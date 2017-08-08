@@ -380,6 +380,31 @@ module.exports = () => {
       }
     },
 
+    testCompositions: () => {
+      const compositionClone1 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone1.id
+      // make any needed updates to make resource more unique
+
+      const compositionClone2 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone2.id
+      // make any needed updates to make resource more unique
+
+      const compositionClone3 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone3.id
+      // make any needed updates to make resource more unique
+
+      const compositionClone4 = _.cloneDeep(require('../resources/Composition-1.json'))
+      delete compositionClone4.id
+      // make any needed updates to make resource more unique
+
+      return {
+        doc1: compositionClone1,
+        doc2: compositionClone2,
+        doc3: compositionClone3,
+        doc4: compositionClone4
+      }
+    },
+
     updateTestPatientReferences: updateTestPatientReferences,
 
     createOrganization: (t, testOrg, callback) => {
