@@ -32,6 +32,7 @@ npm test
 | Allergy Intolerance     | 3 | 
 | Basic                   | 1 | 
 | Binary                  | 5 | 
+| Composition             | 2 | 
 | Document Manifest       | 2 | 
 | Document Reference      | 3 | 
 | Encounter               | 2 | 
