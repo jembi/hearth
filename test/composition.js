@@ -258,7 +258,7 @@ tap.test('composition should not be found when section.entry does not match both
 tap.test('composition should be found with matching patient', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?patient=123`,
+      url: `http://localhost:3447/fhir/Composition?patient=Patient/example-patient-id`,
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -268,7 +268,7 @@ tap.test('composition should be found with matching patient', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equals(body.entry[0].resource.patient, '123')
+      t.equals(body.entry[0].resource.patient, 'Patient/example-patient-id')
 
       done()
     })
@@ -278,7 +278,7 @@ tap.test('composition should be found with matching patient', (t) => {
 tap.test('composition should be found with matching subject', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?subject=456`,
+      url: `http://localhost:3447/fhir/Composition?subject=Patient/example-patient-id`,
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -288,7 +288,45 @@ tap.test('composition should be found with matching subject', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equals(body.entry[0].resource.subject, '456')
+      t.equals(body.entry[0].resource.subject, 'Patient/example-patient-id')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should not be found when subject.reference does not match the query parameter patient', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?patient=123`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain zero result')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should not be found when subject.reference does not match the query parameter subject', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?subject=123`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain zero result')
 
       done()
     })
