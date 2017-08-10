@@ -172,23 +172,6 @@ tap.test('composition should be found with matching section.entry reference', (t
   })
 })
 
-tap.test('composition should find any result with a specific type', (t) => {
-  CompositionTestEnv(t, (db, refs, done) => {
-    request({
-      url: `http://localhost:3447/fhir/Composition?type=abc123def`,
-      json: true
-    }, (err, res, body) => {
-      t.error(err)
-
-      t.ok(body)
-      t.equals(body.total, 1)
-      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body one result found with code abc123def which is compositionClone2')
-
-      done()
-    })
-  })
-})
-
 tap.test('composition should not find any result with an unknown section.entry reference', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
@@ -265,6 +248,57 @@ tap.test('composition should not be found when section.entry does not match both
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 0, 'body should contain one result')
+
+      done()
+    })
+  })
+})
+
+
+tap.test('composition should find any result with a specific type', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=abc123def`,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 1)
+      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body should contain record with type.code value of \'abc123def\'')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should find zero results with a missing specific type', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=noneexisting`,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 0)
+      done()
+    })
+  })
+})
+
+
+tap.test('composition should find any result with a queryUtils that includes specific type system and code', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def`,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 1)
+      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body should contain record with type.code value of \'abc123def\'')
 
       done()
     })
