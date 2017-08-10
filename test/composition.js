@@ -333,7 +333,7 @@ tap.test('composition should not be found when subject.reference does not match 
   })
 })
 
-tap.test('composition should find any result with a specific type', (t) => {
+tap.test('composition should find some results with a specific type', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=abc123def`,
@@ -366,7 +366,6 @@ tap.test('composition should find zero results when type does not exist', (t) =>
     })
   })
 })
-
 
 tap.test('composition should find results with \'system\' and \'code\' being supplied in the type parameter', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
