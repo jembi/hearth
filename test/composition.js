@@ -160,6 +160,7 @@ tap.test('composition should be found with matching section.entry reference', (t
       json: true
     }, (err, res, body) => {
       t.error(err)
+
       t.equal(res.statusCode, 200, 'response status code should be 200')
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
@@ -272,7 +273,7 @@ tap.test('composition should find any result with a specific type', (t) => {
   })
 })
 
-tap.test('composition should find zero results with a missing specific type', (t) => {
+tap.test('composition should find zero results when type does not exist', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=noneexisting`,
@@ -288,7 +289,7 @@ tap.test('composition should find zero results with a missing specific type', (t
 })
 
 
-tap.test('composition should find any result with a queryUtils that includes specific type system and code', (t) => {
+tap.test('composition should find results with \'system\' and \'code\' being supplied in the type parameter', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def`,
