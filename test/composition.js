@@ -337,6 +337,7 @@ tap.test('composition should find any result with a specific type', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=abc123def`,
+      headers: headers,
       json: true
     }, (err, res, body) => {
       t.error(err)
@@ -354,6 +355,7 @@ tap.test('composition should find zero results when type does not exist', (t) =>
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=noneexisting`,
+      headers: headers,
       json: true
     }, (err, res, body) => {
       t.error(err)
@@ -370,6 +372,7 @@ tap.test('composition should find results with \'system\' and \'code\' being sup
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def`,
+      headers: headers,
       json: true
     }, (err, res, body) => {
       t.error(err)
