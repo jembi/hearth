@@ -268,7 +268,7 @@ tap.test('composition should be found with matching patient', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equals(body.entry[0].resource.patient, 'Patient/example-patient-id')
+      t.equals(body.entry[0].resource.subject.reference, 'Patient/example-patient-id')
 
       done()
     })
@@ -288,7 +288,7 @@ tap.test('composition should be found with matching subject', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equals(body.entry[0].resource.subject, 'Patient/example-patient-id')
+      t.equals(body.entry[0].resource.subject.reference, 'Patient/example-patient-id')
 
       done()
     })
