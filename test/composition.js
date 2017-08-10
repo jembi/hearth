@@ -332,3 +332,55 @@ tap.test('composition should not be found when subject.reference does not match 
     })
   })
 })
+
+tap.test('composition should find some results with a specific type', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=abc123def`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 1)
+      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body should contain record with type.code value of \'abc123def\'')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should find zero results when type does not exist', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=noneexisting`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 0)
+      done()
+    })
+  })
+})
+
+tap.test('composition should find results with \'system\' and \'code\' being supplied in the type parameter', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.ok(body)
+      t.equals(body.total, 1)
+      t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body should contain record with type.code value of \'abc123def\'')
+
+      done()
+    })
+  })
+})
