@@ -152,11 +152,30 @@ tap.test('composition should not find any result with an unknown status', (t) =>
   })
 })
 
+tap.test('composition should be found with matching section.entry reference', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?entry=Condition/stroke`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equals(body.entry[0].resource.identifier.value, '1')
+      t.equals(body.entry[0].resource.section[0].entry[0].reference, 'Condition/stroke')
+
+      done()
+    })
+  })
+})
+
 tap.test('composition should find any result with a specific type', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
       url: `http://localhost:3447/fhir/Composition?type=abc123def`,
-      headers: headers,
       json: true
     }, (err, res, body) => {
       t.error(err)
@@ -164,6 +183,88 @@ tap.test('composition should find any result with a specific type', (t) => {
       t.ok(body)
       t.equals(body.total, 1)
       t.equal(body.entry[0].resource.type.coding[0].code, 'abc123def', 'body one result found with code abc123def which is compositionClone2')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should not find any result with an unknown section.entry reference', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?entry=invalid`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain no results')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should be found matching multiple section.entry reference', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?entry=Condition/example-one&entry=Condition/example-two&entry=Condition/example-three`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equals(body.entry[0].resource.identifier.value, '22222')
+      t.equals(body.entry[0].resource.section[0].entry[0].reference, 'Condition/example-one')
+
+      done()
+    })
+  })
+})
+
+tap.test('multiple compositions should be found matching section.entry reference', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?entry=Condition/example-1`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain one result')
+      t.equals(body.entry[0].resource.identifier.value, '3333333')
+      t.equals(body.entry[0].resource.section[0].entry[0].reference, 'Condition/example-1')
+      t.equals(body.entry[1].resource.identifier.value, '44444444')
+      t.equals(body.entry[1].resource.section[0].entry[0].reference, 'Condition/example-1')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should not be found when section.entry does not match both entry query parameters', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?entry=Condition/stroke&entry=undefined`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain one result')
 
       done()
     })

@@ -415,7 +415,7 @@ module.exports = () => {
       compositionClone4.type.coding[0].code = '7dj298dkf'
       compositionClone4.type.coding[0].display = 'Display 444 for type.coding'
       compositionClone4.status = 'preliminary'
-      compositionClone4.section[0].entry[0].reference = 'Condition/example-1111'
+      compositionClone4.section[0].entry[0].reference = 'Condition/example-1'
       compositionClone4.section[0].entry[1].reference = 'Condition/example-2222222'
       compositionClone4.section[0].entry[2].reference = 'Condition/example-3333333333'
       compositionClone4.subject.reference = 'Practitioner/example-practitioner-id'
