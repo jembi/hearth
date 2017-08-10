@@ -112,3 +112,43 @@ tap.test('Composition - should fetch Composition for valid resource ID', (t) => 
     })
   })
 })
+
+tap.test('composition should be found with matching patient', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?patient=123`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equals(body.entry[0].resource.patient, '123')
+
+      done()
+    })
+  })
+})
+
+tap.test('composition should be found with matching subject', (t) => {
+  CompositionTestEnv(t, (db, refs, done) => {
+    request({
+      url: `http://localhost:3447/fhir/Composition?subject=456`,
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 1, 'body should contain one result')
+      t.equals(body.entry[0].resource.subject, '456')
+
+      done()
+    })
+  })
+})
