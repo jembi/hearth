@@ -398,27 +398,27 @@ module.exports = () => {
 
       const compositionClone3 = _.cloneDeep(require('../resources/Composition-1.json'))
       delete compositionClone3.id
-      compositionClone2.identifier.value = '3333333'
-      compositionClone2.identifier.date = '2013-09-25T10:10:14Z'
-      compositionClone2.type.coding[0].code = 's83kf94f'
-      compositionClone2.type.coding[0].display = 'Display 333 for type.coding'
-      compositionClone2.status = 'amended'
-      compositionClone2.section[0].entry[0].reference = 'Condition/example-1'
-      compositionClone2.section[0].entry[1].reference = 'Condition/example-22'
-      compositionClone2.section[0].entry[2].reference = 'Condition/example-333'
-      compositionClone2.subject.reference = 'Person/example-person-id'
+      compositionClone3.identifier.value = '3333333'
+      compositionClone3.identifier.date = '2013-09-25T10:10:14Z'
+      compositionClone3.type.coding[0].code = 's83kf94f'
+      compositionClone3.type.coding[0].display = 'Display 333 for type.coding'
+      compositionClone3.status = 'amended'
+      compositionClone3.section[0].entry[0].reference = 'Condition/example-1'
+      compositionClone3.section[0].entry[1].reference = 'Condition/example-22'
+      compositionClone3.section[0].entry[2].reference = 'Condition/example-333'
+      compositionClone3.subject.reference = 'Person/example-person-id'
 
       const compositionClone4 = _.cloneDeep(require('../resources/Composition-1.json'))
       delete compositionClone4.id
-      compositionClone2.identifier.value = '44444444'
-      compositionClone2.identifier.date = '2014-04-12T16:38:14Z'
-      compositionClone2.type.coding[0].code = '7dj298dkf'
-      compositionClone2.type.coding[0].display = 'Display 444 for type.coding'
-      compositionClone2.status = 'preliminary'
-      compositionClone2.section[0].entry[0].reference = 'Condition/example-1111'
-      compositionClone2.section[0].entry[1].reference = 'Condition/example-2222222'
-      compositionClone2.section[0].entry[2].reference = 'Condition/example-3333333333'
-      compositionClone2.subject.reference = 'Practitioner/example-practitioner-id'
+      compositionClone4.identifier.value = '44444444'
+      compositionClone4.identifier.date = '2014-04-12T16:38:14Z'
+      compositionClone4.type.coding[0].code = '7dj298dkf'
+      compositionClone4.type.coding[0].display = 'Display 444 for type.coding'
+      compositionClone4.status = 'preliminary'
+      compositionClone4.section[0].entry[0].reference = 'Condition/example-1'
+      compositionClone4.section[0].entry[1].reference = 'Condition/example-2222222'
+      compositionClone4.section[0].entry[2].reference = 'Condition/example-3333333333'
+      compositionClone4.subject.reference = 'Practitioner/example-practitioner-id'
 
       return {
         doc1: compositionClone1,
