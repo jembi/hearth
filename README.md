@@ -36,6 +36,7 @@ npm test
 | Document Manifest       | 2 | 
 | Document Reference      | 3 | 
 | Encounter               | 2 | 
+| Immunization            | 1 | 
 | Location                | 3 | 
 | Patient                 | 5 | 
 | Practitioner            | 3 | 
