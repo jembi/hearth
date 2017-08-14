@@ -335,3 +335,51 @@ tap.test('Document bundles should get processed successfully', (t) => {
     })
   })
 })
+
+tap.test('Document bundles should get processed successfully even when a resource need to be updated', (t) => {
+  // given
+  testEnv(t, (db, done) => {
+    const doc = _.cloneDeep(require('./resources/FHIR-Document.json'))
+    const obs = doc.entry[1].resource
+    env.createResource(t, obs, 'Observation', (err, ref) => {
+      t.error(err)
+      doc.entry[1].resource.id = ref.replace('Observation/', '')
+      obs.status = 'ammended'
+
+      // when
+      request({
+        url: 'http://localhost:3447/fhir',
+        method: 'POST',
+        headers: headers,
+        body: doc,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equals(res.statusCode, 200, 'should return a 200 status')
+
+        const comp = db.collection('Composition')
+        const obs = db.collection('Observation')
+        const meds = db.collection('MedicationOrder')
+
+        comp.count((err, count) => {
+          t.error(err)
+          t.equals(count, 1)
+          obs.count((err, count) => {
+            t.error(err)
+            t.equals(count, 4)
+            meds.count((err, count) => {
+              t.error(err)
+              t.equals(count, 1)
+              obs.findOne({ status: 'ammended' }, (err, result) => {
+                t.error(err)
+                t.ok(result)
+                t.equals(result.status, 'ammended')
+              })
+              done()
+            })
+          })
+        })
+      })
+    })
+  })
+})

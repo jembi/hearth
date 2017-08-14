@@ -483,7 +483,7 @@ tap.test('Binary - postInteractionHandlers.create - should log an error when the
 tap.test('Binary - postInteractionHandlers.create - should log an error if resource could not be added to db by core', (t) => {
   const sandbox = sinon.sandbox.create()
   sandbox.stub(logger, 'error').callsFake((arg) => {
-    t.equals(arg.message, 'Non 2xx status code: 400 while trying to process binary bundle', 'Should log the correct error')
+    t.equals(arg.message, 'Non 2xx status code: 404 while trying to process binary bundle', 'Should log the correct error')
   })
 
   env.initDB((err, db) => {
