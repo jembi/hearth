@@ -336,7 +336,7 @@ tap.test('Document bundles should get processed successfully', (t) => {
   })
 })
 
-tap.test('Document bundles should get processed successfully even with when a resource need to be updated', (t) => {
+tap.test('Document bundles should get processed successfully even when a resource need to be updated', (t) => {
   // given
   testEnv(t, (db, done) => {
     const doc = _.cloneDeep(require('./resources/FHIR-Document.json'))
