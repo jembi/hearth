@@ -204,6 +204,36 @@ tap.test('Transaction should resolve references correctly when processing a tran
   })
 })
 
+tap.test('Transaction should resolve references correctly when processing a transaction containing a resource that get\'s updated', (t) => {
+  // given
+  testEnv(t, (db, done) => {
+    env.createResource(t, require('./resources/Transaction-reference.json').entry[0].resource, 'Patient', (err, ref) => {
+      t.error(err)
+      // when
+      const body = _.cloneDeep(require('./resources/Transaction-reference.json'))
+      body.entry[0].resource.id = ref.split('/')[1]
+      body.entry[0].request.method = 'PUT'
+      body.entry[0].request.url += `/${body.entry[0].resource.id}`
+      request({
+        url: 'http://localhost:3447/fhir',
+        method: 'POST',
+        headers: headers,
+        body: body,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equals(res.statusCode, 200, 'should return a 200 status')
+        const c = db.collection('Encounter')
+        c.findOne({ id: body.entry[1].response.location.split('/')[3] }, (err, result) => {
+          t.error(err)
+          t.equals(result.patient.reference, `Patient/${body.entry[0].response.location.split('/')[3]}`, 'references should be resolved')
+          done()
+        })
+      })
+    })
+  })
+})
+
 tap.test('Transaction should return a 400 when the bundle type is incorrect', (t) => {
   // given
   testEnv(t, (db, done) => {
