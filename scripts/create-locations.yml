@@ -13,8 +13,24 @@ scenarios:
           beforeRequest:
             - 'setAuthHeaders'
             - 'createLocation1'
+      - post:
+          url: '/fhir/Location'
+          beforeRequest:
+            - 'setAuthHeaders'
             - 'createLocation2'
+      - post:
+          url: '/fhir/Location'
+          beforeRequest:
+            - 'setAuthHeaders'
             - 'createLocation3'
+      - post:
+          url: '/fhir/Location'
+          beforeRequest:
+            - 'setAuthHeaders'
             - 'createLocation4'
+      - post:
+          url: '/fhir/Location'
+          beforeRequest:
+            - 'setAuthHeaders'
             - 'createLocation5'
       count: 1
