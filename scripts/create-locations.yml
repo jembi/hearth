@@ -1,0 +1,20 @@
+config:
+  target: 'http://localhost:3447'
+  phases:
+    - duration: 1
+      arrivalCount: 1
+  processor: './create-locations.js'
+scenarios:
+  - name: 'Creating location'
+    flow:
+    - loop:
+      - post:
+          url: '/fhir/Location'
+          beforeRequest:
+            - 'setAuthHeaders'
+            - 'createLocation1'
+            - 'createLocation2'
+            - 'createLocation3'
+            - 'createLocation4'
+            - 'createLocation5'
+      count: 1

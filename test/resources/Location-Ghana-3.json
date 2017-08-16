@@ -1,0 +1,15 @@
+{
+  "resourceType": "Location",
+  "id": "1",
+  "status": "active",
+  "mode": "instance",
+  "name": "Beaver Clinic",
+  "type": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v3/RoleCode",
+        "code": "PROFF"
+      }
+    ]
+  }
+}
