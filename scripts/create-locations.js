@@ -1,16 +1,11 @@
 'use strict'
 
-const Chance = require('chance')
-const moment = require('moment')
-
 const env = require('../test/test-env/init')()
 const locationTemplate1 = require('../test/resources/Location-Ghana-1.json')
 const locationTemplate2 = require('../test/resources/Location-Ghana-2.json')
 const locationTemplate3 = require('../test/resources/Location-Ghana-3.json')
 const locationTemplate4 = require('../test/resources/Location-Ghana-4.json')
 const locationTemplate5 = require('../test/resources/Location-Ghana-5.json')
-
-const chance = new Chance()
 
 module.exports = {
   setAuthHeaders: (requestParams, context, ee, next) => {
