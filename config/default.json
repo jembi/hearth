@@ -9,7 +9,8 @@
   },
   "authentication": {
     "authWindowSeconds": 10,
-    "type": "openhim-style"
+    "type": "openhim-style",
+    "enablePublicUserCreation": false
   },
   "logger": {
     "level": "info"
