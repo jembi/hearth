@@ -130,7 +130,7 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
 
-    t.test('should return 204 - no content when a patient is deleted with _purge=true', (t) => {
+    t.test('should remove the resource history when the flag _purge=true', (t) => {
       const id = '1111111111'
       basicCoreTest(t, (db, done) => {
         const charlton = testPatients.charlton.patient
@@ -166,7 +166,7 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
 
-    t.test('should return 204 - no content when a patient is deleted with _purge=false', (t) => {
+    t.test('should not remove the resource history when the flag _purge=false', (t) => {
       const id = '1111111111'
       basicCoreTest(t, (db, done) => {
         const charlton = testPatients.charlton.patient
