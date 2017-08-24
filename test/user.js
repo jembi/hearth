@@ -3,8 +3,9 @@ const tap = require('tap')
 const request = require('request')
 
 const env = require('./test-env/init')()
-const server = require('../lib/server')
+let server = require('../lib/server')
 const User = require('../lib/custom-api/user')
+const config = require('../lib/config')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
@@ -232,6 +233,43 @@ tap.test('user update should return 404 if the user isn\'t found', (t) => {
 
       t.equals(res.statusCode, 404, 'should respond with a status code of 200')
       done()
+    })
+  })
+})
+
+tap.test('user should allow public user creation when config is set', (t) => {
+  config.setConf('authentication:enablePublicUserCreation', true)
+
+  // invalidate server file require so we can require a fresh copy of the server
+  // file. This is needed because the auth option is set as soon as the server
+  // file is required.
+  delete require.cache[require.resolve('../lib/server')]
+  server = require('../lib/server')
+
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user',
+      method: 'POST', // NO auth headers
+      body: {
+        email: 'created@test.org',
+        type: 'sysadmin',
+        password: 'test'
+      },
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equals(res.statusCode, 201, 'should respond with a status code of 201')
+      const user = db.collection('user')
+      user.findOne({ email: 'created@test.org' }, (err, u) => {
+        t.error(err)
+
+        t.ok(u, 'a user object should be returned')
+        t.equals(u.type, 'sysadmin', 'type should be sysadmin')
+        t.ok(u.hash, 'hash should be set')
+        t.ok(u.salt, 'salt should be set')
+        done()
+      })
     })
   })
 })
