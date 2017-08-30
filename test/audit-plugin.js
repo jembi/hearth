@@ -55,7 +55,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
     // given
     const resource = {
       resourceType: 'OperationOutcome',
-      issue: [{"severity":"information","code":"gone","details":{"text":"Gone"}}]
+      issue: [{ 'severity': 'information', 'code': 'gone', 'details': { 'text': 'Gone' } }]
     }
 
     // when
@@ -108,7 +108,7 @@ tap.test('Audit Plugin - buildParticipantObj()', { autoend: true }, (t) => {
     const participantObj = auditPlugin.buildParticipantObj(ctx)
 
     t.ok(participantObj)
-    
+
     t.equals(participantObj.role, 'practitioner', 'should have a value of \'practitioner\'')
     t.equals(participantObj.reference, 'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
     t.equals(participantObj.userId, 'b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
@@ -139,7 +139,7 @@ tap.test('Audit Plugin - buildSourceObj()', { autoend: true }, (t) => {
     const sourceObj = auditPlugin.buildSourceObj(ctx)
 
     t.ok(sourceObj)
-    
+
     t.equals(sourceObj.site, 'Cloud', 'should have a value of \'Cloud\'')
     t.equals(sourceObj.identifier, 'http://localhost:9000/', 'should have a value of \'http://localhost:9000/\'')
     t.equals(sourceObj.type[0].system, 'http://hl7.org/fhir/security-source-type', 'should have a value of \'http://hl7.org/fhir/security-source-type\'')
@@ -170,7 +170,7 @@ tap.test('Audit Plugin - buildObjectObj()', { autoend: true }, (t) => {
     const objectObj = auditPlugin.buildObjectObj(ctx)
 
     t.ok(objectObj)
-    
+
     t.equals(objectObj.query, ctx.query, 'should have a value of \'{ identifier: \'preoperative-questionnaire\' }\'')
     t.equals(objectObj.reference.reference, '/fhir/Questionnaire', 'should have a value of \'/fhir/Questionnaire\'')
 
