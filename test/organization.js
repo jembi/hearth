@@ -106,11 +106,12 @@ tap.test('patient should support searches with a _summary flag', (t) => {
 
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 3, 'body should contain 3 results')
+      t.equal(body.entry[0].resource.meta.security[0].code, 'SUBSETTED')
+      t.equal(body.entry[2].resource.identifier[0].value, '543219876')
 
       t.notOk(body.entry[0].resource.telecom)
       t.notOk(body.entry[0].resource.address)
       t.notOk(body.entry[0].resource.extension)
-
       done()
     })
   })
