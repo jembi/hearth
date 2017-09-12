@@ -187,8 +187,10 @@ module.exports = () => {
       delete testOrgs.redwood.location.id
       delete testOrgs.goodhealth.organization.id
       delete testOrgs.goodhealth.location.id
+      testOrgs.redwood.organization.identifier[0].value = '987654321'
       testOrgs.redwood.organization.name = 'Redwood Clinical Practice'
       testOrgs.redwood.location.name = 'Redwood Clinical Practice'
+      testOrgs.goodhealth.organization.identifier[0].value = '543219876'
       testOrgs.goodhealth.organization.name = 'Good Health Hospital Group Pty Ltd'
       testOrgs.goodhealth.location.name = 'Good Health Hospital Cape Town'
       testOrgs.goodhealth.location.type.coding[0].code = 'HOSP'
