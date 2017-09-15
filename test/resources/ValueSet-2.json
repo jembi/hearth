@@ -1,0 +1,30 @@
+{
+  "resourceType": "ValueSet",
+  "active": true,
+  "codeSystem": {
+    "system": "hearth:valueset:icd10-codes",
+    "caseSensitive": true,
+    "concept": [
+      {
+        "code": "A00",
+        "display": "Archive",
+        "definition": "Archive device"
+      },
+      {
+        "code": "B00",
+        "display": "Autorefraction",
+        "definition": "Autorefraction device"
+      },
+      {
+        "code": "C00",
+        "display": "Angioscopy",
+        "definition": "Angioscopy device"
+      },
+      {
+        "code": "D00",
+        "display": "Audio",
+        "definition": "Audio object"
+      }
+    ]
+  }
+}
