@@ -1,3 +1,11 @@
+ /**
+ * Copyright (c) 2017-present, Jembi Health Systems NPC.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 'use strict'
 process.env.NODE_ENV = 'test'
 require('../../lib/init')
@@ -179,8 +187,10 @@ module.exports = () => {
       delete testOrgs.redwood.location.id
       delete testOrgs.goodhealth.organization.id
       delete testOrgs.goodhealth.location.id
+      testOrgs.redwood.organization.identifier[0].value = '987654321'
       testOrgs.redwood.organization.name = 'Redwood Clinical Practice'
       testOrgs.redwood.location.name = 'Redwood Clinical Practice'
+      testOrgs.goodhealth.organization.identifier[0].value = '543219876'
       testOrgs.goodhealth.organization.name = 'Good Health Hospital Group Pty Ltd'
       testOrgs.goodhealth.location.name = 'Good Health Hospital Cape Town'
       testOrgs.goodhealth.location.type.coding[0].code = 'HOSP'
