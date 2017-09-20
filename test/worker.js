@@ -136,7 +136,7 @@ tap.test('should create a size 10 queue and start 5 workers to read off the queu
                 return t.equal(m, `${workerName} started`)
               }
 
-              if (i === messages.length - 1) {
+              if (m.debug) {
                 return t.equal(m.debug, `${workerName} No records in queue`)
               }
 
