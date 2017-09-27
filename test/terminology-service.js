@@ -40,7 +40,7 @@ const TerminologyServiceTest = (t, test) => {
   })
 }
 
-tap.test('ValueSet should return an error when either system or code no supplied', (t) => {
+tap.test('ValueSet should return an error when either system or code not supplied', (t) => {
   TerminologyServiceTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/ValueSet/$lookup?system=hearth:valueset:procedure-codes',
