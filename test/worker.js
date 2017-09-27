@@ -71,7 +71,6 @@ const matchingQueueTest = (queueSize, t, test) => {
           Object.keys(testWorkers).forEach((key) => {
             testWorkers[key].kill('SIGINT')
           })
-          
           t.end()
         })
       })
