@@ -1,0 +1,30 @@
+{
+  "resourceType": "ValueSet",
+  "active": true,
+  "codeSystem": {
+    "system": "hearth:valueset:procedure-codes",
+    "caseSensitive": true,
+    "concept": [
+      {
+        "code": "0001",
+        "display": "Procedure 1",
+        "definition": "Procedure 1"
+      },
+      {
+        "code": "0002",
+        "display": "Procedure 2",
+        "definition": "Procedure 2"
+      },
+      {
+        "code": "0003",
+        "display": "Procedure 3",
+        "definition": "Procedure 3"
+      },
+      {
+        "code": "0004",
+        "display": "Procedure 4",
+        "definition": "Procedure 4"
+      }
+    ]
+  }
+}
