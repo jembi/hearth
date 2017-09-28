@@ -138,6 +138,79 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
 
+    t.test('should remove the resource history when the flag _purge=true', (t) => {
+      const id = '1111111111'
+      basicCoreTest(t, (db, done) => {
+        const charlton = testPatients.charlton.patient
+        charlton.id = id
+
+        const c = db.collection('Patient')
+        c.insertOne(charlton, (err, doc) => {
+          t.error(err)
+
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}?_purge=true`,
+            method: 'DELETE',
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+            t.equal(res.statusCode, 204)
+
+            c.findOne({ id: id }, (err, doc) => {
+              t.error(err)
+              t.notOk(doc)
+
+              const cHistory = db.collection('Patient_history')
+              cHistory.findOne({ id: id }, (err, doc) => {
+                t.error(err)
+                t.notOk(doc, 'Deleted doc should not exist in history')
+
+                done()
+              })
+            })
+          })
+        })
+      })
+    })
+
+    t.test('should not remove the resource history when the flag _purge=false', (t) => {
+      const id = '1111111111'
+      basicCoreTest(t, (db, done) => {
+        const charlton = testPatients.charlton.patient
+        charlton.id = id
+
+        const c = db.collection('Patient')
+        c.insertOne(charlton, (err, doc) => {
+          t.error(err)
+
+          request({
+            url: `http://localhost:3447/fhir/Patient/${id}?_purge=false`,
+            method: 'DELETE',
+            headers: headers,
+            json: true
+          }, (err, res, body) => {
+            t.error(err)
+            t.equal(res.statusCode, 204)
+
+            c.findOne({ id: id }, (err, doc) => {
+              t.error(err)
+              t.notOk(doc)
+
+              const cHistory = db.collection('Patient_history')
+              cHistory.findOne({ id: id }, (err, doc) => {
+                t.error(err)
+                t.ok(doc)
+                t.equal(doc.id, id, 'Deleted doc should exist in history')
+
+                done()
+              })
+            })
+          })
+        })
+      })
+    })
+
     t.test('should return 204 - no content when a non existent patient is deleted', (t) => {
       basicCoreTest(t, (db, done) => {
         request({
