@@ -8,7 +8,8 @@
     "url": "mongodb://localhost/hearth-test"
   },
   "authentication": {
-    "authWindowSeconds": 50
+    "authWindowSeconds": 50,
+    "secret": "test secret"
   },
   "logger": {
     "level": "error"
