@@ -117,7 +117,7 @@ tap.test('user authenticate should return status 423 if user is locked', (t) => 
   })
 })
 
-tap.test('user should support searches on email', (t) => {
+tap.test('user should support reads on email', (t) => {
   basicUserTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/api/user/jane@test.org',
@@ -134,7 +134,7 @@ tap.test('user should support searches on email', (t) => {
   })
 })
 
-tap.test('user search should return not found if the user doesn\'t ecist', (t) => {
+tap.test('user read should return not found if the user doesn\'t exist', (t) => {
   basicUserTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/api/user/meh@test.org',
@@ -278,6 +278,58 @@ tap.test('user should allow public user creation when config is set', (t) => {
         t.ok(u.salt, 'salt should be set')
         done()
       })
+    })
+  })
+})
+
+tap.test('user search should return user with matching resource parameter', (t) => {
+  basicUserTest(t, (db, done) => {
+    const c = db.collection('user')
+    c.findOneAndUpdate({ email: 'jane@test.org' }, { $set: { resource: 'Practitioner/1234' } }, (err) => {
+      t.error(err)
+
+      request({
+        url: 'http://localhost:3447/api/user?resource=Practitioner/1234',
+        headers: headers,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.equals(body.email, 'jane@test.org', 'the correct user should be returned')
+        done()
+      })
+    })
+  })
+})
+
+tap.test('user search should return 404 when no users found on supported query parameter', (t) => {
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user?resource=Practitioner/1234',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 404, 'response status code should be 404')
+      done()
+    })
+  })
+})
+
+tap.test('user search should return 400 when query parameter not supported', (t) => {
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 400, 'response status code should be 400')
+      done()
     })
   })
 })
