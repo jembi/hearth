@@ -39,7 +39,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
       active: true,
       url: 'http://test.valueset.org/valueset1',
       codeSystem: {
-        system: 'hearth:sssa:procedure-codes',
+        system: 'hearth:procedure-codes',
         caseSensitive: true,
         concept: [
           {
@@ -103,7 +103,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
       resourceType: 'ValueSet',
       active: true,
       codeSystem: {
-        system: 'hearth:sssa:procedure-codes',
+        system: 'hearth:procedure-codes',
         caseSensitive: true,
         concept: [
           {
@@ -123,7 +123,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
         t.error(err)
 
         request({
-          url: 'http://localhost:3447/fhir/ValueSet?system=hearth:sssa:procedure-codes',
+          url: 'http://localhost:3447/fhir/ValueSet?system=hearth:procedure-codes',
           headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
           json: true
         }, (err, res, body) => {
@@ -133,7 +133,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
           t.ok(body)
           t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
           t.equal(body.total, 1, 'body should contain one result')
-          t.equals(body.entry[0].resource.codeSystem.system, 'hearth:sssa:procedure-codes')
+          t.equals(body.entry[0].resource.codeSystem.system, 'hearth:procedure-codes')
 
           done()
         })
@@ -144,7 +144,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
   t.test('should return no ValueSets if the system doesn\'t match', (t) => {
     basicValueSetTest(t, (db, done) => {
       request({
-        url: 'http://localhost:3447/fhir/ValueSet?system=hearth:sssa:procedure-codes',
+        url: 'http://localhost:3447/fhir/ValueSet?system=hearth:procedure-codes',
         headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
         json: true
       }, (err, res, body) => {
