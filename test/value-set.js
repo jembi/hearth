@@ -37,6 +37,7 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
     const valueSet = {
       resourceType: 'ValueSet',
       active: true,
+      url: 'http://test.valueset.org/valueset1',
       codeSystem: {
         system: 'hearth:sssa:procedure-codes',
         caseSensitive: true,
@@ -48,18 +49,6 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
           {
             code: '00102',
             display: 'Anaesthesia for procedures involving plastic repair of cleft lip'
-          },
-          {
-            code: '00103',
-            display: 'Anaesthesia for reconstructive procedures of eyelid (eg., blepharoplasty, ptosis surgery)'
-          },
-          {
-            code: '00104',
-            display: 'Anaesthesia for electroconvulsive therapy'
-          },
-          {
-            code: '00120',
-            display: 'Anaesthesia for procedures on external, middle, and inner ear including biopsy; not otherwise specified'
           }
         ]
       }
@@ -70,7 +59,71 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
         t.error(err)
 
         request({
-          url: 'http://localhost:3447/fhir/ValueSet?url=hearth:sssa:procedure-codes',
+          url: 'http://localhost:3447/fhir/ValueSet?url=http://test.valueset.org/valueset1',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+          t.equal(body.total, 1, 'body should contain one result')
+          t.equals(body.entry[0].resource.url, 'http://test.valueset.org/valueset1')
+
+          done()
+        })
+      })
+    })
+  })
+
+  t.test('should return no ValueSets if the url doesn\'t match', (t) => {
+    basicValueSetTest(t, (db, done) => {
+      request({
+        url: 'http://localhost:3447/fhir/ValueSet?url=http://test.valueset.org/valueset1',
+        headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+        t.equal(body.total, 0, 'body should contain no result')
+
+        done()
+      })
+    })
+  })
+})
+
+tap.test('ValueSet Resource', { autoend: true }, (t) => {
+  t.test('should return ValueSets matching the system parameter', (t) => {
+    const valueSet = {
+      resourceType: 'ValueSet',
+      active: true,
+      codeSystem: {
+        system: 'hearth:sssa:procedure-codes',
+        caseSensitive: true,
+        concept: [
+          {
+            code: '00100',
+            display: 'Anaesthesia for procedures on salivary glands, including biopsy'
+          },
+          {
+            code: '00102',
+            display: 'Anaesthesia for procedures involving plastic repair of cleft lip'
+          }
+        ]
+      }
+    }
+
+    basicValueSetTest(t, (db, done) => {
+      env.createResource(t, valueSet, 'ValueSet', (err, ref) => {
+        t.error(err)
+
+        request({
+          url: 'http://localhost:3447/fhir/ValueSet?system=hearth:sssa:procedure-codes',
           headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
           json: true
         }, (err, res, body) => {
@@ -88,10 +141,10 @@ tap.test('ValueSet Resource', { autoend: true }, (t) => {
     })
   })
 
-  t.test('should return no ValueSets if the url doesn\'t match', (t) => {
+  t.test('should return no ValueSets if the system doesn\'t match', (t) => {
     basicValueSetTest(t, (db, done) => {
       request({
-        url: 'http://localhost:3447/fhir/ValueSet?url=hearth:sssa:procedure-codes',
+        url: 'http://localhost:3447/fhir/ValueSet?system=hearth:sssa:procedure-codes',
         headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
         json: true
       }, (err, res, body) => {

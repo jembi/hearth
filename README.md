@@ -48,7 +48,7 @@ All resources are supported with the default FHIR interactions and default searc
 | Procedure              | encounter, patient | 3 |
 | Questionnaire Response | encounter, patient, questionnaire, questionnaire.identifier | 3 |
 | Questionnaire          | identifier | 3 |
-| ValueSet               | url | 3 |
+| ValueSet               | url, system | 3 |
 
 link to FHIR list (https://www.hl7.org/fhir/resourcelist.html)
 
