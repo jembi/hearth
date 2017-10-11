@@ -46,7 +46,7 @@ All resources are supported with the default FHIR interactions and default searc
 | Practitioner           | identifier, given, family, role, organization, telecom | 3 |
 | Procedure Request      | encounter, patient | 3 |
 | Procedure              | encounter, patient | 3 |
-| Questionnaire Response | encounter, patient, questionnaire, questionnaire.identifier | 3 |
+| Questionnaire Response | encounter, patient, questionnaire | 3 |
 | Questionnaire          | identifier | 3 |
 | ValueSet               | url, system | 3 |
 
