@@ -11,7 +11,7 @@
     "authWindowSeconds": 10,
     "type": "openhim-style",
     "enablePublicUserCreation": false,
-    "secret": "default secret"
+    "secret": null
   },
   "logger": {
     "level": "info"

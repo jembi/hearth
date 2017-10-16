@@ -7,7 +7,7 @@
     "stop": "pkill -SIGINT Hearth",
     "dev:start": "NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
-    "test:code": "tap --cov --reporter=spec test/**.js",
+    "test:code": "NODE_ENV='test' tap --cov --reporter=spec test/**.js",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
