@@ -83,11 +83,14 @@ tap.test('resolve reference', (t) => {
       if (err) {
         return t.threw(err)
       }
-      common.resolveReference('Patient/1', (err, resolvedResource) => {
-        t.error(err)
-        t.deepEqual(resolvedResource, referencedPatient)
-        t.end()
-      })
+      common.resolveReference(
+        `Patient/${referencedPatient.id}`,
+        (err, resolvedResource) => {
+          t.error(err)
+          t.deepEqual(resolvedResource, referencedPatient)
+          t.end()
+        }
+      )
     })
   }))
 
@@ -96,11 +99,30 @@ tap.test('resolve reference', (t) => {
       if (err) {
         return t.threw(err)
       }
-      common.resolveReference('http://localhost/Patient/1', (err, resolvedResource) => {
-        t.error(err)
-        t.deepEqual(resolvedResource, referencedPatient)
-        t.end()
-      })
+      common.resolveReference(
+        `http://localhost/Patient/${referencedPatient.id}`,
+        (err, resolvedResource) => {
+          t.error(err)
+          t.deepEqual(resolvedResource, referencedPatient)
+          t.end()
+        }
+      )
+    })
+  }))
+
+  t.test('should return the correct resource when resolving relative references with a version', withDB((t, db) => {
+    createTestPatientHistory(db, (err, referencedPatient) => {
+      if (err) {
+        return t.threw(err)
+      }
+      common.resolveReference(
+        `Patient/${referencedPatient.id}/_history/${referencedPatient.meta.versionId}`,
+        (err, resolvedResource) => {
+          t.error(err)
+          t.deepEqual(resolvedResource, referencedPatient)
+          t.end()
+        }
+      )
     })
   }))
 
@@ -124,6 +146,25 @@ tap.test('resolve reference', (t) => {
         return callback(err)
       }
       db.collection('Patient').insertOne(referencedPatient, (err) => {
+        if (err) {
+          return callback(err)
+        }
+        callback(null, referencedPatient)
+      })
+    })
+  }
+
+  function createTestPatientHistory (db, callback) {
+    const referencedPatient = Object.assign({}, testPatient, {
+      meta: Object.assign({}, testPatient.meta, {
+        versionId: '5feb29f6-349a-4537-b620-0188cd30087a'
+      })
+    })
+    db.collection('Patient_history').remove({id: referencedPatient.id}, (err) => {
+      if (err) {
+        return callback(err)
+      }
+      db.collection('Patient_history').insertOne(referencedPatient, (err) => {
         if (err) {
           return callback(err)
         }
