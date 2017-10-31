@@ -242,6 +242,8 @@ tap.test('server - should use application/json+fhir when no accept header presen
     // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
+    delete require.cache[require.resolve('../lib/fhir/core')]
+    delete require.cache[require.resolve('../lib/fhir/hooks')]
     server = require('../lib/server')
 
     serverTestEnv(t, (db, done) => {
@@ -268,6 +270,8 @@ tap.test('server - should use application/json+fhir when no accept header presen
     // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
+    delete require.cache[require.resolve('../lib/fhir/core')]
+    delete require.cache[require.resolve('../lib/fhir/hooks')]
     server = require('../lib/server')
 
     serverTestEnv(t, (db, done) => {
@@ -291,6 +295,8 @@ tap.test('server - should use application/json+fhir when no accept header presen
     // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
+    delete require.cache[require.resolve('../lib/fhir/core')]
+    delete require.cache[require.resolve('../lib/fhir/hooks')]
     server = require('../lib/server')
 
     serverTestEnv(t, (db, done) => {
@@ -317,6 +323,8 @@ tap.test('server - should use application/json+fhir when no accept header presen
     // file. This is needed because the auth mechanism is set as soon as the server
     // file is required.
     delete require.cache[require.resolve('../lib/server')]
+    delete require.cache[require.resolve('../lib/fhir/core')]
+    delete require.cache[require.resolve('../lib/fhir/hooks')]
     server = require('../lib/server')
 
     serverTestEnv(t, (db, done) => {
