@@ -260,7 +260,6 @@ tap.test('Audit Plugin - buildAuditEvent()', { autoend: true }, (t) => {
   })
 })
 
-
 tap.test('Audit Plugin - create audit via fhirCore.create()', { autoend: true }, (t) => {
   t.test('should build and create a new audit event in the AuditEvent collection', (t) => {
     testServerInit(t, (db, done) => {

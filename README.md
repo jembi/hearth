@@ -32,6 +32,7 @@ All resources are supported with the default FHIR interactions and default searc
 | Supported Resources    | Supported Query Parameters | Maturity Level |
 | ---------------------- | -------------------------- | -------------- |
 | Allergy Intolerance    | patient | 3 |
+| Audit Event            | _id | 2 |
 | Basic                  | code, subject | 1 |
 | Binary                 | contenttype | 5 |
 | Composition            | entry, patient, status, subject, type | 2 |
