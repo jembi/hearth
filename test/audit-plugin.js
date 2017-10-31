@@ -10,9 +10,13 @@
 
 const tap = require('tap')
 const moment = require('moment')
+const request = require('request')
+const _ = require('lodash')
 
 const env = require('./test-env/init')()
 const server = require('../lib/server')
+
+const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
 let auditPlugin
 
@@ -256,31 +260,25 @@ tap.test('Audit Plugin - buildAuditEvent()', { autoend: true }, (t) => {
   })
 })
 
+
 tap.test('Audit Plugin - create audit via fhirCore.create()', { autoend: true }, (t) => {
   t.test('should build and create a new audit event in the AuditEvent collection', (t) => {
     testServerInit(t, (db, done) => {
-      // given
-      const resource = JSON.parse(JSON.stringify(testResourceTemplate))
-      const ctx = {
-        authenticatedUser: {
-          email: 'sysadmin@jembi.org',
-          type: 'sysadmin'
-        },
-        url: '/fhir/Patient',
-        query: {},
-        headers: env.getTestAuthHeaders(env.users.sysadminUser.email)
-      }
-
       // when
-      auditPlugin.hooks.after[0].function('create', ctx, 'Patient', resource, (err, badRequest, result) => {
-        const auditId = result.location.split('/')[3]
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
 
-        // then
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
         t.error(err)
-        t.notOk(badRequest, 'should not return badRequest')
+        t.equal(res.statusCode, 201, 'response status code should be 201')
 
         const c = db.collection('AuditEvent')
-        c.findOne({ id: auditId }, (err, result) => {
+        c.findOne({}, (err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in mongo')
 
@@ -291,8 +289,6 @@ tap.test('Audit Plugin - create audit via fhirCore.create()', { autoend: true },
           done()
         })
       })
-      
     })
   })
 })
-
