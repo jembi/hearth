@@ -85,7 +85,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, 0, `should return a success/fail value of 0 - Success`)
+      t.equal(successOrFailValue, '0', `should return a success/fail value of 0 - Success`)
 
       done()
     })
@@ -102,7 +102,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, 4, `should return a success/fail value of 4 - Minor Failure`)
+      t.equal(successOrFailValue, '4', `should return a success/fail value of 4 - Minor Failure`)
 
       done()
     })
@@ -120,12 +120,12 @@ tap.test('Audit Plugin - buildEventObj()', { autoend: true }, (t) => {
 
       t.ok(eventObj)
 
-      t.equals(eventObj.type.coding[0].code, 'rest', 'should have a value of \'rest\'')
-      t.equals(eventObj.type.coding[0].display, 'Restful Operation', 'should have a value of \'Restful Operation\'')
-      t.equals(eventObj.subtype[0].coding[0].code, 'read', 'should have a value of \'read\'')
-      t.equals(eventObj.subtype[0].coding[0].display, 'read', 'should have a value of \'read\'')
+      t.equals(eventObj.type.coding.code, 'rest', 'should have a value of \'rest\'')
+      t.equals(eventObj.type.coding.display, 'Restful Operation', 'should have a value of \'Restful Operation\'')
+      t.equals(eventObj.subtype[0].code, 'read', 'should have a value of \'read\'')
+      t.equals(eventObj.subtype[0].display, 'read', 'should have a value of \'read\'')
       t.equals(moment(eventObj.dateTime).isValid(), true, 'should be a valid timestamp value')
-      t.equals(eventObj.outcome, 0, 'should have a value of \'0\'')
+      t.equals(eventObj.outcome, '0', 'should have a value of \'0\'')
 
       done()
     })
@@ -154,9 +154,11 @@ tap.test('Audit Plugin - buildParticipantObj()', { autoend: true }, (t) => {
 
       t.ok(participantObj)
 
-      t.equals(participantObj.role, 'practitioner', 'should have a value of \'practitioner\'')
-      t.equals(participantObj.reference, 'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
-      t.equals(participantObj.userId, 'b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
+      t.equals(participantObj.role[0].coding[0].system, 'hearth:user-roles', 'should have a value of \'hearth:user-roles\'')
+      t.equals(participantObj.role[0].coding[0].code, 'practitioner', 'should have a value of \'practitioner\'')
+      t.equals(participantObj.reference.reference, 'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'Practitioner/b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
+      t.equals(participantObj.userId.system, 'hearth:resource-reference', 'should have a value of \'hearth:resource-reference\'')
+      t.equals(participantObj.userId.value, 'b7aeb450-8bde-11e7-812f-bbfc0872406b', 'should have a value of \'b7aeb450-8bde-11e7-812f-bbfc0872406b\'')
       t.equals(participantObj.altId, 'user@hearth.org', 'should have a value of \'user@hearth.org\'')
       t.equals(participantObj.requester, true, 'should have a value of \'true\'')
 
@@ -188,7 +190,7 @@ tap.test('Audit Plugin - buildSourceObj()', { autoend: true }, (t) => {
       t.ok(sourceObj)
 
       t.equals(sourceObj.site, 'Cloud', 'should have a value of \'Cloud\'')
-      t.equals(sourceObj.identifier, 'http://localhost:9000/', 'should have a value of \'http://localhost:9000/\'')
+      t.equals(sourceObj.identifier.value, 'http://localhost:9000/', 'should have a value of \'http://localhost:9000/\'')
       t.equals(sourceObj.type[0].system, 'http://hl7.org/fhir/security-source-type', 'should have a value of \'http://hl7.org/fhir/security-source-type\'')
       t.equals(sourceObj.type[0].code, 3, 'should have a value of \'3\'')
       t.equals(sourceObj.type[0].display, 'Web Server', 'should have a value of \'Web Server\'')
@@ -220,7 +222,8 @@ tap.test('Audit Plugin - buildObjectObj()', { autoend: true }, (t) => {
 
       t.ok(objectObj)
 
-      t.equals(objectObj.query, ctx.query, 'should have a value of \'{ identifier: \'preoperative-questionnaire\' }\'')
+      const base64Value = new Buffer(JSON.stringify(ctx.query)).toString('base64')
+      t.equals(objectObj.query, base64Value, `should have a value of '${base64Value}'`)
       t.equals(objectObj.reference.reference, '/fhir/Questionnaire', 'should have a value of \'/fhir/Questionnaire\'')
 
       done()
@@ -281,9 +284,10 @@ tap.test('Audit Plugin - create audit via fhirCore.create()', { autoend: true },
           t.error(err)
           t.ok(result, 'result should exist in mongo')
 
-          t.equals(result.participant.role, 'sysadmin')
-          t.equals(result.participant.altId, 'sysadmin@jembi.org')
-          t.equals(result.object.reference.reference, '/fhir/Patient')
+          t.equals(result.participant[0].role[0].coding[0].system, 'hearth:user-roles', 'should have a value of \'hearth:user-roles\'')
+          t.equals(result.participant[0].role[0].coding[0].code, 'sysadmin', 'should have a value of \'sysadmin\'')
+          t.equals(result.participant[0].altId, 'sysadmin@jembi.org')
+          t.equals(result.object[0].reference.reference, '/fhir/Patient')
 
           done()
         })
