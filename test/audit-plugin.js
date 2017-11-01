@@ -77,7 +77,7 @@ const testResourceTemplate = {
 }
 
 tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
-  t.test('should determine the event outcome value for a successfull request', (t) => {
+  t.test('should determine the event outcome value for a successful request', (t) => {
     testServerInit(t, (db, done) => {
       // given
       const resource = JSON.parse(JSON.stringify(testResourceTemplate))
@@ -91,7 +91,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
     })
   })
 
-  t.test('should determine the event outcome value for a unsuccessfull request', (t) => {
+  t.test('should determine the event outcome value for a unsuccessful request', (t) => {
     testServerInit(t, (db, done) => {
       // given
       const resource = {
