@@ -120,8 +120,8 @@ tap.test('Audit Plugin - buildEventObj()', { autoend: true }, (t) => {
 
       t.ok(eventObj)
 
-      t.equals(eventObj.type.coding.code, 'rest', 'should have a value of \'rest\'')
-      t.equals(eventObj.type.coding.display, 'Restful Operation', 'should have a value of \'Restful Operation\'')
+      t.equals(eventObj.type.code, 'rest', 'should have a value of \'rest\'')
+      t.equals(eventObj.type.display, 'Restful Operation', 'should have a value of \'Restful Operation\'')
       t.equals(eventObj.subtype[0].code, 'read', 'should have a value of \'read\'')
       t.equals(eventObj.subtype[0].display, 'read', 'should have a value of \'read\'')
       t.equals(moment(eventObj.dateTime).isValid(), true, 'should be a valid timestamp value')
