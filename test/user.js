@@ -252,6 +252,9 @@ tap.test('user should allow public user creation when config is set', (t) => {
   // file. This is needed because the auth option is set as soon as the server
   // file is required.
   delete require.cache[require.resolve('../lib/server')]
+  delete require.cache[require.resolve('../lib/fhir/core')]
+  delete require.cache[require.resolve('../lib/fhir/hooks')]
+  delete require.cache[require.resolve('../lib/custom-api/user')]
   server = require('../lib/server')
 
   basicUserTest(t, (db, done) => {
