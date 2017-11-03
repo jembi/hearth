@@ -222,8 +222,7 @@ tap.test('Audit Plugin - buildObjectObj()', { autoend: true }, (t) => {
 
       t.ok(objectObj)
 
-      const base64Value = new Buffer(JSON.stringify(ctx.query)).toString('base64')
-      t.equals(objectObj.query, base64Value, `should have a value of '${base64Value}'`)
+      t.equals(objectObj.query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', `should have a value of '/fhir/Questionnaire?identifier=preoperative-questionnaire'`)
       t.equals(objectObj.reference.reference, '/fhir/Questionnaire', 'should have a value of \'/fhir/Questionnaire\'')
 
       done()
