@@ -8,11 +8,14 @@
 
 'use strict'
 
+process.env.NODE_ENV = 'test'
+require('../lib/init')
 const tap = require('tap')
 
-const Common = require('../lib/fhir/common')
+const commonFactory = require('../lib/fhir/common')
+const mongoFactory = require('../lib/mongo')
 const env = require('./test-env/init')()
-const common = Common(env.mongo())
+const common = commonFactory(env.mongo())
 
 tap.test('should resolve references', (t) => {
   // given
@@ -54,4 +57,175 @@ tap.test('.util.validateID should validate FHIR id types', (t) => {
   t.notOk(common.util.validateID('a'.repeat(65)), 'len(65) -> false')
 
   t.end()
+})
+
+tap.test('testing include resources', (t) => {
+  const mongo = mongoFactory()
+  const common = commonFactory(mongo)
+  const testPatients = env.testPatients()
+
+  t.tearDown(() => {
+    mongo.closeDB(() => { })
+  })
+
+  t.test('should return an error when context parameter is null', (t) => {
+    t.rejects(common.includeResources(null, null), 'Invalid context parameter "null"')
+    t.end()
+  })
+
+  t.test('should return an error when context parameter is undefined', (t) => {
+    t.rejects(common.includeResources(void 0, null), 'Invalid context parameter "undefined"')
+    t.end()
+  })
+
+  t.test('should return an error when results parameter is null', (t) => {
+    t.rejects(common.includeResources({ test: true }, null), 'Invalid results parameter "null"')
+    t.end()
+  })
+
+  t.test('should return an error when results parameter is undefined', (t) => {
+    t.rejects(common.includeResources({ test: true }, void 0), 'Invalid results parameter "undefined"')
+    t.end()
+  })
+
+  t.test('should return an error when there is an invalid reference', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = {
+        query: {
+          _include: [
+            `Patient:Patient/${referencedPatient.id}`, 'Patient:Patient/#2'
+          ]
+        }
+      }
+
+      t.rejects(common.includeResources(testContext, []), 'Invalid resource reference "Patient/#2"')
+      t.end()
+    })
+  }))
+
+  t.test('should include one resource in the results object', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = {
+        query: {
+          _include: `Patient:Patient/${referencedPatient.id}`
+        }
+      }
+
+      common.includeResources(testContext, [])
+        .then((res) => {
+          t.equal(res.length, 1)
+          t.equal(res[0].id, referencedPatient.id)
+          t.end()
+        })
+    })
+  }))
+
+  t.test('should not include any resources in the results object but still succeed', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = {
+        query: { }
+      }
+
+      common.includeResources(testContext, [])
+        .then((res) => {
+          t.equals(res.length, 0)
+          t.end()
+        })
+    })
+  }))
+
+  t.test('should include multiple resource in the results object', withDB((t, db) => {
+    createTestPatients(db, (err, referencedPatients) => {
+      t.error(err)
+
+      const testContext = {
+        query: {
+          _include: [
+            `Patient:Patient/${referencedPatients[0].id}`,
+            `Patient:Patient/${referencedPatients[1].id}`,
+            `Patient:Patient/${referencedPatients[2].id}`
+          ]
+        }
+      }
+
+      common.includeResources(testContext, [])
+        .then((res) => {
+          t.equals(res.length, 3)
+          t.equals(res[0].email, 'charlton@email.com')
+          t.equals(res[1].email, 'emmarentia@email.com')
+          t.equals(res[2].email, 'nikita@email.com')
+          t.end()
+        })
+    })
+  }))
+
+  t.end()
+
+  function withDB (test) {
+    return (t) => {
+      mongo.getDB((err, db) => {
+        if (err) {
+          return t.threw(err)
+        }
+        test(t, db)
+      })
+    }
+  }
+
+  function createTestPatient (db, callback) {
+    let testPatient = testPatients.charlton
+    testPatient.id = '1'
+    const referencedPatient = Object.assign({}, testPatient)
+    db.collection('Patient').remove({ id: referencedPatient.id }, (err) => {
+      if (err) {
+        return callback(err)
+      }
+      db.collection('Patient').insertOne(referencedPatient, (err) => {
+        if (err) {
+          return callback(err)
+        }
+        callback(null, referencedPatient)
+      })
+    })
+  }
+
+  function createTestPatients (db, callback) {
+    let referencedPatients = []
+    let promises = []
+
+    referencedPatients.push(testPatients.charlton)
+    referencedPatients.push(testPatients.emmarentia)
+    referencedPatients.push(testPatients.nikita)
+
+    referencedPatients.forEach((item, index) => {
+      item.id = `${index + 1}`
+
+      promises.push(new Promise((resolve, reject) => {
+        db.collection('Patient').remove({ id: index }, (err) => {
+          if (err) {
+            reject(err)
+          }
+          db.collection('Patient').insertOne(item, (err, res) => {
+            if (err) {
+              reject(err)
+            }
+
+            resolve(item)
+          })
+        })
+      }))
+    })
+
+    Promise.all(promises).then((res) => {
+      return callback(null, res)
+    }).catch((err) => {
+      return callback(err)
+    })
+  }
 })
