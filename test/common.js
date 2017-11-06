@@ -63,6 +63,7 @@ tap.test('testing include resources', (t) => {
   const mongo = mongoFactory()
   const common = commonFactory(mongo)
   const testPatients = env.testPatients()
+  const testLocation = require('./resources/Location-1')
 
   t.tearDown(() => {
     mongo.closeDB(() => { })
@@ -88,19 +89,43 @@ tap.test('testing include resources', (t) => {
     t.end()
   })
 
+  t.test('should return an error when results parameter is empty', (t) => {
+    t.rejects(common.includeResources({ test: true }, []), 'Empty search result set.')
+    t.end()
+  })
+
+  t.test('should return an error when there is an non existent resource property', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = {
+        query: {
+          _include: ['AllergyIntolerance:patient', 'AllergyIntolerance:lastOccurence']
+        }
+      }
+
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      t.rejects(common.includeResources(testContext, results), 'Undefined resource property.')
+      t.end()
+    })
+  }))
+
   t.test('should return an error when there is an invalid reference', withDB((t, db) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
       const testContext = {
         query: {
-          _include: [
-            `Patient:Patient/${referencedPatient.id}`, 'Patient:Patient/#2'
-          ]
+          _include: ['AllergyIntolerance:patient', 'AllergyIntolerance:substance']
         }
       }
 
-      t.rejects(common.includeResources(testContext, []), 'Invalid resource reference "Patient/#2"')
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      t.rejects(common.includeResources(testContext, results), `Invalid resource reference: "AllergyIntolerance:substance"`)
       t.end()
     })
   }))
@@ -111,16 +136,51 @@ tap.test('testing include resources', (t) => {
 
       const testContext = {
         query: {
-          _include: `Patient:Patient/${referencedPatient.id}`
+          _include: 'AllergyIntolerance:patient'
         }
       }
 
-      common.includeResources(testContext, [])
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      common.includeResources(testContext, results)
         .then((res) => {
           t.equal(res.length, 1)
           t.equal(res[0].id, referencedPatient.id)
           t.end()
+        }).catch((err) => {
+          t.error(err)
+          t.end()
         })
+    })
+  }))
+
+  t.test('should include one resource with nested search object in the results object', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      createTestLocation(db, (error, referencedLocation) => {
+        t.error(error)
+
+        const testContext = {
+          query: {
+            _include: 'Encounter:location.location'
+          }
+        }
+
+        let results = []
+        results.push(referencedPatient.encounter)
+
+        common.includeResources(testContext, results)
+          .then((res) => {
+            t.equal(res.length, 1)
+            t.equal(res[0].id, referencedLocation.id)
+            t.end()
+          }).catch((err) => {
+            t.error(err)
+            t.end()
+          })
+      })
     })
   }))
 
@@ -131,8 +191,10 @@ tap.test('testing include resources', (t) => {
       const testContext = {
         query: { }
       }
+      let results = []
+      results.push(referencedPatient.allergy)
 
-      common.includeResources(testContext, [])
+      common.includeResources(testContext, results)
         .then((res) => {
           t.equals(res.length, 0)
           t.end()
@@ -147,19 +209,21 @@ tap.test('testing include resources', (t) => {
       const testContext = {
         query: {
           _include: [
-            `Patient:Patient/${referencedPatients[0].id}`,
-            `Patient:Patient/${referencedPatients[1].id}`,
-            `Patient:Patient/${referencedPatients[2].id}`
+            'Encounter:patient',
+            'Encounter:location.location'
           ]
         }
       }
 
-      common.includeResources(testContext, [])
+      let results = []
+      results.push(referencedPatients[0].encounter)
+
+      common.includeResources(testContext, results)
         .then((res) => {
-          t.equals(res.length, 3)
+          t.equals(res.length, 2)
           t.equals(res[0].email, 'charlton@email.com')
-          t.equals(res[1].email, 'emmarentia@email.com')
-          t.equals(res[2].email, 'nikita@email.com')
+          t.equals(res[1].resourceType, 'Location')
+          t.equals(res[1].id, '1')
           t.end()
         })
     })
@@ -191,6 +255,20 @@ tap.test('testing include resources', (t) => {
           return callback(err)
         }
         callback(null, referencedPatient)
+      })
+    })
+  }
+
+  function createTestLocation (db, callback) {
+    db.collection('Location').remove({ id: testLocation.id }, (err) => {
+      if (err) {
+        return callback(err)
+      }
+      db.collection('Location').insertOne(testLocation, (err) => {
+        if (err) {
+          return callback(err)
+        }
+        callback(null, testLocation)
       })
     })
   }
