@@ -90,8 +90,12 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should return an error when results parameter is empty', (t) => {
-    t.rejects(common.includeResources({ test: true }, []), 'Empty search result set.')
-    t.end()
+    common.includeResources({ test: true }, [])
+      .then((res) => {
+        t.true(!res)
+        t.true(!Array.isArray(res))
+        t.end()
+      })
   })
 
   t.test('should return an error when there is an non existent resource property', withDB((t, db) => {
