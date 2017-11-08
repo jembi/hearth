@@ -188,6 +188,35 @@ tap.test('testing include resources', (t) => {
     })
   }))
 
+  t.test('should include multiple resources with nested search object in the results object', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      createTestLocation(db, (error, referencedLocation) => {
+        t.error(error)
+
+        const testContext = {
+          query: {
+            _include: 'Patient:link.other'
+          }
+        }
+
+        let results = []
+        results.push(referencedPatient.patient)
+
+        common.includeResources(testContext, results)
+          .then((res) => {
+            t.equal(res.length, 2)
+            t.equal('Patient/' + res[0].id, referencedPatient.patient.link[0].other.reference)
+            t.end()
+          }).catch((err) => {
+            t.error(err)
+            t.end()
+          })
+      })
+    })
+  }))
+
   t.test('should not include any resources in the results object but still succeed', withDB((t, db) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)

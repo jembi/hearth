@@ -147,10 +147,27 @@
     }
   ],
   "link": [{
-    "other": "http://xyz-server/xxx/Patient/444444",
-    "type": "refer"
-  }, {
-    "other": "http://abc-server/Patient/333333",
-    "type": "refer"
-  }]
+      "other": {
+        "reference": "Patient/2"
+      },
+      "type": "possible-duplicate-source",
+      "extension": [
+        {
+          "url": "http://hearth.org/link-matching-score",
+          "valueDecimal": 0.675
+        }
+      ]
+    },
+    {
+      "other": {
+        "reference": "Patient/3"
+      },
+      "type": "possible-duplicate-source",
+      "extension": [
+        {
+          "url": "http://hearth.org/link-matching-score",
+          "valueDecimal": 0.625
+        }
+      ]
+    }]
 }
