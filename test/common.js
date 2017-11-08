@@ -94,7 +94,7 @@ tap.test('testing include resources', (t) => {
 
       const testContext = {
         query: {
-          _include: ['AllergyIntolerance:patient', 'AllergyIntolerance:lastOccurence']
+          _include: ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurance']
         }
       }
 
@@ -110,7 +110,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = ['AllergyIntolerance:patient', 'AllergyIntolerance:substance']
+      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.substance']
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -124,7 +124,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = 'AllergyIntolerance:patient'
+      const testContext = 'AllergyIntolerance.patient'
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -148,7 +148,7 @@ tap.test('testing include resources', (t) => {
       createTestLocation(db, (error, referencedLocation) => {
         t.error(error)
 
-        const testContext = 'Encounter:location.location'
+        const testContext = 'Encounter.location.location'
 
         let results = []
         results.push(referencedPatient.encounter)
@@ -173,7 +173,7 @@ tap.test('testing include resources', (t) => {
       createTestLocation(db, (error, referencedLocation) => {
         t.error(error)
 
-        const testContext = 'Patient:link.other'
+        const testContext = 'Patient.link.other'
 
         let results = []
         results.push(referencedPatient.patient)
@@ -244,8 +244,8 @@ tap.test('testing include resources', (t) => {
       t.error(err)
 
       const testContext = [
-        'Encounter:patient',
-        'Encounter:location.location'
+        'Encounter.patient',
+        'Encounter.location.location'
       ]
 
       let results = []
@@ -261,6 +261,32 @@ tap.test('testing include resources', (t) => {
         })
     })
   }))
+
+  t.test('should map search parameter names to paths where name is same as path', (t) => {
+    common.mapSearchNameToPath('AllergyIntolerance:patient', (err, data) => {
+      t.error(err)
+      t.deepEqual(data[0], 'AllergyIntolerance.patient')
+      t.end()
+    })
+  })
+
+  t.test('should map search parameter names to paths where name is different to path', (t) => {
+    common.mapSearchNameToPath('AuditEvent:entity', (err, data) => {
+      t.error(err)
+      t.deepEqual(data[0], 'AuditEvent.entity.reference')
+      t.end()
+    })
+  })
+
+  t.test('should map search parameter names to paths where name maps to array of paths', (t) => {
+    common.mapSearchNameToPath('AuditEvent:patient', (err, data) => {
+      t.error(err)
+      t.equals(data.length, 2)
+      t.equals(data[0], 'AuditEvent.agent.reference')
+      t.equals(data[1], 'AuditEvent.entity.reference')
+      t.end()
+    })
+  })
 
   t.end()
 
