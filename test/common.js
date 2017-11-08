@@ -69,16 +69,6 @@ tap.test('testing include resources', (t) => {
     mongo.closeDB(() => { })
   })
 
-  t.test('should return an error when context parameter is null', (t) => {
-    t.rejects(common.includeResources(null, null), 'Invalid context parameter "null"')
-    t.end()
-  })
-
-  t.test('should return an error when context parameter is undefined', (t) => {
-    t.rejects(common.includeResources(void 0, null), 'Invalid context parameter "undefined"')
-    t.end()
-  })
-
   t.test('should return an error when results parameter is null', (t) => {
     t.rejects(common.includeResources({ test: true }, null), 'Invalid results parameter "null"')
     t.end()
@@ -120,11 +110,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = {
-        query: {
-          _include: ['AllergyIntolerance:patient', 'AllergyIntolerance:substance']
-        }
-      }
+      const testContext = ['AllergyIntolerance:patient', 'AllergyIntolerance:substance']
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -138,11 +124,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = {
-        query: {
-          _include: 'AllergyIntolerance:patient'
-        }
-      }
+      const testContext = 'AllergyIntolerance:patient'
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -166,11 +148,7 @@ tap.test('testing include resources', (t) => {
       createTestLocation(db, (error, referencedLocation) => {
         t.error(error)
 
-        const testContext = {
-          query: {
-            _include: 'Encounter:location.location'
-          }
-        }
+        const testContext = 'Encounter:location.location'
 
         let results = []
         results.push(referencedPatient.encounter)
@@ -195,11 +173,7 @@ tap.test('testing include resources', (t) => {
       createTestLocation(db, (error, referencedLocation) => {
         t.error(error)
 
-        const testContext = {
-          query: {
-            _include: 'Patient:link.other'
-          }
-        }
+        const testContext = 'Patient:link.other'
 
         let results = []
         results.push(referencedPatient.patient)
@@ -217,19 +191,49 @@ tap.test('testing include resources', (t) => {
     })
   }))
 
-  t.test('should not include any resources in the results object but still succeed', withDB((t, db) => {
+  t.test('should not include any resources in the results object but still succeed, context empty string', withDB((t, db) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = {
-        query: { }
-      }
+      let testContext = ''
       let results = []
       results.push(referencedPatient.allergy)
 
       common.includeResources(testContext, results)
         .then((res) => {
-          t.equals(res.length, 0)
+          t.true(!res)
+          t.end()
+        })
+    })
+  }))
+
+  t.test('should not include any resources in the results object but still succeed, context empty array', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      let testContext = []
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      common.includeResources(testContext, results)
+        .then((res) => {
+          t.equal(res.length, 0)
+          t.end()
+        })
+    })
+  }))
+
+  t.test('should not include any resources in the results object but still succeed, context undefined', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      let testContext = void 0
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      common.includeResources(testContext, results)
+        .then((res) => {
+          t.true(!res)
           t.end()
         })
     })
@@ -239,14 +243,10 @@ tap.test('testing include resources', (t) => {
     createTestPatients(db, (err, referencedPatients) => {
       t.error(err)
 
-      const testContext = {
-        query: {
-          _include: [
-            'Encounter:patient',
-            'Encounter:location.location'
-          ]
-        }
-      }
+      const testContext = [
+        'Encounter:patient',
+        'Encounter:location.location'
+      ]
 
       let results = []
       results.push(referencedPatients[0].encounter)
