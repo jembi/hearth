@@ -33,7 +33,7 @@ All resources are supported with the default FHIR interactions and default searc
 | ---------------------- | -------------------------- | -------------- |
 | Allergy Intolerance    | patient | 3 |
 | Audit Event            | _id | 2 |
-| Basic                  | code, subject | 1 |
+| Basic                  | code, subject, author | 1 |
 | Binary                 | contenttype | 5 |
 | Composition            | entry, patient, status, subject, type | 2 |
 | Document Manifest      | patient, patient.identifier, created, author.given, author.family, type, status | 2 |
