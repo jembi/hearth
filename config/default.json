@@ -10,7 +10,8 @@
   "authentication": {
     "authWindowSeconds": 10,
     "type": "openhim-style",
-    "enablePublicUserCreation": false
+    "enablePublicUserCreation": false,
+    "secret": null
   },
   "logger": {
     "level": "info"

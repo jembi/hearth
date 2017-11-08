@@ -16,5 +16,6 @@ env:
 after_success:
   - npm run test:upload-cov
   - npm run test:load
+  - ".travis/build_docker.sh"
 addon:
   srcclr: true

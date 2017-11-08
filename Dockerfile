@@ -1,8 +1,7 @@
 FROM node:boron
 
-RUN npm install -g nodemon
-
 # install dependencies
+ADD package-lock.json /src/frontend/
 ADD package.json /src/hearth/
 WORKDIR /src/hearth/
 RUN npm install
@@ -10,4 +9,4 @@ RUN npm install
 # add app
 ADD . /src/hearth/
 
-CMD nodemon lib/server.js
+CMD ["npm", "start"]
