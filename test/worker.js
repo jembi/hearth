@@ -6,79 +6,79 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-'use strict'
+// 'use strict'
 
-const mongoDbQueue = require('mongodb-queue')
-const tap = require('tap')
-const cp = require('child_process')
-// const doubleMetaphone = require('talisman/phonetics/double-metaphone')
+// const mongoDbQueue = require('mongodb-queue')
+// const tap = require('tap')
+// const cp = require('child_process')
+// // const doubleMetaphone = require('talisman/phonetics/double-metaphone')
 
-const env = require('./test-env/init')()
-const config = require('../lib/config')
-const constants = require('../lib/constants')
+// const env = require('./test-env/init')()
+// const config = require('../lib/config')
+// const constants = require('../lib/constants')
 
-const patientResource = require('./resources/Patient-1.json')
-patientResource._transforms = {
-  matching: {
-    name: [
-      {
-        given: [],
-        family: []
-      }
-    ]
-  }
-}
+// const patientResource = require('./resources/Patient-1.json')
+// patientResource._transforms = {
+//   matching: {
+//     name: [
+//       {
+//         given: [],
+//         family: []
+//       }
+//     ]
+//   }
+// }
 
-let testQueue
-const matchingQueueTest = (queueSize, t, test) => {
-  env.initDB((err, db) => {
-    t.error(err)
+// let testQueue
+// const matchingQueueTest = (queueSize, t, test) => {
+//   env.initDB((err, db) => {
+//     t.error(err)
 
-    testQueue = mongoDbQueue(db, constants.MATCHING_QUEUE_COLLECTION)
-    const testArray = []
-    for (let i = 0; i < queueSize; i++) {
-      testArray[i] = JSON.parse(JSON.stringify(patientResource))
-      testArray[i].id = i
-    }
+//     testQueue = mongoDbQueue(db, constants.MATCHING_QUEUE_COLLECTION)
+//     const testArray = []
+//     for (let i = 0; i < queueSize; i++) {
+//       testArray[i] = JSON.parse(JSON.stringify(patientResource))
+//       testArray[i].id = i
+//     }
 
-    const promises = []
-    const c = db.collection('Patient')
-    testArray.forEach((obj) => {
-      promises.push(new Promise((resolve, reject) => {
-        testQueue.add(obj, (err) => {
-          if (err) {
-            reject(err)
-          }
-          resolve()
-        })
-      }))
+//     const promises = []
+//     const c = db.collection('Patient')
+//     testArray.forEach((obj) => {
+//       promises.push(new Promise((resolve, reject) => {
+//         testQueue.add(obj, (err) => {
+//           if (err) {
+//             reject(err)
+//           }
+//           resolve()
+//         })
+//       }))
 
-      promises.push(new Promise((resolve, reject) => {
-        c.insertOne(obj, (err) => {
-          if (err) {
-            reject(err)
-          }
-          resolve()
-        })
-      }))
-    })
+//       promises.push(new Promise((resolve, reject) => {
+//         c.insertOne(obj, (err) => {
+//           if (err) {
+//             reject(err)
+//           }
+//           resolve()
+//         })
+//       }))
+//     })
 
-    Promise.all(promises).then(() => {
-      test(db, (testWorkers) => {
-        env.clearDB((err) => {
-          t.error(err)
+//     Promise.all(promises).then(() => {
+//       test(db, (testWorkers) => {
+//         env.clearDB((err) => {
+//           t.error(err)
 
-          Object.keys(testWorkers).forEach((key) => {
-            testWorkers[key].kill('SIGINT')
-          })
-          t.end()
-        })
-      })
-    }).catch((err) => {
-      t.error(err)
-    })
-  })
-}
+//           Object.keys(testWorkers).forEach((key) => {
+//             testWorkers[key].kill('SIGINT')
+//           })
+//           t.end()
+//         })
+//       })
+//     }).catch((err) => {
+//       t.error(err)
+//     })
+//   })
+// }
 
 // tap.test('should successfully update score of patient links', (t) => {
 //   const testPatient1 = JSON.parse(JSON.stringify(patientResource))
@@ -200,65 +200,65 @@ const matchingQueueTest = (queueSize, t, test) => {
 //   })
 // })
 
-tap.test('should create a size 10 queue and start 5 workers to read off the queue', (t) => {
-  config.setConf('matchingQueue:numberOfWorkers', 5)
-  config.setConf('matchingQueue:pollingInterval', 10)
-  const queueSize = 10
-  const amountOfWorkers = config.getConf('matchingQueue:numberOfWorkers')
+// tap.test('should create a size 10 queue and start 5 workers to read off the queue', (t) => {
+//   config.setConf('matchingQueue:numberOfWorkers', 5)
+//   config.setConf('matchingQueue:pollingInterval', 10)
+//   const queueSize = 10
+//   const amountOfWorkers = config.getConf('matchingQueue:numberOfWorkers')
 
-  matchingQueueTest(queueSize, t, (db, done) => {
-    const startWorker = (testWorkers, workerName) => {
-      return new Promise((resolve, reject) => {
-        testWorkers[workerName] = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, [workerName])
+//   matchingQueueTest(queueSize, t, (db, done) => {
+//     const startWorker = (testWorkers, workerName) => {
+//       return new Promise((resolve, reject) => {
+//         testWorkers[workerName] = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, [workerName])
 
-        const messages = []
-        testWorkers[workerName].on('message', (msg) => {
-          messages.push(msg)
+//         const messages = []
+//         testWorkers[workerName].on('message', (msg) => {
+//           messages.push(msg)
 
-          if (messages.length === queueSize / amountOfWorkers + 2) {
-            messages.forEach((m, i) => {
-              t.error(m.error)
+//           if (messages.length === queueSize / amountOfWorkers + 2) {
+//             messages.forEach((m, i) => {
+//               t.error(m.error)
 
-              if (i === 0) {
-                return t.equal(m, `${workerName} started`)
-              }
+//               if (i === 0) {
+//                 return t.equal(m, `${workerName} started`)
+//               }
 
-              if (m.debug) {
-                return t.equal(m.debug, `${workerName} No records in queue`)
-              }
+//               if (m.debug) {
+//                 return t.equal(m.debug, `${workerName} No records in queue`)
+//               }
 
-              t.equal(m.info.substring(0, m.info.length - 24), `${workerName} Successfully processed queue element with id: `)
-            })
-            resolve()
-          }
-        })
+//               t.equal(m.info.substring(0, m.info.length - 24), `${workerName} Successfully processed queue element with id: `)
+//             })
+//             resolve()
+//           }
+//         })
 
-        testWorkers[workerName].on('error', (err) => {
-          t.error(err)
-        })
-      })
-    }
+//         testWorkers[workerName].on('error', (err) => {
+//           t.error(err)
+//         })
+//       })
+//     }
 
-    const testWorkers = {}
-    const promises = []
-    for (let i = 1; i <= amountOfWorkers; i++) {
-      promises.push(startWorker(testWorkers, `testWorker ${i}`))
-    }
+//     const testWorkers = {}
+//     const promises = []
+//     for (let i = 1; i <= amountOfWorkers; i++) {
+//       promises.push(startWorker(testWorkers, `testWorker ${i}`))
+//     }
 
-    Promise.all(promises).then(() => {
-      testQueue.total((err, tot) => {
-        t.error(err)
+//     Promise.all(promises).then(() => {
+//       testQueue.total((err, tot) => {
+//         t.error(err)
 
-        t.equal(tot, 10)
-        testQueue.size((err, size) => {
-          t.error(err)
+//         t.equal(tot, 10)
+//         testQueue.size((err, size) => {
+//           t.error(err)
 
-          t.equal(size, 0)
-          done(testWorkers)
-        })
-      })
-    }).catch((err) => {
-      t.error(err)
-    })
-  })
-})
+//           t.equal(size, 0)
+//           done(testWorkers)
+//         })
+//       })
+//     }).catch((err) => {
+//       t.error(err)
+//     })
+//   })
+// })
