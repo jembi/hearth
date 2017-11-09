@@ -66,7 +66,6 @@ tap.test('testing include resources', (t) => {
   const testLocation = require('./resources/Location-1')
 
   t.tearDown(() => {
-
     mongo.closeDB(() => { })
   })
 
