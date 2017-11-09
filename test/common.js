@@ -271,9 +271,9 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should map search parameter names to paths where name is different to path', (t) => {
-    common.mapSearchNameToPath('AuditEvent:entity', (err, data) => {
+    common.mapSearchNameToPath('AuditEvent:participant', (err, data) => {
       t.error(err)
-      t.deepEqual(data[0], 'AuditEvent.entity.reference')
+      t.deepEqual(data[0], 'AuditEvent.participant.reference')
       t.end()
     })
   })
@@ -282,8 +282,8 @@ tap.test('testing include resources', (t) => {
     common.mapSearchNameToPath('AuditEvent:patient', (err, data) => {
       t.error(err)
       t.equals(data.length, 2)
-      t.equals(data[0], 'AuditEvent.agent.reference')
-      t.equals(data[1], 'AuditEvent.entity.reference')
+      t.equals(data[0], 'AuditEvent.object.reference')
+      t.equals(data[1], 'AuditEvent.participant.reference')
       t.end()
     })
   })
