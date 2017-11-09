@@ -66,6 +66,7 @@ tap.test('testing include resources', (t) => {
   const testLocation = require('./resources/Location-1')
 
   t.tearDown(() => {
+
     mongo.closeDB(() => { })
   })
 
@@ -167,7 +168,7 @@ tap.test('testing include resources', (t) => {
   }))
 
   t.test('should include multiple resources with nested search object in the results object', withDB((t, db) => {
-    createTestPatient(db, (err, referencedPatient) => {
+    createTestPatients(db, (err, referencedPatients) => {
       t.error(err)
 
       createTestLocation(db, (error, referencedLocation) => {
@@ -176,12 +177,12 @@ tap.test('testing include resources', (t) => {
         const testContext = 'Patient.link.other'
 
         let results = []
-        results.push(referencedPatient.patient)
+        results.push(referencedPatients[0].patient)
 
         common.includeResources(testContext, results)
           .then((res) => {
             t.equal(res.length, 2)
-            t.equal('Patient/' + res[0].id, referencedPatient.patient.link[0].other.reference)
+            t.equal('Patient/' + res[0].id, referencedPatients[1].patient.link[0].other.reference)
             t.end()
           }).catch((err) => {
             t.error(err)
@@ -309,6 +310,7 @@ tap.test('testing include resources', (t) => {
       if (err) {
         return callback(err)
       }
+
       db.collection('Patient').insertOne(referencedPatient, (err) => {
         if (err) {
           return callback(err)
@@ -323,6 +325,7 @@ tap.test('testing include resources', (t) => {
       if (err) {
         return callback(err)
       }
+
       db.collection('Location').insertOne(testLocation, (err) => {
         if (err) {
           return callback(err)
@@ -344,7 +347,7 @@ tap.test('testing include resources', (t) => {
       item.id = `${index + 1}`
 
       promises.push(new Promise((resolve, reject) => {
-        db.collection('Patient').remove({ id: index }, (err) => {
+        db.collection('Patient').remove({ id: item.id }, (err) => {
           if (err) {
             reject(err)
           }
