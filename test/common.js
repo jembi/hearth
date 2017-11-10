@@ -92,7 +92,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurance']
+      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurrence']
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -106,7 +106,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = 'lastOccurance'
+      const testContext = 'lastOccurrence'
 
       let results = []
       results.push(referencedPatient.allergy)
@@ -416,7 +416,7 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should resolve to false that array does not contains object', (t) => {
-    const sut = common.containsObject({ test: true }, [{ hello: "world" }, { something: 'test' }])
+    const sut = common.containsObject({ test: true }, [{ hello: 'world' }, { something: 'test' }])
 
     t.equals(sut, false)
     t.end()
