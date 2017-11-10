@@ -146,6 +146,9 @@
       "valueBoolean": true
     }
   ],
+  "managingOrganization": {
+    "reference": "Organization/1"
+  },
   "link": [{
       "other": {
         "reference": "Patient/2"

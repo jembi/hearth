@@ -79,7 +79,7 @@ tap.test('testing include resources', (t) => {
     t.end()
   })
 
-  t.test('should return an error when results parameter is empty', (t) => {
+  t.test('should resolve with undefined when results parameter is empty', (t) => {
     common.includeResources({ test: true }, [])
       .then((res) => {
         t.true(!res)
@@ -92,16 +92,26 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = {
-        query: {
-          _include: ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurance']
-        }
-      }
+      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurance']
 
       let results = []
       results.push(referencedPatient.allergy)
 
       t.rejects(common.includeResources(testContext, results), 'Undefined resource property.')
+      t.end()
+    })
+  }))
+
+  t.test('should return an error when there is an invalid resource property', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = 'lastOccurance'
+
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      t.rejects(common.includeResources(testContext, results), 'Invalid format for include parameter')
       t.end()
     })
   }))
@@ -117,6 +127,54 @@ tap.test('testing include resources', (t) => {
 
       t.rejects(common.includeResources(testContext, results), `Invalid resource reference: "AllergyIntolerance:substance"`)
       t.end()
+    })
+  }))
+
+  t.test('should return an error when the include parameter is an array with nulls values', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = [null]
+
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      t.rejects(common.includeResources(testContext, results), 'Undefined include parameter')
+      t.end()
+    })
+  }))
+
+  t.test('should return an error when the include parameter is an array with undefined values', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = [void 0]
+
+      let results = []
+      results.push(referencedPatient.allergy)
+
+      t.rejects(common.includeResources(testContext, results), 'Undefined include parameter')
+      t.end()
+    })
+  }))
+
+  t.test('should not include any resource in the results object', withDB((t, db) => {
+    createTestPatient(db, (err, referencedPatient) => {
+      t.error(err)
+
+      const testContext = 'Patient.managingOrganization'
+
+      let results = []
+      results.push(referencedPatient.patient)
+
+      common.includeResources(testContext, results)
+        .then((res) => {
+          t.equal(res.length, 0)
+          t.end()
+        }).catch((err) => {
+          t.error(err)
+          t.end()
+        })
     })
   }))
 
@@ -262,6 +320,27 @@ tap.test('testing include resources', (t) => {
     })
   }))
 
+  t.test('should resolve duplicate resource parameters to results object with no duplicates', withDB((t, db) => {
+    createTestPatients(db, (err, referencedPatients) => {
+      t.error(err)
+
+      const testContext = [
+        'Encounter.patient',
+        'Encounter.patient'
+      ]
+
+      let results = []
+      results.push(referencedPatients[0].encounter)
+
+      common.includeResources(testContext, results)
+        .then((res) => {
+          t.equals(res.length, 1)
+          t.equals(res[0].email, 'charlton@email.com')
+          t.end()
+        })
+    })
+  }))
+
   t.test('should map search parameter names to paths where name is same as path', (t) => {
     common.mapSearchNameToPath('AllergyIntolerance:patient', (err, data) => {
       t.error(err)
@@ -286,6 +365,61 @@ tap.test('testing include resources', (t) => {
       t.equals(data[1], 'AuditEvent.participant.reference')
       t.end()
     })
+  })
+
+  t.test('should map array of search parameter names to paths with no duplicates', (t) => {
+    common.mapSearchNameToPath(['AuditEvent:patient', 'AuditEvent:participant'], (err, data) => {
+      t.error(err)
+      t.equals(data.length, 2)
+      t.equals(data[0], 'AuditEvent.object.reference')
+      t.equals(data[1], 'AuditEvent.participant.reference')
+      t.end()
+    })
+  })
+
+  t.test('should return nothing since search parameter null', (t) => {
+    common.mapSearchNameToPath(null, (err, data) => {
+      t.error(err)
+      t.true(!data)
+      t.end()
+    })
+  })
+
+  t.test('should return nothing since search parameter undefined', (t) => {
+    common.mapSearchNameToPath(void 0, (err, data) => {
+      t.error(err)
+      t.true(!data)
+      t.end()
+    })
+  })
+
+  // contains object tests
+  t.test('should resolve to true that array contains string', (t) => {
+    const sut = common.containsObject('AuditEvent:patient', ['AuditEvent:patient', 'AuditEvent:participant'])
+
+    t.equals(sut, true)
+    t.end()
+  })
+
+  t.test('should resolve to true that array contains string', (t) => {
+    const sut = common.containsObject('Hello.world', ['AuditEvent:patient', 'AuditEvent:participant'])
+
+    t.equals(sut, false)
+    t.end()
+  })
+
+  t.test('should resolve to true that array contains object', (t) => {
+    const sut = common.containsObject({ test: true }, [{ test: true }, { something: 'test' }])
+
+    t.equals(sut, true)
+    t.end()
+  })
+
+  t.test('should resolve to false that array does not contains object', (t) => {
+    const sut = common.containsObject({ test: true }, [{ hello: "world" }, { something: 'test' }])
+
+    t.equals(sut, false)
+    t.end()
   })
 
   t.end()
