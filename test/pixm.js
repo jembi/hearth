@@ -33,6 +33,8 @@ const basicPIXmTest = (t, test) => {
       emmarentia.patient.identifier[0].value = '222222'
       emmarentia.patient.identifier[1].value = '888888'
       emmarentia.patient.identifier[2].value = '999999'
+      emmarentia.patient.link[0].other.reference = parameters[1].valueReference
+      emmarentia.patient.link[1].other.reference = parameters[2].valueReference
       emmarentia.patient.id = '123456789'
 
       const nikita = env.testPatients().nikita
@@ -105,7 +107,7 @@ const parameters = [
   }
 ]
 
-const hashAndSortParameters = (parameters) => {
+const hashAndSortParameters = (parameters = []) => {
   return parameters.map((parameter) => {
     return crypto.createHash('sha256').update(JSON.stringify(parameter), 'utf-8').digest('hex')
   }).sort()
