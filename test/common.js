@@ -342,55 +342,80 @@ tap.test('testing include resources', (t) => {
   }))
 
   t.test('should map search parameter names to paths where name is same as path', (t) => {
-    common.mapSearchNameToPath('AllergyIntolerance:patient', (err, data) => {
-      t.error(err)
-      t.deepEqual(data[0], 'AllergyIntolerance.patient')
-      t.end()
-    })
+    common.mapSearchNameToPath('AllergyIntolerance:patient')
+      .then((data) => {
+        t.equals(data.length, 1)
+        t.deepEqual(data[0], 'AllergyIntolerance.patient')
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
   })
 
   t.test('should map search parameter names to paths where name is different to path', (t) => {
-    common.mapSearchNameToPath('AuditEvent:participant', (err, data) => {
-      t.error(err)
-      t.deepEqual(data[0], 'AuditEvent.participant.reference')
-      t.end()
-    })
+    common.mapSearchNameToPath('AuditEvent:participant')
+      .then((data) => {
+        t.equals(data.length, 1)
+        t.deepEqual(data[0], 'AuditEvent.participant.reference')
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
   })
 
   t.test('should map search parameter names to paths where name maps to array of paths', (t) => {
-    common.mapSearchNameToPath('AuditEvent:patient', (err, data) => {
-      t.error(err)
-      t.equals(data.length, 2)
-      t.equals(data[0], 'AuditEvent.object.reference')
-      t.equals(data[1], 'AuditEvent.participant.reference')
-      t.end()
-    })
+    common.mapSearchNameToPath('AuditEvent:patient')
+      .then((data) => {
+        t.equals(data.length, 2)
+        t.equals(data[0], 'AuditEvent.object.reference')
+        t.equals(data[1], 'AuditEvent.participant.reference')
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
   })
 
   t.test('should map array of search parameter names to paths with no duplicates', (t) => {
-    common.mapSearchNameToPath(['AuditEvent:patient', 'AuditEvent:participant'], (err, data) => {
-      t.error(err)
-      t.equals(data.length, 2)
-      t.equals(data[0], 'AuditEvent.object.reference')
-      t.equals(data[1], 'AuditEvent.participant.reference')
-      t.end()
-    })
+    common.mapSearchNameToPath(['AuditEvent:patient', 'AuditEvent:participant'])
+      .then((data) => {
+        t.equals(data.length, 2)
+        t.equals(data[0], 'AuditEvent.object.reference')
+        t.equals(data[1], 'AuditEvent.participant.reference')
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
+  })
+
+  t.test('should map search parameter names to paths where name is same as path', (t) => {
+    t.rejects(common.mapSearchNameToPath('AllergyIntolerance'))
+    t.end()
   })
 
   t.test('should return nothing since search parameter null', (t) => {
-    common.mapSearchNameToPath(null, (err, data) => {
-      t.error(err)
-      t.true(!data)
-      t.end()
-    })
+    common.mapSearchNameToPath(null)
+      .then((data) => {
+        t.true(!data)
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
   })
 
   t.test('should return nothing since search parameter undefined', (t) => {
-    common.mapSearchNameToPath(void 0, (err, data) => {
-      t.error(err)
-      t.true(!data)
-      t.end()
-    })
+    common.mapSearchNameToPath(void 0)
+      .then((data) => {
+        t.true(!data)
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
   })
 
   // contains object tests
