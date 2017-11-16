@@ -88,17 +88,21 @@ tap.test('testing include resources', (t) => {
       })
   })
 
-  t.test('should return an error when there is an non existent resource property', withDB((t, db) => {
+  t.test('should not error when there is a non existent resource property', withDB((t, db) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.lastOccurrence']
+      const testContext = ['AllergyIntolerance.recorder']
 
-      let results = []
-      results.push(referencedPatient.allergy)
+      const results = [referencedPatient.allergy]
 
-      t.rejects(common.includeResources(testContext, results), 'Undefined resource property.')
-      t.end()
+      common.includeResources(testContext, results).then((result) => {
+        t.deepEqual(result, [])
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
     })
   }))
 
@@ -116,17 +120,31 @@ tap.test('testing include resources', (t) => {
     })
   }))
 
-  t.test('should return an error when there is an invalid reference', withDB((t, db) => {
+  t.test('should not error when there is a reference without a reference property', withDB((t, db) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = ['AllergyIntolerance.patient', 'AllergyIntolerance.substance']
+      const testContext = ['AllergyIntolerance.recorder']
 
-      let results = []
-      results.push(referencedPatient.allergy)
+      const results = [
+        Object.assign(
+          {},
+          referencedPatient.allergy,
+          {
+            recorder: {
+              display: 'Dr Bones'
+            }
+          }
+        )
+      ]
 
-      t.rejects(common.includeResources(testContext, results), `Invalid resource reference: "AllergyIntolerance:substance"`)
-      t.end()
+      common.includeResources(testContext, results).then((result) => {
+        t.deepEqual(result, [])
+        t.end()
+      }).catch((err) => {
+        t.error(err)
+        t.end()
+      })
     })
   }))
 
