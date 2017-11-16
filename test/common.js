@@ -79,11 +79,10 @@ tap.test('testing include resources', (t) => {
     t.end()
   })
 
-  t.test('should resolve with undefined when results parameter is empty', (t) => {
+  t.test('should resolve with empty array when results parameter is empty', (t) => {
     common.includeResources({ test: true }, [])
       .then((res) => {
-        t.true(!res)
-        t.true(!Array.isArray(res))
+        t.deepEqual(res, [])
         t.end()
       })
   })
@@ -277,7 +276,7 @@ tap.test('testing include resources', (t) => {
 
       common.includeResources(testContext, results)
         .then((res) => {
-          t.true(!res)
+          t.deepEqual(res, [])
           t.end()
         })
     })
@@ -309,7 +308,7 @@ tap.test('testing include resources', (t) => {
 
       common.includeResources(testContext, results)
         .then((res) => {
-          t.true(!res)
+          t.deepEqual(res, [])
           t.end()
         })
     })
