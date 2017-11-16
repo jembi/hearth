@@ -8,10 +8,6 @@ const sinon = require('sinon')
 const tap = require('tap')
 
 const cursor = {
-  find () {
-    return this
-  },
-
   toArray () {
     return Promise.resolve([])
   }
@@ -19,6 +15,10 @@ const cursor = {
 
 const db = {
   collection () {
+    return this
+  },
+
+  find () {
     return cursor
   }
 }
@@ -112,7 +112,7 @@ tap.test('Reverse include resources', t => {
       }
     ]
     sandbox.spy(db, 'collection')
-    sandbox.spy(cursor, 'find')
+    sandbox.spy(db, 'find')
     sandbox.stub(cursor, 'toArray').returns(Promise.resolve(expectedResources))
     return common
       .reverseIncludeResources('Encounter:patient', [
@@ -120,7 +120,7 @@ tap.test('Reverse include resources', t => {
       ])
       .then(resources => {
         t.ok(db.collection.calledWith('Encounter'))
-        t.ok(cursor.find.calledOnce)
+        t.ok(db.find.calledOnce)
         t.ok(cursor.toArray.calledOnce)
         t.deepEqual(resources, expectedResources)
       })
