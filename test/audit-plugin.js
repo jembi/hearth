@@ -76,25 +76,6 @@ const testResourceTemplate = {
   'birthDate': '1970-07-21'
 }
 
-const testBundleTemplate = {
-  'resourceType': 'Bundle',
-  'total': 2,
-  'entry': [
-    {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '1234567890'
-      }
-    },
-    {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '0987654321'
-      }
-    }
-  ]
-}
-
 tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
   t.test('should determine the event outcome value for a successful request', (t) => {
     testServerInit(t, (db, done) => {
@@ -219,7 +200,7 @@ tap.test('Audit Plugin - buildSourceObj()', { autoend: true }, (t) => {
   })
 })
 
-tap.test('Audit Plugin - buildObjectArray()', { autoend: true }, (t) => {
+tap.test('Audit Plugin - buildObjectObj()', { autoend: true }, (t) => {
   t.test('should build the objectObj object', (t) => {
     testServerInit(t, (db, done) => {
       // given
@@ -235,16 +216,14 @@ tap.test('Audit Plugin - buildObjectArray()', { autoend: true }, (t) => {
           referer: 'http://localhost:9000/'
         }
       }
-      const bundle = JSON.parse(JSON.stringify(testBundleTemplate))
 
       // when
-      const objectArray = auditPlugin.buildObjectArray(ctx, bundle)
+      const objectObj = auditPlugin.buildObjectObj(ctx)
 
-      t.ok(objectArray)
+      t.ok(objectObj)
 
-      t.equals(objectArray[0].query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', `should have a value of '/fhir/Questionnaire?identifier=preoperative-questionnaire'`)
-      t.equals(objectArray[0].reference.reference, 'Questionnaire/1234567890', 'should have a value of \'Questionnaire/1234567890\'')
-      t.equals(objectArray[1].reference.reference, 'Questionnaire/0987654321', 'should have a value of \'Questionnaire/0987654321\'')
+      t.equals(objectObj.query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', `should have a value of '/fhir/Questionnaire?identifier=preoperative-questionnaire'`)
+      t.equals(objectObj.reference.reference, '/fhir/Questionnaire', 'should have a value of \'/fhir/Questionnaire\'')
 
       done()
     })
@@ -299,23 +278,17 @@ tap.test('Audit Plugin - create audit via fhirCore.create()', { autoend: true },
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
-        const cPatient = db.collection('Patient')
-        cPatient.findOne({}, (err, patient) => {
+        const c = db.collection('AuditEvent')
+        c.findOne({}, (err, result) => {
           t.error(err)
-          t.ok(patient, 'patient should exist in mongo')
+          t.ok(result, 'result should exist in mongo')
 
-          const c = db.collection('AuditEvent')
-          c.findOne({}, (err, result) => {
-            t.error(err)
-            t.ok(result, 'result should exist in mongo')
+          t.equals(result.participant[0].role[0].coding[0].system, 'hearth:user-roles', 'should have a value of \'hearth:user-roles\'')
+          t.equals(result.participant[0].role[0].coding[0].code, 'sysadmin', 'should have a value of \'sysadmin\'')
+          t.equals(result.participant[0].altId, 'sysadmin@jembi.org')
+          t.equals(result.object[0].reference.reference, '/fhir/Patient')
 
-            t.equals(result.participant[0].role[0].coding[0].system, 'hearth:user-roles', 'should have a value of \'hearth:user-roles\'')
-            t.equals(result.participant[0].role[0].coding[0].code, 'sysadmin', 'should have a value of \'sysadmin\'')
-            t.equals(result.participant[0].altId, 'sysadmin@jembi.org')
-            t.equals(result.object[0].reference.reference, `Patient/${patient.id}`)
-
-            done()
-          })
+          done()
         })
       })
     })
