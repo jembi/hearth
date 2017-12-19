@@ -27,11 +27,13 @@ let basicUserTest = (t, test) => {
       env.createUser(t, env.testUsers().jane, () => {
         env.createUser(t, env.testUsers().john, () => {
           env.createUser(t, env.testUsers().locked, () => {
-            test(db, () => {
-              env.clearDB((err) => {
-                t.error(err)
-                server.stop(() => {
-                  t.end()
+            env.createUser(t, env.testUsers().megan, () => {
+              test(db, () => {
+                env.clearDB((err) => {
+                  t.error(err)
+                  server.stop(() => {
+                    t.end()
+                  })
                 })
               })
             })
@@ -149,6 +151,21 @@ tap.test('user read should return not found if the user doesn\'t exist', (t) => 
   })
 })
 
+tap.test('user should return forbidden if a normal user tries to read someone other than themselves', (t) => {
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user/bob@test.org',
+      headers: env.getTestAuthHeaders('megan@test.org'),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 403, 'response status code should be 403')
+      done()
+    })
+  })
+})
+
 tap.test('user should be created on a POST', (t) => {
   basicUserTest(t, (db, done) => {
     request({
@@ -245,6 +262,25 @@ tap.test('user update should return 404 if the user isn\'t found', (t) => {
   })
 })
 
+tap.test('user update should return 403 if a normal user tries to update someone other than themselves', (t) => {
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user/bob@test.org',
+      method: 'PUT',
+      headers: env.getTestAuthHeaders('megan@test.org'),
+      body: {
+        type: 'updated'
+      },
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equals(res.statusCode, 403, 'should respond with a status code of 403')
+      done()
+    })
+  })
+})
+
 tap.test('user should allow public user creation when config is set', (t) => {
   config.setConf('authentication:enablePublicUserCreation', true)
 
@@ -332,6 +368,21 @@ tap.test('user search should return 400 when query parameter not supported', (t)
       t.error(err)
 
       t.equal(res.statusCode, 400, 'response status code should be 400')
+      done()
+    })
+  })
+})
+
+tap.test('user search should return 403 if the user searching does not have the allowUserManagement priviledge', (t) => {
+  basicUserTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/api/user',
+      headers: env.getTestAuthHeaders('megan@test.org'),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 403, 'response status code should be 403')
       done()
     })
   })
