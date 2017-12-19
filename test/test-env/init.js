@@ -355,6 +355,12 @@ module.exports = () => {
           salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
           type: 'sysadmin',
           locked: true
+        },
+        megan: {
+          email: 'megan@test.org',
+          hash: '4956a991e772edd0576e62eae92f9c94fc693a2d0ee07f8f46ccce9c343d0836304f4de2ea64a41932fe0a6adc83d853a964fb785930fb4293fef8ee37448ac8',
+          salt: '08f3a235-8660-49e9-93c3-5d4655b98c83',
+          type: 'user'
         }
       }
     },
