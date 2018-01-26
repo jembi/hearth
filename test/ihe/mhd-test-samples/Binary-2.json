@@ -1,0 +1,5 @@
+{
+  "resourceType" : "Binary",
+  "contentType" : "image/png",
+  "content" : "{{imageBase64}}"
+}

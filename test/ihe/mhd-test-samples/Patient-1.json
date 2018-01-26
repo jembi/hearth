@@ -1,0 +1,84 @@
+{
+  "resourceType": "Patient",
+  "active": true,
+  "identifier": [
+    {
+      "use": "official",
+      "system": "urn:oid:2.16.840.1.113883.19.5",
+      "value": "{{sourcePatId}}"
+    }
+  ],
+  "name": [
+    {
+      "use": "official",
+      "prefix": [
+        "Ms"
+      ],
+      "family": [
+        "{{lastName}}"
+      ],
+      "given": [
+        "{{firstName}}"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1970-07-21",
+  "telecom": [
+    {
+      "system": "email",
+      "value": "patient@email.com"
+    },
+    {
+      "system": "phone",
+      "value": "27831234567",
+      "use": "mobile"
+    }
+  ],
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "2760 Mlosi Street",
+        "Wallacedene",
+        "Kraaifontein"
+      ],
+      "state": "Western Cape",
+      "city": "Cape Town",
+      "postalCode": "7570"
+    }
+  ],
+  "communication": [
+    {
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en"
+          }
+        ],
+        "text": "English"
+      },
+      "preferred": true
+    }
+  ],
+  "extension": [
+    {
+      "url": "pshr:medicalaid:name",
+      "valueString": "Discovery"
+    },
+    {
+      "url": "pshr:medicalaid:option",
+      "valueString": "Super Health Saver"
+    },
+    {
+      "url": "pshr:medicalaid:number",
+      "valueString": "123456"
+    },
+    {
+      "url": "pshr:gapcover",
+      "valueBoolean": true
+    }
+  ]
+}

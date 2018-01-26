@@ -1,0 +1,101 @@
+{
+  "resourceType": "DocumentReference",
+  "masterIdentifier": {
+    "system": "shr:testing",
+    "value": "{{docRefMID2}}"
+  },
+  "subject": {
+    "reference": "{{patientRef}}"
+  },
+  "type": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes",
+        "code": "34117-2",
+        "display": "History and Physical note"
+      }
+    ]
+  },
+  "class": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/ValueSet/c80-doc-classcodes",
+        "code": "34117-2",
+        "display": "Provider-unspecified, History and physical note"
+      }
+    ]
+  },
+  "author": [
+    {
+      "reference": "{{providerRef}}"
+    }
+  ],
+  "created": "2016-12-24",
+  "indexed": "{{timeNow}}",
+  "status": "current",
+  "description": "Physical",
+  "securityLabel": [{
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v3/Confidentiality",
+        "code": "N",
+        "display": "normal"
+      }
+    ]
+  }],
+  "content": [
+    {
+      "attachment": {
+        "contentType": "image/png",
+        "url": "{{binaryRef2}}"
+      },
+      "format": [
+        {
+          "system": "hearth:testing",
+          "code": "imaging-result"
+        }
+      ]
+    }
+  ],
+  "context": {
+    "period": {
+      "start": "2016-12-23T08:00:00+02:00",
+      "end": "2016-12-23T09:15:00+02:00"
+    },
+    "practiceSetting": {
+      "coding": [
+        {
+          "system": "http://ihe.net/connectathon/practiceSettingCodes",
+          "code": "General Medicine",
+          "display": "General Medicine"
+        }
+      ]
+    },
+    "event": [{
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/ValueSet/v3-ActCode",
+          "code": "ANNGEN",
+          "display": "general note"
+        }
+      ]
+    }],
+    "facilityType": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/ValueSet/c80-facilitycodes",
+          "code": "225732001",
+          "display": "Hospital-community"
+        }
+      ]
+    },
+    "related": [{
+      "identifier": [
+        {
+          "system": "hearth:tests",
+          "value": "other-doc-2"
+        }
+      ]
+    }]
+  }
+}

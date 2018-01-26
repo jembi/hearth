@@ -80,7 +80,7 @@ const workerContext = {
 process.argv[2] = JSON.stringify(workerContext)
 const matchingWorkerProcess = require('../../../lib/fhir/services/matching-worker/matching-worker-process')
 
-tap.test('should execute processResourceScore() and return a object', (t) => {
+tap.test('should execute processResourceScore() and return a object', { skip: true }, (t) => {
   let matchesMap = {}
   const charltonTemp = {}
   charltonTemp.id = charlton.id
@@ -103,7 +103,7 @@ tap.test('should execute processResourceScore() and return a object', (t) => {
   t.end()
 })
 
-tap.test('should execute mpiQuery() to fetch all records and return a matchesMap object', (t) => {
+tap.test('should execute mpiQuery() to fetch all records and return a matchesMap object', { skip: true }, (t) => {
   matchingWorkerProcessTest(t, (db, done) => {
     const c = db.collection('Patient')
     const query = {}

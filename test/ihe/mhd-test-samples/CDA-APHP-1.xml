@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:mif="urn:hl7-org:v3/mif"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:hl7-org:v3 CDA.xsd">
+
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+	<templateId root='1.3.6.1.4.1.19376.1.5.3.1.1.16.1.4' />
+	<templateId root='1.3.6.1.4.1.19376.1.5.3.1.1.16.1.1' />
+
+	<id root='1.2.3.2.2.2.2' extension='{{docId}}' />
+
+	<code code='34117-2' displayName='HISTORY AND PHYSICAL'
+		codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+
+	<title>Antepartum History and Physical</title>
+
+	<effectiveTime value='20140609012005-0500' />
+
+	<confidentialityCode code='N' displayName='Normal'
+		codeSystem='2.16.840.1.113883.5.25' codeSystemName='Confidentiality' />
+
+	<languageCode code='en-US' />
+
+	<recordTarget>
+		<patientRole>
+			<id extension="{{sourcePatId}}" root="2.16.840.1.113883.19.5" />
+			<patient>
+				<name>
+					<given>{{firstName}}</given>
+					<family>{{lastName}}</family>
+				</name>
+				<administrativeGenderCode code="F"
+					codeSystem="2.16.840.1.113883.5.1" />
+				<birthTime value="19880924" />
+			</patient>
+			<providerOrganization>
+				<id root="2.16.840.1.113883.19.5" />
+				<name>Organization Name</name>
+			</providerOrganization>
+		</patientRole>
+	</recordTarget>
+
+	<author>
+		<time value="20000407121000" />
+		<assignedAuthor>
+			<id extension="123456789" root="2.16.840.1.113883.19.5.1" />
+			<assignedPerson>
+				<name>
+					<given>Alison</given>
+					<family>Tobi</family>
+					<suffix>MD</suffix>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" />
+				<name>Organization Name</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+
+	<participant typeCode="IND">
+		<associatedEntity classCode="NOK">
+			<code code="xx-fatherofbaby" displayName="Father of Baby"
+				codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
+			<addr>
+				<streetAddressLine>18 Oak Valley Dr.</streetAddressLine>
+				<city>Monteagle</city>
+				<state>TN</state>
+				<postalCode>37205</postalCode>
+				<country>USA</country>
+			</addr>
+			<telecom value="tel:(999)555-1212" use="WP" />
+			<associatedPerson>
+				<name>
+					<prefix>Mr.</prefix>
+					<given>Charles</given>
+					<family>Random</family>
+					<family>Guy</family>
+				</name>
+			</associatedPerson>
+		</associatedEntity>
+	</participant>
+
+	<participant typeCode="IND">
+		<associatedEntity classCode="NOK">
+			<code code="127848009" displayName="patient's domestic partner"
+				codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
+			<addr>
+				<streetAddressLine>45 Chunn Dr.</streetAddressLine>
+				<city>Spring Hill</city>
+				<state>TN</state>
+				<postalCode>37174</postalCode>
+				<country>USA</country>
+			</addr>
+			<telecom value="tel:(999)555-1212" use="WP" />
+			<associatedPerson>
+				<name>
+					<prefix>Mr.</prefix>
+					<given>Dave</given>
+					<family>Levin</family>
+				</name>
+			</associatedPerson>
+		</associatedEntity>
+	</participant>
+
+	<custodian>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id root="2.16.840.1.113883.19.9" />
+				<name>Good Health Clinic</name>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+
+	<documentationOf typeCode="DOC">
+		<serviceEvent moodCode="EVN">
+			<id root="4409f505-7bcd-4651-a85d-379d5c9fc432" />
+			<effectiveTime>
+				<low value="20140609112005-0500" />
+				<high value="20140610115636-0500" />
+			</effectiveTime>
+
+			<performer typeCode="PRF">
+				<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+				<functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" />
+				<assignedEntity classCode="ASSIGNED">
+					<id root="1.0.2.1.2" extension="999998" />
+					<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+						<name use="L">
+							<given>doctor</given>
+							<family>oscardoc</family>
+						</name>
+					</assignedPerson>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+				<functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" />
+				<assignedEntity classCode="ASSIGNED">
+					<id root="1.0.2.1.2" extension="999998" />
+					<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+						<name use="L">
+							<given>doctor</given>
+							<family>oscardoc</family>
+						</name>
+					</assignedPerson>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+				<functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" />
+				<assignedEntity classCode="ASSIGNED">
+					<id root="1.0.2.1.2" extension="999998" />
+					<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+						<name use="L">
+							<given>doctor</given>
+							<family>oscardoc</family>
+						</name>
+					</assignedPerson>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3" />
+				<functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" />
+				<assignedEntity classCode="ASSIGNED">
+					<id root="1.0.2.1.2" extension="999998" />
+					<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+						<name use="L">
+							<given>doctor</given>
+							<family>oscardoc</family>
+						</name>
+					</assignedPerson>
+				</assignedEntity>
+			</performer>
+		</serviceEvent>
+	</documentationOf>
+
+	<component>
+		<structuredBody>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.1.13.2.1' />
+					<!-- Required Chief Complaint Section content -->
+					<id root='1' extension='2123122351235342345234' />
+					<code code='10154-3' displayName='CHIEF COMPLAINT' codeSystem='2.16.840.1.113883.6.1'
+						codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.3.4' />
+					<!-- Required History of Present Illness Section content -->
+					<id root='1' extension='22341341243214123' />
+					<code code='10164-2' displayName='HISTORY OF PRESENT ILLNESS'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.3.8' />
+					<!-- Required History of Past Illness Section content -->
+					<id root='1' extension='2`123124124351' />
+					<code code='11348-0' displayName='HISTORY OF PAST ILLNESS'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.1.16.2.1.1' />
+					<id root='1' extension='2437546756845' />
+					<code code='XX-HistoryOfInfection' displayName='HISTORY OF INFECTION'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.1.5.3.4' />
+					<!-- Required Pregnancy History Section content -->
+					<id root='1' extension='27644325253' />
+					<code code='10162-6' displayName='HISTORY OF PREGNANCIES'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+					<entry>
+						<!-- History -->
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5.1' />
+							<id root='1.2.3.2.43.2.232' extension='123912983' />
+							<code code='118185001' displayName='Pregnancy Finding'
+								codeSystem='2.16.840.1.113883.6.96' codeSystemName='SNOMED CT' />
+							<statusCode code='completed' />
+							<effectiveTime value='20140609' />
+							<component>
+								<!-- Required Pregnancy Observation element -->
+								<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5' />
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.5" />
+									<id root='1' extension='674362' />
+									<code code='11636-8' displayName='BIRTHS LIVE (REPORTED)'
+										codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+									<statusCode code='completed' />
+									<effectiveTime value="20140609" />
+									<value xsi:type="INT" value="2" />
+									<!-- <value xsi:type='INT' value='1'/> -->
+									<interpretationCode code="N" />
+								</observation>
+							</component>
+							<component>
+								<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5' />
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.5" />
+									<id root='1' extension='67436435646453' />
+									<code code='11612-9' displayName='ABORTIONS (REPORTED)'
+										codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+									<statusCode code='completed' />
+									<effectiveTime value="20140609" />
+									<value xsi:type='INT' value="1" />
+									<interpretationCode code="N" />
+								</observation>
+							</component>
+							<component>
+								<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5' />
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.5" />
+									<id root='1' extension='7567567565' />
+									<code code='57062-2' displayName='STILLBORN BIRTHS'
+										codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+									<statusCode code='completed' />
+									<effectiveTime value="20110201" />
+									<value xsi:type='CD' code="237364002" displayName="Stillbirth (Finding)"
+										codeSystem="2.16.840.1.113883.6.96" />
+									<interpretationCode code="N" />
+								</observation>
+							</component>
+
+						</organizer>
+					</entry>
+					<entry>
+						<!-- Required Pregnancy Observation element -->
+						<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5' />
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.5" />
+							<id root='1' extension='867456765456452' />
+							<code code='49051-6' displayName='GESTATIONAL AGE'
+								codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+							<statusCode code='completed' />
+							<effectiveTime value="20140609" />
+							<value xsi:type="PQ" value="3.5" unit="mo" />
+							<!-- <value xsi:type='INT' value='1'/> -->
+							<interpretationCode code="N" />
+						</observation>
+					</entry>
+					<entry>
+						<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.5' />
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.13.5" />
+							<id root='1' extension='6456456546453' />
+							<code code='45371-2' displayName='MULTIPLE PREGNANCY'
+								codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+							<statusCode code='completed' />
+							<effectiveTime value="20140609" />
+							<value xsi:type='BL' value="true" />
+							<interpretationCode code="N" />
+						</observation>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section>
+					<templateId root='2.16.840.1.113883.10.20.1.15' />
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.3.16' />
+					<!-- Required Social History Section content -->
+					<id root='1' extension='75647567567562' />
+					<code code='29762-2' displayName='SOCIAL HISTORY' codeSystem='2.16.840.1.113883.6.1'
+						codeSystemName='LOINC' />
+					<title>boink</title>
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='2.16.840.1.113883.10.20.1.4' />
+					<!-- Required Coded Family Medical History Section content -->
+					<id root='1' extension='865868672' />
+					<code code='10157-6' displayName='HISTORY OF FAMILY MEMBER DISEASES'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<title>boink</title>
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.3.18' />
+					<!-- Required Review of Systems Section content -->
+					<id root='1' extension='29879768987' />
+					<code code='10187-3' displayName='REVIEW OF SYSTEMS'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component>
+				<section>
+					<templateId root='1.3.6.1.4.1.19376.1.5.3.1.3.24' />
+					<!-- Required Physical Examination Section content -->
+					<id root='1' extension='96789782' />
+					<code code='29545-1' displayName='PHYSICAL EXAMINATION'
+						codeSystem='2.16.840.1.113883.6.1' codeSystemName='LOINC' />
+					<text>
+						Text as described above
+					</text>
+				</section>
+			</component>
+
+			<component typeCode="COMP" contextConductionInd="true">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="2.16.840.1.113883.10.20.1.16" />
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.25" />
+					<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.2" />
+					<code code="8716-3" codeSystem="2.16.840.1.113883.6.1"
+						codeSystemName="LOINC" displayName="Vital Signs" />
+					<title language="en-CA">Vital Signs</title>
+					<text language="en-CA">
+						<table xmlns:ns2="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+							xmlns="urn:hl7-org:v3" xmlns:ns4="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"
+							xmlns:ns3="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0"
+							xmlns:ns5="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0">
+							<thead>
+								<tr>
+									<th>Measurement</th>
+									<th>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ID="VitalSignsSection0">
+									<td>BODY WEIGHT (MEASURED)</td>
+									<td>BODY WEIGHT (MEASURED): 110 kg</td>
+								</tr>
+								<tr ID="VitalSignsSection1">
+									<td>BODY HEIGHT (MEASURED)</td>
+									<td>BODY HEIGHT (MEASURED): 95 cm</td>
+								</tr>
+								<tr ID="VitalSignsSection2">
+									<td>INTRAVASCULAR SYSTOLIC</td>
+									<td>INTRAVASCULAR SYSTOLIC: 110 mmHg</td>
+								</tr>
+								<tr ID="VitalSignsSection3">
+									<td>INTRAVASCULAR DIASTOLIC</td>
+									<td>INTRAVASCULAR DIASTOLIC: 60 mmHg</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry typeCode="DRIV" contextConductionInd="true">
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.1.32" />
+							<templateId root="2.16.840.1.113883.10.20.1.35" />
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.1' />
+							<id root="da19e063-d74b-4924-9a50-ab5207e290a2" />
+							<code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+								codeSystemName="SNOMED_CT" displayName="Vital Signs" />
+							<statusCode code="completed" />
+							<effectiveTime value="20140303000000.000-0500" />
+							<component typeCode="COMP" contextConductionInd="true">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root='2.16.840.1.113883.10.20.1.31' />
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.2' />
+									<id root="7e28d9b1-3732-4dad-ad1c-aed5c9806c1c" />
+									<code code="3141-9" codeSystem="2.16.840.1.113883.6.1"
+										codeSystemName="LOINC" displayName="BODY WEIGHT (MEASURED)" />
+									<text>
+										<reference value="#VitalSignsSection0" />
+									</text>
+									<statusCode code="completed" />
+									<value xsi:type="PQ" unit="kg" value="98" />
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry typeCode="DRIV" contextConductionInd="true">
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.1.32" />
+							<templateId root="2.16.840.1.113883.10.20.1.35" />
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.1' />
+							<id root="b9bd5f19-9042-40eb-b36e-306e528a6b0c" />
+							<code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+								codeSystemName="SNOMED_CT" displayName="Vital Signs" />
+							<statusCode code="completed" />
+							<effectiveTime value="20140303000000.000-0500" />
+							<component typeCode="COMP" contextConductionInd="true">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root='2.16.840.1.113883.10.20.1.31' />
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.2' />
+									<id root="22bee931-f51f-4033-bf81-f5f3185b0196" />
+									<code code="8302-2" codeSystem="2.16.840.1.113883.6.1"
+										codeSystemName="LOINC" displayName="BODY HEIGHT (MEASURED)" />
+									<text>
+										<reference value="#VitalSignsSection1" />
+									</text>
+									<statusCode code="completed" />
+									<value xsi:type="PQ" unit="cm" value="182" />
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry typeCode="DRIV" contextConductionInd="true">
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.1.32" />
+							<templateId root="2.16.840.1.113883.10.20.1.35" />
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.1' />
+							<id root="6f7e00e1-d60f-4efd-81fc-8c8db7f19a48" />
+							<code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+								codeSystemName="SNOMED_CT" displayName="Vital Signs" />
+							<statusCode code="completed" />
+							<effectiveTime value="20140303000000.000-0500" />
+							<component typeCode="COMP" contextConductionInd="true">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root='2.16.840.1.113883.10.20.1.31' />
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.2' />
+									<id root="1bdc29aa-9b62-4d29-8036-fbf205a13129" />
+									<code code="8480-6" codeSystem="2.16.840.1.113883.6.1"
+										codeSystemName="LOINC" displayName="INTRAVASCULAR SYSTOLIC" />
+									<text>
+										<reference value="#VitalSignsSection2" />
+									</text>
+									<statusCode code="completed" />
+									<value xsi:type="PQ" unit="mm[Hg]" value="110" />
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry typeCode="DRIV" contextConductionInd="true">
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.1.32" />
+							<templateId root="2.16.840.1.113883.10.20.1.35" />
+							<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.1' />
+
+							<id root="12b8f398-bb9d-4d28-b9b5-780d1d633007" />
+							<code code="46680005" codeSystem="2.16.840.1.113883.6.96"
+								codeSystemName="SNOMED_CT" displayName="Vital Signs" />
+							<statusCode code="completed" />
+							<effectiveTime value="20140303000000.000-0500" />
+							<component typeCode="COMP" contextConductionInd="true">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13' />
+									<templateId root='2.16.840.1.113883.10.20.1.31' />
+									<templateId root='1.3.6.1.4.1.19376.1.5.3.1.4.13.2' />
+									<id root="f437b712-298a-4706-8d69-8e9f17688e57" />
+									<code code="8462-4" codeSystem="2.16.840.1.113883.6.1"
+										codeSystemName="LOINC" displayName="INTRAVASCULAR DIASTOLIC" />
+									<text>
+										<reference value="#VitalSignsSection3" />
+									</text>
+									<statusCode code="completed" />
+									<value xsi:type="PQ" unit="mm[Hg]" value="60" />
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+				</section>
+			</component>
+
+
+
+		</structuredBody>
+	</component>
+</ClinicalDocument>

@@ -1,0 +1,50 @@
+{
+  "resourceType": "DocumentManifest",
+  "text": {
+    "status": "generated",
+    "div": "<div>Text</div>"
+  },
+  "masterIdentifier": {
+    "system": "shr:testing",
+    "value": "{{manifestMID}}"
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:1.2.3.2.2.2.2",
+      "value": "{{docId}}"
+    }
+  ],
+  "subject": {
+    "reference": "{{patientRef}}"
+  },
+  "type": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes",
+        "code": "34117-2",
+        "display": "History and Physical note"
+      }
+    ]
+  },
+  "author": [
+    {
+      "reference": "{{providerRef}}"
+    }
+  ],
+  "created": "{{timeNow}}",
+  "source": "urn:oid:1.3.6.1.4.1.21367.2009.1.2.1",
+  "status": "current",
+  "description": "Physical",
+  "content": [
+    {
+      "pReference": {
+        "reference": "{{docRef1}}"
+      }
+    },
+    {
+      "pReference": {
+        "reference": "{{docRef2}}"
+      }
+    }
+  ]
+}
