@@ -1,0 +1,5 @@
+{
+  "resourceType" : "Binary",
+  "contentType" : "application/xml",
+  "content" : "{{cdaBase64}}"
+}
