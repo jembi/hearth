@@ -67,6 +67,165 @@ tap.test('DocumentManifest - should return all results when there are no paramet
   })
 })
 
+tap.test('DocumentManifest - should search by author reference', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.author[0].reference = 'Device/12345'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?author=Device/12345',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.author[0].reference, 'Device/12345', 'should have the correct author value')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by content-ref reference', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.content[0].pReference.reference = 'DocumentReference/54321'
+    // console.log(findMe)
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?content-ref=DocumentReference/54321',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.content[0].pReference.reference, 'DocumentReference/54321', 'should have the correct content-ref value')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should support searches on created date (ymd)', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.created = '2013-07-01'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?created=2013-07-01',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+          t.equal(body.total, 1, 'body should contain one result')
+          t.equals(body.entry[0].resource.created, '2013-07-01', 'should have correct created date')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by description', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.description = 'Random Description for Manifest'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?description=Random Description for Manifest',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.description, 'Random Description for Manifest', 'should have correct description')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by identifier', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.identifier[0].system = 'sample-system'
+    findMe.identifier[0].value = 'randomnumber-1234567'
+    // console.log(findMe)
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?identifier=sample-system|randomnumber-1234567',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.identifier[0].system, 'sample-system', 'should have the correct identifier system')
+          t.equals(body.entry[0].resource.identifier[0].value, 'randomnumber-1234567', 'should have the correct identifier value')
+          done()
+        })
+      })
+    })
+  })
+})
+
 tap.test('DocumentManifest - should search by subject for the supplied patient parameter', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
@@ -91,6 +250,238 @@ tap.test('DocumentManifest - should search by subject for the supplied patient p
           t.equals(body.total, 1, 'total should be one')
           t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
           t.equals(body.entry[0].resource.subject.reference, 'Patient/123', 'should have a subject of Patient/123')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by recipient reference', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.recipient[0].reference = 'Patient/12345'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?recipient=Patient/12345',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.recipient[0].reference, 'Patient/12345', 'should have the correct recipient value')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by related-id reference', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.related[0].identifier.system = 'sample-system'
+    findMe.related[0].identifier.value = 'randomnumber-1234567'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          // url: 'http://localhost:3447/fhir/DocumentManifest?related-id=sample-system|randomnumber-1234567',
+          url: 'http://localhost:3447/fhir/DocumentManifest?related-id=sample-system|randomnumber-1234567',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.related[0].identifier.system, 'sample-system', 'should have the correct related system')
+          t.equals(body.entry[0].resource.related[0].identifier.value, 'randomnumber-1234567', 'should have the correct related value')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by related-ref reference', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.related[0].ref.reference = 'DocumentReference/54321'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?related-ref=DocumentReference/54321',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.related[0].ref.reference, 'DocumentReference/54321', 'should have the correct related-ref value')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by source', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.source = 'random:source:uri:value'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?source=random:source:uri:value',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.source, 'random:source:uri:value', 'should have correct source')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by status', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.status = 'superseded'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?status=superseded',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.status, 'superseded', 'should have correct status')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by subject for the supplied subject parameter', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.subject.reference = 'Patient/123'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?subject=Patient/123',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.subject.reference, 'Patient/123', 'should have a subject of Patient/123')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by type', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.type = {
+      coding: [
+        {
+          system: 'otherSys',
+          code: 'otherCode'
+        }, {
+          system: 'testSys',
+          code: 'testCode'
+        }
+      ],
+      text: 'a test code'
+    }
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?type=testSys|testCode',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.type.coding[1].system, 'testSys', 'should have correct type system')
+          t.equals(body.entry[0].resource.type.coding[1].code, 'testCode', 'should have correct type code')
           done()
         })
       })
@@ -259,204 +650,6 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
             t.equals(body.entry[0].resource.author[1].reference, `Practitioner/${testPractitioners.alison.practitioner.id}`, 'should have correct author reference')
             done()
           })
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should search by type', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.type = {
-      coding: [
-        {
-          system: 'otherSys',
-          code: 'otherCode'
-        }, {
-          system: 'testSys',
-          code: 'testCode'
-        }
-      ],
-      text: 'a test code'
-    }
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?type=testSys|testCode',
-          headers: headers,
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equals(body.total, 1, 'total should be one')
-          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
-          t.equals(body.entry[0].resource.type.coding[1].system, 'testSys', 'should have correct type system')
-          t.equals(body.entry[0].resource.type.coding[1].code, 'testCode', 'should have correct type code')
-          done()
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should search by status', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.status = 'superseded'
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?status=superseded',
-          headers: headers,
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equals(body.total, 1, 'total should be one')
-          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
-          t.equals(body.entry[0].resource.status, 'superseded', 'should have correct status')
-          done()
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should support searches on created date (ymd)', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.created = '2013-07-01'
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?created=2013-07-01',
-          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
-          t.equal(body.total, 1, 'body should contain one result')
-          t.equals(body.entry[0].resource.created, '2013-07-01', 'should have correct created date')
-          done()
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should search by source', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.source = 'random:source:uri:value'
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?source=random:source:uri:value',
-          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equals(body.total, 1, 'total should be one')
-          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
-          t.equals(body.entry[0].resource.source, 'random:source:uri:value', 'should have correct source')
-          done()
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should search by description', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.description = 'Random Description for Manifest'
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?description=Random Description for Manifest',
-          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equals(body.total, 1, 'total should be one')
-          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
-          t.equals(body.entry[0].resource.description, 'Random Description for Manifest', 'should have correct description')
-          done()
-        })
-      })
-    })
-  })
-})
-
-tap.test('DocumentManifest - should search by subject for the supplied subject parameter', (t) => {
-  // given
-  docManifestTestEnv(t, (db, done) => {
-    const findMe = _.cloneDeep(testDocManifest)
-    findMe.subject.reference = 'Patient/123'
-    delete findMe.id
-    const skipMe = _.cloneDeep(testDocManifest)
-    delete skipMe.id
-    env.createResource(t, findMe, 'DocumentManifest', () => {
-      env.createResource(t, skipMe, 'DocumentManifest', () => {
-        // when
-        request({
-          url: 'http://localhost:3447/fhir/DocumentManifest?subject=Patient/123',
-          headers: headers,
-          json: true
-        }, (err, res, body) => {
-          // then
-          t.error(err)
-
-          t.equal(res.statusCode, 200, 'response status code should be 200')
-          t.ok(body)
-          t.equals(body.total, 1, 'total should be one')
-          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
-          t.equals(body.entry[0].resource.subject.reference, 'Patient/123', 'should have a subject of Patient/123')
-          done()
         })
       })
     })
