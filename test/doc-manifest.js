@@ -56,10 +56,10 @@ tap.test('DocumentManifest - should return all results when there are no paramet
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(2, body.total, 'total should be two')
-          t.equals('Bundle', body.resourceType, 'should return a Bundle')
-          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-          t.equals('DocumentManifest', body.entry[1].resource.resourceType, 'should return a resource of type DocumentManifest')
+          t.equals(body.total, 2, 'total should be two')
+          t.equals(body.resourceType, 'Bundle', 'should return a Bundle')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[1].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
           done()
         })
       })
@@ -67,7 +67,7 @@ tap.test('DocumentManifest - should return all results when there are no paramet
   })
 })
 
-tap.test('DocumentManifest - should search by subject', (t) => {
+tap.test('DocumentManifest - should search by subject for the supplied patient parameter', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
     const findMe = _.cloneDeep(testDocManifest)
@@ -89,8 +89,8 @@ tap.test('DocumentManifest - should search by subject', (t) => {
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
           t.equals(body.total, 1, 'total should be one')
-          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-          t.equals('Patient/123', body.entry[0].resource.subject.reference, 'should have a subject of Patient/123')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.subject.reference, 'Patient/123', 'should have a subject of Patient/123')
           done()
         })
       })
@@ -121,9 +121,9 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 
             t.equal(res.statusCode, 200, 'response status code should be 200')
             t.ok(body)
-            t.equals(1, body.total, 'total should be one')
-            t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Patient/${testPatients.charlton.patient.id}`, body.entry[0].resource.subject.reference, 'should have correct subject reference')
+            t.equals(body.total, 1, 'total should be one')
+            t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+            t.equals(body.entry[0].resource.subject.reference, `Patient/${testPatients.charlton.patient.id}`, 'should have correct subject reference')
             done()
           })
         })
@@ -187,7 +187,7 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(0, body.total, 'total should be zero')
+          t.equals(body.total, 0, 'total should be zero')
           done()
         })
       })
@@ -219,9 +219,9 @@ tap.test('DocumentManifest - should perform chained search by author.given', (t)
 
             t.equal(res.statusCode, 200, 'response status code should be 200')
             t.ok(body)
-            t.equals(1, body.total, 'total should be one')
-            t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author[1].reference, 'should have correct author reference')
+            t.equals(body.total, 1, 'total should be one')
+            t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+            t.equals(body.entry[0].resource.author[1].reference, `Practitioner/${testPractitioners.alison.practitioner.id}`, 'should have correct author reference')
             done()
           })
         })
@@ -254,9 +254,9 @@ tap.test('DocumentManifest - should perform chained search by author.family', (t
 
             t.equal(res.statusCode, 200, 'response status code should be 200')
             t.ok(body)
-            t.equals(1, body.total, 'total should be one')
-            t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-            t.equals(`Practitioner/${testPractitioners.alison.practitioner.id}`, body.entry[0].resource.author[1].reference, 'should have correct author reference')
+            t.equals(body.total, 1, 'total should be one')
+            t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+            t.equals(body.entry[0].resource.author[1].reference, `Practitioner/${testPractitioners.alison.practitioner.id}`, 'should have correct author reference')
             done()
           })
         })
@@ -297,10 +297,10 @@ tap.test('DocumentManifest - should search by type', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(1, body.total, 'total should be one')
-          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-          t.equals('testSys', body.entry[0].resource.type.coding[1].system, 'should have correct type system')
-          t.equals('testCode', body.entry[0].resource.type.coding[1].code, 'should have correct type code')
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.type.coding[1].system, 'testSys', 'should have correct type system')
+          t.equals(body.entry[0].resource.type.coding[1].code, 'testCode', 'should have correct type code')
           done()
         })
       })
@@ -329,9 +329,9 @@ tap.test('DocumentManifest - should search by status', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(1, body.total, 'total should be one')
-          t.equals('DocumentManifest', body.entry[0].resource.resourceType, 'should return a resource of type DocumentManifest')
-          t.equals('superseded', body.entry[0].resource.status, 'should have correct status')
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.status, 'superseded', 'should have correct status')
           done()
         })
       })
@@ -362,7 +362,100 @@ tap.test('DocumentManifest - should support searches on created date (ymd)', (t)
           t.ok(body)
           t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
           t.equal(body.total, 1, 'body should contain one result')
-          t.equals('2013-07-01', body.entry[0].resource.created, 'should have correct created date')
+          t.equals(body.entry[0].resource.created, '2013-07-01', 'should have correct created date')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by source', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.source = 'random:source:uri:value'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?source=random:source:uri:value',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.source, 'random:source:uri:value', 'should have correct source')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by description', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.description = 'Random Description for Manifest'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?description=Random Description for Manifest',
+          headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.description, 'Random Description for Manifest', 'should have correct description')
+          done()
+        })
+      })
+    })
+  })
+})
+
+tap.test('DocumentManifest - should search by subject for the supplied subject parameter', (t) => {
+  // given
+  docManifestTestEnv(t, (db, done) => {
+    const findMe = _.cloneDeep(testDocManifest)
+    findMe.subject.reference = 'Patient/123'
+    delete findMe.id
+    const skipMe = _.cloneDeep(testDocManifest)
+    delete skipMe.id
+    env.createResource(t, findMe, 'DocumentManifest', () => {
+      env.createResource(t, skipMe, 'DocumentManifest', () => {
+        // when
+        request({
+          url: 'http://localhost:3447/fhir/DocumentManifest?subject=Patient/123',
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          // then
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equals(body.total, 1, 'total should be one')
+          t.equals(body.entry[0].resource.resourceType, 'DocumentManifest', 'should return a resource of type DocumentManifest')
+          t.equals(body.entry[0].resource.subject.reference, 'Patient/123', 'should have a subject of Patient/123')
           done()
         })
       })
