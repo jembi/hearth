@@ -228,6 +228,18 @@ const MHDScenario = (headers, t) => {
 
       promises.push(searchReferences(t, `DocumentReference?patient=${conf.patientRef}`))
       promises.push(searchReferences(t, `DocumentReference?patient.identifier=${conf.sourcePatId}`))
+      promises.push(searchReferences(t, `DocumentReference?status=current`))
+      // promises.push(searchReferences(t, `DocumentReference?indexed=eq2013-07-01`)) // Not working (see DocumentReference-1.json line 41)
+      promises.push(searchReferences(t, `DocumentReference?author.given=Alison`))
+      promises.push(searchReferences(t, `DocumentReference?author.family=Tobi`))
+      promises.push(searchReferences(t, `DocumentReference?class=34117-2`))
+      // promises.push(searchReferences(t, `DocumentReference?type=History%20and%20Physical`)) // Not working (see DocumentReference-1.json line 21)
+      promises.push(searchReferences(t, `DocumentReference?setting=General%20Medicine`))
+      // promises.push(searchReferences(t, `DocumentReference?period=eq2004-12-23`)) // Not working (see DocumentReference-1.json line 70)
+      promises.push(searchReferences(t, `DocumentReference?facility=225732001`))
+      promises.push(searchReferences(t, `DocumentReference?event=ANNGEN`))
+      promises.push(searchReferences(t, `DocumentReference?securityLabel=N`))
+      // promises.push(searchReferences(t, `DocumentReference?related-id=docRef2`)) // Not working (see DocumentReference-1.json line 104)
 
       Promise.all(promises).then(() => {
         t.end()
