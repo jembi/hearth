@@ -171,6 +171,80 @@ tap.test('Binary - should search for a specific Binary document', (t) => {
   })
 })
 
+tap.test('Binary - should search for a specific Binary document, and return the document in the specified format', (t) => {
+  // given
+  binaryTestEnv(t, (db, refs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Binary?contenttype=application/pdf',
+      headers: headers,
+      json: true
+    }, (err, res, searchBody) => {
+      // then
+      t.error(err)
+
+      const updatedHeaders = _.assign({}, headers)
+      updatedHeaders['content-type'] = 'application/pdf'
+
+      request({
+        url: `http://localhost:3447/fhir/Binary/${searchBody.entry[0].resource.id}`,
+        headers: updatedHeaders,
+        json: true
+      }, (err, res, readBody) => {
+        // then
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(readBody)
+
+        t.notOk(readBody.resourceType, 'should not have field "resourceType"')
+
+        // convert to base64 for test comparison
+        const base64PDF = Buffer.from(readBody).toString('base64')
+        const expected = env.testBinaryFiles().doc2.content
+        t.equals(base64PDF, expected, 'resource should contain correct content')
+
+        done()
+      })
+    })
+  })
+})
+
+tap.test('Binary - should search for a specific Binary document, and return the FHIR resource if the requested contentType doesnt match the type of document', (t) => {
+  // given
+  binaryTestEnv(t, (db, refs, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Binary?contenttype=application/pdf',
+      headers: headers,
+      json: true
+    }, (err, res, searchBody) => {
+      // then
+      t.error(err)
+
+      const updatedHeaders = _.assign({}, headers)
+      updatedHeaders['content-type'] = 'application/xml' // incorrect type - document is PDF, not xml
+
+      request({
+        url: `http://localhost:3447/fhir/Binary/${searchBody.entry[0].resource.id}`,
+        headers: updatedHeaders,
+        json: true
+      }, (err, res, readBody) => {
+        // then
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(readBody)
+
+        t.ok(readBody.resourceType, 'should have field "resourceType"')
+        t.ok(readBody.content, 'should have field "content"')
+        t.equals(readBody.resourceType, 'Binary', 'should return a resource of type Binary')
+        t.equals(readBody.contentType, 'application/pdf', 'should return a contentType of application/pdf')
+
+        done()
+      })
+    })
+  })
+})
+
 tap.test('Binary - preInteractionHandlers.create - should insert binary data', (t) => {
   // given
   env.initDB((err, db) => {
