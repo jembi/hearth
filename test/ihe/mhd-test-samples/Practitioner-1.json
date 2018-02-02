@@ -25,10 +25,10 @@
       "Dr"
     ],
     "family": [
-      "Tobi"
+      "{{providerLastName}}"
     ],
     "given": [
-      "Alison"
+      "{{providerFirstName}}"
     ]
   },
   "telecom": [

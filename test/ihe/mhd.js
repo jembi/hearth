@@ -51,9 +51,15 @@ const MHDScenario = (headers, t) => {
     sourcePatId: uuid(),
     firstName: faker.name.firstName(1),
     lastName: faker.name.lastName(),
+    providerFirstName: faker.name.firstName(1),
+    providerLastName: faker.name.lastName(),
     docId: uuid(),
     manifestMID: uuid(),
     docManifestRef: `urn:uuid:${uuid()}`,
+    docManifestTypeCodingSystem: `http://hl7.org/fhir/ValueSet/c80-doc-typecodes`,
+    docManifestTypeCodingCode: `34117-2`,
+    docManifestSource: `urn:oid:1.3.6.1.4.1.21367.2009.1.2.1`,
+    docManifestStatus: `current`,
     docRefMID1: uuid(),
     docRef1: `urn:uuid:${uuid()}`,
     docRefMID2: uuid(),
@@ -189,6 +195,14 @@ const MHDScenario = (headers, t) => {
 
       promises.push(searchManifest(t, `DocumentManifest?patient=${conf.patientRef}`))
       promises.push(searchManifest(t, `DocumentManifest?patient.identifier=${conf.sourcePatId}`))
+
+      promises.push(searchManifest(t, `DocumentManifest?created=${conf.timeNow}`))
+      promises.push(searchManifest(t, `DocumentManifest?author.given=${conf.providerFirstName}`))
+      promises.push(searchManifest(t, `DocumentManifest?author.family=${conf.providerLastName}`))
+      promises.push(searchManifest(t, `DocumentManifest?type=${conf.docManifestTypeCodingSystem}|${conf.docManifestTypeCodingCode}`))
+      promises.push(searchManifest(t, `DocumentManifest?type=${conf.docManifestTypeCodingCode}`))
+      promises.push(searchManifest(t, `DocumentManifest?source=${conf.docManifestSource}`))
+      promises.push(searchManifest(t, `DocumentManifest?status=${conf.docManifestStatus}`))
 
       Promise.all(promises).then(() => {
         t.end()
