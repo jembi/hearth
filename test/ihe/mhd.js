@@ -211,7 +211,7 @@ const MHDScenario = (headers, t) => {
         t.equals(body.resourceType, 'Bundle', 'resource type should be Bundle')
         t.equals(body.type, 'searchset', 'bundle type should be \'searchset\'')
 
-        t.equals(body.total, 2, 'searchset should contain 1 result')
+        t.equals(body.total, 2, 'searchset should contain 2 result')
         t.equals(body.entry[0].resource.resourceType, 'DocumentReference', 'searchset should contain reference')
         t.equals(body.entry[0].resource.masterIdentifier.value, conf.docRefMID1, 'searchset should contain correct reference')
         t.equals(body.entry[1].resource.resourceType, 'DocumentReference', 'searchset should contain reference')
@@ -228,6 +228,21 @@ const MHDScenario = (headers, t) => {
 
       promises.push(searchReferences(t, `DocumentReference?patient=${conf.patientRef}`))
       promises.push(searchReferences(t, `DocumentReference?patient.identifier=${conf.sourcePatId}`))
+      promises.push(searchReferences(t, `DocumentReference?status=current`))
+      promises.push(searchReferences(t, `DocumentReference?indexed=eq${conf.timeNow}`))
+      promises.push(searchReferences(t, `DocumentReference?indexed=eq${moment(conf.timeNow).format('YYYY')}`))
+      promises.push(searchReferences(t, `DocumentReference?author.given=Alison`))
+      promises.push(searchReferences(t, `DocumentReference?author.family=Tobi`))
+      promises.push(searchReferences(t, `DocumentReference?class=34117-2`))
+      promises.push(searchReferences(t, `DocumentReference?type=34117-2`))
+      promises.push(searchReferences(t, `DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2`))
+      promises.push(searchReferences(t, `DocumentReference?setting=General%20Medicine`))
+      promises.push(searchReferences(t, `DocumentReference?period=ge2016-12-23`))
+      promises.push(searchReferences(t, `DocumentReference?facility=225732001`))
+      promises.push(searchReferences(t, `DocumentReference?event=ANNGEN`))
+      promises.push(searchReferences(t, `DocumentReference?securityLabel=N`))
+      promises.push(searchReferences(t, `DocumentReference?related-id=other-doc-1`))
+      promises.push(searchReferences(t, `DocumentReference?related-id=hearth:tests|other-doc-1`))
 
       Promise.all(promises).then(() => {
         t.end()
