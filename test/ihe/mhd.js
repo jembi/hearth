@@ -64,8 +64,11 @@ const MHDScenario = (headers, t) => {
     docRef1: `urn:uuid:${uuid()}`,
     docRefMID2: uuid(),
     docRef2: `urn:uuid:${uuid()}`,
+    docRefMID3: uuid(),
+    docRef3: `urn:uuid:${uuid()}`,
     binaryRef1: `urn:uuid:${uuid()}`,
-    binaryRef2: `urn:uuid:${uuid()}`
+    binaryRef2: `urn:uuid:${uuid()}`,
+    binaryRef3: `urn:uuid:${uuid()}`
   }
 
   let documentBundle
@@ -77,10 +80,15 @@ const MHDScenario = (headers, t) => {
     const image = loadResource('Image-1.png', conf)
     conf.imageBase64 = Buffer.from(image).toString('base64')
 
+    const pdf = loadResource('pdf-sample.pdf', conf)
+    conf.pdfBase64 = Buffer.from(pdf).toString('base64')
+
     const binary1 = loadResource('Binary-1.json', conf)
     const binary2 = loadResource('Binary-2.json', conf)
+    const binary3 = loadResource('Binary-3.json', conf)
     const docRef1 = loadResource('DocumentReference-1.json', conf)
     const docRef2 = loadResource('DocumentReference-2.json', conf)
+    const docRef3 = loadResource('DocumentReference-3.json', conf)
     const docManifest = loadResource('DocumentManifest-1.json', conf)
 
     documentBundle = {
@@ -104,6 +112,14 @@ const MHDScenario = (headers, t) => {
           }
         },
         {
+          fullUrl: conf.binaryRef3,
+          resource: JSON.parse(binary3),
+          request: {
+            method: 'POST',
+            url: 'Binary'
+          }
+        },
+        {
           fullUrl: conf.docRef1,
           resource: JSON.parse(docRef1),
           request: {
@@ -114,6 +130,14 @@ const MHDScenario = (headers, t) => {
         {
           fullUrl: conf.docRef2,
           resource: JSON.parse(docRef2),
+          request: {
+            method: 'POST',
+            url: 'DocumentReference'
+          }
+        },
+        {
+          fullUrl: conf.docRef3,
+          resource: JSON.parse(docRef3),
           request: {
             method: 'POST',
             url: 'DocumentReference'
@@ -146,16 +170,23 @@ const MHDScenario = (headers, t) => {
         body = JSON.parse(body)
         t.equals(body.resourceType, 'Bundle', 'resource type should be Bundle')
         t.equals(body.type, 'transaction-response', 'bundle type should be \'transaction-response\'')
-        t.equals(body.entry.length, 5, 'response should contain 5 entries')
+        t.equals(body.entry.length, 7, 'response should contain 7 entries')
         for (let e of body.entry) {
           // response.status is unbounded, so responses like '201 Created' are possible
           t.equals(e.response.status.substr(0, 3), '201', 'entry response status should be 201')
 
           if (e.response.location.indexOf('Binary') > -1) {
             const ref = e.response.location.replace(new RegExp('.*(Binary/[\\w\\-]+)/_history/.*'), '$1')
-            if (conf.binaryResource1) {
+
+            if (conf.binaryResource1 && conf.binaryResource2 && !conf.binaryResource3) {
+              conf.binaryResource3 = ref
+            }
+
+            if (conf.binaryResource1 && !conf.binaryResource2) {
               conf.binaryResource2 = ref
-            } else {
+            }
+
+            if (!conf.binaryResource1) {
               conf.binaryResource1 = ref
             }
           }
@@ -225,11 +256,13 @@ const MHDScenario = (headers, t) => {
         t.equals(body.resourceType, 'Bundle', 'resource type should be Bundle')
         t.equals(body.type, 'searchset', 'bundle type should be \'searchset\'')
 
-        t.equals(body.total, 2, 'searchset should contain 2 result')
+        t.equals(body.total, 3, 'searchset should contain 3 result')
         t.equals(body.entry[0].resource.resourceType, 'DocumentReference', 'searchset should contain reference')
         t.equals(body.entry[0].resource.masterIdentifier.value, conf.docRefMID1, 'searchset should contain correct reference')
         t.equals(body.entry[1].resource.resourceType, 'DocumentReference', 'searchset should contain reference')
         t.equals(body.entry[1].resource.masterIdentifier.value, conf.docRefMID2, 'searchset should contain correct reference')
+        t.equals(body.entry[2].resource.resourceType, 'DocumentReference', 'searchset should contain reference')
+        t.equals(body.entry[2].resource.masterIdentifier.value, conf.docRefMID3, 'searchset should contain correct reference')
 
         resolve()
       })
@@ -245,8 +278,8 @@ const MHDScenario = (headers, t) => {
       promises.push(searchReferences(t, `DocumentReference?status=current`))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${conf.timeNow}`))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${moment(conf.timeNow).format('YYYY')}`))
-      promises.push(searchReferences(t, `DocumentReference?author.given=Alison`))
-      promises.push(searchReferences(t, `DocumentReference?author.family=Tobi`))
+      promises.push(searchReferences(t, `DocumentReference?author.given=${conf.providerFirstName}`))
+      promises.push(searchReferences(t, `DocumentReference?author.family=${conf.providerLastName}`))
       promises.push(searchReferences(t, `DocumentReference?class=34117-2`))
       promises.push(searchReferences(t, `DocumentReference?type=34117-2`))
       promises.push(searchReferences(t, `DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2`))
@@ -284,14 +317,39 @@ const MHDScenario = (headers, t) => {
     })
   }
 
+  const fetchBinaryInContentTypeFormat = (t, path, expected, updatedHeaders) => {
+    const url = `${host}/${path}`
+    return new Promise((resolve) => {
+      request({
+        url: url,
+        headers: updatedHeaders
+      }, (err, res, body) => {
+        t.error(err, `GET ${url}`)
+        t.equals(res.statusCode, 200, 'response status code should be 200')
+
+        t.ok(body)
+        t.notOk(body.resourceType, 'should not have a resourceType property as its not a FHIR resource returned')
+
+        const base64PDF = Buffer.from(body).toString('base64')
+        t.equals(base64PDF, expected, 'resource should contain correct content')
+
+        resolve()
+      })
+    })
+  }
+
   const iti68RetrieveDocument = (t, callback) => {
     t.test('ITI-68 Retrieve Document', {bail: true}, (t) => {
       const promises = []
 
       promises.push(fetchBinary(t, conf.binaryResource1, conf.cdaBase64))
       promises.push(fetchBinary(t, conf.binaryResource2, conf.imageBase64))
+      promises.push(fetchBinary(t, conf.binaryResource3, conf.pdfBase64))
 
-      // TODO OHIE-191
+      const updatedHeaders = _.assign({}, headers)
+      updatedHeaders['content-type'] = 'application/pdf'
+
+      promises.push(fetchBinaryInContentTypeFormat(t, conf.binaryResource3, conf.pdfBase64, updatedHeaders))
 
       Promise.all(promises).then(() => {
         t.end()

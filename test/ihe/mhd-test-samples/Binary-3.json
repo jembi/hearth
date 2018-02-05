@@ -1,0 +1,5 @@
+{
+  "resourceType" : "Binary",
+  "contentType" : "application/pdf",
+  "content" : "{{pdfBase64}}"
+}
