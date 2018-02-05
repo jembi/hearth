@@ -76,16 +76,5 @@
         "reference": "DocumentReference/example"
       }
     }
-  ],
-  "related": [
-    {
-      "identifier": {
-        "system": "http://example.org/documents",
-        "value": "23425234234-9999"
-      },
-      "ref": {
-        "reference": "DocumentReference/example"
-      }
-    }
   ]
 }

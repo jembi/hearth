@@ -31,7 +31,7 @@ tap.test('FHIR validator', { autoend: true }, (t) => {
 
   t.test('should called next with no errors on a valid resource with a loaded profile', (t) => {
     config.setConf('validation:enabled', true)
-    validator.hooks.before[0].function('create', {}, 'DocumentManifest', require('./resources/DocumentManifest-1.json'), (err, outcome) => {
+    validator.hooks.before[0].function('create', {}, 'DocumentManifest', require('./resources/DocumentManifest-mhd.json'), (err, outcome) => {
       t.error(err)
       t.notOk(outcome)
 
@@ -42,7 +42,7 @@ tap.test('FHIR validator', { autoend: true }, (t) => {
 
   t.test('should callback with an operation outcome on validation errors', (t) => {
     config.setConf('validation:enabled', true)
-    validator.hooks.before[0].function('create', {}, 'DocumentManifest', require('./resources/DocumentManifest_bad.json'), (err, outcome) => {
+    validator.hooks.before[0].function('create', {}, 'DocumentManifest', require('./resources/DocumentManifest-1.json'), (err, outcome) => {
       t.error(err)
       t.ok(outcome)
       t.equals(outcome.httpStatus, 400)
