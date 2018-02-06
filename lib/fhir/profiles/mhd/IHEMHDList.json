@@ -1,0 +1,124 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "IHE.MHD.List",
+  "text": {
+    "status": "additional",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\tStructureDefinition for List Resource supporting XDS Folders in the \r\n    IHE IT Infrastructure Technical Framework Supplement <a href=\"http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)\">Mobile access to Health Documents (MHD) Rev. 2.3</a></div>"
+  },
+  "url": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.List",
+  "name": "IHE.MHD.List",
+  "title": "IHE MHD Profile on List (Folder)",
+  "status": "draft",
+  "experimental": false,
+  "date": "2017-12-18",
+  "publisher": "Integrating the Healthcare Enterprise (IHE)",
+  "contact": [
+    {
+      "name": "IHE",
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://ihe.net"
+        }
+      ]
+    },
+    {
+      "name": "John Moehrke",
+      "telecom": [
+        {
+          "system": "email",
+          "value": "JohnMoehrke@gmail.com"
+        }
+      ]
+    }
+  ],
+  "description": "Profile on List for use as a Document Folder based on IHE IT Infrastructure Technical Framework Supplement - Mobile access to Health Documents (MHD) Rev. 2.3.  See http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)",
+  "copyright": "IHE http://www.ihe.net/Governance/#Intellectual_Property",
+  "fhirVersion": "3.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "List",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/List",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "List.identifier",
+        "path": "List.identifier",
+        "comment": "When the List.identifier carries the entryUUID then the List.identifier.use shall be ‘official’; and the uniqueId then the List.identifier.use shall be\r\n‘usual’.",
+        "min": 1
+      },
+      {
+        "id": "List.mode",
+        "path": "List.mode",
+        "comment": "shall be ‘working’",
+        "fixedCode": "working"
+      },
+      {
+        "id": "List.title",
+        "path": "List.title",
+        "min": 1
+      },
+      {
+        "id": "List.code",
+        "path": "List.code",
+        "comment": "code.coding is [0..*] so may contain many.",
+        "min": 1
+      },
+      {
+        "id": "List.subject",
+        "path": "List.subject",
+        "comment": "URL Points to an existing Patient resource representing Affinity Domain Patient.",
+        "min": 1,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": "http://hl7.org/fhir/StructureDefinition/Patient"
+          }
+        ]
+      },
+      {
+        "id": "List.encounter",
+        "path": "List.encounter",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.source",
+        "path": "List.source",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.orderedBy",
+        "path": "List.orderedBy",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.entry.flag",
+        "path": "List.entry.flag",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.entry.deleted",
+        "path": "List.entry.deleted",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.entry.date",
+        "path": "List.entry.date",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "List.emptyReason",
+        "path": "List.emptyReason",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      }
+    ]
+  }
+}

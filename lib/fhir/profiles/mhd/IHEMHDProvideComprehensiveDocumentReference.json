@@ -1,0 +1,207 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "IHE.MHD.ProvideDocumentBundle.Comprehensive",
+  "text": {
+    "status": "additional",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\tStructureDefinition for Provide Document Bundle (ITI-65) transaction between the MHD Document Source and the MHD Document Recipient with Comprehensive (XDS-on-FHIR) metadata compliance in the \r\n    IHE IT Infrastructure Technical Framework Supplement <a href=\"http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)\">Mobile access to Health Documents (MHD) Rev. 2.3</a></div>"
+  },
+  "url": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.ProvideDocumentBundle.Comprehensive",
+  "name": "IHE.MHD.ProvideDocumentBundle.Comprehensive",
+  "title": "IHE MHD profile on Provide Document Bundle (ITI-65) transaction with Comprehensive Metadata",
+  "status": "draft",
+  "experimental": false,
+  "date": "2017-12-22",
+  "publisher": "Integrating the Healthcare Enterprise (IHE)",
+  "contact": [
+    {
+      "name": "IHE",
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://ihe.net"
+        }
+      ]
+    },
+    {
+      "name": "John Moehrke",
+      "telecom": [
+        {
+          "system": "email",
+          "value": "JohnMoehrke@gmail.com"
+        }
+      ]
+    }
+  ],
+  "description": "Profile on Transaction Bundle based on IHE IT Infrastructure Technical Framework Supplement - Mobile access to Health Documents (MHD) Rev. 2.3.  See http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)",
+  "copyright": "IHE http://www.ihe.net/Governance/#Intellectual_Property",
+  "fhirVersion": "3.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Bundle",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Bundle",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Bundle.meta.profile",
+        "path": "Bundle.meta.profile",
+        "short": "ITI-65",
+        "definition": "IHE MHD Provide Document Bundle transaction",
+        "min": 1,
+        "max": "1",
+        "fixedUri": "http://ihe.net/fhir/tag/iti-65"
+      },
+      {
+        "id": "Bundle.type",
+        "path": "Bundle.type",
+        "short": "transaction",
+        "fixedCode": "transaction "
+      },
+      {
+        "id": "Bundle.entry",
+        "path": "Bundle.entry",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "fullUrl"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Bundle.entry:DocumentManifest",
+        "path": "Bundle.entry",
+        "sliceName": "DocumentManifest",
+        "short": "DocumentManifest",
+        "min": 1,
+        "max": "1"
+      },
+      {
+        "id": "Bundle.entry:DocumentManifest.fullUrl",
+        "path": "Bundle.entry.fullUrl",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:DocumentManifest.resource",
+        "path": "Bundle.entry.resource",
+        "min": 1,
+        "type": [
+          {
+            "code": "Resource",
+            "profile": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.DocumentManifest"
+          }
+        ]
+      },
+      {
+        "id": "Bundle.entry:DocumentManifest.request",
+        "path": "Bundle.entry.request",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:DocumentManifest.request.method",
+        "path": "Bundle.entry.request.method",
+        "fixedCode": "POST"
+      },
+      {
+        "id": "Bundle.entry:DocumentReference",
+        "path": "Bundle.entry",
+        "sliceName": "DocumentReference",
+        "short": "DocumentReference",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:DocumentReference.fullUrl",
+        "path": "Bundle.entry.fullUrl",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:DocumentReference.resource",
+        "path": "Bundle.entry.resource",
+        "min": 1,
+        "type": [
+          {
+            "code": "Resource",
+            "profile": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.Provide.Comprehensive.DocumentReference"
+          }
+        ]
+      },
+      {
+        "id": "Bundle.entry:DocumentReference.request",
+        "path": "Bundle.entry.request",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:DocumentReference.request.method",
+        "path": "Bundle.entry.request.method",
+        "fixedCode": "POST"
+      },
+      {
+        "id": "Bundle.entry:List",
+        "path": "Bundle.entry",
+        "sliceName": "List",
+        "short": "List"
+      },
+      {
+        "id": "Bundle.entry:List.fullUrl",
+        "path": "Bundle.entry.fullUrl",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:List.resource",
+        "path": "Bundle.entry.resource",
+        "min": 1,
+        "type": [
+          {
+            "code": "Resource",
+            "profile": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.List"
+          }
+        ]
+      },
+      {
+        "id": "Bundle.entry:List.request",
+        "path": "Bundle.entry.request",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:List.request.method",
+        "path": "Bundle.entry.request.method",
+        "fixedCode": "POST"
+      },
+      {
+        "id": "Bundle.entry:Binary",
+        "path": "Bundle.entry",
+        "sliceName": "Binary",
+        "short": "Binary",
+        "definition": "Entry for the actual document in a Binary resource."
+      },
+      {
+        "id": "Bundle.entry:Binary.fullUrl",
+        "path": "Bundle.entry.fullUrl",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:Binary.resource",
+        "path": "Bundle.entry.resource",
+        "min": 1,
+        "type": [
+          {
+            "code": "Resource",
+            "profile": "http://hl7.org/fhir/StructureDefinition/Binary"
+          }
+        ]
+      },
+      {
+        "id": "Bundle.entry:Binary.request",
+        "path": "Bundle.entry.request",
+        "min": 1
+      },
+      {
+        "id": "Bundle.entry:Binary.request.method",
+        "path": "Bundle.entry.request.method",
+        "fixedCode": "POST"
+      }
+    ]
+  }
+}

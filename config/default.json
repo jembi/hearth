@@ -31,5 +31,12 @@
   "matchingQueue": {
     "numberOfWorkers": 2,
     "pollingInterval": 1000
+  },
+  "validation": {
+    "enabled": false,
+    "fhirVersion": "dstu2",
+    "additionProfilePaths": [
+      "lib/fhir/profiles/mhd"
+    ]
   }
 }

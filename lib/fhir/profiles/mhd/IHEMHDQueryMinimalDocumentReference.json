@@ -1,0 +1,281 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "IHE.MHD.Query.Minimal.DocumentReference",
+  "text": {
+    "status": "additional",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\tStructureDefinition for DocumentReference Query (ITI-67) transaction between the MHD Document Responder and the MHD Document Consumer with Minimal metadata compliance in the \r\n    IHE IT Infrastructure Technical Framework Supplement <a href=\"http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)\">Mobile access to Health Documents (MHD) Rev. 2.3</a></div>"
+  },
+  "url": "http://ihe.net/fhir/StructureDefinition/IHE.MHD.Query.Minimal.DocumentReference",
+  "name": "IHE.MHD.Query.Minimal.DocumentReference",
+  "title": "IHE MHD Profile on DocumentReference (DocumentEntry) from a Query with Minimal Metadata, see Table 3:4.3.2.1-3.",
+  "status": "draft",
+  "experimental": false,
+  "date": "2017-12-18",
+  "publisher": "Integrating the Healthcare Enterprise (IHE)",
+  "contact": [
+    {
+      "name": "IHE",
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://ihe.net"
+        }
+      ]
+    },
+    {
+      "name": "John Moehrke",
+      "telecom": [
+        {
+          "system": "email",
+          "value": "JohnMoehrke@gmail.com"
+        }
+      ]
+    }
+  ],
+  "description": "Profile on DocumentReference based on IHE IT Infrastructure Technical Framework Supplement - Mobile access to Health Documents (MHD) Rev. 2.3.  See http://wiki.ihe.net/index.php/Mobile_access_to_Health_Documents_(MHD)",
+  "copyright": "IHE http://www.ihe.net/Governance/#Intellectual_Property",
+  "fhirVersion": "3.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "DocumentReference",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/DocumentReference",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "DocumentReference.masterIdentifier",
+        "path": "DocumentReference.masterIdentifier",
+        "comment": "See ITI TF-2x: Z.9.1.1 Identifier and CDA root plus extension.",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.identifier",
+        "path": "DocumentReference.identifier",
+        "comment": "When the DocumentReference.identifier carries the entryUUID then the DocumentReference.identifier use shall be ‘official’.",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.status",
+        "path": "DocumentReference.status",
+        "comment": "approved -> status=current\r\ndeprecated -> status=superseded",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.docStatus",
+        "path": "DocumentReference.docStatus",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers\r\nshould be robust to these elements holding values",
+        "max": "0"
+      },
+      {
+        "id": "DocumentReference.type",
+        "path": "DocumentReference.type",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.class",
+        "path": "DocumentReference.class",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.subject",
+        "path": "DocumentReference.subject",
+        "comment": "Not a contained resource. URL Points to an existing Patient Resource representing the XDS Affinity Domain Patient.",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": "http://hl7.org/fhir/StructureDefinition/Patient"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.created",
+        "path": "DocumentReference.created",
+        "max": "0"
+      },
+      {
+        "id": "DocumentReference.indexed",
+        "path": "DocumentReference.indexed",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.author",
+        "path": "DocumentReference.author",
+        "comment": "Contained resource of type Practitioner with:\r\n* authorInstitution: Organization\r\n* authorPerson: Practitioner.identifier and Practitioner.name\r\n* authorRole: — Not supported in STU3\r\n* authorSpecialty: Practitioner.qualification\r\n* authorTelecommunication: Practitioner.telecom",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": "http://hl7.org/fhir/StructureDefinition/Practitioner"
+          },
+          {
+            "code": "Reference",
+            "targetProfile": "http://hl7.org/fhir/StructureDefinition/Organization"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.authenticator",
+        "path": "DocumentReference.authenticator",
+        "comment": "Contained resource ",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.custodian",
+        "path": "DocumentReference.custodian",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "DocumentReference.relatesTo",
+        "path": "DocumentReference.relatesTo",
+        "comment": "See ITI TF-2c: 3.65.4.1.2.3",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.description",
+        "path": "DocumentReference.description",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.securityLabel",
+        "path": "DocumentReference.securityLabel",
+        "comment": "Note: This is NOT the DocumentReference.meta, as that holds the meta tags for the DocumentReference itself.",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.content",
+        "path": "DocumentReference.content",
+        "max": "1",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.content.attachment",
+        "path": "DocumentReference.content.attachment",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.content.attachment.contentType",
+        "path": "DocumentReference.content.attachment.contentType",
+        "min": 1,
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.content.attachment.language",
+        "path": "DocumentReference.content.attachment.language",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.content.attachment.data",
+        "path": "DocumentReference.content.attachment.data",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "DocumentReference.content.attachment.url",
+        "path": "DocumentReference.content.attachment.url",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.content.attachment.size",
+        "path": "DocumentReference.content.attachment.size",
+        "comment": "The size is calculated on the data prior to base64 encoding, if the data is base64 encoded.",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.content.attachment.hash",
+        "path": "DocumentReference.content.attachment.hash",
+        "comment": "The IHE Document Sharing metadata element hash holds the SHA1 hash of the document. The hash is encoded in FHIR in base64Binary, whereas in XDS hexbinary is used. The hash is calculated on the data prior to base64 encoding, if the data is base64 encoded.",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.content.attachment.title",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable",
+            "valueBoolean": true
+          }
+        ],
+        "path": "DocumentReference.content.attachment.title",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.content.attachment.creation",
+        "path": "DocumentReference.content.attachment.creation",
+        "comment": "These HL7 FHIR STU3 elements are not used in XDS, therefore would not be present. Document Consumers should be robust to these elements holding values.",
+        "max": "0"
+      },
+      {
+        "id": "DocumentReference.content.format",
+        "path": "DocumentReference.content.format",
+        "mustSupport": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "DocumentFormat"
+            }
+          ],
+          "strength": "preferred",
+          "valueSetReference": {
+            "reference": "http://ihe.net/fhir/ValueSet/IHE.formatcode.vs"
+          }
+        }
+      },
+      {
+        "id": "DocumentReference.context",
+        "path": "DocumentReference.context",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.encounter",
+        "path": "DocumentReference.context.encounter",
+        "comment": "When referenceIdList contains an encounter, and a FHIR Encounter is available, it may be referenced.",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.event",
+        "path": "DocumentReference.context.event",
+        "mustSupport": false
+      },
+      {
+        "id": "DocumentReference.context.period",
+        "path": "DocumentReference.context.period",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.facilityType",
+        "path": "DocumentReference.context.facilityType",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.practiceSetting",
+        "path": "DocumentReference.context.practiceSetting",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.sourcePatientInfo",
+        "path": "DocumentReference.context.sourcePatientInfo",
+        "comment": "Contained Patient resource with Patient.identifier.use element set to ‘usual’.\r\n\r\nIndicates that the data within the XDS document entry be represented as a contained resource. See Section 4.5.4.4.7",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.related",
+        "path": "DocumentReference.context.related",
+        "mustSupport": true
+      },
+      {
+        "id": "DocumentReference.context.related.identifier",
+        "path": "DocumentReference.context.related.identifier",
+        "comment": "See ITI TF-2x: Appendix E.3.1 on CXi mapping to FHIR Identifier"
+      },
+      {
+        "id": "DocumentReference.context.related.ref",
+        "path": "DocumentReference.context.related.ref",
+        "comment": "May be filled with URL pointers to Resources found in referenceIdList"
+      }
+    ]
+  }
+}
