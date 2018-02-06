@@ -2,7 +2,8 @@
   "server": {
     "hostname": "0.0.0.0",
     "publicFhirBase": "http://localhost:3447/fhir",
-    "port": 3447
+    "port": 3447,
+    "fhirVersion": "dstu2"
   },
   "mongodb": {
     "url": "mongodb://localhost/hearth"
@@ -34,7 +35,6 @@
   },
   "validation": {
     "enabled": false,
-    "fhirVersion": "dstu2",
     "additionProfilePaths": [
       "lib/fhir/profiles/mhd"
     ]
