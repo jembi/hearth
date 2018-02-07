@@ -59,7 +59,7 @@ tap.test('server should reject requests that arent apart of the accepted content
   })
 })
 
-tap.test('patient should support searches on identifier', (t) => {
+tap.test('patient should support searches on identifier and return the payload in XML', (t) => {
   basicPatientTest(t, (db, done) => {
     const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
 
@@ -93,7 +93,11 @@ tap.test('patient should support searches on identifier', (t) => {
   })
 })
 
+<<<<<<< HEAD
 tap.test('patient should respond with en empty searchset if no matches', (t) => {
+=======
+tap.test('patient should respond with en empty searchset if no matches and return the payload in XML', { skip: true }, (t) => {
+>>>>>>> f2595a2c83de876112466a74d0eccd5ad1b655ee
   basicPatientTest(t, (db, done) => {
     const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
 
