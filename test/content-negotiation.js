@@ -112,11 +112,11 @@ tap.test('patient should respond with en empty searchset if no matches and retur
 
       // xpath queries
       const xmlValues = {
-        total: xmlDoc.get('//xmlns:total', namespace) // should not exist if total is 0
+        total: xmlDoc.get('//xmlns:total', namespace).attr('value').value()
       }
 
       t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
-      t.notOk(xmlValues.total, 'should not exist if total is 0')
+      t.equal(xmlValues.total, '0', 'should have a total of 0')
       done()
     })
   })
