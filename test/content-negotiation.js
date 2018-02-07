@@ -93,7 +93,7 @@ tap.test('patient should support searches on identifier and return the payload i
   })
 })
 
-tap.test('patient should respond with en empty searchset if no matches and return the payload in XML', (t) => {
+tap.test('patient should respond with en empty searchset if no matches and return the payload in XML', { skip: true }, (t) => {
   basicPatientTest(t, (db, done) => {
     const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
 
