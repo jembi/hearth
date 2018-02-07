@@ -93,7 +93,7 @@ tap.test('patient should support searches on identifier', (t) => {
   })
 })
 
-tap.test('patient should respond with en empty searchset if no matches', { skip: true }, (t) => {
+tap.test('patient should respond with en empty searchset if no matches', (t) => {
   basicPatientTest(t, (db, done) => {
     const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
 
@@ -112,11 +112,11 @@ tap.test('patient should respond with en empty searchset if no matches', { skip:
 
       // xpath queries
       const xmlValues = {
-        total: xmlDoc.get('//xmlns:total', namespace).attr('value').value() // The FHIR.js does not include the total element if its 0 - needs to be supplied
+        total: xmlDoc.get('//xmlns:total', namespace) // should not exist if total is 0
       }
 
       t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
-      t.equal(xmlValues.total, '1', 'body should contain one result')
+      t.notOk(xmlValues.total, 'should not exist if total is 0')
       done()
     })
   })
