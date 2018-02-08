@@ -127,7 +127,7 @@ tap.test('server - should support */* accept header', (t) => {
 })
 
 tap.test('server - should support multiple accept header values (*/*)', (t) => {
-  runAcceptTest(t, 'text/html, application/xhtml+xml, application/xml, */*', 'application/json+fhir')
+  runAcceptTest(t, 'text/html, application/xhtml+xml, application/xml-not-valid, */*', 'application/json+fhir')
 })
 
 tap.test('server - should support multiple accept headers (application/json)', (t) => {
@@ -161,7 +161,7 @@ tap.test('server - should respond with 406 Not Acceptable when accept not suppor
         headers: _.extend(
           env.getTestAuthHeaders(env.users.sysadminUser.email),
           {
-            'accept': 'application/xml+fhir'
+            'accept': 'application/turtle'
           }
         )
       }, (err, res, body) => {
@@ -192,7 +192,7 @@ tap.test('server - should respond with 406 Not Acceptable when accept not suppor
         headers: _.extend(
           env.getTestAuthHeaders(env.users.sysadminUser.email),
           {
-            'accept': 'text/html, application/xhtml+xml, application/xml'
+            'accept': 'text/html, application/xhtml+xml, application/turtle'
           }
         )
       }, (err, res, body) => {

@@ -1,0 +1,50 @@
+{
+  "resourceType": "DocumentManifest",
+  "text": {
+    "status": "generated",
+    "div": "<div>Text</div>"
+  },
+  "masterIdentifier": {
+    "system": "shr:testing",
+    "value": "{{manifestMID}}"
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:1.2.3.2.2.2.2",
+      "value": "{{docId}}"
+    }
+  ],
+  "subject": {
+    "reference": "{{patientRef}}"
+  },
+  "type": {
+    "coding": [
+      {
+        "system": "{{docManifestTypeCodingSystem}}",
+        "code": "{{docManifestTypeCodingCode}}",
+        "display": "History and Physical note"
+      }
+    ]
+  },
+  "author": [
+    {
+      "reference": "{{providerRef}}"
+    }
+  ],
+  "created": "{{timeNow}}",
+  "source": "{{docManifestSource}}",
+  "status": "{{docManifestStatus}}",
+  "description": "Physical",
+  "content": [
+    {
+      "pReference": {
+        "reference": "{{docRef1}}"
+      }
+    },
+    {
+      "pReference": {
+        "reference": "{{docRef2}}"
+      }
+    }
+  ]
+}
