@@ -38,6 +38,44 @@ const basicPatientTest = (t, test) => {
   })
 }
 
+tap.test('patient should support searches on the "active" property and return no results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?active=false',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain 0 results')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches on the "active" property and return found results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?active=true',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two result')
+      t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient')
+      t.equal(body.entry[1].resource.identifier[0].value, '1007211152222', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
 tap.test('patient should support searches on identifier', (t) => {
   basicPatientTest(t, (db, done) => {
     request({

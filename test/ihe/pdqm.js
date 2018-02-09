@@ -44,6 +44,7 @@ charlton.multipleBirthInteger = 2
 
 const emmarentia = testPatients.emmarentia.patient
 emmarentia.id = '2222222222'
+emmarentia.active = true
 emmarentia.name[0].given = ['Emmarentia', 'Gerherda']
 emmarentia.name[0].family = ['Cook', 'Spray']
 emmarentia.address[0].line[0] = '1st'
@@ -59,6 +60,7 @@ emmarentia.extension = [
 
 const nikita = testPatients.nikita.patient
 nikita.id = '3333333333'
+nikita.active = false
 
 const basicPDQmTest = (t, test) => {
   env.initDB((err, db) => {
@@ -140,6 +142,66 @@ const requestAndAssertResponseOperationOutcome = (tp, t, done) => {
 }
 
 tap.test('PDQm Query', { autoend: true }, (t) => {
+  t.test('active query parameter', { autoend: true }, (t) => {
+    t.test('should return 200 and bundle of active patients', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.active = true
+
+        delete charlton._id
+        delete emmarentia._id
+        const expectedResponse = {
+          total: 2,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/1111111111',
+            resource: charlton
+          }, {
+            fullUrl: 'http://localhost:3447/fhir/Patient/2222222222',
+            resource: emmarentia
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+  })
+
+  t.test('active query parameter', { autoend: true }, (t) => {
+    t.test('should return 200 and bundle of in-active patients', (t) => {
+      // Given
+      basicPDQmTest(t, (db, done) => {
+        const testQueryParams = {}
+        testQueryParams.active = false
+
+        delete nikita._id
+        const expectedResponse = {
+          total: 1,
+          entry: [ {
+            fullUrl: 'http://localhost:3447/fhir/Patient/3333333333',
+            resource: nikita
+          } ]
+        }
+        expectedResponse.entry = hashAndSortEntryArray(expectedResponse.entry)
+
+        const testParams = {
+          queryParams: testQueryParams,
+          expectedResponse: expectedResponse,
+          statusCode: 200
+        }
+
+        requestAndAssertResponseBundle(testParams, t, done)
+      })
+    })
+  })
+
   t.test('indentifier query parameter', { autoend: true }, (t) => {
     t.test('should return 200 and bundle of patients when patient identifier matches full identifier token query parameter', (t) => {
       // Given
