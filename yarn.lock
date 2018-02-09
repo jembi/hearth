@@ -1523,9 +1523,9 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
 
-fhir@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fhir/-/fhir-3.2.0.tgz#907f7f67b41c2865aa46485dbeb5a7183bb90410"
+fhir@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/fhir/-/fhir-3.3.0.tgz#17945542e661869867820c73e9cf92ca293192bf"
   dependencies:
     libxmljs "0.18.0"
     lodash "^3.10.1"
