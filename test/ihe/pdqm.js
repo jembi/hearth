@@ -109,8 +109,6 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
     headers: headers,
     json: true
   }, (err, res, body) => {
-    // console.log(body.entry[0])
-    // console.log(body.entry[1].resource.name)
     // Then
     t.error(err)
     t.equal(res.statusCode, tp.statusCode, 'Response has expected status code')
