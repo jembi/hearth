@@ -803,3 +803,245 @@ tap.test('vread should respond with 404 not found if invalid value for vid is us
     })
   })
 })
+
+tap.test('patient should support searches by city', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-city=Cape%20Town',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].city, 'Cape Town', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by city with no results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-city=Durban',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain 0 results')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by country', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-country=South%20Africa',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].country, 'South Africa', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by country with no results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-country=USA',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain 0 results')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by postalcode', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-postalcode=7570',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].postalCode, '7570', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by postalcode with no results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-postalcode=1122',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain 0 results')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by state', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state=Western%20Cape',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].state, 'Western Cape', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support searches by state with no results', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state=KwaZulu-Natal',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain 0 results')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support contains searches on strings', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state:contains=Cape',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].state, 'Western Cape', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support case insensitve searches on strings by default', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state=western%20cape',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].state, 'Western Cape', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support startswith searches on strings by default', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state=Western',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].state, 'Western Cape', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should support exact searches on strings', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state:exact=Western%20Cape',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain two results')
+      t.equal(body.entry[0].resource.address[0].state, 'Western Cape', 'body should contain the matching patient')
+      done()
+    })
+  })
+})
+
+tap.test('patient should return no results when match isnt exact', (t) => {
+  basicPatientTest(t, (db, done) => {
+    request({
+      url: 'http://localhost:3447/fhir/Patient?address-state:exact=Western%20Cap',
+      headers: headers,
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 0, 'body should contain two results')
+      done()
+    })
+  })
+})
