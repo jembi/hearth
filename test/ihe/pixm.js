@@ -7,8 +7,8 @@
  */
 
 'use strict'
-const env = require('./test-env/init')()
-const server = require('../lib/server')
+const env = require('../test-env/init')()
+const server = require('../../lib/server')
 const tap = require('tap')
 const request = require('request')
 const crypto = require('crypto')
