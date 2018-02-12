@@ -35,30 +35,30 @@ To run the tests:
 npm test
 ```
 
-# Supported resources and query parameters
+# Supported resources and query parameters (DSTU2)
 
 All resources are supported with the default FHIR interactions and default search parameters, however, specific resources have been implement with support for particular search paramater in the FHIR spec.
 
 | Supported Resources    | Supported Query Parameters | Maturity Level |
 | ---------------------- | -------------------------- | -------------- |
-| Allergy Intolerance    | patient | 3 |
+| Allergy Intolerance    | patient | 1 |
 | Audit Event            | _id | 2 |
 | Basic                  | code, subject, author | 1 |
 | Binary                 | contenttype | 1 |
 | Composition            | entry, patient, status, subject, type | 2 |
-| Document Manifest      | patient, patient.identifier, created, author.given, author.family, type, status | 2 |
-| Document Reference     | patient, patient.identifier, indexed, author.given, author.family, status, class, type, setting, period, facility, event, securityLabel, format, related-id | 3 |
-| Encounter              | patient, practitioner, practitioner.organization, participant, location, status | 2 |
+| Document Manifest      | patient, patient.identifier, created, author.given, author.family, type, status | 1 |
+| Document Reference     | patient, patient.identifier, indexed, author.given, author.family, status, class, type, setting, period, facility, event, securityLabel, format, related-id | 2 |
+| Encounter              | patient, practitioner, practitioner.organization, participant, location, status | 1 |
 | Immunization           | encounter | 1 |
-| Location               | organization, type | 3 |
+| Location               | organization, type | 1 |
 | Observation            | encounter | 3 |
 | Organization           | identifier | 1 |
-| Patient                | _id, active, identifier, given, family, gender, birthdate, address, address-city, address-country, address-postalcode, address-state, mothersMaidenName.given, mothersMaidenName.family, telecom, multipleBirthInteger | 5 |
-| Practitioner           | identifier, given, family, role, organization, telecom | 3 |
-| Procedure Request      | encounter, patient | 3 |
-| Procedure              | encounter, patient | 3 |
-| Questionnaire Response | encounter, patient, questionnaire | 3 |
-| Questionnaire          | identifier | 3 |
+| Patient                | _id, active, identifier, given, family, gender, birthdate, address, address-city, address-country, address-postalcode, address-state, mothersMaidenName.given, mothersMaidenName.family, telecom, multipleBirthInteger | 3 |
+| Practitioner           | identifier, given, family, role, organization, telecom | 1 |
+| Procedure Request      | encounter, patient | 1 |
+| Procedure              | encounter, patient | 1 |
+| Questionnaire Response | encounter, patient, questionnaire | 2 |
+| Questionnaire          | identifier | 2 |
 | ValueSet               | url, system | 3 |
 
 link to FHIR list (https://www.hl7.org/fhir/resourcelist.html)
