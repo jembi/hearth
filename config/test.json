@@ -28,5 +28,10 @@
   "matchingQueue": {
     "numberOfWorkers": 0,
     "pollingInterval": 1000
-  }
+  },
+  "knownIdentityDomains": [
+    "pshr:sanid",
+    "pshr:passport:za",
+    "pshr:passport:gbr"
+  ]
 }
