@@ -265,34 +265,6 @@ tap.test('PIXm Query, should return 200 and the relevant parameters resource whe
   })
 })
 
-tap.test('PIXm Query, should return 404 and empty parameters when recognises the domain but can\'t find the id', (t) => {
-  // Given
-  basicPIXmTest(t, (db, done) => {
-    const testParams = {
-      expectedParameters: [],
-      sourceIdentifier: 'pshr:sanid|non-existent-id',
-      targetSystem: '',
-      statusCode: 404
-    }
-
-    requestAndAssertParameters(testParams, t, done)
-  })
-})
-
-tap.test('PIXm Query, should return 404 and empty parameters when recognises the domain but can\'t find the id', (t) => {
-  // Given
-  basicPIXmTest(t, (db, done) => {
-    const testParams = {
-      expectedParameters: [],
-      sourceIdentifier: 'http://localhost:3447/fhir|non-existent-id',
-      targetSystem: '',
-      statusCode: 404
-    }
-
-    requestAndAssertParameters(testParams, t, done)
-  })
-})
-
 const requestAndAssertOperationOutcome = (tp, t, done) => {
   // When
   request({
@@ -309,9 +281,44 @@ const requestAndAssertOperationOutcome = (tp, t, done) => {
     t.equal(body.issue[0].severity, tp.severity)
     t.equal(body.issue[0].code, tp.code)
     t.equal(body.issue[0].details.text, tp.details)
+    t.equal(body.issue[0].dignosis, tp.disgnosis)
     done()
   })
 }
+
+tap.test('PIXm Query, should return 404 when recognises the domain but can\'t find the id', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      statusCode: 404,
+      sourceIdentifier: 'pshr:sanid|non-existent-id',
+      targetSystem: '',
+      severity: 'error',
+      code: 'not-found',
+      details: 'sourceIdentifier Patient Identifier not found',
+      diagnosis: 'sourceIdentifier Patient Identifier not found'
+    }
+
+    requestAndAssertOperationOutcome(testParams, t, done)
+  })
+})
+
+tap.test('PIXm Query, should return 404 when recognises the domain but can\'t find the id', (t) => {
+  // Given
+  basicPIXmTest(t, (db, done) => {
+    const testParams = {
+      statusCode: 404,
+      sourceIdentifier: 'http://localhost:3447/fhir|non-existent-id',
+      targetSystem: '',
+      severity: 'error',
+      code: 'not-found',
+      details: 'sourceIdentifier Patient Identifier not found',
+      diagnosis: 'sourceIdentifier Patient Identifier not found'
+    }
+
+    requestAndAssertOperationOutcome(testParams, t, done)
+  })
+})
 
 tap.test('PIXm query, should return 400 bad request if missing required query parameter', (t) => {
   // Given
@@ -322,7 +329,8 @@ tap.test('PIXm query, should return 400 bad request if missing required query pa
       targetSystem: 'targetSystem=test',
       severity: 'error',
       code: 'invalid',
-      details: 'This endpoint has the following required query parameters: ["sourceIdentifier"]'
+      details: 'This endpoint has the following required query parameters: ["sourceIdentifier"]',
+      diagnosis: 'This endpoint has the following required query parameters: ["sourceIdentifier"]'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -338,7 +346,8 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       targetSystem: '',
       severity: 'error',
       code: 'invalid',
-      details: 'sourceIdentifier Assigning Authority not found'
+      details: 'sourceIdentifier Assigning Authority not found',
+      dignosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -354,7 +363,8 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       targetSystem: '',
       severity: 'error',
       code: 'invalid',
-      details: 'sourceIdentifier Assigning Authority not found'
+      details: 'sourceIdentifier Assigning Authority not found',
+      dignosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -370,7 +380,8 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       targetSystem: '',
       severity: 'error',
       code: 'invalid',
-      details: 'sourceIdentifier Assigning Authority not found'
+      details: 'sourceIdentifier Assigning Authority not found',
+      dignosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -386,7 +397,8 @@ tap.test('PIXm query, should return 403 forbidden if target system not found', (
       targetSystem: 'targetSystem=pshr:passport:ken',
       severity: 'error',
       code: 'invalid',
-      details: 'targetSystem not found'
+      details: 'targetSystem not found',
+      dignosis: 'targetSystem not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -403,7 +415,8 @@ tap.test('PIXm query, should return 400 bad request if more than one patient ret
       targetSystem: '',
       severity: 'error',
       code: 'invalid',
-      details: 'query not specific enough, more than one patient found'
+      details: 'query not specific enough, more than one patient found',
+      dignosis: 'query not specific enough, more than one patient found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
