@@ -75,13 +75,13 @@ tap.test('patient should support searches on identifier and return the payload i
 
       const xmlDoc = libxmljs.parseXml(body)
       const namespace = 'http://hl7.org/fhir'
-      const patient = xmlDoc.get('//xmlns:entry', namespace).get('//xmlns:Patient', namespace)
+      const patient = xmlDoc.get('//xmlns:Patient[1]', namespace)
 
       // xpath queries
       const xmlValues = {
         total: xmlDoc.get('//xmlns:total', namespace).attr('value').value(),
-        identifier: patient.get('//xmlns:identifier[1]', namespace).get('//xmlns:value', namespace).attr('value').value(),
-        familyName: patient.get('//xmlns:name[1]', namespace).get('//xmlns:family', namespace).attr('value').value()
+        identifier: patient.get('//xmlns:identifier[1]', namespace).get('xmlns:value', namespace).attr('value').value(),
+        familyName: patient.get('//xmlns:name', namespace).get('xmlns:family[1]', namespace).attr('value').value()
       }
 
       t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
