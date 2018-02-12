@@ -13,7 +13,7 @@ Our high level plan for the project can be found [here](https://docs.google.com/
 * Supports both JSON and XML with conversion between the two using the [FHIR.js module](https://www.npmjs.com/package/fhir). Supports using both the `Accepts:` header and the `_format` parameter for defining the response format.
 * Supports basic resource matching using the $match operation on a query, see `config/matching.json` for configuration options.
 * Supports query parameters for a susbset of FHIR resources, see below for details.
-* Supports basic resoruce validation using the [FHIR.js module](https://www.npmjs.com/package/fhir), this is not enabled by default allowing you to store any extensions or profiles by default - toggle this in the config
+* Supports basic resource validation using the [FHIR.js module](https://www.npmjs.com/package/fhir), this is not enabled by default allowing you to store any extensions or profiles by default - toggle this in the config
 
 # Usage
 To run in development mode use the following commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
