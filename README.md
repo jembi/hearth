@@ -3,7 +3,7 @@
 # Hearth
 A home for [FHIR](http://hl7.org/fhir/).
 
-This project aims to provide a fast and lightweight FHIR server that also supports some of the FHIR-based IHE profiles. It is still in the early stages of development, follow the project to stay informed. Currently, Hearth supports the DSTU2 version of FHIR, however, in the future multiple version support is planned. Resoruces with a high maturity that don't have breaking changes between version will still work just fine with STU3.
+This project aims to provide a fast and lightweight FHIR server that also supports some of the FHIR-based IHE profiles. It is still in the early stages of development, follow the project to stay informed. Currently, Hearth supports the DSTU2 version of FHIR, however, in the future multiple version support is planned. Resources with a high maturity and that don't have breaking changes between version will still work just fine with STU3.
 
 Our high level plan for the project can be found [here](https://docs.google.com/document/d/1wJr-A0xJFEwwR9y5c5tVGb0_rH7IQFBJRhMNRU31Fis/edit?usp=sharing).
 
