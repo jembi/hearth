@@ -32,6 +32,9 @@
   "knownIdentityDomains": [
     "pshr:sanid",
     "pshr:passport:za",
-    "pshr:passport:gbr"
+    "pshr:passport:gbr",
+    "http://xyz-server/xxx",
+    "http://xyz-server/xxx/",
+    "http://localhost:3447/fhir"
   ]
 }

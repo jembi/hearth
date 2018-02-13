@@ -291,7 +291,7 @@ tap.test('PIXm Query, should return 404 when recognises the domain but can\'t fi
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       statusCode: 404,
-      sourceIdentifier: 'pshr:sanid|non-existent-id',
+      sourceIdentifier: 'sourceIdentifier=pshr:sanid|non-existent-id',
       targetSystem: '',
       severity: 'error',
       code: 'not-found',
@@ -308,7 +308,7 @@ tap.test('PIXm Query, should return 404 when recognises the domain but can\'t fi
   basicPIXmTest(t, (db, done) => {
     const testParams = {
       statusCode: 404,
-      sourceIdentifier: 'http://localhost:3447/fhir|non-existent-id',
+      sourceIdentifier: 'sourceIdentifier=http://localhost:3447/fhir|non-existent-id',
       targetSystem: '',
       severity: 'error',
       code: 'not-found',
@@ -379,7 +379,7 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       sourceIdentifier: 'sourceIdentifier=12345|12345',
       targetSystem: '',
       severity: 'error',
-      code: 'invalid',
+      code: 'code-invalid',
       details: 'sourceIdentifier Assigning Authority not found',
       diagnosis: 'sourceIdentifier Assigning Authority not found'
     }
