@@ -68,7 +68,6 @@ tap.test('patient should support searches on identifier and return the payload i
       headers: updatedHeaders
     }, (err, res, body) => {
       t.error(err)
-      console.log(body)
 
       t.equal(res.statusCode, 200, 'response status code should be 200')
       t.ok(body)
@@ -83,7 +82,6 @@ tap.test('patient should support searches on identifier and return the payload i
         identifier: xmlDoc.get('//xmlns:identifier[1]/xmlns:value', namespace).attr('value').value(),
         familyName: xmlDoc.get('//xmlns:Patient[1]/xmlns:name/xmlns:family', namespace).attr('value').value()
       }
-      console.log(xmlValues)
 
       t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
       t.equal(xmlValues.total, '1', 'body should contain one result')
@@ -208,13 +206,12 @@ tap.test('_format parameter support', { autoend: true }, (t) => {
 
         const xmlDoc = libxmljs.parseXml(body)
         const namespace = 'http://hl7.org/fhir'
-        const patient = xmlDoc.get('//xmlns:entry', namespace).get('//xmlns:Patient', namespace)
 
         // xpath queries
         const xmlValues = {
           total: xmlDoc.get('//xmlns:total', namespace).attr('value').value(),
-          identifier: patient.get('//xmlns:identifier[1]', namespace).get('//xmlns:value', namespace).attr('value').value(),
-          familyName: patient.get('//xmlns:name[1]', namespace).get('//xmlns:family', namespace).attr('value').value()
+          identifier: xmlDoc.get('//xmlns:identifier[1]', namespace).get('//xmlns:value', namespace).attr('value').value(),
+          familyName: xmlDoc.get('//xmlns:Patient[1]/xmlns:name/xmlns:family', namespace).attr('value').value()
         }
 
         t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
