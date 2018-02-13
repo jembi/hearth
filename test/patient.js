@@ -78,7 +78,6 @@ tap.test('Query Param - active: ', { autoend: true }, (t) => {
   })
 })
 
-// TODO: Test for address paramater
 tap.test('Query Param - address: ', { autoend: true }, (t) => {
   t.test('should return 200 and bundle of patients when patient address matches address query parameter', (t) => {
     basicPatientTest(t, (db, done) => {
