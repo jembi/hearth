@@ -396,7 +396,7 @@ tap.test('PIXm query, should return 403 forbidden if target system not found', (
       sourceIdentifier: 'sourceIdentifier=pshr:sanid|222222',
       targetSystem: 'targetSystem=pshr:passport:ken',
       severity: 'error',
-      code: 'invalid',
+      code: 'code-invalid',
       details: 'targetSystem not found',
       diagnosis: 'targetSystem not found'
     }
