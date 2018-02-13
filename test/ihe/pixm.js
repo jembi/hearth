@@ -347,7 +347,7 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       severity: 'error',
       code: 'invalid',
       details: 'sourceIdentifier Assigning Authority not found',
-      dignosis: 'sourceIdentifier Assigning Authority not found'
+      diagnosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -364,7 +364,7 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       severity: 'error',
       code: 'invalid',
       details: 'sourceIdentifier Assigning Authority not found',
-      dignosis: 'sourceIdentifier Assigning Authority not found'
+      diagnosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -381,7 +381,7 @@ tap.test('PIXm query, should return 400 bad request if assigning authority not f
       severity: 'error',
       code: 'invalid',
       details: 'sourceIdentifier Assigning Authority not found',
-      dignosis: 'sourceIdentifier Assigning Authority not found'
+      diagnosis: 'sourceIdentifier Assigning Authority not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -398,7 +398,7 @@ tap.test('PIXm query, should return 403 forbidden if target system not found', (
       severity: 'error',
       code: 'invalid',
       details: 'targetSystem not found',
-      dignosis: 'targetSystem not found'
+      diagnosis: 'targetSystem not found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
@@ -416,7 +416,7 @@ tap.test('PIXm query, should return 400 bad request if more than one patient ret
       severity: 'error',
       code: 'invalid',
       details: 'query not specific enough, more than one patient found',
-      dignosis: 'query not specific enough, more than one patient found'
+      diagnosis: 'query not specific enough, more than one patient found'
     }
 
     requestAndAssertOperationOutcome(testParams, t, done)
