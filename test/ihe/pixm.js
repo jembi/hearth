@@ -30,6 +30,7 @@ const basicPIXmTest = (t, test) => {
       delete charlton.patient.link
 
       const emmarentia = env.testPatients().emmarentia
+      emmarentia.patient.identifier.splice(3)
       emmarentia.patient.identifier[0].value = '222222'
       emmarentia.patient.identifier[1].value = '888888'
       emmarentia.patient.identifier[2].value = '999999'
