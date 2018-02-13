@@ -175,3 +175,74 @@ tap.test('patient should be saved correctly when body is in XML format', (t) => 
     })
   })
 })
+
+tap.test('_format parameter support', { autoend: true }, (t) => {
+  t.test('should reject requests using the _format param that arent a part of the accepted contentTypes list', (t) => {
+    basicPatientTest(t, (db, done) => {
+      request({
+        url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902&_format=text/turtle',
+        headers: headers
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.ok(body)
+        t.equal(res.statusCode, 406, 'response status code should be 200')
+        t.equals(body, 'Not Acceptable')
+
+        done()
+      })
+    })
+  })
+
+  t.test('should support _format param and return the payload in XML', (t) => {
+    basicPatientTest(t, (db, done) => {
+      request({
+        url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902&_format=application/fhir%2Bxml',
+        headers: headers
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.notOk(body.resourceType, 'should have a resourceType property as the response is XML')
+
+        const xmlDoc = libxmljs.parseXml(body)
+        const namespace = 'http://hl7.org/fhir'
+        const patient = xmlDoc.get('//xmlns:entry', namespace).get('//xmlns:Patient', namespace)
+
+        // xpath queries
+        const xmlValues = {
+          total: xmlDoc.get('//xmlns:total', namespace).attr('value').value(),
+          identifier: patient.get('//xmlns:identifier[1]', namespace).get('//xmlns:value', namespace).attr('value').value(),
+          familyName: patient.get('//xmlns:name[1]', namespace).get('//xmlns:family', namespace).attr('value').value()
+        }
+
+        t.equal(xmlDoc.errors.length, 0, 'should not have any XML errors')
+        t.equal(xmlValues.total, '1', 'body should contain one result')
+        t.equal(xmlValues.identifier, '1007211154902', 'body should contain the matching patient - identifier')
+        t.equal(xmlValues.familyName, 'Matinyana', 'body should contain the matching patient - family name')
+        done()
+      })
+    })
+  })
+
+  t.test('should support _format param and return the payload in JSON', (t) => {
+    basicPatientTest(t, (db, done) => {
+      request({
+        url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902&_format=application/fhir%2Bjson',
+        headers: headers,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.equals(body.resourceType, 'Bundle', 'should have a resourceType property as JSON')
+        t.equal(body.total, 1, 'body should contain one result')
+        t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'body should contain the matching patient - identifier')
+        t.equal(body.entry[0].resource.name[0].family[0], 'Matinyana', 'body should contain the matching patient - family name')
+        done()
+      })
+    })
+  })
+})
