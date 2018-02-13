@@ -137,3 +137,19 @@ tap.test('.removeIdentifiersFromTokens should remove identifier part of token qu
 
   t.end()
 })
+
+tap.test('.boolToMongoClause should match a Boolean value according to FHIR spec', (t) => {
+  let expected = { active: true }
+  let actual = queryUtils.boolToMongoClause('active', 'true')
+  t.deepEqual(actual, expected, 'should equal expected mongo clause')
+
+  expected = { active: false }
+  actual = queryUtils.boolToMongoClause('active', 'false')
+  t.deepEqual(actual, expected, 'should equal expected mongo clause')
+
+  expected = { active: false }
+  actual = queryUtils.boolToMongoClause('active', 'something-random')
+  t.deepEqual(actual, expected, 'should equal expected mongo clause, invalid parameter defaults to false')
+
+  t.end()
+})

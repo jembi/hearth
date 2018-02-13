@@ -7,8 +7,8 @@
  */
 
 'use strict'
-const env = require('./test-env/init')()
-const server = require('../lib/server')
+const env = require('../test-env/init')()
+const server = require('../../lib/server')
 const tap = require('tap')
 const request = require('request')
 const crypto = require('crypto')
@@ -30,6 +30,7 @@ const basicPIXmTest = (t, test) => {
       delete charlton.patient.link
 
       const emmarentia = env.testPatients().emmarentia
+      emmarentia.patient.identifier.splice(3)
       emmarentia.patient.identifier[0].value = '222222'
       emmarentia.patient.identifier[1].value = '888888'
       emmarentia.patient.identifier[2].value = '999999'

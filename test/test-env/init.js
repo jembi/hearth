@@ -310,11 +310,20 @@ module.exports = () => {
       delete testPatients.mwawi.preop.id
       testPatients.emmarentia.patient.name[0].prefix = ['Ms']
       testPatients.emmarentia.patient.name[0].given = ['Emmarentia']
-      testPatients.emmarentia.patient.name[0].family = ['Cook']
+      testPatients.emmarentia.patient.name[0].family = ['Cook', 'Spray']
+      testPatients.emmarentia.patient.address[0].line[0] = '1234 happy Lane'
       testPatients.emmarentia.patient.identifier[0].value = '1007211152222'
-      testPatients.emmarentia.patient.birthDate = '1970-07-21'
+      testPatients.emmarentia.patient.birthDate = '1970-07-30'
+      testPatients.emmarentia.patient.multipleBirthInteger = 2
       testPatients.emmarentia.patient.gender = 'female'
       testPatients.emmarentia.patient.telecom[0].value = testPatients.emmarentia.email
+      testPatients.emmarentia.patient.extension[4] = {
+        url: 'http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName',
+        valueHumanName: {
+          family: [ 'Cook', 'Smit' ],
+          given: [ 'Mom' ]
+        }
+      }
       testPatients.emmarentia.encounter.period.start = moment().format('YYYY-MM-DD')
       testPatients.nikita.patient.name[0].prefix = ['Mrs']
       testPatients.nikita.patient.name[0].given = ['Nikita', 'Becky']
