@@ -8,6 +8,7 @@
 
 'use strict'
 
+require('./test-env/init')()
 const tap = require('tap')
 
 const queryUtils = require('../lib/fhir/query-utils')()

@@ -273,6 +273,8 @@ const requestAndAssertOperationOutcome = (tp, t, done) => {
     headers: headers,
     json: true
   }, (err, res, body) => {
+    console.log(err)
+    console.log(body)
     // Then
 
     t.error(err)
