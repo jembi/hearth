@@ -26,6 +26,13 @@
       "assigner": {
         "display": "Passport South Africa"
       }
+    },
+    {
+      "use": "official",
+      "value": "no-system-identifier",
+      "assigner": {
+        "display": "Identifier with no system specified"
+      }
     }
   ],
   "name": [
@@ -67,7 +74,8 @@
       ],
       "state": "Western Cape",
       "city": "Cape Town",
-      "postalCode": "7570"
+      "postalCode": "7570",
+      "country": "South Africa"
     }
   ],
   "communication": [
@@ -144,6 +152,13 @@
     {
       "url": "pshr:gapcover",
       "valueBoolean": true
+    },
+    {
+      "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
+      "valueHumanName": {
+        "family": [ "Smith", "Mc", "extra" ],
+        "given": [ "Mary", "Jane" ]
+      }
     }
   ],
   "managingOrganization": {

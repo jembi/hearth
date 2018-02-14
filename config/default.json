@@ -38,5 +38,6 @@
     "additionProfilePaths": [
       "lib/fhir/profiles/mhd"
     ]
-  }
+  },
+  "knownIdentityDomains": []
 }

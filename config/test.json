@@ -28,5 +28,14 @@
   "matchingQueue": {
     "numberOfWorkers": 0,
     "pollingInterval": 1000
-  }
+  },
+  "knownIdentityDomains": [
+    "pshr:sanid",
+    "pshr:passport:za",
+    "pshr:passport:gbr",
+    "http://xyz-server",
+    "http://xyz-server/xxx",
+    "http://xyz-server/xxx/",
+    "http://localhost:3447/fhir"
+  ]
 }
