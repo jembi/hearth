@@ -1,0 +1,6244 @@
+{
+  "Resource": [
+    {
+      "param": "_id",
+      "path": "id",
+      "type": "token"
+    },
+    {
+      "param": "_lastUpdated",
+      "path": "meta.lastUpdated",
+      "type": "date"
+    },
+    {
+      "param": "_profile",
+      "path": "meta.profile",
+      "type": "uri"
+    },
+    {
+      "param": "_security",
+      "path": "meta.security",
+      "type": "token"
+    },
+    {
+      "param": "_tag",
+      "path": "meta.tag",
+      "type": "token"
+    }
+  ],
+  "Account": [
+    {
+      "param": "balance",
+      "path": "balance",
+      "type": "quantity"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "owner",
+      "path": "owner",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "period",
+      "path": "period",
+      "type": "date"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "ActivityDefinition": [
+    {
+      "param": "composed-of",
+      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "depends-on",
+      "path": "relatedArtifact[type.value='depends-on'].resource ",
+      "type": "reference"
+    },
+    {
+      "param": "derived-from",
+      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "predecessor",
+      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "successor",
+      "path": "relatedArtifact[type.value='successor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "topic",
+      "path": "topic",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "AdverseEvent": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "reaction",
+      "path": "reaction",
+      "type": "reference"
+    },
+    {
+      "param": "recorder",
+      "path": "recorder",
+      "type": "reference"
+    },
+    {
+      "param": "seriousness",
+      "path": "seriousness",
+      "type": "token"
+    },
+    {
+      "param": "study",
+      "path": "study",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "substance",
+      "path": "suspectEntity.instance",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "AllergyIntolerance": [
+    {
+      "param": "asserter",
+      "path": "asserter",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "clinical-status",
+      "path": "clinicalStatus",
+      "type": "token"
+    },
+    {
+      "param": "criticality",
+      "path": "criticality",
+      "type": "token"
+    },
+    {
+      "param": "last-date",
+      "path": "lastOccurrence",
+      "type": "date"
+    },
+    {
+      "param": "manifestation",
+      "path": "reaction.manifestation",
+      "type": "token"
+    },
+    {
+      "param": "onset",
+      "path": "reaction.onset",
+      "type": "date"
+    },
+    {
+      "param": "recorder",
+      "path": "recorder",
+      "type": "reference"
+    },
+    {
+      "param": "route",
+      "path": "reaction.exposureRoute",
+      "type": "token"
+    },
+    {
+      "param": "severity",
+      "path": "reaction.severity",
+      "type": "token"
+    },
+    {
+      "param": "verification-status",
+      "path": "verificationStatus",
+      "type": "token"
+    }
+  ],
+  "FamilyMemberHistory": [
+    {
+      "param": "code",
+      "path": "condition.code ",
+      "type": "token"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "gender",
+      "path": "gender",
+      "type": "token"
+    },
+    {
+      "param": "relationship",
+      "path": "relationship",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "DeviceRequest": [
+    {
+      "param": "authored-on",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "device",
+      "path": "codeReference",
+      "type": "reference"
+    },
+    {
+      "param": "event-date",
+      "path": "occurrenceDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "group-identifier",
+      "path": "groupIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "performer",
+      "path": "performer",
+      "type": "reference"
+    },
+    {
+      "param": "priorrequest",
+      "path": "priorRequest",
+      "type": "reference"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Procedure": [
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "performer",
+      "path": "performer.actor",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "List": [
+    {
+      "param": "empty-reason",
+      "path": "emptyReason",
+      "type": "token"
+    },
+    {
+      "param": "item",
+      "path": "entry.item",
+      "type": "reference"
+    },
+    {
+      "param": "notes",
+      "path": "note.text",
+      "type": "string"
+    },
+    {
+      "param": "source",
+      "path": "source",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    }
+  ],
+  "ProcedureRequest": [
+    {
+      "param": "authored",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "body-site",
+      "path": "bodySite",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "occurrence",
+      "path": "occurrenceDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "performer",
+      "path": "performer",
+      "type": "reference"
+    },
+    {
+      "param": "performer-type",
+      "path": "performerType",
+      "type": "token"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "replaces",
+      "path": "replaces",
+      "type": "reference"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "requisition",
+      "path": "requisition",
+      "type": "token"
+    },
+    {
+      "param": "specimen",
+      "path": "specimen",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Observation": [
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "combo-code",
+      "path": "code ",
+      "type": "token"
+    },
+    {
+      "param": "combo-data-absent-reason",
+      "path": "dataAbsentReason ",
+      "type": "token"
+    },
+    {
+      "param": "combo-value-concept",
+      "path": "valueCodeableConcept ",
+      "type": "token"
+    },
+    {
+      "param": "combo-value-quantity",
+      "path": "valueQuantity ",
+      "type": "quantity"
+    },
+    {
+      "param": "component-code",
+      "path": "component.code",
+      "type": "token"
+    },
+    {
+      "param": "component-data-absent-reason",
+      "path": "component.dataAbsentReason",
+      "type": "token"
+    },
+    {
+      "param": "component-value-concept",
+      "path": "component.valueCodeableConcept",
+      "type": "token"
+    },
+    {
+      "param": "component-value-quantity",
+      "path": "component.valueQuantity",
+      "type": "quantity"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "data-absent-reason",
+      "path": "dataAbsentReason",
+      "type": "token"
+    },
+    {
+      "param": "device",
+      "path": "device",
+      "type": "reference"
+    },
+    {
+      "param": "method",
+      "path": "method",
+      "type": "token"
+    },
+    {
+      "param": "performer",
+      "path": "performer",
+      "type": "reference"
+    },
+    {
+      "param": "related-target",
+      "path": "related.target",
+      "type": "reference"
+    },
+    {
+      "param": "related-type",
+      "path": "related.type",
+      "type": "token"
+    },
+    {
+      "param": "specimen",
+      "path": "specimen",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "value-concept",
+      "path": "valueCodeableConcept",
+      "type": "token"
+    },
+    {
+      "param": "value-date",
+      "path": "valueDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "value-quantity",
+      "path": "valueQuantity",
+      "type": "quantity"
+    },
+    {
+      "param": "value-string",
+      "path": "valueString",
+      "type": "string"
+    }
+  ],
+  "DiagnosticReport": [
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "diagnosis",
+      "path": "codedDiagnosis",
+      "type": "token"
+    },
+    {
+      "param": "image",
+      "path": "image.link",
+      "type": "reference"
+    },
+    {
+      "param": "issued",
+      "path": "issued",
+      "type": "date"
+    },
+    {
+      "param": "performer",
+      "path": "performer.actor",
+      "type": "reference"
+    },
+    {
+      "param": "result",
+      "path": "result",
+      "type": "reference"
+    },
+    {
+      "param": "specimen",
+      "path": "specimen",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Condition": [
+    {
+      "param": "abatement-age",
+      "path": "abatementAge ",
+      "type": "quantity"
+    },
+    {
+      "param": "abatement-boolean",
+      "path": "abatementDateTime ",
+      "type": "token"
+    },
+    {
+      "param": "abatement-date",
+      "path": "abatementDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "abatement-string",
+      "path": "abatementString",
+      "type": "string"
+    },
+    {
+      "param": "asserted-date",
+      "path": "assertedDate",
+      "type": "date"
+    },
+    {
+      "param": "asserter",
+      "path": "asserter",
+      "type": "reference"
+    },
+    {
+      "param": "body-site",
+      "path": "bodySite",
+      "type": "token"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "clinical-status",
+      "path": "clinicalStatus",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "evidence",
+      "path": "evidence.code",
+      "type": "token"
+    },
+    {
+      "param": "evidence-detail",
+      "path": "evidence.detail",
+      "type": "reference"
+    },
+    {
+      "param": "onset-age",
+      "path": "onsetAge ",
+      "type": "quantity"
+    },
+    {
+      "param": "onset-date",
+      "path": "onsetDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "onset-info",
+      "path": "onsetString",
+      "type": "string"
+    },
+    {
+      "param": "severity",
+      "path": "severity",
+      "type": "token"
+    },
+    {
+      "param": "stage",
+      "path": "stage.summary",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "verification-status",
+      "path": "verificationStatus",
+      "type": "token"
+    }
+  ],
+  "Consent": [
+    {
+      "param": "date",
+      "path": "dateTime ",
+      "type": "date"
+    },
+    {
+      "param": "action",
+      "path": "action ",
+      "type": "token"
+    },
+    {
+      "param": "actor",
+      "path": "actor.reference ",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "consentor",
+      "path": "consentingParty",
+      "type": "reference"
+    },
+    {
+      "param": "data",
+      "path": "data.reference ",
+      "type": "reference"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "period",
+      "path": "period",
+      "type": "date"
+    },
+    {
+      "param": "purpose",
+      "path": "purpose ",
+      "type": "token"
+    },
+    {
+      "param": "securitylabel",
+      "path": "securityLabel ",
+      "type": "token"
+    },
+    {
+      "param": "source",
+      "path": "sourceAttachment ",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "SupplyRequest": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "supplier",
+      "path": "supplier",
+      "type": "reference"
+    }
+  ],
+  "RiskAssessment": [
+    {
+      "param": "condition",
+      "path": "condition",
+      "type": "reference"
+    },
+    {
+      "param": "method",
+      "path": "method",
+      "type": "token"
+    },
+    {
+      "param": "performer",
+      "path": "performer",
+      "type": "reference"
+    },
+    {
+      "param": "probability",
+      "path": "prediction.probabilityDecimal ",
+      "type": "number"
+    },
+    {
+      "param": "risk",
+      "path": "prediction.qualitativeRisk",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "CareTeam": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "participant",
+      "path": "participant.member",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Encounter": [
+    {
+      "param": "appointment",
+      "path": "appointment",
+      "type": "reference"
+    },
+    {
+      "param": "class",
+      "path": "class",
+      "type": "token"
+    },
+    {
+      "param": "diagnosis",
+      "path": "diagnosis.condition",
+      "type": "reference"
+    },
+    {
+      "param": "episodeofcare",
+      "path": "episodeOfCare",
+      "type": "reference"
+    },
+    {
+      "param": "incomingreferral",
+      "path": "incomingReferral",
+      "type": "reference"
+    },
+    {
+      "param": "length",
+      "path": "length",
+      "type": "number"
+    },
+    {
+      "param": "location",
+      "path": "location.location",
+      "type": "reference"
+    },
+    {
+      "param": "location-period",
+      "path": "location.period",
+      "type": "date"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "participant",
+      "path": "participant.individual",
+      "type": "reference"
+    },
+    {
+      "param": "participant-type",
+      "path": "participant.type",
+      "type": "token"
+    },
+    {
+      "param": "practitioner",
+      "path": "participant.individual",
+      "type": "reference"
+    },
+    {
+      "param": "reason",
+      "path": "reason",
+      "type": "token"
+    },
+    {
+      "param": "service-provider",
+      "path": "serviceProvider",
+      "type": "reference"
+    },
+    {
+      "param": "special-arrangement",
+      "path": "hospitalization.specialArrangement",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "CarePlan": [
+    {
+      "param": "activity-code",
+      "path": "activity.detail.code",
+      "type": "token"
+    },
+    {
+      "param": "activity-date",
+      "path": "activity.detail.scheduledTiming ",
+      "type": "date"
+    },
+    {
+      "param": "activity-reference",
+      "path": "activity.reference",
+      "type": "reference"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "care-team",
+      "path": "careTeam",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "condition",
+      "path": "addresses",
+      "type": "reference"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "goal",
+      "path": "goal",
+      "type": "reference"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "performer",
+      "path": "activity.detail.performer",
+      "type": "reference"
+    },
+    {
+      "param": "replaces",
+      "path": "replaces",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "EpisodeOfCare": [
+    {
+      "param": "care-manager",
+      "path": "careManager",
+      "type": "reference"
+    },
+    {
+      "param": "condition",
+      "path": "diagnosis.condition",
+      "type": "reference"
+    },
+    {
+      "param": "incomingreferral",
+      "path": "referralRequest",
+      "type": "reference"
+    },
+    {
+      "param": "organization",
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "Immunization": [
+    {
+      "param": "dose-sequence",
+      "path": "vaccinationProtocol.doseSequence",
+      "type": "number"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "lot-number",
+      "path": "lotNumber",
+      "type": "string"
+    },
+    {
+      "param": "manufacturer",
+      "path": "manufacturer",
+      "type": "reference"
+    },
+    {
+      "param": "notgiven",
+      "path": "notGiven",
+      "type": "token"
+    },
+    {
+      "param": "practitioner",
+      "path": "practitioner.actor",
+      "type": "reference"
+    },
+    {
+      "param": "reaction",
+      "path": "reaction.detail",
+      "type": "reference"
+    },
+    {
+      "param": "reaction-date",
+      "path": "reaction.date",
+      "type": "date"
+    },
+    {
+      "param": "reason",
+      "path": "explanation.reason",
+      "type": "token"
+    },
+    {
+      "param": "reason-not-given",
+      "path": "explanation.reasonNotGiven",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "vaccine-code",
+      "path": "vaccineCode",
+      "type": "token"
+    }
+  ],
+  "Flag": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Composition": [
+    {
+      "param": "attester",
+      "path": "attester.party",
+      "type": "reference"
+    },
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "class",
+      "path": "class",
+      "type": "token"
+    },
+    {
+      "param": "confidentiality",
+      "path": "confidentiality",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "event.code",
+      "type": "token"
+    },
+    {
+      "param": "entry",
+      "path": "section.entry",
+      "type": "reference"
+    },
+    {
+      "param": "period",
+      "path": "event.period",
+      "type": "date"
+    },
+    {
+      "param": "related-id",
+      "path": "relatesTo.targetIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "related-ref",
+      "path": "relatesTo.targetReference",
+      "type": "reference"
+    },
+    {
+      "param": "section",
+      "path": "section.code",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    }
+  ],
+  "DetectedIssue": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "implicated",
+      "path": "implicated",
+      "type": "reference"
+    }
+  ],
+  "ClinicalImpression": [
+    {
+      "param": "action",
+      "path": "action",
+      "type": "reference"
+    },
+    {
+      "param": "assessor",
+      "path": "assessor",
+      "type": "reference"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "finding-code",
+      "path": "finding.itemCodeableConcept",
+      "type": "token"
+    },
+    {
+      "param": "finding-ref",
+      "path": "finding.itemReference",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "investigation",
+      "path": "investigation.item",
+      "type": "reference"
+    },
+    {
+      "param": "previous",
+      "path": "previous",
+      "type": "reference"
+    },
+    {
+      "param": "problem",
+      "path": "problem",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "DocumentManifest": [
+    {
+      "param": "identifier",
+      "path": "masterIdentifier ",
+      "type": "token"
+    },
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "content-ref",
+      "path": "content.pReference",
+      "type": "reference"
+    },
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "recipient",
+      "path": "recipient",
+      "type": "reference"
+    },
+    {
+      "param": "related-id",
+      "path": "related.identifier",
+      "type": "token"
+    },
+    {
+      "param": "related-ref",
+      "path": "related.ref",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "source",
+      "type": "uri"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Goal": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "start-date",
+      "path": "startDate",
+      "type": "date"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "target-date",
+      "path": "target.dueDate",
+      "type": "date"
+    }
+  ],
+  "DocumentReference": [
+    {
+      "param": "encounter",
+      "path": "context.encounter ",
+      "type": "reference"
+    },
+    {
+      "param": "authenticator",
+      "path": "authenticator",
+      "type": "reference"
+    },
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "class",
+      "path": "class",
+      "type": "token"
+    },
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "custodian",
+      "path": "custodian",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "event",
+      "path": "context.event",
+      "type": "token"
+    },
+    {
+      "param": "facility",
+      "path": "context.facilityType",
+      "type": "token"
+    },
+    {
+      "param": "format",
+      "path": "content.format",
+      "type": "token"
+    },
+    {
+      "param": "indexed",
+      "path": "indexed",
+      "type": "date"
+    },
+    {
+      "param": "language",
+      "path": "content.attachment.language",
+      "type": "token"
+    },
+    {
+      "param": "location",
+      "path": "content.attachment.url",
+      "type": "uri"
+    },
+    {
+      "param": "period",
+      "path": "context.period",
+      "type": "date"
+    },
+    {
+      "param": "related-id",
+      "path": "context.related.identifier",
+      "type": "token"
+    },
+    {
+      "param": "related-ref",
+      "path": "context.related.ref",
+      "type": "reference"
+    },
+    {
+      "param": "relatesto",
+      "path": "relatesTo.target",
+      "type": "reference"
+    },
+    {
+      "param": "relation",
+      "path": "relatesTo.code",
+      "type": "token"
+    },
+    {
+      "param": "securitylabel",
+      "path": "securityLabel",
+      "type": "token"
+    },
+    {
+      "param": "setting",
+      "path": "context.practiceSetting",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "ImagingStudy": [
+    {
+      "param": "accession",
+      "path": "accession",
+      "type": "token"
+    },
+    {
+      "param": "basedon",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "bodysite",
+      "path": "series.bodySite",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "dicom-class",
+      "path": "series.instance.sopClass",
+      "type": "uri"
+    },
+    {
+      "param": "endpoint",
+      "path": "endpoint ",
+      "type": "reference"
+    },
+    {
+      "param": "modality",
+      "path": "series.modality",
+      "type": "token"
+    },
+    {
+      "param": "performer",
+      "path": "series.performer",
+      "type": "reference"
+    },
+    {
+      "param": "reason",
+      "path": "reason",
+      "type": "token"
+    },
+    {
+      "param": "series",
+      "path": "series.uid",
+      "type": "uri"
+    },
+    {
+      "param": "started",
+      "path": "started",
+      "type": "date"
+    },
+    {
+      "param": "study",
+      "path": "uid",
+      "type": "uri"
+    },
+    {
+      "param": "uid",
+      "path": "series.instance.uid",
+      "type": "uri"
+    }
+  ],
+  "VisionPrescription": [
+    {
+      "param": "datewritten",
+      "path": "dateWritten",
+      "type": "date"
+    },
+    {
+      "param": "prescriber",
+      "path": "prescriber",
+      "type": "reference"
+    }
+  ],
+  "NutritionOrder": [
+    {
+      "param": "additive",
+      "path": "enteralFormula.additiveType",
+      "type": "token"
+    },
+    {
+      "param": "datetime",
+      "path": "dateTime",
+      "type": "date"
+    },
+    {
+      "param": "formula",
+      "path": "enteralFormula.baseFormulaType",
+      "type": "token"
+    },
+    {
+      "param": "oraldiet",
+      "path": "oralDiet.type",
+      "type": "token"
+    },
+    {
+      "param": "provider",
+      "path": "orderer",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "supplement",
+      "path": "supplement.type",
+      "type": "token"
+    }
+  ],
+  "SupplyDelivery": [
+    {
+      "param": "receiver",
+      "path": "receiver",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "supplier",
+      "path": "supplier",
+      "type": "reference"
+    }
+  ],
+  "ReferralRequest": [
+    {
+      "param": "patient",
+      "path": "subject ",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type ",
+      "type": "token"
+    },
+    {
+      "param": "authored-on",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "group-identifier",
+      "path": "groupIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "occurrence-date",
+      "path": "occurrenceDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "recipient",
+      "path": "recipient",
+      "type": "reference"
+    },
+    {
+      "param": "replaces",
+      "path": "replaces",
+      "type": "reference"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "service",
+      "path": "serviceRequested",
+      "type": "token"
+    },
+    {
+      "param": "specialty",
+      "path": "specialty",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "ImagingManifest": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "authoring-time",
+      "path": "authoringTime",
+      "type": "date"
+    },
+    {
+      "param": "endpoint",
+      "path": "study.endpoint ",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "imaging-study",
+      "path": "study.imagingStudy",
+      "type": "reference"
+    },
+    {
+      "param": "selected-study",
+      "path": "study.uid",
+      "type": "uri"
+    }
+  ],
+  "DeviceUseStatement": [
+    {
+      "param": "device",
+      "path": "device",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Appointment": [
+    {
+      "param": "actor",
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    {
+      "param": "appointment-type",
+      "path": "appointmentType",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "start",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "incomingreferral",
+      "path": "incomingReferral",
+      "type": "reference"
+    },
+    {
+      "param": "location",
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    {
+      "param": "part-status",
+      "path": "participant.status",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    {
+      "param": "practitioner",
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    {
+      "param": "service-type",
+      "path": "serviceType",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "AppointmentResponse": [
+    {
+      "param": "actor",
+      "path": "actor",
+      "type": "reference"
+    },
+    {
+      "param": "appointment",
+      "path": "appointment",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "location",
+      "path": "actor",
+      "type": "reference"
+    },
+    {
+      "param": "part-status",
+      "path": "participantStatus",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "actor",
+      "type": "reference"
+    },
+    {
+      "param": "practitioner",
+      "path": "actor",
+      "type": "reference"
+    }
+  ],
+  "AuditEvent": [
+    {
+      "param": "action",
+      "path": "action",
+      "type": "token"
+    },
+    {
+      "param": "address",
+      "path": "agent.network.address",
+      "type": "string"
+    },
+    {
+      "param": "agent",
+      "path": "agent.reference",
+      "type": "reference"
+    },
+    {
+      "param": "agent-name",
+      "path": "agent.name",
+      "type": "string"
+    },
+    {
+      "param": "agent-role",
+      "path": "agent.role",
+      "type": "token"
+    },
+    {
+      "param": "altid",
+      "path": "agent.altId",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "recorded",
+      "type": "date"
+    },
+    {
+      "param": "entity",
+      "path": "entity.reference",
+      "type": "reference"
+    },
+    {
+      "param": "entity-id",
+      "path": "entity.identifier",
+      "type": "token"
+    },
+    {
+      "param": "entity-name",
+      "path": "entity.name",
+      "type": "string"
+    },
+    {
+      "param": "entity-role",
+      "path": "entity.role",
+      "type": "token"
+    },
+    {
+      "param": "entity-type",
+      "path": "entity.type",
+      "type": "token"
+    },
+    {
+      "param": "outcome",
+      "path": "outcome",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "agent.reference ",
+      "type": "reference"
+    },
+    {
+      "param": "policy",
+      "path": "agent.policy",
+      "type": "uri"
+    },
+    {
+      "param": "site",
+      "path": "source.site",
+      "type": "token"
+    },
+    {
+      "param": "source",
+      "path": "source.identifier",
+      "type": "token"
+    },
+    {
+      "param": "subtype",
+      "path": "subtype",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "user",
+      "path": "agent.userId",
+      "type": "token"
+    }
+  ],
+  "Basic": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Binary": [
+    {
+      "param": "contenttype",
+      "path": "contentType",
+      "type": "token"
+    }
+  ],
+  "BodySite": [
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    }
+  ],
+  "Bundle": [
+    {
+      "param": "composition",
+      "path": "entry[0].resource",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "message",
+      "path": "entry[0].resource",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "CapabilityStatement": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "event",
+      "path": "messaging.event.code",
+      "type": "token"
+    },
+    {
+      "param": "fhirversion",
+      "path": "version",
+      "type": "token"
+    },
+    {
+      "param": "format",
+      "path": "format",
+      "type": "token"
+    },
+    {
+      "param": "guide",
+      "path": "implementationGuide",
+      "type": "uri"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "mode",
+      "path": "rest.mode",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "resource",
+      "path": "rest.resource.type",
+      "type": "token"
+    },
+    {
+      "param": "resource-profile",
+      "path": "rest.resource.profile",
+      "type": "reference"
+    },
+    {
+      "param": "security-service",
+      "path": "rest.security.service",
+      "type": "token"
+    },
+    {
+      "param": "software",
+      "path": "software.name",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "supported-profile",
+      "path": "profile",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "ChargeItem": [
+    {
+      "param": "account",
+      "path": "account",
+      "type": "reference"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "entered-date",
+      "path": "enteredDate",
+      "type": "date"
+    },
+    {
+      "param": "enterer",
+      "path": "enterer",
+      "type": "reference"
+    },
+    {
+      "param": "factor-override",
+      "path": "factorOverride",
+      "type": "number"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "occurrence",
+      "path": "occurrenceDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "participant-actor",
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    {
+      "param": "participant-role",
+      "path": "participant.role",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "performing-organization",
+      "path": "performingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "price-override",
+      "path": "priceOverride",
+      "type": "quantity"
+    },
+    {
+      "param": "quantity",
+      "path": "quantity",
+      "type": "quantity"
+    },
+    {
+      "param": "requesting-organization",
+      "path": "requestingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "service",
+      "path": "service",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "Claim": [
+    {
+      "param": "care-team",
+      "path": "careTeam.provider",
+      "type": "reference"
+    },
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "encounter",
+      "path": "item.encounter",
+      "type": "reference"
+    },
+    {
+      "param": "enterer",
+      "path": "enterer",
+      "type": "reference"
+    },
+    {
+      "param": "facility",
+      "path": "facility",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "insurer",
+      "path": "insurer",
+      "type": "reference"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "payee",
+      "path": "payee.party",
+      "type": "reference"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "provider",
+      "path": "provider",
+      "type": "reference"
+    },
+    {
+      "param": "use",
+      "path": "use",
+      "type": "token"
+    }
+  ],
+  "ClaimResponse": [
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "disposition",
+      "path": "disposition",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "insurer",
+      "path": "insurer",
+      "type": "reference"
+    },
+    {
+      "param": "outcome",
+      "path": "outcome",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "payment-date",
+      "path": "payment.date",
+      "type": "date"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    },
+    {
+      "param": "request-provider",
+      "path": "requestProvider",
+      "type": "reference"
+    }
+  ],
+  "CodeSystem": [
+    {
+      "param": "code",
+      "path": "concept.code",
+      "type": "token"
+    },
+    {
+      "param": "content-mode",
+      "path": "content",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "language",
+      "path": "concept.designation.language",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "system",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Communication": [
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "medium",
+      "path": "medium",
+      "type": "token"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "received",
+      "path": "received",
+      "type": "date"
+    },
+    {
+      "param": "recipient",
+      "path": "recipient",
+      "type": "reference"
+    },
+    {
+      "param": "sender",
+      "path": "sender",
+      "type": "reference"
+    },
+    {
+      "param": "sent",
+      "path": "sent",
+      "type": "date"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "CommunicationRequest": [
+    {
+      "param": "authored",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "group-identifier",
+      "path": "groupIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "medium",
+      "path": "medium",
+      "type": "token"
+    },
+    {
+      "param": "occurrence",
+      "path": "occurrenceDateTime",
+      "type": "date"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "recipient",
+      "path": "recipient",
+      "type": "reference"
+    },
+    {
+      "param": "replaces",
+      "path": "replaces",
+      "type": "reference"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "sender",
+      "path": "sender",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "CompartmentDefinition": [
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "resource",
+      "path": "resource.code",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    }
+  ],
+  "ConceptMap": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "dependson",
+      "path": "group.element.target.dependsOn.property",
+      "type": "uri"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "other",
+      "path": "group.unmapped.url",
+      "type": "uri"
+    },
+    {
+      "param": "product",
+      "path": "group.element.target.product.property",
+      "type": "uri"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "source",
+      "path": "sourceReference",
+      "type": "reference"
+    },
+    {
+      "param": "source-code",
+      "path": "group.element.code",
+      "type": "token"
+    },
+    {
+      "param": "source-system",
+      "path": "group.source",
+      "type": "uri"
+    },
+    {
+      "param": "source-uri",
+      "path": "sourceUri",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "target",
+      "path": "targetReference",
+      "type": "reference"
+    },
+    {
+      "param": "target-code",
+      "path": "group.element.target.code",
+      "type": "token"
+    },
+    {
+      "param": "target-system",
+      "path": "group.target",
+      "type": "uri"
+    },
+    {
+      "param": "target-uri",
+      "path": "targetUri",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Contract": [
+    {
+      "param": "agent",
+      "path": "agent.actor",
+      "type": "reference"
+    },
+    {
+      "param": "authority",
+      "path": "authority",
+      "type": "reference"
+    },
+    {
+      "param": "domain",
+      "path": "domain",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "issued",
+      "path": "issued",
+      "type": "date"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "signer",
+      "path": "signer.party",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "term-topic",
+      "path": "term.topic",
+      "type": "reference"
+    }
+  ],
+  "Coverage": [
+    {
+      "param": "beneficiary",
+      "path": "beneficiary",
+      "type": "reference"
+    },
+    {
+      "param": "class",
+      "path": "grouping.class",
+      "type": "string"
+    },
+    {
+      "param": "dependent",
+      "path": "dependent",
+      "type": "string"
+    },
+    {
+      "param": "group",
+      "path": "grouping.group",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "payor",
+      "path": "payor",
+      "type": "reference"
+    },
+    {
+      "param": "plan",
+      "path": "grouping.plan",
+      "type": "string"
+    },
+    {
+      "param": "policy-holder",
+      "path": "policyHolder",
+      "type": "reference"
+    },
+    {
+      "param": "sequence",
+      "path": "sequence",
+      "type": "string"
+    },
+    {
+      "param": "subclass",
+      "path": "grouping.subClass",
+      "type": "string"
+    },
+    {
+      "param": "subgroup",
+      "path": "grouping.subGroup",
+      "type": "string"
+    },
+    {
+      "param": "subplan",
+      "path": "grouping.subPlan",
+      "type": "string"
+    },
+    {
+      "param": "subscriber",
+      "path": "subscriber",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "DataElement": [
+    {
+      "param": "code",
+      "path": "element.code",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "element.definition",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "stringency",
+      "path": "stringency",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    },
+    {
+      "param": "objectClass",
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass'] ",
+      "type": "token"
+    },
+    {
+      "param": "objectClassProperty",
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty'] ",
+      "type": "token"
+    }
+  ],
+  "Device": [
+    {
+      "param": "device-name",
+      "path": "udi.name ",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "manufacturer",
+      "path": "manufacturer",
+      "type": "string"
+    },
+    {
+      "param": "model",
+      "path": "model",
+      "type": "string"
+    },
+    {
+      "param": "organization",
+      "path": "owner",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "udi-carrier",
+      "path": "udi.carrierHRF ",
+      "type": "string"
+    },
+    {
+      "param": "udi-di",
+      "path": "udi.deviceIdentifier",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    }
+  ],
+  "DeviceComponent": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "parent",
+      "path": "parent",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "source",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "DeviceMetric": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "parent",
+      "path": "parent",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "source",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "EligibilityRequest": [
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "enterer",
+      "path": "enterer",
+      "type": "reference"
+    },
+    {
+      "param": "facility",
+      "path": "facility",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "provider",
+      "path": "provider",
+      "type": "reference"
+    }
+  ],
+  "EligibilityResponse": [
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "disposition",
+      "path": "disposition",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "insurer",
+      "path": "insurer",
+      "type": "reference"
+    },
+    {
+      "param": "outcome",
+      "path": "outcome",
+      "type": "token"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    },
+    {
+      "param": "request-organization",
+      "path": "requestOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "request-provider",
+      "path": "requestProvider",
+      "type": "reference"
+    }
+  ],
+  "Endpoint": [
+    {
+      "param": "connection-type",
+      "path": "connectionType",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "organization",
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "payload-type",
+      "path": "payloadType",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "EnrollmentRequest": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "EnrollmentResponse": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    }
+  ],
+  "ExpansionProfile": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "ExplanationOfBenefit": [
+    {
+      "param": "care-team",
+      "path": "careTeam.provider",
+      "type": "reference"
+    },
+    {
+      "param": "claim",
+      "path": "claim",
+      "type": "reference"
+    },
+    {
+      "param": "coverage",
+      "path": "insurance.coverage",
+      "type": "reference"
+    },
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "disposition",
+      "path": "disposition",
+      "type": "string"
+    },
+    {
+      "param": "encounter",
+      "path": "item.encounter",
+      "type": "reference"
+    },
+    {
+      "param": "enterer",
+      "path": "enterer",
+      "type": "reference"
+    },
+    {
+      "param": "facility",
+      "path": "facility",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "payee",
+      "path": "payee.party",
+      "type": "reference"
+    },
+    {
+      "param": "provider",
+      "path": "provider",
+      "type": "reference"
+    }
+  ],
+  "GraphDefinition": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "start",
+      "path": "start",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Group": [
+    {
+      "param": "actual",
+      "path": "actual",
+      "type": "token"
+    },
+    {
+      "param": "characteristic",
+      "path": "characteristic.code",
+      "type": "token"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "exclude",
+      "path": "characteristic.exclude",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "member",
+      "path": "member.entity",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "value",
+      "path": "characteristic.valueCodeableConcept ",
+      "type": "token"
+    }
+  ],
+  "GuidanceResponse": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "request",
+      "path": "requestId",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "HealthcareService": [
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "characteristic",
+      "path": "characteristic",
+      "type": "token"
+    },
+    {
+      "param": "endpoint",
+      "path": "endpoint",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "organization",
+      "path": "providedBy",
+      "type": "reference"
+    },
+    {
+      "param": "programname",
+      "path": "programName",
+      "type": "string"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "ImmunizationRecommendation": [
+    {
+      "param": "date",
+      "path": "recommendation.date",
+      "type": "date"
+    },
+    {
+      "param": "dose-number",
+      "path": "recommendation.doseNumber",
+      "type": "number"
+    },
+    {
+      "param": "dose-sequence",
+      "path": "recommendation.protocol.doseSequence",
+      "type": "number"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "information",
+      "path": "recommendation.supportingPatientInformation",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "recommendation.forecastStatus",
+      "type": "token"
+    },
+    {
+      "param": "support",
+      "path": "recommendation.supportingImmunization",
+      "type": "reference"
+    },
+    {
+      "param": "target-disease",
+      "path": "recommendation.targetDisease",
+      "type": "token"
+    },
+    {
+      "param": "vaccine-type",
+      "path": "recommendation.vaccineCode",
+      "type": "token"
+    }
+  ],
+  "ImplementationGuide": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "dependency",
+      "path": "dependency.uri",
+      "type": "uri"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "experimental",
+      "path": "experimental",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "resource",
+      "path": "package.resource.sourceUri ",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Library": [
+    {
+      "param": "composed-of",
+      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "depends-on",
+      "path": "relatedArtifact[type.value='depends-on'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "derived-from",
+      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "predecessor",
+      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "successor",
+      "path": "relatedArtifact[type.value='successor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "topic",
+      "path": "topic",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Linkage": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "item",
+      "path": "item.resource",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "item.resource",
+      "type": "reference"
+    }
+  ],
+  "Location": [
+    {
+      "param": "address",
+      "path": "address",
+      "type": "string"
+    },
+    {
+      "param": "address-city",
+      "path": "address.city",
+      "type": "string"
+    },
+    {
+      "param": "address-country",
+      "path": "address.country",
+      "type": "string"
+    },
+    {
+      "param": "address-postalcode",
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    {
+      "param": "address-state",
+      "path": "address.state",
+      "type": "string"
+    },
+    {
+      "param": "address-use",
+      "path": "address.use",
+      "type": "token"
+    },
+    {
+      "param": "endpoint",
+      "path": "endpoint",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name ",
+      "type": "string"
+    },
+    {
+      "param": "near",
+      "path": "position",
+      "type": "token"
+    },
+    {
+      "param": "near-distance",
+      "path": "position",
+      "type": "quantity"
+    },
+    {
+      "param": "operational-status",
+      "path": "operationalStatus",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "partof",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "Measure": [
+    {
+      "param": "composed-of",
+      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "depends-on",
+      "path": "relatedArtifact[type.value='depends-on'].resource ",
+      "type": "reference"
+    },
+    {
+      "param": "derived-from",
+      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "predecessor",
+      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "successor",
+      "path": "relatedArtifact[type.value='successor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "topic",
+      "path": "topic",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "MeasureReport": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "Media": [
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "created",
+      "path": "content.creation",
+      "type": "date"
+    },
+    {
+      "param": "date",
+      "path": "occurrenceDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "device",
+      "path": "device",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "operator",
+      "path": "operator",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "site",
+      "path": "bodySite",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "subtype",
+      "path": "subtype",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "view",
+      "path": "view",
+      "type": "token"
+    }
+  ],
+  "Medication": [
+    {
+      "param": "code",
+      "path": "code ",
+      "type": "token"
+    },
+    {
+      "param": "container",
+      "path": "package.container",
+      "type": "token"
+    },
+    {
+      "param": "form",
+      "path": "form",
+      "type": "token"
+    },
+    {
+      "param": "ingredient",
+      "path": "ingredient.itemReference",
+      "type": "reference"
+    },
+    {
+      "param": "ingredient-code",
+      "path": "ingredient.itemCodeableConcept",
+      "type": "token"
+    },
+    {
+      "param": "manufacturer",
+      "path": "manufacturer",
+      "type": "reference"
+    },
+    {
+      "param": "over-the-counter",
+      "path": "isOverTheCounter",
+      "type": "token"
+    },
+    {
+      "param": "package-item",
+      "path": "package.content.itemReference",
+      "type": "reference"
+    },
+    {
+      "param": "package-item-code",
+      "path": "package.content.itemCodeableConcept",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "MedicationRequest": [
+    {
+      "param": "identifier",
+      "path": "identifier ",
+      "type": "token"
+    },
+    {
+      "param": "medication",
+      "path": "medicationReference ",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject ",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status ",
+      "type": "token"
+    },
+    {
+      "param": "authoredon",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "dosageInstruction.timing.event",
+      "type": "date"
+    },
+    {
+      "param": "intended-dispenser",
+      "path": "dispenseRequest.performer",
+      "type": "reference"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "MedicationAdministration": [
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "device",
+      "path": "device",
+      "type": "reference"
+    },
+    {
+      "param": "effective-time",
+      "path": "effectiveDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "not-given",
+      "path": "notGiven",
+      "type": "token"
+    },
+    {
+      "param": "performer",
+      "path": "performer.actor",
+      "type": "reference"
+    },
+    {
+      "param": "prescription",
+      "path": "prescription ",
+      "type": "reference"
+    },
+    {
+      "param": "reason-given",
+      "path": "reasonCode",
+      "type": "token"
+    },
+    {
+      "param": "reason-not-given",
+      "path": "reasonNotGiven",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "MedicationStatement": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "effective",
+      "path": "effectiveDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "informationSource",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "MedicationDispense": [
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "destination",
+      "path": "destination",
+      "type": "reference"
+    },
+    {
+      "param": "performer",
+      "path": "performer.actor",
+      "type": "reference"
+    },
+    {
+      "param": "receiver",
+      "path": "receiver",
+      "type": "reference"
+    },
+    {
+      "param": "responsibleparty",
+      "path": "substitution.responsibleParty",
+      "type": "reference"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "whenhandedover",
+      "path": "whenHandedOver",
+      "type": "date"
+    },
+    {
+      "param": "whenprepared",
+      "path": "whenPrepared",
+      "type": "date"
+    }
+  ],
+  "MessageDefinition": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "event",
+      "path": "event",
+      "type": "token"
+    },
+    {
+      "param": "focus",
+      "path": "focus.code",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "MessageHeader": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "code",
+      "path": "response.code",
+      "type": "token"
+    },
+    {
+      "param": "destination",
+      "path": "destination.name",
+      "type": "string"
+    },
+    {
+      "param": "destination-uri",
+      "path": "destination.endpoint",
+      "type": "uri"
+    },
+    {
+      "param": "enterer",
+      "path": "enterer",
+      "type": "reference"
+    },
+    {
+      "param": "event",
+      "path": "event",
+      "type": "token"
+    },
+    {
+      "param": "focus",
+      "path": "focus",
+      "type": "reference"
+    },
+    {
+      "param": "receiver",
+      "path": "receiver",
+      "type": "reference"
+    },
+    {
+      "param": "response-id",
+      "path": "response.identifier",
+      "type": "token"
+    },
+    {
+      "param": "responsible",
+      "path": "responsible",
+      "type": "reference"
+    },
+    {
+      "param": "sender",
+      "path": "sender",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "source.name",
+      "type": "string"
+    },
+    {
+      "param": "source-uri",
+      "path": "source.endpoint",
+      "type": "uri"
+    },
+    {
+      "param": "target",
+      "path": "destination.target",
+      "type": "reference"
+    },
+    {
+      "param": "timestamp",
+      "path": "timestamp",
+      "type": "date"
+    }
+  ],
+  "NamingSystem": [
+    {
+      "param": "contact",
+      "path": "contact.name",
+      "type": "string"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "id-type",
+      "path": "uniqueId.type",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "kind",
+      "path": "kind",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "period",
+      "path": "uniqueId.period",
+      "type": "date"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "replaced-by",
+      "path": "replacedBy",
+      "type": "reference"
+    },
+    {
+      "param": "responsible",
+      "path": "responsible",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "telecom",
+      "path": "contact.telecom",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "value",
+      "path": "uniqueId.value",
+      "type": "string"
+    }
+  ],
+  "OperationDefinition": [
+    {
+      "param": "base",
+      "path": "base",
+      "type": "reference"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "instance",
+      "path": "instance",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "kind",
+      "path": "kind",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "param-profile",
+      "path": "parameter.profile",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "system",
+      "path": "system",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Organization": [
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "address",
+      "path": "address",
+      "type": "string"
+    },
+    {
+      "param": "address-city",
+      "path": "address.city",
+      "type": "string"
+    },
+    {
+      "param": "address-country",
+      "path": "address.country",
+      "type": "string"
+    },
+    {
+      "param": "address-postalcode",
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    {
+      "param": "address-state",
+      "path": "address.state",
+      "type": "string"
+    },
+    {
+      "param": "address-use",
+      "path": "address.use",
+      "type": "token"
+    },
+    {
+      "param": "endpoint",
+      "path": "endpoint",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name ",
+      "type": "string"
+    },
+    {
+      "param": "partof",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "phonetic",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "Patient": [
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "animal-breed",
+      "path": "animal.breed",
+      "type": "token"
+    },
+    {
+      "param": "animal-species",
+      "path": "animal.species",
+      "type": "token"
+    },
+    {
+      "param": "death-date",
+      "path": "deceasedDateTime",
+      "type": "date"
+    },
+    {
+      "param": "deceased",
+      "path": "deceasedBoolean ",
+      "type": "token"
+    },
+    {
+      "param": "general-practitioner",
+      "path": "generalPractitioner",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "language",
+      "path": "communication.language",
+      "type": "token"
+    },
+    {
+      "param": "link",
+      "path": "link.other",
+      "type": "reference"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "organization",
+      "path": "managingOrganization",
+      "type": "reference"
+    }
+  ],
+  "RelatedPerson": [
+    {
+      "param": "address",
+      "path": "address ",
+      "type": "string"
+    },
+    {
+      "param": "address-city",
+      "path": "address.city ",
+      "type": "string"
+    },
+    {
+      "param": "address-country",
+      "path": "address.country ",
+      "type": "string"
+    },
+    {
+      "param": "address-postalcode",
+      "path": "address.postalCode ",
+      "type": "string"
+    },
+    {
+      "param": "address-state",
+      "path": "address.state ",
+      "type": "string"
+    },
+    {
+      "param": "address-use",
+      "path": "address.use ",
+      "type": "token"
+    },
+    {
+      "param": "birthdate",
+      "path": "birthDate ",
+      "type": "date"
+    },
+    {
+      "param": "gender",
+      "path": "gender ",
+      "type": "token"
+    },
+    {
+      "param": "phonetic",
+      "path": "name ",
+      "type": "string"
+    },
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    }
+  ],
+  "Practitioner": [
+    {
+      "param": "family",
+      "path": "name.family ",
+      "type": "string"
+    },
+    {
+      "param": "given",
+      "path": "name.given ",
+      "type": "string"
+    },
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "communication",
+      "path": "communication",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    }
+  ],
+  "Person": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "link",
+      "path": "link.target",
+      "type": "reference"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "organization",
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "link.target",
+      "type": "reference"
+    },
+    {
+      "param": "practitioner",
+      "path": "link.target",
+      "type": "reference"
+    },
+    {
+      "param": "relatedperson",
+      "path": "link.target",
+      "type": "reference"
+    }
+  ],
+  "PractitionerRole": [
+    {
+      "param": "email",
+      "path": "telecom[system.value='email'] ",
+      "type": "token"
+    },
+    {
+      "param": "phone",
+      "path": "telecom[system.value='phone'] ",
+      "type": "token"
+    },
+    {
+      "param": "telecom",
+      "path": "telecom ",
+      "type": "token"
+    },
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "period",
+      "type": "date"
+    },
+    {
+      "param": "endpoint",
+      "path": "endpoint",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "practitioner",
+      "path": "practitioner",
+      "type": "reference"
+    },
+    {
+      "param": "role",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "service",
+      "path": "healthcareService",
+      "type": "reference"
+    },
+    {
+      "param": "specialty",
+      "path": "specialty",
+      "type": "token"
+    }
+  ],
+  "PaymentNotice": [
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "payment-status",
+      "path": "paymentStatus",
+      "type": "token"
+    },
+    {
+      "param": "provider",
+      "path": "provider",
+      "type": "reference"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    },
+    {
+      "param": "response",
+      "path": "response",
+      "type": "reference"
+    },
+    {
+      "param": "statusdate",
+      "path": "statusDate",
+      "type": "date"
+    }
+  ],
+  "PaymentReconciliation": [
+    {
+      "param": "created",
+      "path": "created",
+      "type": "date"
+    },
+    {
+      "param": "disposition",
+      "path": "disposition",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "outcome",
+      "path": "outcome",
+      "type": "token"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    },
+    {
+      "param": "request-organization",
+      "path": "requestOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "request-provider",
+      "path": "requestProvider",
+      "type": "reference"
+    }
+  ],
+  "PlanDefinition": [
+    {
+      "param": "composed-of",
+      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "depends-on",
+      "path": "relatedArtifact[type.value='depends-on'].resource ",
+      "type": "reference"
+    },
+    {
+      "param": "derived-from",
+      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "predecessor",
+      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "successor",
+      "path": "relatedArtifact[type.value='successor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "topic",
+      "path": "topic",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "ProcessRequest": [
+    {
+      "param": "action",
+      "path": "action",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "provider",
+      "path": "provider",
+      "type": "reference"
+    }
+  ],
+  "ProcessResponse": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "organization",
+      "path": "organization",
+      "type": "reference"
+    },
+    {
+      "param": "request",
+      "path": "request",
+      "type": "reference"
+    },
+    {
+      "param": "request-organization",
+      "path": "requestOrganization",
+      "type": "reference"
+    },
+    {
+      "param": "request-provider",
+      "path": "requestProvider",
+      "type": "reference"
+    }
+  ],
+  "Provenance": [
+    {
+      "param": "agent",
+      "path": "agent.whoUri ",
+      "type": "reference"
+    },
+    {
+      "param": "agent-role",
+      "path": "agent.role",
+      "type": "token"
+    },
+    {
+      "param": "end",
+      "path": "period.end",
+      "type": "date"
+    },
+    {
+      "param": "entity-id",
+      "path": "entity.whatIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "entity-ref",
+      "path": "entity.whatReference",
+      "type": "reference"
+    },
+    {
+      "param": "location",
+      "path": "location",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "target",
+      "type": "reference"
+    },
+    {
+      "param": "recorded",
+      "path": "recorded",
+      "type": "date"
+    },
+    {
+      "param": "signature-type",
+      "path": "signature.type",
+      "type": "token"
+    },
+    {
+      "param": "start",
+      "path": "period.start",
+      "type": "date"
+    },
+    {
+      "param": "target",
+      "path": "target",
+      "type": "reference"
+    }
+  ],
+  "Questionnaire": [
+    {
+      "param": "code",
+      "path": "item.code",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "QuestionnaireResponse": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "authored",
+      "path": "authored",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "parent",
+      "path": "parent",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "questionnaire",
+      "path": "questionnaire",
+      "type": "reference"
+    },
+    {
+      "param": "source",
+      "path": "source",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "RequestGroup": [
+    {
+      "param": "author",
+      "path": "author",
+      "type": "reference"
+    },
+    {
+      "param": "authored",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "definition",
+      "path": "definition",
+      "type": "reference"
+    },
+    {
+      "param": "encounter",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "group-identifier",
+      "path": "groupIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "participant",
+      "path": "action.participant",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    }
+  ],
+  "ResearchStudy": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "period",
+      "type": "date"
+    },
+    {
+      "param": "focus",
+      "path": "focus",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "keyword",
+      "path": "keyword",
+      "type": "token"
+    },
+    {
+      "param": "partof",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "principalinvestigator",
+      "path": "principalInvestigator",
+      "type": "reference"
+    },
+    {
+      "param": "protocol",
+      "path": "protocol",
+      "type": "reference"
+    },
+    {
+      "param": "site",
+      "path": "site",
+      "type": "reference"
+    },
+    {
+      "param": "sponsor",
+      "path": "sponsor",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    }
+  ],
+  "ResearchSubject": [
+    {
+      "param": "date",
+      "path": "period",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "individual",
+      "path": "individual",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "individual",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "Schedule": [
+    {
+      "param": "active",
+      "path": "active",
+      "type": "token"
+    },
+    {
+      "param": "actor",
+      "path": "actor",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "planningHorizon",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "serviceType",
+      "type": "token"
+    }
+  ],
+  "SearchParameter": [
+    {
+      "param": "base",
+      "path": "base",
+      "type": "token"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "component",
+      "path": "component.definition",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "derived-from",
+      "path": "derivedFrom",
+      "type": "uri"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "target",
+      "path": "target",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Sequence": [
+    {
+      "param": "chromosome",
+      "path": "referenceSeq.chromosome",
+      "type": "token"
+    },
+    {
+      "param": "end",
+      "path": "referenceSeq.windowEnd",
+      "type": "number"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "patient",
+      "path": "patient",
+      "type": "reference"
+    },
+    {
+      "param": "start",
+      "path": "referenceSeq.windowStart",
+      "type": "number"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "ServiceDefinition": [
+    {
+      "param": "composed-of",
+      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "depends-on",
+      "path": "relatedArtifact[type.value='depends-on'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "derived-from",
+      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "effective",
+      "path": "effectivePeriod",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "predecessor",
+      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "successor",
+      "path": "relatedArtifact[type.value='successor'].resource",
+      "type": "reference"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "topic",
+      "path": "topic",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Slot": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "schedule",
+      "path": "schedule",
+      "type": "reference"
+    },
+    {
+      "param": "slot-type",
+      "path": "serviceType",
+      "type": "token"
+    },
+    {
+      "param": "start",
+      "path": "start",
+      "type": "date"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    }
+  ],
+  "Specimen": [
+    {
+      "param": "accession",
+      "path": "accessionIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "bodysite",
+      "path": "collection.bodySite",
+      "type": "token"
+    },
+    {
+      "param": "collected",
+      "path": "collection.collectedDateTime ",
+      "type": "date"
+    },
+    {
+      "param": "collector",
+      "path": "collection.collector",
+      "type": "reference"
+    },
+    {
+      "param": "container",
+      "path": "container.type",
+      "type": "token"
+    },
+    {
+      "param": "container-id",
+      "path": "container.identifier",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "parent",
+      "path": "parent",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "subject",
+      "type": "reference"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    }
+  ],
+  "StructureDefinition": [
+    {
+      "param": "abstract",
+      "path": "abstract",
+      "type": "token"
+    },
+    {
+      "param": "base",
+      "path": "baseDefinition",
+      "type": "uri"
+    },
+    {
+      "param": "base-path",
+      "path": "snapshot.element.base.path ",
+      "type": "token"
+    },
+    {
+      "param": "context-type",
+      "path": "contextType",
+      "type": "token"
+    },
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "derivation",
+      "path": "derivation",
+      "type": "token"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "experimental",
+      "path": "experimental",
+      "type": "token"
+    },
+    {
+      "param": "ext-context",
+      "path": "context",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "keyword",
+      "path": "keyword",
+      "type": "token"
+    },
+    {
+      "param": "kind",
+      "path": "kind",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "path",
+      "path": "snapshot.element.path ",
+      "type": "token"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "type",
+      "path": "type",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "valueset",
+      "path": "snapshot.element.binding.valueSetUri ",
+      "type": "reference"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "StructureMap": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "Subscription": [
+    {
+      "param": "add-tag",
+      "path": "tag",
+      "type": "token"
+    },
+    {
+      "param": "contact",
+      "path": "contact",
+      "type": "token"
+    },
+    {
+      "param": "criteria",
+      "path": "criteria",
+      "type": "string"
+    },
+    {
+      "param": "payload",
+      "path": "channel.payload",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "type",
+      "path": "channel.type",
+      "type": "token"
+    },
+    {
+      "param": "url",
+      "path": "channel.endpoint",
+      "type": "uri"
+    }
+  ],
+  "Substance": [
+    {
+      "param": "category",
+      "path": "category",
+      "type": "token"
+    },
+    {
+      "param": "code",
+      "path": "code ",
+      "type": "token"
+    },
+    {
+      "param": "container-identifier",
+      "path": "instance.identifier",
+      "type": "token"
+    },
+    {
+      "param": "expiry",
+      "path": "instance.expiry",
+      "type": "date"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "quantity",
+      "path": "instance.quantity",
+      "type": "quantity"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "substance-reference",
+      "path": "ingredient.substanceReference",
+      "type": "reference"
+    }
+  ],
+  "Task": [
+    {
+      "param": "authored-on",
+      "path": "authoredOn",
+      "type": "date"
+    },
+    {
+      "param": "based-on",
+      "path": "basedOn",
+      "type": "reference"
+    },
+    {
+      "param": "business-status",
+      "path": "businessStatus",
+      "type": "token"
+    },
+    {
+      "param": "code",
+      "path": "code",
+      "type": "token"
+    },
+    {
+      "param": "context",
+      "path": "context",
+      "type": "reference"
+    },
+    {
+      "param": "focus",
+      "path": "focus",
+      "type": "reference"
+    },
+    {
+      "param": "group-identifier",
+      "path": "groupIdentifier",
+      "type": "token"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "intent",
+      "path": "intent",
+      "type": "token"
+    },
+    {
+      "param": "modified",
+      "path": "lastModified",
+      "type": "date"
+    },
+    {
+      "param": "organization",
+      "path": "requester.onBehalfOf",
+      "type": "reference"
+    },
+    {
+      "param": "owner",
+      "path": "owner",
+      "type": "reference"
+    },
+    {
+      "param": "part-of",
+      "path": "partOf",
+      "type": "reference"
+    },
+    {
+      "param": "patient",
+      "path": "for",
+      "type": "reference"
+    },
+    {
+      "param": "performer",
+      "path": "performerType",
+      "type": "token"
+    },
+    {
+      "param": "period",
+      "path": "executionPeriod",
+      "type": "date"
+    },
+    {
+      "param": "priority",
+      "path": "priority",
+      "type": "token"
+    },
+    {
+      "param": "requester",
+      "path": "requester.agent",
+      "type": "reference"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "subject",
+      "path": "for",
+      "type": "reference"
+    }
+  ],
+  "TestReport": [
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "issued",
+      "path": "issued",
+      "type": "date"
+    },
+    {
+      "param": "participant",
+      "path": "participant.uri",
+      "type": "uri"
+    },
+    {
+      "param": "result",
+      "path": "result",
+      "type": "token"
+    },
+    {
+      "param": "tester",
+      "path": "tester",
+      "type": "string"
+    },
+    {
+      "param": "testscript",
+      "path": "testScript",
+      "type": "reference"
+    }
+  ],
+  "TestScript": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "testscript-capability",
+      "path": "metadata.capability.description",
+      "type": "string"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ],
+  "ValueSet": [
+    {
+      "param": "date",
+      "path": "date",
+      "type": "date"
+    },
+    {
+      "param": "description",
+      "path": "description",
+      "type": "string"
+    },
+    {
+      "param": "expansion",
+      "path": "expansion.identifier",
+      "type": "uri"
+    },
+    {
+      "param": "identifier",
+      "path": "identifier",
+      "type": "token"
+    },
+    {
+      "param": "jurisdiction",
+      "path": "jurisdiction",
+      "type": "token"
+    },
+    {
+      "param": "name",
+      "path": "name",
+      "type": "string"
+    },
+    {
+      "param": "publisher",
+      "path": "publisher",
+      "type": "string"
+    },
+    {
+      "param": "reference",
+      "path": "compose.include.system",
+      "type": "uri"
+    },
+    {
+      "param": "status",
+      "path": "status",
+      "type": "token"
+    },
+    {
+      "param": "title",
+      "path": "title",
+      "type": "string"
+    },
+    {
+      "param": "url",
+      "path": "url",
+      "type": "uri"
+    },
+    {
+      "param": "version",
+      "path": "version",
+      "type": "token"
+    }
+  ]
+}
