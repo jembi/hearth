@@ -291,7 +291,7 @@ tap.test('document reference should support searches on event', (t) => {
 tap.test('document reference should support searches on security label', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: 'http://localhost:3447/fhir/DocumentReference?securityLabel=N',
+      url: 'http://localhost:3447/fhir/DocumentReference?securitylabel=N',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {

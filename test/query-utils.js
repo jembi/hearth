@@ -12,67 +12,6 @@ const tap = require('tap')
 
 const queryUtils = require('../lib/fhir/query-utils')()
 
-tap.test('.validateAndParseQueryParams should validate searchParams', (t) => {
-  let queryParams = { test1: '1', test2: 2 }
-  let supported = {
-    test1: { allowArray: true, required: false, modifiers: { exact: true } },
-    test2: { allowArray: false, required: false, modifiers: { exact: true } },
-    test3: { }
-  }
-
-  queryUtils.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
-    t.error(badRequest)
-    const expected = {
-      test1: {
-        'no-modifier': '1'
-      },
-      test2: {
-        'no-modifier': 2
-      }
-    }
-    t.deepEqual(queryObject, expected, 'Should return queryObject if query params are supported')
-  })
-
-  queryParams = { test1: '1' }
-  supported = {
-    test1: { allowArray: true, required: true, modifiers: { exact: true } },
-    test2: { allowArray: true, required: true, modifiers: { exact: true } },
-    test3: { required: false, modifiers: { exact: true } }
-  }
-
-  queryUtils.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
-    t.ok(badRequest)
-    t.equal(badRequest, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
-  })
-
-  queryParams = { 'test1:exact': '1' }
-  supported = {
-    test1: { modifiers: { exact: true } }
-  }
-
-  queryUtils.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
-    t.error(badRequest)
-    const expected = {
-      test1: {
-        exact: '1'
-      }
-    }
-    t.deepEqual(queryObject, expected, 'Should return a queryObject when a valid modifier is supplied')
-  })
-
-  queryParams = { 'test1:fakemodifier': '1' }
-  supported = {
-    test1: { modifiers: { exact: true } }
-  }
-
-  queryUtils.validateAndParseQueryParams(queryParams, supported, (badRequest, queryObject) => {
-    t.ok(badRequest)
-    t.deepEqual(badRequest, 'This endpoint has the following query parameter: \'test1\' which does not allow for the \':fakemodifier\' modifier', 'Should return error message if modifier is not supported')
-  })
-
-  t.end()
-})
-
 tap.test('.tokenToSystemValueElemMatch should match token to system and value according to FHIR spec', (t) => {
   let token = 'test:assigning:auth|123456'
   let split = token.split('|')
