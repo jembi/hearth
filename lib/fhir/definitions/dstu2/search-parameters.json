@@ -19438,7 +19438,7 @@
         "base": "DocumentManifest",
         "type": "token",
         "description": "Unique Identifier for the set of documents",
-        "xpath": "f:DocumentManifest/f:masterIdentifier",
+        "xpath": "f:DocumentManifest/f:masterIdentifier | f:DocumentManifest/f:identifier",
         "xpathUsage": "normal"
       }
     },

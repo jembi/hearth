@@ -2180,10 +2180,16 @@
       "path": "description",
       "type": "string"
     },
-    "identifier": {
-      "path": "masterIdentifier",
-      "type": "token"
-    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
     "patient": {
       "path": "subject",
       "type": "reference"
