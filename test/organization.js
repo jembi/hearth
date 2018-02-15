@@ -54,9 +54,9 @@ tap.test('organization fetch all organizations', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 3, 'body should contain 3 results')
-      t.equal(body.entry[0].resource.identifier[0].value, '123456', 'body should contain the matching patient')
-      t.equal(body.entry[1].resource.identifier[0].value, '987654321', 'body should contain the matching patient')
-      t.equal(body.entry[2].resource.identifier[0].value, '543219876', 'body should contain the matching patient')
+      t.equal(body.entry[0].resource.identifier[0].value, '123456', 'body should contain the matching organization')
+      t.equal(body.entry[1].resource.identifier[0].value, '987654321', 'body should contain the matching organization')
+      t.equal(body.entry[2].resource.identifier[0].value, '543219876', 'body should contain the matching organization')
       done()
     })
   })
@@ -75,13 +75,13 @@ tap.test('organization should support searches on identifier', (t) => {
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equal(body.entry[0].resource.identifier[0].value, '543219876', 'body should contain the matching patient')
+      t.equal(body.entry[0].resource.identifier[0].value, '543219876', 'body should contain the matching organization')
       done()
     })
   })
 })
 
-tap.test('patient should support searches on identifier with a system specified', (t) => {
+tap.test('organization should support searches on identifier with a system specified', (t) => {
   basicOrganizationTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Organization?identifier=pshr:practice:number|543219876',
@@ -94,13 +94,13 @@ tap.test('patient should support searches on identifier with a system specified'
       t.ok(body)
       t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
       t.equal(body.total, 1, 'body should contain one result')
-      t.equal(body.entry[0].resource.identifier[0].value, '543219876', 'body should contain the matching patient')
+      t.equal(body.entry[0].resource.identifier[0].value, '543219876', 'body should contain the matching organization')
       done()
     })
   })
 })
 
-tap.test('patient should support searches with a _summary flag', (t) => {
+tap.test('organization should support searches with a _summary flag', (t) => {
   basicOrganizationTest(t, (db, done) => {
     request({
       url: 'http://localhost:3447/fhir/Organization?_summary=true',
