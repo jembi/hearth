@@ -2,7 +2,8 @@
   "server": {
     "hostname": "localhost",
     "publicFhirBase": "http://localhost:3447/fhir",
-    "port": 3447
+    "port": 3447,
+    "fhirVersion": "dstu2"
   },
   "mongodb": {
     "url": "mongodb://localhost/hearth-test"

@@ -287,7 +287,7 @@ const MHDScenario = (headers, t) => {
       promises.push(searchReferences(t, `DocumentReference?period=ge2016-12-23`))
       promises.push(searchReferences(t, `DocumentReference?facility=225732001`))
       promises.push(searchReferences(t, `DocumentReference?event=ANNGEN`))
-      promises.push(searchReferences(t, `DocumentReference?securityLabel=N`))
+      promises.push(searchReferences(t, `DocumentReference?securitylabel=N`))
       promises.push(searchReferences(t, `DocumentReference?related-id=other-doc-1`))
       promises.push(searchReferences(t, `DocumentReference?related-id=hearth:tests|other-doc-1`))
 
