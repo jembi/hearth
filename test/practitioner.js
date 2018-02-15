@@ -241,7 +241,7 @@ tap.test('should search on identifier and name', (t) => {
 tap.test('should respond with bad request OperationOutcome if unsupported query parameter used', (t) => {
   basicPractitionerTest(t, (db, done) => {
     request({
-      url: 'http://localhost:3447/fhir/Practitioner?address=notsupported',
+      url: 'http://localhost:3447/fhir/Practitioner?language=notsupported',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
