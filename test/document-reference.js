@@ -295,7 +295,6 @@ tap.test('document reference should support searches on security label', (t) => 
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
-      console.log(body)
       t.error(err)
 
       t.equal(res.statusCode, 200, 'response status code should be 200')
