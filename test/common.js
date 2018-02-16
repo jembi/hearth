@@ -386,8 +386,8 @@ tap.test('testing include resources', (t) => {
     common.mapSearchNameToPath('AuditEvent:patient')
       .then((data) => {
         t.equals(data.length, 2)
-        t.equals(data[0], 'AuditEvent.object.reference')
-        t.equals(data[1], 'AuditEvent.participant.reference')
+        t.equals(data[0], 'AuditEvent.participant.reference')
+        t.equals(data[1], 'AuditEvent.object.reference')
         t.end()
       }).catch((err) => {
         t.error(err)
@@ -399,8 +399,8 @@ tap.test('testing include resources', (t) => {
     common.mapSearchNameToPath(['AuditEvent:patient', 'AuditEvent:participant'])
       .then((data) => {
         t.equals(data.length, 2)
-        t.equals(data[0], 'AuditEvent.object.reference')
-        t.equals(data[1], 'AuditEvent.participant.reference')
+        t.equals(data[0], 'AuditEvent.participant.reference')
+        t.equals(data[1], 'AuditEvent.object.reference')
         t.end()
       }).catch((err) => {
         t.error(err)

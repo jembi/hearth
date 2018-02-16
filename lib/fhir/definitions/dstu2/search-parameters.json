@@ -30486,7 +30486,7 @@
         "base": "AuditEvent",
         "type": "reference",
         "description": "Direct reference to resource",
-        "xpath": "f:AuditEvent/f:participant/f:reference",
+        "xpath": "f:AuditEvent/f:participant/f:reference | f:AuditEvent/f:object/f:reference",
         "xpathUsage": "normal",
         "target": [
           "Account",

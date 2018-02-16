@@ -3402,10 +3402,16 @@
       "path": "participant.reference",
       "type": "reference"
     },
-    "patient": {
-      "path": "participant.reference",
-      "type": "reference"
-    },
+    "patient": [
+      {
+        "path": "participant.reference",
+        "type": "reference"
+      },
+      {
+        "path": "object.reference",
+        "type": "reference"
+      }
+    ],
     "policy": {
       "path": "participant.policy",
       "type": "uri"
