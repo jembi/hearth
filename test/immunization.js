@@ -32,12 +32,18 @@ const basicImmunizationTest = (t, test) => {
 
       const c = db.collection('Immunization')
       c.insertOne(immunization, (err) => {
-        t.error(err)
-        test(db, () => {
-          env.clearDB((err) => {
-            t.error(err)
-            server.stop(() => {
-              t.end()
+        const immunization2 = Object.assign({}, immunization)
+        delete immunization2._id
+        immunization2.encounter.reference = 'Encounter/3333333'
+
+        c.insertOne(immunization2, (err) => {
+          t.error(err)
+          test(db, () => {
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
             })
           })
         })
