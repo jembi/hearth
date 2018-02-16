@@ -1144,10 +1144,16 @@
       "path": "content.format",
       "type": "token"
     },
-    "identifier": {
-      "path": "masterIdentifier",
-      "type": "token"
-    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
     "indexed": {
       "path": "indexed",
       "type": "date"
