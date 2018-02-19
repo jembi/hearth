@@ -123,7 +123,7 @@ tap.test('Location tests', { autoend: true }, (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(body.name, 'Greenwood Clinical Practice', 'should return correct resoruce')
+          t.equals(body.name, 'Greenwood Clinical Practice', 'should return correct resource')
 
           t.notOk(body.telecom)
           t.notOk(body.address)
@@ -154,7 +154,7 @@ tap.test('Location tests', { autoend: true }, (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
           t.ok(body)
-          t.equals(body.name, 'Greenwood Clinical Practice', 'should return correct resoruce')
+          t.equals(body.name, 'Greenwood Clinical Practice', 'should return correct resource')
 
           t.ok(body.telecom)
           t.ok(body.address)
