@@ -1872,3 +1872,48 @@ tap.test('vread should respond with 404 not found if invalid value for vid is us
     })
   })
 })
+
+tap.test('patient should support standard _id parameter', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+      delete pat.id
+
+      request.post({
+        url: 'http://localhost:3447/fhir/Patient',
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
+        request({
+          url: `http://localhost:3447/fhir/Patient?_id=${id}`,
+          headers: headers,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          t.equal(res.statusCode, 200, 'response status code should be 200')
+          t.ok(body)
+          t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+          t.equals(1, body.entry.length, 'Bundle should have 1 entry')
+          t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'should contain the matching patient')
+
+          env.clearDB((err) => {
+            t.error(err)
+            server.stop(() => {
+              t.end()
+            })
+          })
+        })
+      })
+    })
+  })
+})

@@ -58,14 +58,50 @@
       "path": "identifier",
       "type": "token"
     },
-    "onset": {
-      "path": "onsetDateTime ",
-      "type": "date"
-    },
-    "onset-info": {
-      "path": "onsetDateTime ",
-      "type": "string"
-    },
+    "onset": [
+      {
+        "path": "onsetDateTime",
+        "type": "date"
+      },
+      {
+        "path": "onsetAge",
+        "type": "date"
+      },
+      {
+        "path": "onsetPeriod",
+        "type": "date"
+      },
+      {
+        "path": "onsetRange",
+        "type": "date"
+      },
+      {
+        "path": "onsetString",
+        "type": "date"
+      }
+    ],
+    "onset-info": [
+      {
+        "path": "onsetDateTime",
+        "type": "string"
+      },
+      {
+        "path": "onsetAge",
+        "type": "string"
+      },
+      {
+        "path": "onsetPeriod",
+        "type": "string"
+      },
+      {
+        "path": "onsetRange",
+        "type": "string"
+      },
+      {
+        "path": "onsetString",
+        "type": "string"
+      }
+    ],
     "patient": {
       "path": "patient",
       "type": "reference"
@@ -288,10 +324,24 @@
       "path": "type",
       "type": "token"
     },
-    "value": {
-      "path": "characteristic.valueCodeableConcept ",
-      "type": "token"
-    }
+    "value": [
+      {
+        "path": "characteristic.valueCodeableConcept",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueBoolean",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueQuantity",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueRange",
+        "type": "token"
+      }
+    ]
   },
   "ValueSet": {
     "code": {
@@ -596,10 +646,16 @@
       "path": "medicationCodeableConcept",
       "type": "token"
     },
-    "effectivedate": {
-      "path": "effectiveDateTime ",
-      "type": "date"
-    },
+    "effectivedate": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
     "identifier": {
       "path": "identifier",
       "type": "token"
@@ -1088,10 +1144,16 @@
       "path": "content.format",
       "type": "token"
     },
-    "identifier": {
-      "path": "masterIdentifier",
-      "type": "token"
-    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
     "indexed": {
       "path": "indexed",
       "type": "date"
@@ -1338,10 +1400,16 @@
       "path": "status",
       "type": "token"
     },
-    "target": {
-      "path": "targetUri ",
-      "type": "reference"
-    },
+    "target": [
+      {
+        "path": "targetUri",
+        "type": "reference"
+      },
+      {
+        "path": "targetReference",
+        "type": "reference"
+      }
+    ],
     "targetcode": {
       "path": "element.target.code",
       "type": "token"
@@ -1488,10 +1556,20 @@
       "path": "activity.detail.code",
       "type": "token"
     },
-    "activitydate": {
-      "path": "activity.detail.scheduledTiming ",
-      "type": "date"
-    },
+    "activitydate": [
+      {
+        "path": "activity.detail.scheduledTiming",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledPeriod",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledString",
+        "type": "date"
+      }
+    ],
     "activityreference": {
       "path": "activity.reference",
       "type": "reference"
@@ -1690,10 +1768,16 @@
       "path": "url",
       "type": "uri"
     },
-    "valueset": {
-      "path": "snapshot.element.binding.valueSetUri ",
-      "type": "reference"
-    },
+    "valueset": [
+      {
+        "path": "snapshot.element.binding.valueSetUri",
+        "type": "reference"
+      },
+      {
+        "path": "snapshot.element.binding.valueSetReference",
+        "type": "reference"
+      }
+    ],
     "version": {
       "path": "version",
       "type": "token"
@@ -1780,10 +1864,16 @@
       "path": "code",
       "type": "token"
     },
-    "date": {
-      "path": "performedDateTime ",
-      "type": "date"
-    },
+    "date": [
+      {
+        "path": "performedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "performedPeriod",
+        "type": "date"
+      }
+    ],
     "encounter": {
       "path": "encounter",
       "type": "reference"
@@ -1896,10 +1986,16 @@
       "path": "code",
       "type": "token"
     },
-    "date": {
-      "path": "effectiveDateTime ",
-      "type": "date"
-    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
     "diagnosis": {
       "path": "codedDiagnosis",
       "type": "token"
@@ -2090,10 +2186,16 @@
       "path": "description",
       "type": "string"
     },
-    "identifier": {
-      "path": "masterIdentifier",
-      "type": "token"
-    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
     "patient": {
       "path": "subject",
       "type": "reference"
@@ -2196,10 +2298,16 @@
       "path": "device",
       "type": "reference"
     },
-    "effectivetime": {
-      "path": "effectiveTimeDateTime ",
-      "type": "date"
-    },
+    "effectivetime": [
+      {
+        "path": "effectiveTimeDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectiveTimePeriod",
+        "type": "date"
+      }
+    ],
     "encounter": {
       "path": "encounter",
       "type": "reference"
@@ -3006,10 +3114,16 @@
       "path": "dataAbsentReason",
       "type": "token"
     },
-    "date": {
-      "path": "effectiveDateTime ",
-      "type": "date"
-    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
     "device": {
       "path": "device",
       "type": "reference"
@@ -3208,10 +3322,16 @@
       "path": "collection.bodySite",
       "type": "token"
     },
-    "collected": {
-      "path": "collection.collectedDateTime ",
-      "type": "date"
-    },
+    "collected": [
+      {
+        "path": "collection.collectedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "collection.collectedPeriod",
+        "type": "date"
+      }
+    ],
     "collector": {
       "path": "collection.collector",
       "type": "reference"
@@ -3282,10 +3402,16 @@
       "path": "participant.reference",
       "type": "reference"
     },
-    "patient": {
-      "path": "participant.reference",
-      "type": "reference"
-    },
+    "patient": [
+      {
+        "path": "participant.reference",
+        "type": "reference"
+      },
+      {
+        "path": "object.reference",
+        "type": "reference"
+      }
+    ],
     "policy": {
       "path": "participant.policy",
       "type": "uri"
@@ -3400,10 +3526,16 @@
       "path": "deceasedDateTime",
       "type": "date"
     },
-    "deceased": {
-      "path": "deceasedBoolean ",
-      "type": "token"
-    },
+    "deceased": [
+      {
+        "path": "deceasedBoolean",
+        "type": "token"
+      },
+      {
+        "path": "deceasedDateTime",
+        "type": "token"
+      }
+    ],
     "email": {
       "path": "telecom[system.value='email']",
       "type": "token"

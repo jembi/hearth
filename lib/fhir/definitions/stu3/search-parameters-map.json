@@ -68,10 +68,16 @@
       "path": "date",
       "type": "date"
     },
-    "depends-on": {
-      "path": "relatedArtifact[type.value='depends-on'].resource ",
-      "type": "reference"
-    },
+    "depends-on": [
+      {
+        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "type": "reference"
+      },
+      {
+        "path": "library",
+        "type": "reference"
+      }
+    ],
     "derived-from": {
       "path": "relatedArtifact[type.value='derived-from'].resource",
       "type": "reference"
@@ -184,8 +190,26 @@
       "path": "clinicalStatus",
       "type": "token"
     },
+    "code": [
+      {
+        "path": "code",
+        "type": "token"
+      },
+      {
+        "path": "reaction.substance",
+        "type": "token"
+      }
+    ],
     "criticality": {
       "path": "criticality",
+      "type": "token"
+    },
+    "date": {
+      "path": "assertedDate",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
       "type": "token"
     },
     "last-date": {
@@ -200,6 +224,10 @@
       "path": "reaction.onset",
       "type": "date"
     },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "recorder": {
       "path": "recorder",
       "type": "reference"
@@ -212,6 +240,10 @@
       "path": "reaction.severity",
       "type": "token"
     },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
     "verification-status": {
       "path": "verificationStatus",
       "type": "token"
@@ -219,8 +251,20 @@
   },
   "FamilyMemberHistory": {
     "code": {
-      "path": "condition.code ",
+      "path": "condition.code",
       "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
     },
     "definition": {
       "path": "definition",
@@ -240,6 +284,22 @@
     }
   },
   "DeviceRequest": {
+    "code": {
+      "path": "codeCodeableConcept",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "authored-on": {
       "path": "authoredOn",
       "type": "date"
@@ -256,10 +316,16 @@
       "path": "codeReference",
       "type": "reference"
     },
-    "event-date": {
-      "path": "occurrenceDateTime ",
-      "type": "date"
-    },
+    "event-date": [
+      {
+        "path": "occurrenceDateTime",
+        "type": "date"
+      },
+      {
+        "path": "occurrencePeriod",
+        "type": "date"
+      }
+    ],
     "group-identifier": {
       "path": "groupIdentifier",
       "type": "token"
@@ -290,6 +356,32 @@
     }
   },
   "Procedure": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "performedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "performedPeriod",
+        "type": "date"
+      }
+    ],
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "based-on": {
       "path": "basedOn",
       "type": "reference"
@@ -328,6 +420,26 @@
     }
   },
   "List": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
     "empty-reason": {
       "path": "emptyReason",
       "type": "token"
@@ -358,6 +470,22 @@
     }
   },
   "ProcedureRequest": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "authored": {
       "path": "authoredOn",
       "type": "date"
@@ -382,10 +510,20 @@
       "path": "intent",
       "type": "token"
     },
-    "occurrence": {
-      "path": "occurrenceDateTime ",
-      "type": "date"
-    },
+    "occurrence": [
+      {
+        "path": "occurrenceDateTime",
+        "type": "date"
+      },
+      {
+        "path": "occurrencePeriod",
+        "type": "date"
+      },
+      {
+        "path": "occurrenceTiming",
+        "type": "date"
+      }
+    ],
     "performer": {
       "path": "performer",
       "type": "reference"
@@ -424,6 +562,32 @@
     }
   },
   "Observation": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "based-on": {
       "path": "basedOn",
       "type": "reference"
@@ -432,22 +596,46 @@
       "path": "category",
       "type": "token"
     },
-    "combo-code": {
-      "path": "code ",
-      "type": "token"
-    },
-    "combo-data-absent-reason": {
-      "path": "dataAbsentReason ",
-      "type": "token"
-    },
-    "combo-value-concept": {
-      "path": "valueCodeableConcept ",
-      "type": "token"
-    },
-    "combo-value-quantity": {
-      "path": "valueQuantity ",
-      "type": "quantity"
-    },
+    "combo-code": [
+      {
+        "path": "code",
+        "type": "token"
+      },
+      {
+        "path": "component.code",
+        "type": "token"
+      }
+    ],
+    "combo-data-absent-reason": [
+      {
+        "path": "dataAbsentReason",
+        "type": "token"
+      },
+      {
+        "path": "component.dataAbsentReason",
+        "type": "token"
+      }
+    ],
+    "combo-value-concept": [
+      {
+        "path": "valueCodeableConcept",
+        "type": "token"
+      },
+      {
+        "path": "component.valueCodeableConcept",
+        "type": "token"
+      }
+    ],
+    "combo-value-quantity": [
+      {
+        "path": "valueQuantity",
+        "type": "quantity"
+      },
+      {
+        "path": "component.valueQuantity",
+        "type": "quantity"
+      }
+    ],
     "component-code": {
       "path": "component.code",
       "type": "token"
@@ -508,10 +696,16 @@
       "path": "valueCodeableConcept",
       "type": "token"
     },
-    "value-date": {
-      "path": "valueDateTime ",
-      "type": "date"
-    },
+    "value-date": [
+      {
+        "path": "valueDateTime",
+        "type": "date"
+      },
+      {
+        "path": "valuePeriod",
+        "type": "date"
+      }
+    ],
     "value-quantity": {
       "path": "valueQuantity",
       "type": "quantity"
@@ -522,6 +716,32 @@
     }
   },
   "DiagnosticReport": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "based-on": {
       "path": "basedOn",
       "type": "reference"
@@ -568,18 +788,64 @@
     }
   },
   "Condition": {
-    "abatement-age": {
-      "path": "abatementAge ",
-      "type": "quantity"
-    },
-    "abatement-boolean": {
-      "path": "abatementDateTime ",
+    "code": {
+      "path": "code",
       "type": "token"
     },
-    "abatement-date": {
-      "path": "abatementDateTime ",
-      "type": "date"
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
     },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "abatement-age": [
+      {
+        "path": "abatementAge",
+        "type": "quantity"
+      },
+      {
+        "path": "abatementRange",
+        "type": "quantity"
+      }
+    ],
+    "abatement-boolean": [
+      {
+        "path": "abatementDateTime",
+        "type": "token"
+      },
+      {
+        "path": "abatementAge",
+        "type": "token"
+      },
+      {
+        "path": "abatementBoolean",
+        "type": "token"
+      },
+      {
+        "path": "abatementPeriod",
+        "type": "token"
+      },
+      {
+        "path": "abatementRange",
+        "type": "token"
+      },
+      {
+        "path": "abatementString",
+        "type": "token"
+      }
+    ],
+    "abatement-date": [
+      {
+        "path": "abatementDateTime",
+        "type": "date"
+      },
+      {
+        "path": "abatementPeriod",
+        "type": "date"
+      }
+    ],
     "abatement-string": {
       "path": "abatementString",
       "type": "string"
@@ -620,14 +886,26 @@
       "path": "evidence.detail",
       "type": "reference"
     },
-    "onset-age": {
-      "path": "onsetAge ",
-      "type": "quantity"
-    },
-    "onset-date": {
-      "path": "onsetDateTime ",
-      "type": "date"
-    },
+    "onset-age": [
+      {
+        "path": "onsetAge",
+        "type": "quantity"
+      },
+      {
+        "path": "onsetRange",
+        "type": "quantity"
+      }
+    ],
+    "onset-date": [
+      {
+        "path": "onsetDateTime",
+        "type": "date"
+      },
+      {
+        "path": "onsetPeriod",
+        "type": "date"
+      }
+    ],
     "onset-info": {
       "path": "onsetString",
       "type": "string"
@@ -651,17 +929,37 @@
   },
   "Consent": {
     "date": {
-      "path": "dateTime ",
+      "path": "dateTime",
       "type": "date"
     },
-    "action": {
-      "path": "action ",
+    "identifier": {
+      "path": "identifier",
       "type": "token"
     },
-    "actor": {
-      "path": "actor.reference ",
+    "patient": {
+      "path": "patient",
       "type": "reference"
     },
+    "action": [
+      {
+        "path": "action",
+        "type": "token"
+      },
+      {
+        "path": "except.action",
+        "type": "token"
+      }
+    ],
+    "actor": [
+      {
+        "path": "actor.reference",
+        "type": "reference"
+      },
+      {
+        "path": "except.actor.reference",
+        "type": "reference"
+      }
+    ],
     "category": {
       "path": "category",
       "type": "token"
@@ -670,10 +968,16 @@
       "path": "consentingParty",
       "type": "reference"
     },
-    "data": {
-      "path": "data.reference ",
-      "type": "reference"
-    },
+    "data": [
+      {
+        "path": "data.reference",
+        "type": "reference"
+      },
+      {
+        "path": "except.data.reference",
+        "type": "reference"
+      }
+    ],
     "organization": {
       "path": "organization",
       "type": "reference"
@@ -682,24 +986,54 @@
       "path": "period",
       "type": "date"
     },
-    "purpose": {
-      "path": "purpose ",
-      "type": "token"
-    },
-    "securitylabel": {
-      "path": "securityLabel ",
-      "type": "token"
-    },
-    "source": {
-      "path": "sourceAttachment ",
-      "type": "reference"
-    },
+    "purpose": [
+      {
+        "path": "purpose",
+        "type": "token"
+      },
+      {
+        "path": "except.purpose",
+        "type": "token"
+      }
+    ],
+    "securitylabel": [
+      {
+        "path": "securityLabel",
+        "type": "token"
+      },
+      {
+        "path": "except.securityLabel",
+        "type": "token"
+      }
+    ],
+    "source": [
+      {
+        "path": "sourceAttachment",
+        "type": "reference"
+      },
+      {
+        "path": "sourceIdentifier",
+        "type": "reference"
+      },
+      {
+        "path": "sourceReference",
+        "type": "reference"
+      }
+    ],
     "status": {
       "path": "status",
       "type": "token"
     }
   },
   "SupplyRequest": {
+    "date": {
+      "path": "authoredOn",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
     "category": {
       "path": "category",
       "type": "token"
@@ -718,6 +1052,22 @@
     }
   },
   "RiskAssessment": {
+    "date": {
+      "path": "occurrenceDateTime",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "context",
+      "type": "reference"
+    },
     "condition": {
       "path": "condition",
       "type": "reference"
@@ -730,10 +1080,16 @@
       "path": "performer",
       "type": "reference"
     },
-    "probability": {
-      "path": "prediction.probabilityDecimal ",
-      "type": "number"
-    },
+    "probability": [
+      {
+        "path": "prediction.probabilityDecimal",
+        "type": "number"
+      },
+      {
+        "path": "prediction.probabilityRange",
+        "type": "number"
+      }
+    ],
     "risk": {
       "path": "prediction.qualitativeRisk",
       "type": "token"
@@ -744,6 +1100,18 @@
     }
   },
   "CareTeam": {
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
     "category": {
       "path": "category",
       "type": "token"
@@ -770,6 +1138,22 @@
     }
   },
   "Encounter": {
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
     "appointment": {
       "path": "appointment",
       "type": "reference"
@@ -840,14 +1224,36 @@
     }
   },
   "CarePlan": {
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
     "activity-code": {
       "path": "activity.detail.code",
       "type": "token"
     },
-    "activity-date": {
-      "path": "activity.detail.scheduledTiming ",
-      "type": "date"
-    },
+    "activity-date": [
+      {
+        "path": "activity.detail.scheduledTiming",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledPeriod",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledString",
+        "type": "date"
+      }
+    ],
     "activity-reference": {
       "path": "activity.reference",
       "type": "reference"
@@ -910,6 +1316,22 @@
     }
   },
   "EpisodeOfCare": {
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
     "care-manager": {
       "path": "careManager",
       "type": "reference"
@@ -932,6 +1354,18 @@
     }
   },
   "Immunization": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "dose-sequence": {
       "path": "vaccinationProtocol.doseSequence",
       "type": "number"
@@ -982,6 +1416,18 @@
     }
   },
   "Flag": {
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
     "author": {
       "path": "author",
       "type": "reference"
@@ -996,6 +1442,22 @@
     }
   },
   "Composition": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
     "attester": {
       "path": "attester.party",
       "type": "reference"
@@ -1015,6 +1477,10 @@
     "context": {
       "path": "event.code",
       "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
     },
     "entry": {
       "path": "section.entry",
@@ -1050,6 +1516,18 @@
     }
   },
   "DetectedIssue": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "author": {
       "path": "author",
       "type": "reference"
@@ -1064,6 +1542,14 @@
     }
   },
   "ClinicalImpression": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
     "action": {
       "path": "action",
       "type": "reference"
@@ -1110,8 +1596,22 @@
     }
   },
   "DocumentManifest": {
-    "identifier": {
-      "path": "masterIdentifier ",
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
       "type": "token"
     },
     "author": {
@@ -1156,6 +1656,14 @@
     }
   },
   "Goal": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
     "category": {
       "path": "category",
       "type": "token"
@@ -1178,8 +1686,26 @@
     }
   },
   "DocumentReference": {
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
     "encounter": {
-      "path": "context.encounter ",
+      "path": "context.encounter",
       "type": "reference"
     },
     "authenticator": {
@@ -1268,6 +1794,14 @@
     }
   },
   "ImagingStudy": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "accession": {
       "path": "accession",
       "type": "token"
@@ -1288,10 +1822,16 @@
       "path": "series.instance.sopClass",
       "type": "uri"
     },
-    "endpoint": {
-      "path": "endpoint ",
-      "type": "reference"
-    },
+    "endpoint": [
+      {
+        "path": "endpoint",
+        "type": "reference"
+      },
+      {
+        "path": "series.endpoint",
+        "type": "reference"
+      }
+    ],
     "modality": {
       "path": "series.modality",
       "type": "token"
@@ -1322,6 +1862,18 @@
     }
   },
   "VisionPrescription": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
     "datewritten": {
       "path": "dateWritten",
       "type": "date"
@@ -1332,6 +1884,18 @@
     }
   },
   "NutritionOrder": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
     "additive": {
       "path": "enteralFormula.additiveType",
       "type": "token"
@@ -1362,6 +1926,14 @@
     }
   },
   "SupplyDelivery": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "receiver": {
       "path": "receiver",
       "type": "reference"
@@ -1377,11 +1949,11 @@
   },
   "ReferralRequest": {
     "patient": {
-      "path": "subject ",
+      "path": "subject",
       "type": "reference"
     },
     "type": {
-      "path": "type ",
+      "path": "type",
       "type": "token"
     },
     "authored-on": {
@@ -1416,10 +1988,16 @@
       "path": "intent",
       "type": "token"
     },
-    "occurrence-date": {
-      "path": "occurrenceDateTime ",
-      "type": "date"
-    },
+    "occurrence-date": [
+      {
+        "path": "occurrenceDateTime",
+        "type": "date"
+      },
+      {
+        "path": "occurrencePeriod",
+        "type": "date"
+      }
+    ],
     "priority": {
       "path": "priority",
       "type": "token"
@@ -1454,6 +2032,10 @@
     }
   },
   "ImagingManifest": {
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
     "author": {
       "path": "author",
       "type": "reference"
@@ -1462,10 +2044,16 @@
       "path": "authoringTime",
       "type": "date"
     },
-    "endpoint": {
-      "path": "study.endpoint ",
-      "type": "reference"
-    },
+    "endpoint": [
+      {
+        "path": "study.endpoint",
+        "type": "reference"
+      },
+      {
+        "path": "study.series.endpoint",
+        "type": "reference"
+      }
+    ],
     "identifier": {
       "path": "identifier",
       "type": "token"
@@ -1480,6 +2068,10 @@
     }
   },
   "DeviceUseStatement": {
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
     "device": {
       "path": "device",
       "type": "reference"
@@ -1622,10 +2214,16 @@
       "path": "outcome",
       "type": "token"
     },
-    "patient": {
-      "path": "agent.reference ",
-      "type": "reference"
-    },
+    "patient": [
+      {
+        "path": "agent.reference",
+        "type": "reference"
+      },
+      {
+        "path": "entity.reference",
+        "type": "reference"
+      }
+    ],
     "policy": {
       "path": "agent.policy",
       "type": "uri"
@@ -1822,10 +2420,20 @@
       "path": "identifier",
       "type": "token"
     },
-    "occurrence": {
-      "path": "occurrenceDateTime ",
-      "type": "date"
-    },
+    "occurrence": [
+      {
+        "path": "occurrenceDateTime",
+        "type": "date"
+      },
+      {
+        "path": "occurrencePeriod",
+        "type": "date"
+      },
+      {
+        "path": "occurrenceTiming",
+        "type": "date"
+      }
+    ],
     "participant-actor": {
       "path": "participant.actor",
       "type": "reference"
@@ -2418,20 +3026,42 @@
       "path": "version",
       "type": "token"
     },
-    "objectClass": {
-      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass'] ",
-      "type": "token"
-    },
-    "objectClassProperty": {
-      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty'] ",
-      "type": "token"
-    }
+    "objectClass": [
+      {
+        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+        "type": "token"
+      },
+      {
+        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+        "type": "token"
+      }
+    ],
+    "objectClassProperty": [
+      {
+        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+        "type": "token"
+      },
+      {
+        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+        "type": "token"
+      }
+    ]
   },
   "Device": {
-    "device-name": {
-      "path": "udi.name ",
-      "type": "string"
-    },
+    "device-name": [
+      {
+        "path": "udi.name",
+        "type": "string"
+      },
+      {
+        "path": "type.text",
+        "type": "string"
+      },
+      {
+        "path": "type.coding.display",
+        "type": "string"
+      }
+    ],
     "identifier": {
       "path": "identifier",
       "type": "token"
@@ -2464,10 +3094,16 @@
       "path": "type",
       "type": "token"
     },
-    "udi-carrier": {
-      "path": "udi.carrierHRF ",
-      "type": "string"
-    },
+    "udi-carrier": [
+      {
+        "path": "udi.carrierHRF",
+        "type": "string"
+      },
+      {
+        "path": "udi.carrierAIDC",
+        "type": "string"
+      }
+    ],
     "udi-di": {
       "path": "udi.deviceIdentifier",
       "type": "string"
@@ -2798,10 +3434,24 @@
       "path": "type",
       "type": "token"
     },
-    "value": {
-      "path": "characteristic.valueCodeableConcept ",
-      "type": "token"
-    }
+    "value": [
+      {
+        "path": "characteristic.valueCodeableConcept",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueBoolean",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueQuantity",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueRange",
+        "type": "token"
+      }
+    ]
   },
   "GuidanceResponse": {
     "identifier": {
@@ -2934,10 +3584,16 @@
       "path": "publisher",
       "type": "string"
     },
-    "resource": {
-      "path": "package.resource.sourceUri ",
-      "type": "reference"
-    },
+    "resource": [
+      {
+        "path": "package.resource.sourceUri",
+        "type": "reference"
+      },
+      {
+        "path": "package.resource.sourceReference",
+        "type": "reference"
+      }
+    ],
     "status": {
       "path": "status",
       "type": "token"
@@ -3068,10 +3724,16 @@
       "path": "identifier",
       "type": "token"
     },
-    "name": {
-      "path": "name ",
-      "type": "string"
-    },
+    "name": [
+      {
+        "path": "name",
+        "type": "string"
+      },
+      {
+        "path": "alias",
+        "type": "string"
+      }
+    ],
     "near": {
       "path": "position",
       "type": "token"
@@ -3110,10 +3772,16 @@
       "path": "date",
       "type": "date"
     },
-    "depends-on": {
-      "path": "relatedArtifact[type.value='depends-on'].resource ",
-      "type": "reference"
-    },
+    "depends-on": [
+      {
+        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "type": "reference"
+      },
+      {
+        "path": "library",
+        "type": "reference"
+      }
+    ],
     "derived-from": {
       "path": "relatedArtifact[type.value='derived-from'].resource",
       "type": "reference"
@@ -3198,10 +3866,16 @@
       "path": "content.creation",
       "type": "date"
     },
-    "date": {
-      "path": "occurrenceDateTime ",
-      "type": "date"
-    },
+    "date": [
+      {
+        "path": "occurrenceDateTime",
+        "type": "date"
+      },
+      {
+        "path": "occurrencePeriod",
+        "type": "date"
+      }
+    ],
     "device": {
       "path": "device",
       "type": "reference"
@@ -3241,7 +3915,7 @@
   },
   "Medication": {
     "code": {
-      "path": "code ",
+      "path": "code",
       "type": "token"
     },
     "container": {
@@ -3282,20 +3956,24 @@
     }
   },
   "MedicationRequest": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
     "identifier": {
-      "path": "identifier ",
+      "path": "identifier",
       "type": "token"
     },
     "medication": {
-      "path": "medicationReference ",
+      "path": "medicationReference",
       "type": "reference"
     },
     "patient": {
-      "path": "subject ",
+      "path": "subject",
       "type": "reference"
     },
     "status": {
-      "path": "status ",
+      "path": "status",
       "type": "token"
     },
     "authoredon": {
@@ -3336,6 +4014,10 @@
     }
   },
   "MedicationAdministration": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
     "context": {
       "path": "context",
       "type": "reference"
@@ -3344,20 +4026,38 @@
       "path": "device",
       "type": "reference"
     },
-    "effective-time": {
-      "path": "effectiveDateTime ",
-      "type": "date"
+    "effective-time": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
     },
     "not-given": {
       "path": "notGiven",
       "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
     },
     "performer": {
       "path": "performer.actor",
       "type": "reference"
     },
     "prescription": {
-      "path": "prescription ",
+      "path": "prescription",
       "type": "reference"
     },
     "reason-given": {
@@ -3368,12 +4068,36 @@
       "path": "reasonNotGiven",
       "type": "token"
     },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
     "subject": {
       "path": "subject",
       "type": "reference"
     }
   },
   "MedicationStatement": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
     "category": {
       "path": "category",
       "type": "token"
@@ -3382,10 +4106,16 @@
       "path": "context",
       "type": "reference"
     },
-    "effective": {
-      "path": "effectiveDateTime ",
-      "type": "date"
-    },
+    "effective": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
     "part-of": {
       "path": "partOf",
       "type": "reference"
@@ -3400,6 +4130,30 @@
     }
   },
   "MedicationDispense": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "prescription": {
+      "path": "authorizingPrescription",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
     "context": {
       "path": "context",
       "type": "reference"
@@ -3714,10 +4468,16 @@
       "path": "identifier",
       "type": "token"
     },
-    "name": {
-      "path": "name ",
-      "type": "string"
-    },
+    "name": [
+      {
+        "path": "name",
+        "type": "string"
+      },
+      {
+        "path": "alias",
+        "type": "string"
+      }
+    ],
     "partof": {
       "path": "partOf",
       "type": "reference"
@@ -3736,6 +4496,30 @@
       "path": "active",
       "type": "token"
     },
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
     "animal-breed": {
       "path": "animal.breed",
       "type": "token"
@@ -3744,17 +4528,43 @@
       "path": "animal.species",
       "type": "token"
     },
+    "birthdate": {
+      "path": "birthDate",
+      "type": "date"
+    },
     "death-date": {
       "path": "deceasedDateTime",
       "type": "date"
     },
-    "deceased": {
-      "path": "deceasedBoolean ",
+    "deceased": [
+      {
+        "path": "deceasedBoolean",
+        "type": "token"
+      },
+      {
+        "path": "deceasedDateTime",
+        "type": "token"
+      }
+    ],
+    "email": {
+      "path": "telecom[system.value='email']",
+      "type": "token"
+    },
+    "family": {
+      "path": "name.family",
+      "type": "string"
+    },
+    "gender": {
+      "path": "gender",
       "type": "token"
     },
     "general-practitioner": {
       "path": "generalPractitioner",
       "type": "reference"
+    },
+    "given": {
+      "path": "name.given",
+      "type": "string"
     },
     "identifier": {
       "path": "identifier",
@@ -3775,44 +4585,68 @@
     "organization": {
       "path": "managingOrganization",
       "type": "reference"
+    },
+    "phone": {
+      "path": "telecom[system.value='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
     }
   },
   "RelatedPerson": {
     "address": {
-      "path": "address ",
+      "path": "address",
       "type": "string"
     },
     "address-city": {
-      "path": "address.city ",
+      "path": "address.city",
       "type": "string"
     },
     "address-country": {
-      "path": "address.country ",
+      "path": "address.country",
       "type": "string"
     },
     "address-postalcode": {
-      "path": "address.postalCode ",
+      "path": "address.postalCode",
       "type": "string"
     },
     "address-state": {
-      "path": "address.state ",
+      "path": "address.state",
       "type": "string"
     },
     "address-use": {
-      "path": "address.use ",
+      "path": "address.use",
       "type": "token"
     },
     "birthdate": {
-      "path": "birthDate ",
+      "path": "birthDate",
       "type": "date"
     },
+    "email": {
+      "path": "telecom[system.value='email']",
+      "type": "token"
+    },
     "gender": {
-      "path": "gender ",
+      "path": "gender",
+      "type": "token"
+    },
+    "phone": {
+      "path": "telecom[system.value='phone']",
       "type": "token"
     },
     "phonetic": {
-      "path": "name ",
+      "path": "name",
       "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
     },
     "active": {
       "path": "active",
@@ -3832,13 +4666,57 @@
     }
   },
   "Practitioner": {
-    "family": {
-      "path": "name.family ",
+    "address": {
+      "path": "address",
       "type": "string"
     },
-    "given": {
-      "path": "name.given ",
+    "address-city": {
+      "path": "address.city",
       "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "email": {
+      "path": "telecom[system.value='email']",
+      "type": "token"
+    },
+    "family": {
+      "path": "name.family",
+      "type": "string"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "given": {
+      "path": "name.given",
+      "type": "string"
+    },
+    "phone": {
+      "path": "telecom[system.value='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
     },
     "active": {
       "path": "active",
@@ -3858,6 +4736,54 @@
     }
   },
   "Person": {
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "birthdate": {
+      "path": "birthDate",
+      "type": "date"
+    },
+    "email": {
+      "path": "telecom[system.value='email']",
+      "type": "token"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "phone": {
+      "path": "telecom[system.value='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
+    },
     "identifier": {
       "path": "identifier",
       "type": "token"
@@ -3889,15 +4815,15 @@
   },
   "PractitionerRole": {
     "email": {
-      "path": "telecom[system.value='email'] ",
+      "path": "telecom[system.value='email']",
       "type": "token"
     },
     "phone": {
-      "path": "telecom[system.value='phone'] ",
+      "path": "telecom[system.value='phone']",
       "type": "token"
     },
     "telecom": {
-      "path": "telecom ",
+      "path": "telecom",
       "type": "token"
     },
     "active": {
@@ -4018,10 +4944,16 @@
       "path": "date",
       "type": "date"
     },
-    "depends-on": {
-      "path": "relatedArtifact[type.value='depends-on'].resource ",
-      "type": "reference"
-    },
+    "depends-on": [
+      {
+        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "type": "reference"
+      },
+      {
+        "path": "library",
+        "type": "reference"
+      }
+    ],
     "derived-from": {
       "path": "relatedArtifact[type.value='derived-from'].resource",
       "type": "reference"
@@ -4120,10 +5052,16 @@
     }
   },
   "Provenance": {
-    "agent": {
-      "path": "agent.whoUri ",
-      "type": "reference"
-    },
+    "agent": [
+      {
+        "path": "agent.whoUri",
+        "type": "reference"
+      },
+      {
+        "path": "agent.whoReference",
+        "type": "reference"
+      }
+    ],
     "agent-role": {
       "path": "agent.role",
       "type": "token"
@@ -4598,10 +5536,16 @@
       "path": "collection.bodySite",
       "type": "token"
     },
-    "collected": {
-      "path": "collection.collectedDateTime ",
-      "type": "date"
-    },
+    "collected": [
+      {
+        "path": "collection.collectedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "collection.collectedPeriod",
+        "type": "date"
+      }
+    ],
     "collector": {
       "path": "collection.collector",
       "type": "reference"
@@ -4648,10 +5592,16 @@
       "path": "baseDefinition",
       "type": "uri"
     },
-    "base-path": {
-      "path": "snapshot.element.base.path ",
-      "type": "token"
-    },
+    "base-path": [
+      {
+        "path": "snapshot.element.base.path",
+        "type": "token"
+      },
+      {
+        "path": "differential.element.base.path",
+        "type": "token"
+      }
+    ],
     "context-type": {
       "path": "contextType",
       "type": "token"
@@ -4696,10 +5646,16 @@
       "path": "name",
       "type": "string"
     },
-    "path": {
-      "path": "snapshot.element.path ",
-      "type": "token"
-    },
+    "path": [
+      {
+        "path": "snapshot.element.path",
+        "type": "token"
+      },
+      {
+        "path": "differential.element.path",
+        "type": "token"
+      }
+    ],
     "publisher": {
       "path": "publisher",
       "type": "string"
@@ -4720,10 +5676,16 @@
       "path": "url",
       "type": "uri"
     },
-    "valueset": {
-      "path": "snapshot.element.binding.valueSetUri ",
-      "type": "reference"
-    },
+    "valueset": [
+      {
+        "path": "snapshot.element.binding.valueSetUri",
+        "type": "reference"
+      },
+      {
+        "path": "snapshot.element.binding.valueSetReference",
+        "type": "reference"
+      }
+    ],
     "version": {
       "path": "version",
       "type": "token"
@@ -4806,10 +5768,16 @@
       "path": "category",
       "type": "token"
     },
-    "code": {
-      "path": "code ",
-      "type": "token"
-    },
+    "code": [
+      {
+        "path": "code",
+        "type": "token"
+      },
+      {
+        "path": "ingredient.substanceCodeableConcept",
+        "type": "token"
+      }
+    ],
     "container-identifier": {
       "path": "instance.identifier",
       "type": "token"

@@ -9849,7 +9849,7 @@
         "base": "DocumentReference",
         "type": "token",
         "description": "Master Version Specific Identifier",
-        "xpath": "f:DocumentReference/f:masterIdentifier",
+        "xpath": "f:DocumentReference/f:masterIdentifier | f:DocumentReference/f:identifier",
         "xpathUsage": "normal"
       }
     },
@@ -19438,7 +19438,7 @@
         "base": "DocumentManifest",
         "type": "token",
         "description": "Unique Identifier for the set of documents",
-        "xpath": "f:DocumentManifest/f:masterIdentifier",
+        "xpath": "f:DocumentManifest/f:masterIdentifier | f:DocumentManifest/f:identifier",
         "xpathUsage": "normal"
       }
     },
@@ -30486,7 +30486,7 @@
         "base": "AuditEvent",
         "type": "reference",
         "description": "Direct reference to resource",
-        "xpath": "f:AuditEvent/f:participant/f:reference",
+        "xpath": "f:AuditEvent/f:participant/f:reference | f:AuditEvent/f:object/f:reference",
         "xpathUsage": "normal",
         "target": [
           "Account",

@@ -156,9 +156,9 @@ tap.test('Reverse include resources', t => {
       )
       .then(resources => {
         t.equal(db.collection.callCount, 2)
-        t.equal(db.collection.firstCall.args[0], 'Encounter')
-        t.equal(db.collection.secondCall.args[0], 'Procedure')
-        t.deepEqual(resources, [...expectedEncounterResources, ...expectedProcedureResources])
+        t.equal(db.collection.firstCall.args[0], 'Procedure')
+        t.equal(db.collection.secondCall.args[0], 'Encounter')
+        t.deepEqual(resources, [...expectedProcedureResources, ...expectedEncounterResources])
       })
   })
 

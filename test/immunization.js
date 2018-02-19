@@ -21,6 +21,13 @@ const immunization = {
   }
 }
 
+const immunization2 = {
+  id: 22222,
+  encounter: {
+    reference: 'Encounter/33333'
+  }
+}
+
 // TODOD: Enhance test with more detailed resources
 
 const basicImmunizationTest = (t, test) => {
@@ -33,11 +40,16 @@ const basicImmunizationTest = (t, test) => {
       const c = db.collection('Immunization')
       c.insertOne(immunization, (err) => {
         t.error(err)
-        test(db, () => {
-          env.clearDB((err) => {
-            t.error(err)
-            server.stop(() => {
-              t.end()
+
+        c.insertOne(immunization2, (err) => {
+          t.error(err)
+
+          test(db, () => {
+            env.clearDB((err) => {
+              t.error(err)
+              server.stop(() => {
+                t.end()
+              })
             })
           })
         })

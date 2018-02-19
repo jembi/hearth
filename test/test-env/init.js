@@ -95,9 +95,9 @@ module.exports = () => {
     if (testPatient.allergy) { testPatient.allergy.patient.reference = resource }
     if (testPatient.encounter) { testPatient.encounter.patient.reference = resource }
     if (testPatient.procedure) { testPatient.procedure.subject.reference = resource }
-    if (testPatient.preop) {
-      testPatient.preop.subject.reference = resource
-      testPatient.preop.source.reference = resource
+    if (testPatient.questionnaireResponse) {
+      testPatient.questionnaireResponse.subject.reference = resource
+      testPatient.questionnaireResponse.source.reference = resource
     }
   }
 
@@ -257,7 +257,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
+          questionnaireResponse: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         emmarentia: {
           email: 'emmarentia@email.com',
@@ -266,7 +266,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
+          questionnaireResponse: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         nikita: {
           email: 'nikita@email.com',
@@ -275,7 +275,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
+          questionnaireResponse: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         },
         mwawi: {
           email: 'mwawi@email.com',
@@ -284,7 +284,7 @@ module.exports = () => {
           allergy: _.cloneDeep(require('../resources/AllergyIntolerance-1.json')),
           encounter: _.cloneDeep(require('../resources/Encounter-1.json')),
           procedure: _.cloneDeep(require('../resources/ProcedureRequest-1.json')),
-          preop: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
+          questionnaireResponse: _.cloneDeep(require('../resources/QuestionnaireResponse-1.json'))
         }
       }
 
@@ -292,22 +292,22 @@ module.exports = () => {
       delete testPatients.charlton.allergy.id
       delete testPatients.charlton.encounter.id
       delete testPatients.charlton.procedure.id
-      delete testPatients.charlton.preop.id
+      delete testPatients.charlton.questionnaireResponse.id
       delete testPatients.emmarentia.patient.id
       delete testPatients.emmarentia.allergy.id
       delete testPatients.emmarentia.encounter.id
       delete testPatients.emmarentia.procedure.id
-      delete testPatients.emmarentia.preop.id
+      delete testPatients.emmarentia.questionnaireResponse.id
       delete testPatients.nikita.patient.id
       delete testPatients.nikita.allergy.id
       delete testPatients.nikita.encounter.id
       delete testPatients.nikita.procedure.id
-      delete testPatients.nikita.preop.id
+      delete testPatients.nikita.questionnaireResponse.id
       delete testPatients.mwawi.patient.id
       delete testPatients.mwawi.allergy.id
       delete testPatients.mwawi.encounter.id
       delete testPatients.mwawi.procedure.id
-      delete testPatients.mwawi.preop.id
+      delete testPatients.mwawi.questionnaireResponse.id
       testPatients.emmarentia.patient.name[0].prefix = ['Ms']
       testPatients.emmarentia.patient.name[0].given = ['Emmarentia']
       testPatients.emmarentia.patient.name[0].family = ['Cook', 'Spray']
@@ -570,11 +570,11 @@ module.exports = () => {
 
               const id = res.headers.location.replace('/fhir/ProcedureRequest/', '').replace(/\/_history\/.*/, '')
               testPatient.procedure.id = id
-              testPatient.preop.encounter.reference = encounterRef
+              testPatient.questionnaireResponse.encounter.reference = encounterRef
 
               request.post({
                 url: 'http://localhost:3447/fhir/QuestionnaireResponse',
-                body: testPatient.preop,
+                body: testPatient.questionnaireResponse,
                 headers: getTestAuthHeaders(sysadminUser.email),
                 json: true
               }, (err, res, body) => {
@@ -582,7 +582,7 @@ module.exports = () => {
                 t.equal(res.statusCode, 201)
 
                 const id = res.headers.location.replace('/fhir/QuestionnaireResponse/', '').replace(/\/_history\/.*/, '')
-                testPatient.preop.id = id
+                testPatient.questionnaireResponse.id = id
                 callback()
               })
             })

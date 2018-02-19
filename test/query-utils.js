@@ -10,13 +10,19 @@
 
 const tap = require('tap')
 
+require('./test-env/init')()
+const config = require('../lib/config')
 const queryUtils = require('../lib/fhir/query-utils')()
 
-tap.test('.tokenToSystemValueElemMatch should match token to system and value according to FHIR spec', (t) => {
+const FHIR_VERSION = config.getConf('server:fhirVersion')
+const structDefMap = require(`../lib/fhir/definitions/${FHIR_VERSION}/structure-definition-map.json`)
+
+tap.test('.tokenToSystemValue should match token to system and value according to FHIR spec', (t) => {
+  const propertyDefObj = structDefMap.Patient.elements.identifier
   let token = 'test:assigning:auth|123456'
   let split = token.split('|')
   let expected = { identifier: { $elemMatch: { system: split[0], value: split[1] } } }
-  let actual = queryUtils.tokenToSystemValueElemMatch('identifier', token)
+  let actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Single system|value token')
 
   token = [ 'test:assigning:auth|123456', 'another:assigning:auth|111111' ]
@@ -28,12 +34,12 @@ tap.test('.tokenToSystemValueElemMatch should match token to system and value ac
     { identifier: { $elemMatch: { system: split[0], value: split[1] } } },
     { identifier: { $elemMatch: { system: split[2], value: split[3] } } }
   ] }
-  actual = queryUtils.tokenToSystemValueElemMatch('identifier', token)
+  actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Multiple system|value tokens')
 
   token = '123456'
   expected = { identifier: { $elemMatch: { value: token } } }
-  actual = queryUtils.tokenToSystemValueElemMatch('identifier', token)
+  actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Single value without system token')
 
   token = [ '123456', '111111' ]
@@ -41,13 +47,13 @@ tap.test('.tokenToSystemValueElemMatch should match token to system and value ac
     { identifier: { $elemMatch: { value: token[0] } } },
     { identifier: { $elemMatch: { value: token[1] } } }
   ] }
-  actual = queryUtils.tokenToSystemValueElemMatch('identifier', token)
+  actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Multiple value without system tokens')
 
   token = '|123456'
   split = token.split('|')
   expected = { identifier: { $elemMatch: { system: { $exists: false }, value: split[1] } } }
-  actual = queryUtils.tokenToSystemValueElemMatch('identifier', token)
+  actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Single value with non existent system token')
 
   t.end()
