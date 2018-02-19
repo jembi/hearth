@@ -50,6 +50,28 @@ let basicQuestionnaireResponseTest = (t, test) => {
   })
 }
 
+tap.test('QuestionnaireResponse should return all QuestionnaireResponse documents when no search parameters supplied', (t) => {
+  basicQuestionnaireResponseTest(t, (db, done) => {
+    request({
+      url: `http://localhost:3447/fhir/QuestionnaireResponse`,
+      headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+      json: true
+    }, (err, res, body) => {
+      t.error(err)
+
+      t.equal(res.statusCode, 200, 'response status code should be 200')
+      t.ok(body)
+      t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+      t.equal(body.total, 2, 'body should contain one result')
+      t.equal(body.entry[0].resource.subject.reference, 'Patient/1', 'body should contain the matching QuestionnaireResponse')
+      t.equal(body.entry[0].resource.questionnaire.reference, 'Questionnaire/1', 'body should contain the matching QuestionnaireResponse')
+      t.equal(body.entry[1].resource.subject.reference, 'Patient/1', 'body should contain the matching QuestionnaireResponse')
+      t.equal(body.entry[1].resource.questionnaire.reference, 'Questionnaire/2', 'body should contain the matching QuestionnaireResponse')
+      done()
+    })
+  })
+})
+
 tap.test('QuestionnaireResponse should support searches on patient', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
@@ -275,6 +297,38 @@ tap.test('QuestionnaireResponse should be read correctly', (t) => {
         t.equal(body.questionnaire.reference, result.questionnaire.reference, 'result should have correct questionnaire reference')
         t.equal(body.subject.reference, result.subject.reference, 'result should have correct subject reference')
         t.equal(body.encounter.reference, result.encounter.reference, 'result should have correct encounter reference')
+        done()
+      })
+    })
+  })
+})
+
+tap.test('QuestionnaireResponse should be read correctly, and summarized when parameter supplied', (t) => {
+  basicQuestionnaireResponseTest(t, (db, done) => {
+    let c = db.collection('QuestionnaireResponse')
+    c.findOne((err, result) => {
+      t.error(err)
+      t.ok(result, 'result should exist in the mongo')
+
+      t.equal(result.questionnaire.reference, 'Questionnaire/1', 'should have correct questionnaire reference')
+
+      request({
+        url: `http://localhost:3447/fhir/QuestionnaireResponse/${result.id}?_summary=true`,
+        headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.equal(body.resourceType, 'QuestionnaireResponse', 'result should be an QuestionnaireResponse')
+        t.equal(body.id, result.id, 'result should have correct id')
+
+        t.equal(body.questionnaire.reference, result.questionnaire.reference, 'result should have correct questionnaire reference')
+        t.equal(body.subject.reference, result.subject.reference, 'result should have correct subject reference')
+        t.equal(body.encounter.reference, result.encounter.reference, 'result should have correct encounter reference')
+
+        t.notOk(body.group, 'Should not have the group object on the response resource')
         done()
       })
     })
