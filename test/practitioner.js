@@ -411,7 +411,6 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
         t.equals(body.name.given[0], 'Alison', 'should return correct resource')
 
         t.notOk(body.photo)
-        t.notOk(body.practitionerRole)
         t.notOk(body.qualification)
         t.notOk(body.communication)
 
@@ -435,7 +434,8 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
         t.ok(body)
         t.equals(body.name.given[0], 'Alison', 'should return correct resource')
 
-        t.ok(body.practitionerRole)
+        t.ok(body.qualification)
+        t.ok(body.communication)
 
         done()
       })
