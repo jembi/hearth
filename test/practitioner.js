@@ -373,7 +373,7 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
       })
     })
   })
-  t.test('should support queryies on all Practitioners', (t) => {
+  t.test('should support queries on all Practitioners', (t) => {
     basicPractitionerTest(t, (db, pracs, orgs, done) => {
       // when
       request({

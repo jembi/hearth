@@ -70,7 +70,7 @@ tap.test('Location tests', { autoend: true }, (t) => {
     })
   })
 
-  t.test('should support queryies on all Locations', (t) => {
+  t.test('should support queries on all Locations', (t) => {
     setupTestEnv(t, (db, done) => {
       // given
       const location1 = _.cloneDeep(locationTemplate)
