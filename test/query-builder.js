@@ -244,10 +244,10 @@ tap.test('Conditional Paths should return a valid token clause', { autoend: true
   queryParam = 'email'
   value = 'mailaddress@hearth.org'
   expected = {
-    "telecom": {
-      "$elemMatch": {
-        "value": "mailaddress@hearth.org",
-        "system": "email"
+    'telecom': {
+      '$elemMatch': {
+        'value': 'mailaddress@hearth.org',
+        'system': 'email'
       }
     }
   }
@@ -257,10 +257,10 @@ tap.test('Conditional Paths should return a valid token clause', { autoend: true
   queryParam = 'phone'
   value = '0210000000'
   expected = {
-    "telecom": {
-      "$elemMatch": {
-        "value": "0210000000",
-        "system": "phone"
+    'telecom': {
+      '$elemMatch': {
+        'value': '0210000000',
+        'system': 'phone'
       }
     }
   }
@@ -271,10 +271,10 @@ tap.test('Conditional Paths should return a valid token clause', { autoend: true
     queryParam = 'composed-of'
     value = '0210000000'
     expected = {
-      "relatedArtifact.resource": {
-        "$elemMatch": {
-          "value": "0210000000",
-          "type": "composed-of"
+      'relatedArtifact.resource': {
+        '$elemMatch': {
+          'value': '0210000000',
+          'type': 'composed-of'
         }
       }
     }
