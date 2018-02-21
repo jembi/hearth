@@ -29,7 +29,6 @@ const executeQueryBuilderTest = (t, functionNameToExecute, resourceType, queryPa
 
     t.ok(dateClause)
     t.deepEqual(dateClause, expectedResponse, 'Should have the correct mongo clause')
-
     t.end()
   })
 }
@@ -197,34 +196,89 @@ tap.test('.buildQueryForToken should return a valid token clause', { autoend: tr
   desc = 'when token of type "CodeableConcept" is supplied'
   executeQueryBuilderTest(t, 'buildQueryForToken', 'Practitioner', queryParam, expected, value, desc)
 
-  queryParam = 'type'
-  value = 'some-system|some-code'
-  expected = { 'event.type': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
-  desc = 'when token of type "Coding" is supplied'
-  executeQueryBuilderTest(t, 'buildQueryForToken', 'AuditEvent', queryParam, expected, value, desc)
+  if (FHIR_VERSION === 'dstu2') {
+    queryParam = 'type'
+    value = 'some-system|some-code'
+    expected = { 'event.type': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
+    desc = 'when token of type "Coding" is supplied'
+    executeQueryBuilderTest(t, 'buildQueryForToken', 'AuditEvent', queryParam, expected, value, desc)
+  }
+
+  if (FHIR_VERSION === 'stu3') {
+    queryParam = 'type'
+    value = 'some-system|some-code'
+    expected = { 'type': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
+    desc = 'when token of type "Coding" is supplied'
+    executeQueryBuilderTest(t, 'buildQueryForToken', 'AuditEvent', queryParam, expected, value, desc)
+  }
 })
 
 tap.test('.buildQueryForReference should return a valid token clause', { autoend: true }, (t) => {
   let queryParam, expected, value, desc
 
-  queryParam = 'organization'
+  queryParam = 'episodeofcare'
   value = '1234567890'
-  expected = { 'practitionerRole.managingOrganization.reference': 'Organization/1234567890' }
+  expected = { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' }
   desc = 'when reference supplied with only an ID reference'
-  executeQueryBuilderTest(t, 'buildQueryForReference', 'Practitioner', queryParam, expected, value, desc)
+  executeQueryBuilderTest(t, 'buildQueryForReference', 'Encounter', queryParam, expected, value, desc)
 
-  queryParam = 'organization'
-  value = 'Organization/1234567890'
-  expected = { 'practitionerRole.managingOrganization.reference': 'Organization/1234567890' }
+  queryParam = 'episodeofcare'
+  value = 'EpisodeOfCare/1234567890'
+  expected = { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' }
   desc = 'when reference supplied with full reference'
-  executeQueryBuilderTest(t, 'buildQueryForReference', 'Practitioner', queryParam, expected, value, desc)
+  executeQueryBuilderTest(t, 'buildQueryForReference', 'Encounter', queryParam, expected, value, desc)
 
-  queryParam = 'organization'
-  value = [ 'Organization/1234567890', 'Organization/0987654321' ]
+  queryParam = 'episodeofcare'
+  value = [ 'EpisodeOfCare/1234567890', 'EpisodeOfCare/0987654321' ]
   expected = { '$and': [
-    { 'practitionerRole.managingOrganization.reference': 'Organization/1234567890' },
-    { 'practitionerRole.managingOrganization.reference': 'Organization/0987654321' }
+    { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' },
+    { 'episodeOfCare.reference': 'EpisodeOfCare/0987654321' }
   ] }
   desc = 'when reference supplied with full reference - Array'
-  executeQueryBuilderTest(t, 'buildQueryForReference', 'Practitioner', queryParam, expected, value, desc)
+  executeQueryBuilderTest(t, 'buildQueryForReference', 'Encounter', queryParam, expected, value, desc)
+})
+
+tap.test('Conditional Paths should return a valid token clause', { autoend: true }, (t) => {
+  let queryParam, expected, value, desc
+
+  queryParam = 'email'
+  value = 'mailaddress@hearth.org'
+  expected = {
+    "telecom": {
+      "$elemMatch": {
+        "value": "mailaddress@hearth.org",
+        "system": "email"
+      }
+    }
+  }
+  desc = 'when search parameter path is conditional - email'
+  executeQueryBuilderTest(t, 'buildQueryForToken', 'Practitioner', queryParam, expected, value, desc)
+
+  queryParam = 'phone'
+  value = '0210000000'
+  expected = {
+    "telecom": {
+      "$elemMatch": {
+        "value": "0210000000",
+        "system": "phone"
+      }
+    }
+  }
+  desc = 'when search parameter path is conditional - phone'
+  executeQueryBuilderTest(t, 'buildQueryForToken', 'Practitioner', queryParam, expected, value, desc)
+
+  if (FHIR_VERSION === 'stu3') {
+    queryParam = 'composed-of'
+    value = '0210000000'
+    expected = {
+      "relatedArtifact.resource": {
+        "$elemMatch": {
+          "value": "0210000000",
+          "type": "composed-of"
+        }
+      }
+    }
+    desc = 'when search parameter path is conditional - composed-of'
+    executeQueryBuilderTest(t, 'buildQueryForToken', 'ActivityDefinition', queryParam, expected, value, desc)
+  }
 })
