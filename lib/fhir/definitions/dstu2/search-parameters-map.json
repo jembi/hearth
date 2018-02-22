@@ -2275,11 +2275,11 @@
       "type": "string"
     },
     "objectClass": {
-      "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
       "type": "token"
     },
     "objectClassProperty": {
-      "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
       "type": "token"
     }
   },
@@ -3585,11 +3585,11 @@
       "type": "token"
     },
     "race": {
-      "path": "extension='http:..hl7.org.fhir.StructureDefinition.us-core-race']",
+      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-race']",
       "type": "token"
     },
     "ethnicity": {
-      "path": "extension='http:..hl7.org.fhir.StructureDefinition.us-core-ethnicity']",
+      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-ethnicity']",
       "type": "token"
     }
   },
