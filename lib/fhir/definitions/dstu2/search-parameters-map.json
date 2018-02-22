@@ -1499,7 +1499,7 @@
       "type": "token"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "family": {
@@ -1531,7 +1531,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -3233,7 +3233,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "gender": {
@@ -3253,7 +3253,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -3537,7 +3537,7 @@
       }
     ],
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "family": {
@@ -3573,7 +3573,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -3663,7 +3663,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "gender": {
@@ -3691,7 +3691,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
