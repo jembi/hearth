@@ -1499,7 +1499,7 @@
       "type": "token"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "family": {
@@ -1531,7 +1531,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -2275,11 +2275,11 @@
       "type": "string"
     },
     "objectClass": {
-      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+      "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
       "type": "token"
     },
     "objectClassProperty": {
-      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+      "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
       "type": "token"
     }
   },
@@ -3233,7 +3233,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "gender": {
@@ -3253,7 +3253,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -3537,7 +3537,7 @@
       }
     ],
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "family": {
@@ -3573,7 +3573,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -3585,11 +3585,11 @@
       "type": "token"
     },
     "race": {
-      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-race']",
+      "path": "extension='http:..hl7.org.fhir.StructureDefinition.us-core-race']",
       "type": "token"
     },
     "ethnicity": {
-      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-ethnicity']",
+      "path": "extension='http:..hl7.org.fhir.StructureDefinition.us-core-ethnicity']",
       "type": "token"
     }
   },
@@ -3663,7 +3663,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "gender": {
@@ -3691,7 +3691,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "phonetic": {

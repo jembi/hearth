@@ -61,7 +61,7 @@
   },
   "ActivityDefinition": {
     "composed-of": {
-      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "path": "relatedArtifact[type='composed-of'].resource",
       "type": "reference"
     },
     "date": {
@@ -70,7 +70,7 @@
     },
     "depends-on": [
       {
-        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "path": "relatedArtifact[type='depends-on'].resource",
         "type": "reference"
       },
       {
@@ -79,7 +79,7 @@
       }
     ],
     "derived-from": {
-      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "path": "relatedArtifact[type='derived-from'].resource",
       "type": "reference"
     },
     "description": {
@@ -103,7 +103,7 @@
       "type": "string"
     },
     "predecessor": {
-      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "path": "relatedArtifact[type='predecessor'].resource",
       "type": "reference"
     },
     "publisher": {
@@ -115,7 +115,7 @@
       "type": "token"
     },
     "successor": {
-      "path": "relatedArtifact[type.value='successor'].resource",
+      "path": "relatedArtifact[type='successor'].resource",
       "type": "reference"
     },
     "title": {
@@ -3028,21 +3028,21 @@
     },
     "objectClass": [
       {
-        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+        "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
         "type": "token"
       },
       {
-        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+        "path": "element.mapping.extension[@url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
         "type": "token"
       }
     ],
     "objectClassProperty": [
       {
-        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+        "path": "element.mapping.extension='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
         "type": "token"
       },
       {
-        "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+        "path": "element.mapping.extension[@url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
         "type": "token"
       }
     ]
@@ -3609,7 +3609,7 @@
   },
   "Library": {
     "composed-of": {
-      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "path": "relatedArtifact[type='composed-of'].resource",
       "type": "reference"
     },
     "date": {
@@ -3617,11 +3617,11 @@
       "type": "date"
     },
     "depends-on": {
-      "path": "relatedArtifact[type.value='depends-on'].resource",
+      "path": "relatedArtifact[type='depends-on'].resource",
       "type": "reference"
     },
     "derived-from": {
-      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "path": "relatedArtifact[type='derived-from'].resource",
       "type": "reference"
     },
     "description": {
@@ -3645,7 +3645,7 @@
       "type": "string"
     },
     "predecessor": {
-      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "path": "relatedArtifact[type='predecessor'].resource",
       "type": "reference"
     },
     "publisher": {
@@ -3657,7 +3657,7 @@
       "type": "token"
     },
     "successor": {
-      "path": "relatedArtifact[type.value='successor'].resource",
+      "path": "relatedArtifact[type='successor'].resource",
       "type": "reference"
     },
     "title": {
@@ -3765,7 +3765,7 @@
   },
   "Measure": {
     "composed-of": {
-      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "path": "relatedArtifact[type='composed-of'].resource",
       "type": "reference"
     },
     "date": {
@@ -3774,7 +3774,7 @@
     },
     "depends-on": [
       {
-        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "path": "relatedArtifact[type='depends-on'].resource",
         "type": "reference"
       },
       {
@@ -3783,7 +3783,7 @@
       }
     ],
     "derived-from": {
-      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "path": "relatedArtifact[type='derived-from'].resource",
       "type": "reference"
     },
     "description": {
@@ -3807,7 +3807,7 @@
       "type": "string"
     },
     "predecessor": {
-      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "path": "relatedArtifact[type='predecessor'].resource",
       "type": "reference"
     },
     "publisher": {
@@ -3819,7 +3819,7 @@
       "type": "token"
     },
     "successor": {
-      "path": "relatedArtifact[type.value='successor'].resource",
+      "path": "relatedArtifact[type='successor'].resource",
       "type": "reference"
     },
     "title": {
@@ -4547,7 +4547,7 @@
       }
     ],
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system.@value='email']",
       "type": "token"
     },
     "family": {
@@ -4587,7 +4587,7 @@
       "type": "reference"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system.@value='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -4629,7 +4629,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system.@value='email']",
       "type": "token"
     },
     "gender": {
@@ -4637,7 +4637,7 @@
       "type": "token"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system.@value='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -4691,7 +4691,7 @@
       "type": "token"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system.@value='email']",
       "type": "token"
     },
     "family": {
@@ -4707,7 +4707,7 @@
       "type": "string"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system.@value='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -4765,7 +4765,7 @@
       "type": "date"
     },
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system.@value='email']",
       "type": "token"
     },
     "gender": {
@@ -4773,7 +4773,7 @@
       "type": "token"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system.@value='phone']",
       "type": "token"
     },
     "phonetic": {
@@ -4815,11 +4815,11 @@
   },
   "PractitionerRole": {
     "email": {
-      "path": "telecom[system.value='email']",
+      "path": "telecom[system='email']",
       "type": "token"
     },
     "phone": {
-      "path": "telecom[system.value='phone']",
+      "path": "telecom[system='phone']",
       "type": "token"
     },
     "telecom": {
@@ -4937,7 +4937,7 @@
   },
   "PlanDefinition": {
     "composed-of": {
-      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "path": "relatedArtifact[type='composed-of'].resource",
       "type": "reference"
     },
     "date": {
@@ -4946,7 +4946,7 @@
     },
     "depends-on": [
       {
-        "path": "relatedArtifact[type.value='depends-on'].resource",
+        "path": "relatedArtifact[type='depends-on'].resource",
         "type": "reference"
       },
       {
@@ -4955,7 +4955,7 @@
       }
     ],
     "derived-from": {
-      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "path": "relatedArtifact[type='derived-from'].resource",
       "type": "reference"
     },
     "description": {
@@ -4979,7 +4979,7 @@
       "type": "string"
     },
     "predecessor": {
-      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "path": "relatedArtifact[type='predecessor'].resource",
       "type": "reference"
     },
     "publisher": {
@@ -4991,7 +4991,7 @@
       "type": "token"
     },
     "successor": {
-      "path": "relatedArtifact[type.value='successor'].resource",
+      "path": "relatedArtifact[type='successor'].resource",
       "type": "reference"
     },
     "title": {
@@ -5437,7 +5437,7 @@
   },
   "ServiceDefinition": {
     "composed-of": {
-      "path": "relatedArtifact[type.value='composed-of'].resource",
+      "path": "relatedArtifact[type='composed-of'].resource",
       "type": "reference"
     },
     "date": {
@@ -5445,11 +5445,11 @@
       "type": "date"
     },
     "depends-on": {
-      "path": "relatedArtifact[type.value='depends-on'].resource",
+      "path": "relatedArtifact[type='depends-on'].resource",
       "type": "reference"
     },
     "derived-from": {
-      "path": "relatedArtifact[type.value='derived-from'].resource",
+      "path": "relatedArtifact[type='derived-from'].resource",
       "type": "reference"
     },
     "description": {
@@ -5473,7 +5473,7 @@
       "type": "string"
     },
     "predecessor": {
-      "path": "relatedArtifact[type.value='predecessor'].resource",
+      "path": "relatedArtifact[type='predecessor'].resource",
       "type": "reference"
     },
     "publisher": {
@@ -5485,7 +5485,7 @@
       "type": "token"
     },
     "successor": {
-      "path": "relatedArtifact[type.value='successor'].resource",
+      "path": "relatedArtifact[type='successor'].resource",
       "type": "reference"
     },
     "title": {
