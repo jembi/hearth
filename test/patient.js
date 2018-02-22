@@ -1954,7 +1954,6 @@ tap.test('patient should support complex chained parameters', (t) => {
               headers: headers,
               json: true
             }, (err, res, body) => {
-              console.log('HERE')
               t.error(err)
 
               t.equal(res.statusCode, 200, 'response status code should be 200')
