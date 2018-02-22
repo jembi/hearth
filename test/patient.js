@@ -1917,3 +1917,61 @@ tap.test('patient should support standard _id parameter', (t) => {
     })
   })
 })
+
+tap.test('patient should support complex chained parameters', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const loc = _.cloneDeep(require('./resources/Location-1.json'))
+      delete loc.id
+
+      env.createResource(t, loc, 'Location', (err, locRef) => {
+        t.error(err)
+        const prac = _.cloneDeep(require('./resources/Practitioner-1.json'))
+        delete prac.id
+        prac.practitionerRole[0].location = []
+        prac.practitionerRole[0].location[0] = { reference: locRef }
+
+        env.createResource(t, prac, 'Practitioner', (err, pracRef) => {
+          t.error(err)
+          const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+          delete pat.id
+          pat.careProvider = [
+            {
+              reference: pracRef
+            },
+            {
+              reference: 'Organization/123'
+            }
+          ]
+
+          env.createResource(t, pat, 'Patient', () => {
+            request({
+              url: `http://localhost:3447/fhir/Patient?careprovider.location.name=Greenwood`,
+              headers: headers,
+              json: true
+            }, (err, res, body) => {
+              t.error(err)
+
+              t.equal(res.statusCode, 200, 'response status code should be 200')
+              t.ok(body)
+              t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+              t.equals(1, body.entry.length, 'Bundle should have 1 entry')
+              t.equal(body.entry[0].resource.identifier[0].value, '1007211154902', 'should contain the matching patient')
+
+              env.clearDB((err) => {
+                t.error(err)
+                server.stop(() => {
+                  t.end()
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
