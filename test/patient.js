@@ -1047,6 +1047,26 @@ tap.test('Query Param - telecom: ', { autoend: true }, (t) => {
   })
 })
 
+tap.test('Query Param (conditional) - email: ', { autoend: true }, (t) => {
+  t.test('email query parameter should filter results correctly', (t) => {
+    basicPatientTest(t, (db, done) => {
+      request({
+        url: 'http://localhost:3447/fhir/Patient?email=charlton@email.com',
+        headers: headers,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+
+        t.equal(res.statusCode, 200, 'response status code should be 200')
+        t.ok(body)
+        t.equal(body.resourceType, 'Bundle', 'result should be a bundle')
+        t.equal(body.total, 1, 'body should contain 1 result')
+        done()
+      })
+    })
+  })
+})
+
 // IHE Profile query parameters
 tap.test('pediatrics query parameters', { autoend: true }, (t) => {
   t.test('mothersMaidenName.given query parameter should filter response', (t) => {
