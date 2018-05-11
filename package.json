@@ -36,14 +36,15 @@
     "talisman": "^0.19.0",
     "urijs": "^1.18.5",
     "uuid": "^3.0.1",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "xmlbuilder": "^9.0.7",
+    "libxmljs": "^0.18.4"
   },
   "devDependencies": {
     "artillery": "^1.5.8-3",
     "chance": "^1.0.8",
     "codecov": "^1.0.1",
     "glossy": "^0.1.7",
-    "libxmljs": "^0.18.4",
     "license-checker": "^13.0.3",
     "neo-async": "^2.1.0",
     "sinon": "^2.3.1",
