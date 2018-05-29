@@ -103,7 +103,6 @@ tap.test('DocumentManifest - should search by content-ref reference', (t) => {
   docManifestTestEnv(t, (db, done) => {
     const findMe = _.cloneDeep(testDocManifest)
     findMe.content[0].pReference.reference = 'DocumentReference/54321'
-    // console.log(findMe)
     delete findMe.id
     const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id
@@ -198,7 +197,6 @@ tap.test('DocumentManifest - should search by identifier', (t) => {
     const findMe = _.cloneDeep(testDocManifest)
     findMe.identifier[0].system = 'sample-system'
     findMe.identifier[0].value = 'randomnumber-1234567'
-    // console.log(findMe)
     delete findMe.id
     const skipMe = _.cloneDeep(testDocManifest)
     delete skipMe.id

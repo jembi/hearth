@@ -1,0 +1,3776 @@
+{
+  "Resource": {
+    "_id": {
+      "path": "id",
+      "type": "token"
+    },
+    "_lastUpdated": {
+      "path": "meta.lastUpdated",
+      "type": "date"
+    },
+    "_profile": {
+      "path": "meta.profile",
+      "type": "uri"
+    },
+    "_security": {
+      "path": "meta.security",
+      "type": "token"
+    },
+    "_tag": {
+      "path": "meta.tag",
+      "type": "token"
+    }
+  },
+  "Condition": {
+    "asserter": {
+      "path": "asserter",
+      "type": "reference"
+    },
+    "body-site": {
+      "path": "bodySite",
+      "type": "token"
+    },
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "clinicalstatus": {
+      "path": "clinicalStatus",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date-recorded": {
+      "path": "dateRecorded",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "evidence": {
+      "path": "evidence.code",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "onset": [
+      {
+        "path": "onsetDateTime",
+        "type": "date"
+      },
+      {
+        "path": "onsetAge",
+        "type": "date"
+      },
+      {
+        "path": "onsetPeriod",
+        "type": "date"
+      },
+      {
+        "path": "onsetRange",
+        "type": "date"
+      },
+      {
+        "path": "onsetString",
+        "type": "date"
+      }
+    ],
+    "onset-info": [
+      {
+        "path": "onsetDateTime",
+        "type": "string"
+      },
+      {
+        "path": "onsetAge",
+        "type": "string"
+      },
+      {
+        "path": "onsetPeriod",
+        "type": "string"
+      },
+      {
+        "path": "onsetRange",
+        "type": "string"
+      },
+      {
+        "path": "onsetString",
+        "type": "string"
+      }
+    ],
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "severity": {
+      "path": "severity",
+      "type": "token"
+    },
+    "stage": {
+      "path": "stage.summary",
+      "type": "token"
+    }
+  },
+  "ProcedureRequest": {
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "orderer": {
+      "path": "orderer",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "DeviceComponent": {
+    "parent": {
+      "path": "parent",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "DeviceMetric": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "parent": {
+      "path": "parent",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Communication": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medium": {
+      "path": "medium",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "received": {
+      "path": "received",
+      "type": "date"
+    },
+    "recipient": {
+      "path": "recipient",
+      "type": "reference"
+    },
+    "request": {
+      "path": "requestDetail",
+      "type": "reference"
+    },
+    "sender": {
+      "path": "sender",
+      "type": "reference"
+    },
+    "sent": {
+      "path": "sent",
+      "type": "date"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "Organization": {
+    "active": {
+      "path": "active",
+      "type": "token"
+    },
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "partof": {
+      "path": "partOf",
+      "type": "reference"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "ProcessRequest": {
+    "action": {
+      "path": "action",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "organization": {
+      "path": "organization",
+      "type": "reference"
+    },
+    "provider": {
+      "path": "provider",
+      "type": "reference"
+    }
+  },
+  "Group": {
+    "actual": {
+      "path": "actual",
+      "type": "token"
+    },
+    "characteristic": {
+      "path": "characteristic.code",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "exclude": {
+      "path": "characteristic.exclude",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "member": {
+      "path": "member.entity",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "value": [
+      {
+        "path": "characteristic.valueCodeableConcept",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueBoolean",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueQuantity",
+        "type": "token"
+      },
+      {
+        "path": "characteristic.valueRange",
+        "type": "token"
+      }
+    ]
+  },
+  "ValueSet": {
+    "code": {
+      "path": "codeSystem.concept.code",
+      "type": "token"
+    },
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "expansion": {
+      "path": "expansion.identifier",
+      "type": "uri"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "reference": {
+      "path": "compose.include.system",
+      "type": "uri"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "system": {
+      "path": "codeSystem.system",
+      "type": "uri"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "Coverage": {
+    "dependent": {
+      "path": "dependent",
+      "type": "token"
+    },
+    "group": {
+      "path": "group",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "issuer": {
+      "path": "issuer",
+      "type": "reference"
+    },
+    "plan": {
+      "path": "plan",
+      "type": "token"
+    },
+    "sequence": {
+      "path": "sequence",
+      "type": "token"
+    },
+    "subplan": {
+      "path": "subPlan",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "ImmunizationRecommendation": {
+    "date": {
+      "path": "recommendation.date",
+      "type": "date"
+    },
+    "dose-number": {
+      "path": "recommendation.doseNumber",
+      "type": "number"
+    },
+    "dose-sequence": {
+      "path": "recommendation.protocol.doseSequence",
+      "type": "number"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "information": {
+      "path": "recommendation.supportingPatientInformation",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "status": {
+      "path": "recommendation.forecastStatus",
+      "type": "token"
+    },
+    "support": {
+      "path": "recommendation.supportingImmunization",
+      "type": "reference"
+    },
+    "vaccine-type": {
+      "path": "recommendation.vaccineCode",
+      "type": "token"
+    }
+  },
+  "Appointment": {
+    "actor": {
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    "date": {
+      "path": "start",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    "part-status": {
+      "path": "participant.status",
+      "type": "token"
+    },
+    "patient": {
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    "practitioner": {
+      "path": "participant.actor",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    }
+  },
+  "MedicationDispense": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "destination": {
+      "path": "destination",
+      "type": "reference"
+    },
+    "dispenser": {
+      "path": "dispenser",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "prescription": {
+      "path": "authorizingPrescription",
+      "type": "reference"
+    },
+    "receiver": {
+      "path": "receiver",
+      "type": "reference"
+    },
+    "responsibleparty": {
+      "path": "substitution.responsibleParty",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "whenhandedover": {
+      "path": "whenHandedOver",
+      "type": "date"
+    },
+    "whenprepared": {
+      "path": "whenPrepared",
+      "type": "date"
+    }
+  },
+  "DetectedIssue": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "implicated": {
+      "path": "implicated",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    }
+  },
+  "Slot": {
+    "fb-type": {
+      "path": "freeBusyType",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "schedule": {
+      "path": "schedule",
+      "type": "reference"
+    },
+    "slot-type": {
+      "path": "type",
+      "type": "token"
+    },
+    "start": {
+      "path": "start",
+      "type": "date"
+    }
+  },
+  "PaymentNotice": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "AppointmentResponse": {
+    "actor": {
+      "path": "actor",
+      "type": "reference"
+    },
+    "appointment": {
+      "path": "appointment",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "actor",
+      "type": "reference"
+    },
+    "part-status": {
+      "path": "participantStatus",
+      "type": "token"
+    },
+    "patient": {
+      "path": "actor",
+      "type": "reference"
+    },
+    "practitioner": {
+      "path": "actor",
+      "type": "reference"
+    }
+  },
+  "MedicationStatement": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "effectivedate": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "source": {
+      "path": "informationSource",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    }
+  },
+  "ImplementationGuide": {
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "dependency": {
+      "path": "dependency.uri",
+      "type": "uri"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "experimental": {
+      "path": "experimental",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "EpisodeOfCare": {
+    "care-manager": {
+      "path": "careManager",
+      "type": "reference"
+    },
+    "condition": {
+      "path": "condition",
+      "type": "reference"
+    },
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "incomingreferral": {
+      "path": "referralRequest",
+      "type": "reference"
+    },
+    "organization": {
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "team-member": {
+      "path": "careTeam.member",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Questionnaire": {
+    "code": {
+      "path": "group.concept",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "title": {
+      "path": "group.title",
+      "type": "string"
+    },
+    "version": {
+      "path": "version",
+      "type": "string"
+    }
+  },
+  "Composition": {
+    "attester": {
+      "path": "attester.party",
+      "type": "reference"
+    },
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "class": {
+      "path": "class",
+      "type": "token"
+    },
+    "confidentiality": {
+      "path": "confidentiality",
+      "type": "token"
+    },
+    "context": {
+      "path": "event.code",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "entry": {
+      "path": "section.entry",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "period": {
+      "path": "event.period",
+      "type": "date"
+    },
+    "section": {
+      "path": "section.code",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "title": {
+      "path": "title",
+      "type": "string"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Conformance": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "event": {
+      "path": "messaging.event.code",
+      "type": "token"
+    },
+    "fhirversion": {
+      "path": "version",
+      "type": "token"
+    },
+    "format": {
+      "path": "format",
+      "type": "token"
+    },
+    "mode": {
+      "path": "rest.mode",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "profile": {
+      "path": "rest.resource.profile",
+      "type": "reference"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "resource": {
+      "path": "rest.resource.type",
+      "type": "token"
+    },
+    "security": {
+      "path": "rest.security.service",
+      "type": "token"
+    },
+    "software": {
+      "path": "software.name",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "supported-profile": {
+      "path": "profile",
+      "type": "reference"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "FamilyMemberHistory": {
+    "code": {
+      "path": "condition.code",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "relationship": {
+      "path": "relationship",
+      "type": "token"
+    }
+  },
+  "NamingSystem": {
+    "contact": {
+      "path": "contact.name",
+      "type": "string"
+    },
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "id-type": {
+      "path": "uniqueId.type",
+      "type": "token"
+    },
+    "kind": {
+      "path": "kind",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "period": {
+      "path": "uniqueId.period",
+      "type": "date"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "replaced-by": {
+      "path": "replacedBy",
+      "type": "reference"
+    },
+    "responsible": {
+      "path": "responsible",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "telecom": {
+      "path": "contact.telecom",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "value": {
+      "path": "uniqueId.value",
+      "type": "string"
+    }
+  },
+  "Media": {
+    "created": {
+      "path": "content.creation",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "operator": {
+      "path": "operator",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subtype": {
+      "path": "subtype",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "view": {
+      "path": "view",
+      "type": "token"
+    }
+  },
+  "Binary": {
+    "contenttype": {
+      "path": "contentType",
+      "type": "token"
+    }
+  },
+  "HealthcareService": {
+    "characteristic": {
+      "path": "characteristic",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "location",
+      "type": "reference"
+    },
+    "name": {
+      "path": "serviceName",
+      "type": "string"
+    },
+    "organization": {
+      "path": "providedBy",
+      "type": "reference"
+    },
+    "programname": {
+      "path": "programName",
+      "type": "string"
+    },
+    "servicecategory": {
+      "path": "serviceCategory",
+      "type": "token"
+    },
+    "servicetype": {
+      "path": "serviceType.type",
+      "type": "token"
+    }
+  },
+  "VisionPrescription": {
+    "datewritten": {
+      "path": "dateWritten",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "prescriber": {
+      "path": "prescriber",
+      "type": "reference"
+    }
+  },
+  "DocumentReference": {
+    "authenticator": {
+      "path": "authenticator",
+      "type": "reference"
+    },
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "class": {
+      "path": "class",
+      "type": "token"
+    },
+    "created": {
+      "path": "created",
+      "type": "date"
+    },
+    "custodian": {
+      "path": "custodian",
+      "type": "reference"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "encounter": {
+      "path": "context.encounter",
+      "type": "reference"
+    },
+    "event": {
+      "path": "context.event",
+      "type": "token"
+    },
+    "facility": {
+      "path": "context.facilityType",
+      "type": "token"
+    },
+    "format": {
+      "path": "content.format",
+      "type": "token"
+    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
+    "indexed": {
+      "path": "indexed",
+      "type": "date"
+    },
+    "language": {
+      "path": "content.attachment.language",
+      "type": "token"
+    },
+    "location": {
+      "path": "content.attachment.url",
+      "type": "uri"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "period": {
+      "path": "context.period",
+      "type": "date"
+    },
+    "related-id": {
+      "path": "context.related.identifier",
+      "type": "token"
+    },
+    "related-ref": {
+      "path": "context.related.ref",
+      "type": "reference"
+    },
+    "relatesto": {
+      "path": "relatesTo.target",
+      "type": "reference"
+    },
+    "relation": {
+      "path": "relatesTo.code",
+      "type": "token"
+    },
+    "securitylabel": {
+      "path": "securityLabel",
+      "type": "token"
+    },
+    "setting": {
+      "path": "context.practiceSetting",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Immunization": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "dose-sequence": {
+      "path": "vaccinationProtocol.doseSequence",
+      "type": "number"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "location",
+      "type": "reference"
+    },
+    "lot-number": {
+      "path": "lotNumber",
+      "type": "string"
+    },
+    "manufacturer": {
+      "path": "manufacturer",
+      "type": "reference"
+    },
+    "notgiven": {
+      "path": "wasNotGiven",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer",
+      "type": "reference"
+    },
+    "reaction": {
+      "path": "reaction.detail",
+      "type": "reference"
+    },
+    "reaction-date": {
+      "path": "reaction.date",
+      "type": "date"
+    },
+    "reason": {
+      "path": "explanation.reason",
+      "type": "token"
+    },
+    "reason-not-given": {
+      "path": "explanation.reasonNotGiven",
+      "type": "token"
+    },
+    "requester": {
+      "path": "requester",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "vaccine-code": {
+      "path": "vaccineCode",
+      "type": "token"
+    }
+  },
+  "Bundle": {
+    "composition": {
+      "path": "entry.resource[0]",
+      "type": "reference"
+    },
+    "message": {
+      "path": "entry.resource[0]",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Subscription": {
+    "contact": {
+      "path": "contact",
+      "type": "token"
+    },
+    "criteria": {
+      "path": "criteria",
+      "type": "string"
+    },
+    "payload": {
+      "path": "channel.payload",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "tag": {
+      "path": "tag",
+      "type": "token"
+    },
+    "type": {
+      "path": "channel.type",
+      "type": "token"
+    },
+    "url": {
+      "path": "channel.endpoint",
+      "type": "uri"
+    }
+  },
+  "OrderResponse": {
+    "code": {
+      "path": "orderStatus",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "fulfillment": {
+      "path": "fulfillment",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "request": {
+      "path": "request",
+      "type": "reference"
+    },
+    "who": {
+      "path": "who",
+      "type": "reference"
+    }
+  },
+  "ConceptMap": {
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "dependson": {
+      "path": "element.target.dependsOn.element",
+      "type": "uri"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "product": {
+      "path": "element.target.product.element",
+      "type": "uri"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "source": {
+      "path": "sourceReference",
+      "type": "reference"
+    },
+    "sourcecode": {
+      "path": "element.code",
+      "type": "token"
+    },
+    "sourcesystem": {
+      "path": "element.codeSystem",
+      "type": "uri"
+    },
+    "sourceuri": {
+      "path": "sourceUri",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "target": [
+      {
+        "path": "targetUri",
+        "type": "reference"
+      },
+      {
+        "path": "targetReference",
+        "type": "reference"
+      }
+    ],
+    "targetcode": {
+      "path": "element.target.code",
+      "type": "token"
+    },
+    "targetsystem": {
+      "path": "element.target.codeSystem",
+      "type": "uri"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "ImagingStudy": {
+    "accession": {
+      "path": "accession",
+      "type": "token"
+    },
+    "bodysite": {
+      "path": "series.bodySite",
+      "type": "token"
+    },
+    "dicom-class": {
+      "path": "series.instance.sopClass",
+      "type": "uri"
+    },
+    "modality": {
+      "path": "series.modality",
+      "type": "token"
+    },
+    "order": {
+      "path": "order",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "series": {
+      "path": "series.uid",
+      "type": "uri"
+    },
+    "started": {
+      "path": "started",
+      "type": "date"
+    },
+    "study": {
+      "path": "uid",
+      "type": "uri"
+    },
+    "uid": {
+      "path": "series.instance.uid",
+      "type": "uri"
+    }
+  },
+  "Practitioner": {
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "communication": {
+      "path": "communication",
+      "type": "token"
+    },
+    "email": {
+      "path": "telecom[system='email']",
+      "type": "token"
+    },
+    "family": {
+      "path": "name.family",
+      "type": "string"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "given": {
+      "path": "name.given",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "practitionerRole.location",
+      "type": "reference"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "organization": {
+      "path": "practitionerRole.managingOrganization",
+      "type": "reference"
+    },
+    "phone": {
+      "path": "telecom[system='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "role": {
+      "path": "practitionerRole.role",
+      "type": "token"
+    },
+    "specialty": {
+      "path": "practitionerRole.specialty",
+      "type": "token"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
+    }
+  },
+  "CarePlan": {
+    "activitycode": {
+      "path": "activity.detail.code",
+      "type": "token"
+    },
+    "activitydate": [
+      {
+        "path": "activity.detail.scheduledTiming",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledPeriod",
+        "type": "date"
+      },
+      {
+        "path": "activity.detail.scheduledString",
+        "type": "date"
+      }
+    ],
+    "activityreference": {
+      "path": "activity.reference",
+      "type": "reference"
+    },
+    "condition": {
+      "path": "addresses",
+      "type": "reference"
+    },
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "goal": {
+      "path": "goal",
+      "type": "reference"
+    },
+    "participant": {
+      "path": "participant.member",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "activity.detail.performer",
+      "type": "reference"
+    },
+    "relatedcode": {
+      "path": "relatedPlan.code",
+      "type": "token"
+    },
+    "relatedplan": {
+      "path": "relatedPlan.plan",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "Provenance": {
+    "agent": {
+      "path": "agent.actor",
+      "type": "reference"
+    },
+    "end": {
+      "path": "period.end",
+      "type": "date"
+    },
+    "entity": {
+      "path": "entity.reference",
+      "type": "uri"
+    },
+    "entitytype": {
+      "path": "entity.type",
+      "type": "token"
+    },
+    "location": {
+      "path": "location",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "target",
+      "type": "reference"
+    },
+    "sigtype": {
+      "path": "signature.type",
+      "type": "token"
+    },
+    "start": {
+      "path": "period.start",
+      "type": "date"
+    },
+    "target": {
+      "path": "target",
+      "type": "reference"
+    },
+    "userid": {
+      "path": "agent.userId",
+      "type": "token"
+    }
+  },
+  "Device": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "location",
+      "type": "reference"
+    },
+    "manufacturer": {
+      "path": "manufacturer",
+      "type": "string"
+    },
+    "model": {
+      "path": "model",
+      "type": "string"
+    },
+    "organization": {
+      "path": "owner",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "udi": {
+      "path": "udi",
+      "type": "string"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    }
+  },
+  "StructureDefinition": {
+    "abstract": {
+      "path": "abstract",
+      "type": "token"
+    },
+    "base": {
+      "path": "base",
+      "type": "uri"
+    },
+    "base-path": {
+      "path": "snapshot.element.base.path",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "context-type": {
+      "path": "contextType",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "display": {
+      "path": "display",
+      "type": "string"
+    },
+    "experimental": {
+      "path": "experimental",
+      "type": "token"
+    },
+    "ext-context": {
+      "path": "context",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "kind": {
+      "path": "kind",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "path": {
+      "path": "snapshot.element.path",
+      "type": "token"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "type": {
+      "path": "constrainedType",
+      "type": "token"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "valueset": [
+      {
+        "path": "snapshot.element.binding.valueSetUri",
+        "type": "reference"
+      },
+      {
+        "path": "snapshot.element.binding.valueSetReference",
+        "type": "reference"
+      }
+    ],
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "Account": {
+    "balance": {
+      "path": "balance",
+      "type": "quantity"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "owner": {
+      "path": "owner",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "period": {
+      "path": "coveragePeriod",
+      "type": "date"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Order": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "detail": {
+      "path": "detail",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "target": {
+      "path": "target",
+      "type": "reference"
+    },
+    "when": {
+      "path": "when.schedule",
+      "type": "date"
+    },
+    "when_code": {
+      "path": "when.code",
+      "type": "token"
+    }
+  },
+  "Procedure": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "performedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "performedPeriod",
+        "type": "date"
+      }
+    ],
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "location": {
+      "path": "location",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer.actor",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "Substance": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "container-identifier": {
+      "path": "instance.identifier",
+      "type": "token"
+    },
+    "expiry": {
+      "path": "instance.expiry",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "quantity": {
+      "path": "instance.quantity",
+      "type": "quantity"
+    },
+    "substance": {
+      "path": "ingredient.substance",
+      "type": "reference"
+    }
+  },
+  "QuestionnaireResponse": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "authored": {
+      "path": "authored",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "questionnaire": {
+      "path": "questionnaire",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "DeviceUseRequest": {
+    "device": {
+      "path": "device",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "DiagnosticReport": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "diagnosis": {
+      "path": "codedDiagnosis",
+      "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "image": {
+      "path": "image.link",
+      "type": "reference"
+    },
+    "issued": {
+      "path": "issued",
+      "type": "date"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer",
+      "type": "reference"
+    },
+    "request": {
+      "path": "request",
+      "type": "reference"
+    },
+    "result": {
+      "path": "result",
+      "type": "reference"
+    },
+    "specimen": {
+      "path": "specimen",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "Medication": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "container": {
+      "path": "package.container",
+      "type": "token"
+    },
+    "content": {
+      "path": "package.content.item",
+      "type": "reference"
+    },
+    "form": {
+      "path": "product.form",
+      "type": "token"
+    },
+    "ingredient": {
+      "path": "product.ingredient.item",
+      "type": "reference"
+    },
+    "manufacturer": {
+      "path": "manufacturer",
+      "type": "reference"
+    }
+  },
+  "MessageHeader": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "code": {
+      "path": "response.code",
+      "type": "token"
+    },
+    "data": {
+      "path": "data",
+      "type": "reference"
+    },
+    "destination": {
+      "path": "destination.name",
+      "type": "string"
+    },
+    "destination-uri": {
+      "path": "destination.endpoint",
+      "type": "uri"
+    },
+    "enterer": {
+      "path": "enterer",
+      "type": "reference"
+    },
+    "event": {
+      "path": "event",
+      "type": "token"
+    },
+    "receiver": {
+      "path": "receiver",
+      "type": "reference"
+    },
+    "response-id": {
+      "path": "response.identifier",
+      "type": "token"
+    },
+    "responsible": {
+      "path": "responsible",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source.name",
+      "type": "string"
+    },
+    "source-uri": {
+      "path": "source.endpoint",
+      "type": "uri"
+    },
+    "target": {
+      "path": "destination.target",
+      "type": "reference"
+    },
+    "timestamp": {
+      "path": "timestamp",
+      "type": "date"
+    }
+  },
+  "SupplyDelivery": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "receiver": {
+      "path": "receiver",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "supplier": {
+      "path": "supplier",
+      "type": "reference"
+    }
+  },
+  "Schedule": {
+    "actor": {
+      "path": "actor",
+      "type": "reference"
+    },
+    "date": {
+      "path": "planningHorizon",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "DocumentManifest": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "content-ref": {
+      "path": "content.pReference",
+      "type": "reference"
+    },
+    "created": {
+      "path": "created",
+      "type": "date"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "identifier": [
+      {
+        "path": "masterIdentifier",
+        "type": "token"
+      },
+      {
+        "path": "identifier",
+        "type": "token"
+      }
+    ],
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "recipient": {
+      "path": "recipient",
+      "type": "reference"
+    },
+    "related-id": {
+      "path": "related.identifier",
+      "type": "token"
+    },
+    "related-ref": {
+      "path": "related.ref",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "uri"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "DataElement": {
+    "code": {
+      "path": "element.code",
+      "type": "token"
+    },
+    "context": {
+      "path": "useContext",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "description": {
+      "path": "element.definition",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "stringency": {
+      "path": "stringency",
+      "type": "token"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "string"
+    },
+    "objectClass": {
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClass']",
+      "type": "token"
+    },
+    "objectClassProperty": {
+      "path": "element.mapping.extension[url='http:..hl7.org.fhir.StructureDefinition.11179-objectClassProperty']",
+      "type": "token"
+    }
+  },
+  "EligibilityRequest": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "MedicationAdministration": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "device": {
+      "path": "device",
+      "type": "reference"
+    },
+    "effectivetime": [
+      {
+        "path": "effectiveTimeDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectiveTimePeriod",
+        "type": "date"
+      }
+    ],
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "notgiven": {
+      "path": "wasNotGiven",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "practitioner": {
+      "path": "practitioner",
+      "type": "reference"
+    },
+    "prescription": {
+      "path": "prescription",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    }
+  },
+  "Encounter": {
+    "appointment": {
+      "path": "appointment",
+      "type": "reference"
+    },
+    "condition": {
+      "path": "indication",
+      "type": "reference"
+    },
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "episodeofcare": {
+      "path": "episodeOfCare",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "incomingreferral": {
+      "path": "incomingReferral",
+      "type": "reference"
+    },
+    "indication": {
+      "path": "indication",
+      "type": "reference"
+    },
+    "length": {
+      "path": "length",
+      "type": "number"
+    },
+    "location": {
+      "path": "location.location",
+      "type": "reference"
+    },
+    "location-period": {
+      "path": "location.period",
+      "type": "date"
+    },
+    "part-of": {
+      "path": "partOf",
+      "type": "reference"
+    },
+    "participant": {
+      "path": "participant.individual",
+      "type": "reference"
+    },
+    "participant-type": {
+      "path": "participant.type",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "practitioner": {
+      "path": "participant.individual",
+      "type": "reference"
+    },
+    "procedure": {
+      "path": "indication",
+      "type": "reference"
+    },
+    "reason": {
+      "path": "reason",
+      "type": "token"
+    },
+    "special-arrangement": {
+      "path": "hospitalization.specialArrangement",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "PaymentReconciliation": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "TestScript": {
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "testscript-capability": {
+      "path": "metadata.capability.description",
+      "type": "string"
+    },
+    "testscript-setup-capability": {
+      "path": "setup.metadata.capability.description",
+      "type": "string"
+    },
+    "testscript-test-capability": {
+      "path": "test.metadata.capability.description",
+      "type": "string"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    }
+  },
+  "List": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "empty-reason": {
+      "path": "emptyReason",
+      "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "item": {
+      "path": "entry.item",
+      "type": "reference"
+    },
+    "notes": {
+      "path": "note",
+      "type": "string"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "title": {
+      "path": "title",
+      "type": "string"
+    }
+  },
+  "DeviceUseStatement": {
+    "device": {
+      "path": "device",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "OperationDefinition": {
+    "base": {
+      "path": "base",
+      "type": "reference"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "instance": {
+      "path": "instance",
+      "type": "token"
+    },
+    "kind": {
+      "path": "kind",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "profile": {
+      "path": "parameter.profile",
+      "type": "reference"
+    },
+    "publisher": {
+      "path": "publisher",
+      "type": "string"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "system": {
+      "path": "system",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    },
+    "version": {
+      "path": "version",
+      "type": "token"
+    }
+  },
+  "ImagingObjectSelection": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "authoring-time": {
+      "path": "authoringTime",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "uid",
+      "type": "uri"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "selected-study": {
+      "path": "study.uid",
+      "type": "uri"
+    },
+    "title": {
+      "path": "title",
+      "type": "token"
+    }
+  },
+  "Goal": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "targetdate": {
+      "path": "targetDate",
+      "type": "date"
+    }
+  },
+  "SearchParameter": {
+    "base": {
+      "path": "base",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "description": {
+      "path": "description",
+      "type": "string"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "target": {
+      "path": "target",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    },
+    "url": {
+      "path": "url",
+      "type": "uri"
+    }
+  },
+  "NutritionOrder": {
+    "additive": {
+      "path": "enteralFormula.additiveType",
+      "type": "token"
+    },
+    "datetime": {
+      "path": "dateTime",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "formula": {
+      "path": "enteralFormula.baseFormulaType",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "oraldiet": {
+      "path": "oralDiet.type",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "provider": {
+      "path": "orderer",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "supplement": {
+      "path": "supplement.type",
+      "type": "token"
+    }
+  },
+  "ClaimResponse": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "ReferralRequest": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "priority": {
+      "path": "priority",
+      "type": "token"
+    },
+    "recipient": {
+      "path": "recipient",
+      "type": "reference"
+    },
+    "requester": {
+      "path": "requester",
+      "type": "reference"
+    },
+    "specialty": {
+      "path": "specialty",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "ClinicalImpression": {
+    "action": {
+      "path": "action",
+      "type": "reference"
+    },
+    "assessor": {
+      "path": "assessor",
+      "type": "reference"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "finding": {
+      "path": "finding.item",
+      "type": "token"
+    },
+    "investigation": {
+      "path": "investigations.item",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "plan": {
+      "path": "plan",
+      "type": "reference"
+    },
+    "previous": {
+      "path": "previous",
+      "type": "reference"
+    },
+    "problem": {
+      "path": "problem",
+      "type": "reference"
+    },
+    "resolved": {
+      "path": "resolved",
+      "type": "token"
+    },
+    "ruledout": {
+      "path": "ruledOut.item",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "trigger": {
+      "path": "triggerReference",
+      "type": "reference"
+    },
+    "trigger-code": {
+      "path": "triggerCodeableConcept",
+      "type": "token"
+    }
+  },
+  "BodySite": {
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    }
+  },
+  "Flag": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "date": {
+      "path": "period",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "CommunicationRequest": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medium": {
+      "path": "medium",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "priority": {
+      "path": "priority",
+      "type": "token"
+    },
+    "recipient": {
+      "path": "recipient",
+      "type": "reference"
+    },
+    "requested": {
+      "path": "requestedOn",
+      "type": "date"
+    },
+    "requester": {
+      "path": "requester",
+      "type": "reference"
+    },
+    "sender": {
+      "path": "sender",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "time": {
+      "path": "scheduledDateTime",
+      "type": "date"
+    }
+  },
+  "Claim": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "priority": {
+      "path": "priority",
+      "type": "token"
+    },
+    "provider": {
+      "path": "provider",
+      "type": "reference"
+    },
+    "use": {
+      "path": "use",
+      "type": "token"
+    }
+  },
+  "RiskAssessment": {
+    "condition": {
+      "path": "condition",
+      "type": "reference"
+    },
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "method": {
+      "path": "method",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "EnrollmentRequest": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "Location": {
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "near": {
+      "path": "position",
+      "type": "token"
+    },
+    "near-distance": {
+      "path": "position",
+      "type": "token"
+    },
+    "organization": {
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    "partof": {
+      "path": "partOf",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "ExplanationOfBenefit": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "AllergyIntolerance": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "criticality": {
+      "path": "criticality",
+      "type": "token"
+    },
+    "date": {
+      "path": "recordedDate",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "last-date": {
+      "path": "lastOccurence",
+      "type": "date"
+    },
+    "manifestation": {
+      "path": "reaction.manifestation",
+      "type": "token"
+    },
+    "onset": {
+      "path": "reaction.onset",
+      "type": "date"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "recorder": {
+      "path": "recorder",
+      "type": "reference"
+    },
+    "reporter": {
+      "path": "reporter",
+      "type": "reference"
+    },
+    "route": {
+      "path": "reaction.exposureRoute",
+      "type": "token"
+    },
+    "severity": {
+      "path": "reaction.severity",
+      "type": "token"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "substance": {
+      "path": "substance",
+      "type": "token"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "Observation": {
+    "category": {
+      "path": "category",
+      "type": "token"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "component-code": {
+      "path": "component.code",
+      "type": "token"
+    },
+    "component-data-absent-reason": {
+      "path": "component.dataAbsentReason",
+      "type": "token"
+    },
+    "component-value-concept": {
+      "path": "component.valueCodeableConcept",
+      "type": "token"
+    },
+    "component-value-quantity": {
+      "path": "component.valueQuantity",
+      "type": "quantity"
+    },
+    "component-value-string": {
+      "path": "component.valueString",
+      "type": "string"
+    },
+    "data-absent-reason": {
+      "path": "dataAbsentReason",
+      "type": "token"
+    },
+    "date": [
+      {
+        "path": "effectiveDateTime",
+        "type": "date"
+      },
+      {
+        "path": "effectivePeriod",
+        "type": "date"
+      }
+    ],
+    "device": {
+      "path": "device",
+      "type": "reference"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "performer": {
+      "path": "performer",
+      "type": "reference"
+    },
+    "related-target": {
+      "path": "related.target",
+      "type": "reference"
+    },
+    "related-type": {
+      "path": "related.type",
+      "type": "token"
+    },
+    "specimen": {
+      "path": "specimen",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "value-concept": {
+      "path": "valueCodeableConcept",
+      "type": "token"
+    },
+    "value-date": {
+      "path": "valueDateTime",
+      "type": "date"
+    },
+    "value-quantity": {
+      "path": "valueQuantity",
+      "type": "quantity"
+    },
+    "value-string": {
+      "path": "valueString",
+      "type": "string"
+    }
+  },
+  "Contract": {
+    "actor": {
+      "path": "actor.entity",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "signer": {
+      "path": "signer.party",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "RelatedPerson": {
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "birthdate": {
+      "path": "birthDate",
+      "type": "date"
+    },
+    "email": {
+      "path": "telecom[system='email']",
+      "type": "token"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "phone": {
+      "path": "telecom[system='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
+    }
+  },
+  "Basic": {
+    "author": {
+      "path": "author",
+      "type": "reference"
+    },
+    "code": {
+      "path": "code",
+      "type": "token"
+    },
+    "created": {
+      "path": "created",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  },
+  "ProcessResponse": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "organization": {
+      "path": "organization",
+      "type": "reference"
+    },
+    "request": {
+      "path": "request",
+      "type": "reference"
+    },
+    "requestorganization": {
+      "path": "requestOrganization",
+      "type": "reference"
+    },
+    "requestprovider": {
+      "path": "requestProvider",
+      "type": "reference"
+    }
+  },
+  "Specimen": {
+    "accession": {
+      "path": "accessionIdentifier",
+      "type": "token"
+    },
+    "bodysite": {
+      "path": "collection.bodySite",
+      "type": "token"
+    },
+    "collected": [
+      {
+        "path": "collection.collectedDateTime",
+        "type": "date"
+      },
+      {
+        "path": "collection.collectedPeriod",
+        "type": "date"
+      }
+    ],
+    "collector": {
+      "path": "collection.collector",
+      "type": "reference"
+    },
+    "container": {
+      "path": "container.type",
+      "type": "token"
+    },
+    "container-id": {
+      "path": "container.identifier",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "parent": {
+      "path": "parent",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "type": {
+      "path": "type",
+      "type": "token"
+    }
+  },
+  "AuditEvent": {
+    "action": {
+      "path": "event.action",
+      "type": "token"
+    },
+    "address": {
+      "path": "participant.network.address",
+      "type": "token"
+    },
+    "altid": {
+      "path": "participant.altId",
+      "type": "token"
+    },
+    "date": {
+      "path": "event.dateTime",
+      "type": "date"
+    },
+    "desc": {
+      "path": "object.name",
+      "type": "string"
+    },
+    "identity": {
+      "path": "object.identifier",
+      "type": "token"
+    },
+    "name": {
+      "path": "participant.name",
+      "type": "string"
+    },
+    "object-type": {
+      "path": "object.type",
+      "type": "token"
+    },
+    "participant": {
+      "path": "participant.reference",
+      "type": "reference"
+    },
+    "patient": [
+      {
+        "path": "participant.reference",
+        "type": "reference"
+      },
+      {
+        "path": "object.reference",
+        "type": "reference"
+      }
+    ],
+    "policy": {
+      "path": "participant.policy",
+      "type": "uri"
+    },
+    "reference": {
+      "path": "object.reference",
+      "type": "reference"
+    },
+    "site": {
+      "path": "source.site",
+      "type": "token"
+    },
+    "source": {
+      "path": "source.identifier",
+      "type": "token"
+    },
+    "subtype": {
+      "path": "event.subtype",
+      "type": "token"
+    },
+    "type": {
+      "path": "event.type",
+      "type": "token"
+    },
+    "user": {
+      "path": "participant.userId",
+      "type": "token"
+    }
+  },
+  "EnrollmentResponse": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "SupplyRequest": {
+    "date": {
+      "path": "date",
+      "type": "date"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "kind": {
+      "path": "kind",
+      "type": "token"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "source": {
+      "path": "source",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "supplier": {
+      "path": "supplier",
+      "type": "reference"
+    }
+  },
+  "Patient": {
+    "active": {
+      "path": "active",
+      "type": "token"
+    },
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "animal-breed": {
+      "path": "animal.breed",
+      "type": "token"
+    },
+    "animal-species": {
+      "path": "animal.species",
+      "type": "token"
+    },
+    "birthdate": {
+      "path": "birthDate",
+      "type": "date"
+    },
+    "careprovider": {
+      "path": "careProvider",
+      "type": "reference"
+    },
+    "deathdate": {
+      "path": "deceasedDateTime",
+      "type": "date"
+    },
+    "deceased": [
+      {
+        "path": "deceasedBoolean",
+        "type": "token"
+      },
+      {
+        "path": "deceasedDateTime",
+        "type": "token"
+      }
+    ],
+    "email": {
+      "path": "telecom[system='email']",
+      "type": "token"
+    },
+    "family": {
+      "path": "name.family",
+      "type": "string"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "given": {
+      "path": "name.given",
+      "type": "string"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "language": {
+      "path": "communication.language",
+      "type": "token"
+    },
+    "link": {
+      "path": "link.other",
+      "type": "reference"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "organization": {
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    "phone": {
+      "path": "telecom[system='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
+    },
+    "race": {
+      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-race']",
+      "type": "token"
+    },
+    "ethnicity": {
+      "path": "extension[url='http:..hl7.org.fhir.StructureDefinition.us-core-ethnicity']",
+      "type": "token"
+    }
+  },
+  "EligibilityResponse": {
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    }
+  },
+  "MedicationOrder": {
+    "code": {
+      "path": "medicationCodeableConcept",
+      "type": "token"
+    },
+    "datewritten": {
+      "path": "dateWritten",
+      "type": "date"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "medication": {
+      "path": "medicationReference",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "patient",
+      "type": "reference"
+    },
+    "prescriber": {
+      "path": "prescriber",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    }
+  },
+  "Person": {
+    "address": {
+      "path": "address",
+      "type": "string"
+    },
+    "address-city": {
+      "path": "address.city",
+      "type": "string"
+    },
+    "address-country": {
+      "path": "address.country",
+      "type": "string"
+    },
+    "address-postalcode": {
+      "path": "address.postalCode",
+      "type": "string"
+    },
+    "address-state": {
+      "path": "address.state",
+      "type": "string"
+    },
+    "address-use": {
+      "path": "address.use",
+      "type": "token"
+    },
+    "birthdate": {
+      "path": "birthDate",
+      "type": "date"
+    },
+    "email": {
+      "path": "telecom[system='email']",
+      "type": "token"
+    },
+    "gender": {
+      "path": "gender",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "link": {
+      "path": "link.target",
+      "type": "reference"
+    },
+    "name": {
+      "path": "name",
+      "type": "string"
+    },
+    "organization": {
+      "path": "managingOrganization",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "link.target",
+      "type": "reference"
+    },
+    "phone": {
+      "path": "telecom[system='phone']",
+      "type": "token"
+    },
+    "phonetic": {
+      "path": "name",
+      "type": "string"
+    },
+    "practitioner": {
+      "path": "link.target",
+      "type": "reference"
+    },
+    "relatedperson": {
+      "path": "link.target",
+      "type": "reference"
+    },
+    "telecom": {
+      "path": "telecom",
+      "type": "token"
+    }
+  },
+  "DiagnosticOrder": {
+    "actor": {
+      "path": "event.actor",
+      "type": "reference"
+    },
+    "bodysite": {
+      "path": "item.bodySite",
+      "type": "token"
+    },
+    "code": {
+      "path": "item.code",
+      "type": "token"
+    },
+    "encounter": {
+      "path": "encounter",
+      "type": "reference"
+    },
+    "event-date": {
+      "path": "event.dateTime",
+      "type": "date"
+    },
+    "event-status": {
+      "path": "event.status",
+      "type": "token"
+    },
+    "identifier": {
+      "path": "identifier",
+      "type": "token"
+    },
+    "item-date": {
+      "path": "item.event.dateTime",
+      "type": "date"
+    },
+    "item-past-status": {
+      "path": "item.event.status",
+      "type": "token"
+    },
+    "item-status": {
+      "path": "item.status",
+      "type": "token"
+    },
+    "orderer": {
+      "path": "orderer",
+      "type": "reference"
+    },
+    "patient": {
+      "path": "subject",
+      "type": "reference"
+    },
+    "specimen": {
+      "path": "specimen",
+      "type": "reference"
+    },
+    "status": {
+      "path": "status",
+      "type": "token"
+    },
+    "subject": {
+      "path": "subject",
+      "type": "reference"
+    }
+  }
+}
