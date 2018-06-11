@@ -26,23 +26,27 @@ To run in development mode use the following commands. First Mongo needs to be a
 ```
 docker run --name hearth-mongo -d -p 27017:27017 mongo
 ```
+Install dependencies
+```
+yarn
+```
 Now start the server in dev mode (which uses a dev namespaced database)
 ```
-npm run dev:start
+yarn dev:start
 ```
 otherwise for production just run:
 ```
-npm start
+yarn start
 ```
 
 The default FHIR version is DSTU2 as set in the config files, to change this either change the config files or make use of overriding config variable via environment variables:
 ```
-server__fhirVersion=stu3 npm start
+server__fhirVersion=stu3 yarn start
 ```
 
 To run the tests:
 ```
-npm test
+yarn test
 ```
 
 # Configuration
@@ -58,5 +62,5 @@ View the possible config fields [here](https://github.com/jembi/hearth/blob/mast
 * Terminology Service `$lookup` operation - ([$lookup](https://www.hl7.org/fhir/DSTU2/valueset-operations.html#lookup))
 
 # Pro dev tips:
-* To run only specific test files use `npm run test:these-files -- test/pdqm.js`. Note the `--` is important!
-* Run `npm run cov` to show coverage details in your browser.
+* To run only specific test files use `yarn test:these-files -- test/pdqm.js`. Note the `--` is important!
+* Run `yarn cov` to show coverage details in your browser.
