@@ -153,6 +153,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       t.error(err)
 
       const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
       const update = {
         resourceType: 'Patient',
         id: id,
@@ -173,6 +174,10 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       }, (err, res) => {
         t.error(err)
 
+        // pull versionId from location header to verify that the ETag header is being set properly
+        const versionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+
+        t.equal(res.headers.etag, `W/"${versionId}"`)
         t.equal(res.statusCode, 200, 'response status code should be 200')
 
         request({
