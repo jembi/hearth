@@ -153,6 +153,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       t.error(err)
 
       const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
       const update = {
         resourceType: 'Patient',
         id: id,
@@ -172,7 +173,6 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
         json: true
       }, (err, res) => {
         t.error(err)
-
         t.equal(res.statusCode, 200, 'response status code should be 200')
 
         request({
