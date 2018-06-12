@@ -1,12 +1,11 @@
 FROM node:boron
 
 # install dependencies
-ADD package-lock.json /src/frontend/
-ADD package.json /src/hearth/
+ADD package.json yarn.lock /src/hearth/
 WORKDIR /src/hearth/
-RUN npm install
+RUN yarn
 
 # add app
 ADD . /src/hearth/
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
