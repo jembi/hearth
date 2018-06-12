@@ -62,5 +62,5 @@ View the possible config fields [here](https://github.com/jembi/hearth/blob/mast
 * Terminology Service `$lookup` operation - ([$lookup](https://www.hl7.org/fhir/DSTU2/valueset-operations.html#lookup))
 
 # Pro dev tips:
-* To run only specific test files use `yarn test:these-files test/pdqm.js`. Note the `--` is important!
+* To run only specific test files use `yarn test:these-files test/pdqm.js`.
 * Run `yarn cov` to show coverage details in your browser.
