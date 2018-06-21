@@ -25,7 +25,7 @@
     "cors": "^2.8.1",
     "express": "^4.16.3",
     "express-xml-bodyparser": "^0.3.0",
-    "fhir": "^3.3.0",
+    "fhir": "^3.3.1",
     "jsonwebtoken": "^8.2.2",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
