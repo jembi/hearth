@@ -1697,9 +1697,9 @@ fbjs@^0.8.16:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
-fhir@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/fhir/-/fhir-3.3.0.tgz#17945542e661869867820c73e9cf92ca293192bf"
+fhir@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/fhir/-/fhir-3.3.1.tgz#dbc0f2edc8096225af6e659041a686a4419c13ad"
   dependencies:
     libxmljs "0.18.0"
     lodash "^3.10.1"
