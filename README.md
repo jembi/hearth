@@ -61,6 +61,33 @@ View the possible config fields [here](https://github.com/jembi/hearth/blob/mast
 * Patient Demographics Query for mobile - ([PDQm](http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_Suppl_PDQm.pdf))
 * Terminology Service `$lookup` operation - ([$lookup](https://www.hl7.org/fhir/DSTU2/valueset-operations.html#lookup))
 
+## Service-to-service Authentication
+
+Enable JWT authentication middleware by including the following configuration in your config file:
+
+```json
+"authentication": {
+  "type": "jwt",
+  "secret": "my secret"
+}
+```
+
+Generate an API token:
+
+```bash
+$ ./scripts/generate-api-token --service-name "My Service" --admin-email admin@my-service.org --secret "my secret"
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2aWNlIjoiTXkgU2VydmljZSIsImVtYWlsIjoiYWRtaW5AbXktc2VydmljZS5vcmciLCJ0eXBlIjoic2VydmljZSIsImlhdCI6MTUzMjQyNjg2NywiaXNzIjoiSGVhcnRoIn0.bQomDjWkwSrTyYAiX917kiKZvbsh9httwqRGEMvqZak
+```
+
+Include the `Authorization` header in Hearth API calls with the Bearer token set to the token output by the script:
+
+```bash
+curl -X GET \\
+  https://myhearth.org/fhir/Person/222222 \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2aWNlIjoiTXkgU2VydmljZSIsImVtYWlsIjoiYWRtaW5AbXktc2VydmljZS5vcmciLCJ0eXBlIjoic2VydmljZSIsImlhdCI6MTUzMjQyNjg2NywiaXNzIjoiSGVhcnRoIn0.bQomDjWkwSrTyYAiX917kiKZvbsh9httwqRGEMvqZak"
+```
+
 # Pro dev tips:
 * To run only specific test files use `yarn test:these-files test/pdqm.js`.
 * Run `yarn cov` to show coverage details in your browser.
