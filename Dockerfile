@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node:carbon
 
 # install dependencies
 ADD package.json yarn.lock /src/hearth/
