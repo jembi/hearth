@@ -11,6 +11,7 @@
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
+    "cov:these-files": "tap --reporter=spec --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
     "test:load": "npm run test:load-create && npm run test:load-matching && npm run test:clean-db",
     "test:load-matching": "cross-env NODE_ENV=test npm start -- --createIndexes & sleep 2 && artillery run -o artillery/load-matching.json test/load-tests/matching.yml && npm stop && artillery report artillery/load-matching.json",

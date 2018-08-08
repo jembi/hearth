@@ -12,7 +12,17 @@
     "authWindowSeconds": 10,
     "type": "openhim-style",
     "enablePublicUserCreation": false,
-    "secret": null
+    "secret": null,
+    "jwt": {
+      "algorithm": "HS256",
+      "secret": null,
+      "privKey": null,
+      "pubKey": null,
+      "issuer": "hearth",
+      "setAudience": "hearth/example-app1",
+      "validateAudience": "^hearth:example-app\\d+$",
+      "expiresIn": "1d"
+    }
   },
   "logger": {
     "level": "info"
