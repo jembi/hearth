@@ -9,8 +9,7 @@
     "url": "mongodb://localhost/hearth"
   },
   "authentication": {
-    "authWindowSeconds": 10,
-    "type": "openhim-style",
+    "type": "disabled",
     "enablePublicUserCreation": false,
     "secret": null,
     "jwt": {
@@ -27,7 +26,7 @@
   "logger": {
     "level": "info"
   },
-  "idGenerator": "uuidv1",
+  "idGenerator": "uuidv4",
   "atnaAudit": {
     "enabled": true,
     "interface": "udp",
@@ -40,7 +39,7 @@
     }
   },
   "matchingQueue": {
-    "numberOfWorkers": 2,
+    "numberOfWorkers": 0,
     "pollingInterval": 1000
   },
   "validation": {

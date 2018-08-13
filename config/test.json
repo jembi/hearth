@@ -10,6 +10,7 @@
   },
   "authentication": {
     "authWindowSeconds": 50,
+    "type": "openhim-style",
     "secret": "test secret"
   },
   "logger": {
