@@ -167,6 +167,38 @@ tap.test('JWT Authentication', withServer((t, server) => {
     })
   })
 
+  t.test('should have 500 status when public key path is invalid using new jwt config and asymmetric algorithms', (t) => {
+    conf.setConf('authentication:jwt', {
+      algorithm: 'RS256',
+      pubKey: `test/resources/jwt-certs/pubKey.pem`,
+      privKey: `test/resources/jwt-certs/privKey.pem`,
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const user = {
+      _id: new ObjectId(),
+      email: 'sysadmin@jembi.org',
+      type: 'sysadmin'
+    }
+    session.generateTokenForUser(user, (err, token) => {
+      t.error(err)
+      const options = Object.assign({}, requestOptions, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      conf.setConf('authentication:jwt:pubKey', 'test/resources/INVALID/pubKey.pem')
+
+      request(options, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 500)
+        t.end()
+      })
+    })
+  })
+
   t.test("should have 401 status when the audience doesn't match", (t) => {
     conf.setConf('authentication:jwt', {
       algorithm: 'HS256',

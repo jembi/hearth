@@ -157,6 +157,28 @@ tap.test('Create session', withServer((t, server) => {
     })
   }))
 
+  t.test('should error when private key path is invalid - asymmetric algorithm', withUser((t, user) => {
+    configStub.withArgs('authentication:jwt').returns({
+      algorithm: 'RS256',
+      pubKey: `test/resources/jwt-certs/pubKey.pem`,
+      privKey: `test/resources/INVALID/privKey.pem`,
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const options = Object.assign({}, requestOptions, {
+      json: {
+        email: user.email,
+        password: 'password'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 500)
+      t.end()
+    })
+  }))
+
   t.end()
 }))
 
