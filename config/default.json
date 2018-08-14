@@ -11,7 +11,6 @@
   "authentication": {
     "type": "disabled",
     "enablePublicUserCreation": false,
-    "secret": null,
     "jwt": {
       "algorithm": "HS256",
       "secret": null,
