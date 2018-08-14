@@ -1,8 +1,8 @@
 # Hearth config options
 
-There are a few different way to configure Hearth:
+There are a few different ways to configure Hearth:
 
-1. You may edit the config files directly in the `config/` folder directly. There is a default config file and override config files for production and or testing environments can be created. These replace values in the default file. If the `NODE_ENV` environment variable is set to `production` then the `production.json` override file is read, similary if NODE-ENV is set to `test` then the `test.json` override file is read.
+1. You may edit the config files in the `config/` folder directly. There is a default config file and override config files for production and testing environments can be created. These override files replace values in the default file. For example, if the `NODE_ENV` environment variable is set to `production` then the `production.json` override file is read, similarly if `NODE_ENV` is set to `test` then the `test.json` override file is read.
 2. You may use environment variables. Environment variables override the values set in any of the config files. To overwrite json config variables with environment variables you can level down the object with `__` (double underscore).  For example `{ mongodb: { url: 'localhost' } }` can be overwritten with `mongodb__url=foreignhost`
 3. You may start hearth with the `-c path/to/config.json` options to use a custom config file. Copy the `config/default.json` file to get started. With this method no other config files are read other than the one you specify.
 
@@ -16,7 +16,7 @@ See an example file [here](default.json).
 * `server.fhirVersion` e.g. "dstu2" - the fhirVersion to configure Hearth for. Valid  options: `dstu2`, `stu3`
 * `mongodb.url` e.g. "mongodb://localhost/hearth" - the mongo connection url used to connect to the mongo database
 * `authentication.authWindowSeconds` e.g. 10 - Only used when `authentication.type` = `openhim-style`, it describes the maximum amount of time to pass before a request using this auth style is no longer valid.
-* `authentication.type` e.g. "disabled" - the authentication type to use. Valid options: `disabled`, `jwt` or `openhim-style`. OpenHIM style is th same auth mechanism that the OpenHIM project uses. See [here](http://openhim.readthedocs.io/en/latest/dev-guide/api-ref.html#initial-authentication-notification). For `jwt` see the following JWT options to configure how you use JWTs within Hearth.
+* `authentication.type` e.g. "disabled" - the authentication type to use. Valid options: `disabled`, `jwt` or `openhim-style`. OpenHIM style is the same auth mechanism that the OpenHIM project uses. See [here](http://openhim.readthedocs.io/en/latest/dev-guide/api-ref.html#initial-authentication-notification). For `jwt` see the following JWT options to configure how you use JWTs within Hearth.
 * `authentication.enablePublicUserCreation` e.g. false - enables anyone to create users in hearth via the API, basically disabled authentication for create user endpoints.
 * `authentication.secret` e.g. "super_secret" - deprecated, previously used for jwt secrets. Now use `authentication.jwt.secret`.
 * `authentication.jwt.algorithm` e.g. "HS256" - the JWT algorithm to use for signing and verification
@@ -35,7 +35,7 @@ See an example file [here](default.json).
 * `atnaAudit.port` e.g. 5050 - the port on the host which receives ATNA audits.
 * `atnaAudit.certOptions.key` e.g. "/path/to/privKey.pem" - path to the private key to use when sending audits via tls.
 * `atnaAudit.certOptions.cert` e.g. "/path/to/pubKey.pem" - path to the public key to use when sending audits via tls.
-* `atnaAudit.certOptions.ca` e.g. "/path/to/privKey.pem" - path to a new certificate authority to trust use when sending audits via tls.
+* `atnaAudit.certOptions.ca` e.g. "/path/to/privKey.pem" - path to a new certificate authority to trust when sending audits via tls.
 * `matchingQueue.numberOfWorkers` e.g. 2 - the number of worker processes which run background matching. Set to 0 to turn off background matching. You must have a valid matching config (`matching.json`) for this to work correctly.
 * `matchingQueue.pollingInterval` e.g. 1000 - how often to poll for new record to be matched, in ms.
 * `validation.enabled` e.g. false - whether to enable basic resource validation.
