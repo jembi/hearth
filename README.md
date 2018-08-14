@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/jembi/hearth.svg?branch=master)](https://travis-ci.org/jembi/hearth) [![codecov](https://codecov.io/gh/jembi/hearth/branch/master/graph/badge.svg)](https://codecov.io/gh/jembi/hearth)
 
 # Hearth
-HEARTH (noun) : the floor of a '[FHIR](http://hl7.org/fhir/)'place. A fast FHIR-compliant server focused on longitudinal data stores.
+HEARTH (noun): the floor of a '[FHIR](http://hl7.org/fhir/)'place. A fast FHIR-compliant server focused on longitudinal data stores.
 
 This project aims to provide a fast and lightweight FHIR server that also supports some of the FHIR-based IHE profiles. It is still in the early stages of development, follow the project to stay informed. Any contibutions are welcomed!
 
@@ -9,7 +9,7 @@ Our high level plan for the project can be found [here](https://docs.google.com/
 
 # Features
 
-* Supports both **DSTU2** and **STU3** - the current version can be set in config, see  [here](https://github.com/jembi/hearth/blob/master/config/default.json#L6)
+* Supports both **DSTU2** and **STU3** - the current version can be set in config, see [here](https://github.com/jembi/hearth/blob/master/config/default.json#L6)
 * Supports both **JSON** and **XML** with conversion between the two using the [FHIR.js module](https://www.npmjs.com/package/fhir). Supports using both the `Accepts:` header and the `_format` parameter for defining the response format.
 * Supports read, vread, search, create, update, delete and batch/transaction FHIR interactions for ALL resources
 * Supports ALL query parameters defined for ALL resources with the exception of parameters of type number or quantity - this is done by reading and processing the downloadable FHIR definitions files
@@ -61,14 +61,16 @@ View the possible config fields [here](https://github.com/jembi/hearth/blob/mast
 * Patient Demographics Query for mobile - ([PDQm](http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_Suppl_PDQm.pdf))
 * Terminology Service `$lookup` operation - ([$lookup](https://www.hl7.org/fhir/DSTU2/valueset-operations.html#lookup))
 
-## Service-to-service Authentication
+## Service-to-service JWT Authentication
 
 Enable JWT authentication middleware by including the following configuration in your config file:
 
 ```json
 "authentication": {
   "type": "jwt",
-  "secret": "my secret"
+  "jwt": {
+    "secret": "my secret"
+  }
 }
 ```
 
