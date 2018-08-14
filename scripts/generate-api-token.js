@@ -29,7 +29,7 @@ Arguments:
 -s --secret\t\tSecret or private key. Use -s "\`cat privKey.pem\`" to read from a file.
 -a --algorithm\t\t(Optional) The JWT algorithm you have configured to use in Hearth (default: 'HS256')
 -i --issuer\t\t(Optional) The issuer of the token, set this to the same value you have configured in Hearth (default: 'Hearth')
--u --audience\t\t(Optional) The audience of the token, if you have configured Hearth to validate Audience then set this the appropriate value`
+-u --audience\t\t(Optional) The audience of the token, if you have configured Hearth to validate Audience then set this to the appropriate value`
 
   console.log(
       message

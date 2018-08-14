@@ -55,7 +55,6 @@ tap.test('JWT Authentication', withServer((t, server) => {
   })
 
   t.test('should have 401 status when the authorization header is invalid', (t) => {
-    conf.setConf('authentication:jwt', null)
     const options = Object.assign({}, requestOptions, {
       headers: {
         Authorization: 'Basic c3lzYWRtaW5AamVtYmkub3JnOnN5c2FkbWlu'
@@ -68,8 +67,26 @@ tap.test('JWT Authentication', withServer((t, server) => {
     })
   })
 
-  t.test('should have 401 status when the token is invalid', (t) => {
+  t.test('should have 401 status when the token is invalid using backwards compatible jwt config', (t) => {
     conf.setConf('authentication:jwt', null)
+    conf.setConf('authentication:secret', 'test secret')
+    const options = Object.assign({}, requestOptions, {
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c2FkbWluQGplbWJpLm9yZyIsInR5cGUiOiJzeXNhZG1pbiIsImlhdCI6MTUwNzExNjM3NywiZXhwIjoxNTA3MjAyNzc3LCJpc3MiOiJIZWFydGgiLCJzdWIiOiJ1c2VyLzU5ZDQ5ZWQ1ZDM5YTMyMzA5ZDQ0NGM1ZiJ9.bA4bB7LD0j1nstE7V5ZHz2rtWe4RaAYWouKDfHnGX-g'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 401)
+      t.end()
+    })
+  })
+
+  t.test('should have 401 status when the token is invalid using new jwt config', (t) => {
+    conf.setConf('authentication:jwt', {
+      algorithm: 'HS256',
+      secret: 'new secret'
+    })
     const options = Object.assign({}, requestOptions, {
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c2FkbWluQGplbWJpLm9yZyIsInR5cGUiOiJzeXNhZG1pbiIsImlhdCI6MTUwNzExNjM3NywiZXhwIjoxNTA3MjAyNzc3LCJpc3MiOiJIZWFydGgiLCJzdWIiOiJ1c2VyLzU5ZDQ5ZWQ1ZDM5YTMyMzA5ZDQ0NGM1ZiJ9.bA4bB7LD0j1nstE7V5ZHz2rtWe4RaAYWouKDfHnGX-g'
@@ -84,6 +101,7 @@ tap.test('JWT Authentication', withServer((t, server) => {
 
   t.test('should have 200 status when the token is valid using backwards compatible jwt config', (t) => {
     conf.setConf('authentication:jwt', null)
+    conf.setConf('authentication:secret', 'test secret')
     const user = {
       _id: new ObjectId(),
       email: 'sysadmin@jembi.org',
@@ -271,8 +289,6 @@ tap.test('JWT Authentication', withServer((t, server) => {
         Authorization: `Bearer xyz`
       }
     })
-
-    conf.setConf('authentication:jwt:issuer', 'no-match')
 
     request(options, (err, res, body) => {
       t.error(err)
