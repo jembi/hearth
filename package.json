@@ -23,6 +23,7 @@
     "atna-audit": "^1.0.1",
     "body-parser": "^1.16.0",
     "cors": "^2.8.1",
+    "execSync": "^1.0.2",
     "express": "^4.14.1",
     "fhir": "^4.3.6",
     "jsonwebtoken": "^8.1.0",
@@ -43,7 +44,7 @@
   "devDependencies": {
     "artillery": "^1.6.0-22",
     "chance": "^1.0.8",
-    "codecov": "^1.0.1",
+    "codecov": "^3.0.4",
     "glossy": "^0.1.7",
     "license-checker": "^13.0.3",
     "neo-async": "^2.1.0",
