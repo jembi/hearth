@@ -16,9 +16,9 @@
       "secret": null,
       "privKey": null,
       "pubKey": null,
-      "issuer": "hearth",
+      "issuer": "Hearth",
       "setAudience": "hearth/example-app1",
-      "validateAudience": "^hearth:example-app\\d+$",
+      "validateAudience": null,
       "expiresIn": "1d"
     }
   },
