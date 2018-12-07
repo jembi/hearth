@@ -1,12 +1,51 @@
 {
   "Patient": {
     "mothersMaidenName.given": {
+      "extension": true,
       "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
-      "valuePropPath": "valueHumanName.given"
+      "path": "valueHumanName.given",
+      "type": "string",
+      "propertyDef": {
+        "min": 0,
+        "max": "1",
+        "types": [
+          {
+            "code": "string"
+          }
+        ]
+      }
     },
     "mothersMaidenName.family": {
+      "extension": true,
       "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
-      "valuePropPath": "valueHumanName.family"
+      "path": "valueHumanName.family",
+      "type": "string",
+      "propertyDef": {
+        "min": 0,
+        "max": "1",
+        "types": [
+          {
+            "code": "string"
+          }
+        ]
+      }
+    }
+  },
+  "Task": {
+    "location": {
+      "extension": true,
+      "url": "http://opencrvs.org/specs/extension/regLastLocation",
+      "path": "valueReference",
+      "type": "reference",
+      "propertyDef": {
+        "min": 0,
+        "max": "1",
+        "types": [
+          {
+            "code": "reference"
+          }
+        ]
+      }
     }
   }
 }
