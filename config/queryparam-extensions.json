@@ -22,7 +22,7 @@
       "type": "string",
       "propertyDef": {
         "min": 0,
-        "max": "*",
+        "max": "1",
         "types": [
           {
             "code": "string"
