@@ -15,6 +15,8 @@ const sinon = require('sinon')
 tap.test('Create session', withServer((t, server) => {
   const configStub = sinon.stub(config, 'getConf')
   configStub.withArgs('authentication:type').returns('jwt')
+  configStub.withArgs('authentication:jwt').returns(null)
+  configStub.withArgs('authentication:secret').returns('test secret')
   configStub.callThrough()
 
   t.tearDown(() => {
@@ -74,7 +76,7 @@ tap.test('Create session', withServer((t, server) => {
     })
   })
 
-  t.test('should return 201 status when a session is created', withUser((t, user) => {
+  t.test('should return 201 status when a session is created with backward compatible jwt config', withUser((t, user) => {
     const options = Object.assign({}, requestOptions, {
       json: {
         email: user.email,
@@ -85,6 +87,94 @@ tap.test('Create session', withServer((t, server) => {
       t.error(err)
       t.equal(res.statusCode, 201)
       t.type(body.token, 'string')
+      t.end()
+    })
+  }))
+
+  t.test('should return 201 status when a session is created with new jwt config - symmetric algorithm', withUser((t, user) => {
+    configStub.withArgs('authentication:jwt').returns({
+      algorithm: 'HS256',
+      secret: 'new secret',
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const options = Object.assign({}, requestOptions, {
+      json: {
+        email: user.email,
+        password: 'password'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 201)
+      t.type(body.token, 'string')
+      t.end()
+    })
+  }))
+
+  t.test('should return 201 status when a session is created with new jwt config - asymmetric algorithm', withUser((t, user) => {
+    configStub.withArgs('authentication:jwt').returns({
+      algorithm: 'RS256',
+      pubKey: `test/resources/jwt-certs/pubKey.pem`,
+      privKey: `test/resources/jwt-certs/privKey.pem`,
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const options = Object.assign({}, requestOptions, {
+      json: {
+        email: user.email,
+        password: 'password'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 201)
+      t.type(body.token, 'string')
+      t.end()
+    })
+  }))
+
+  t.test('should error when there is an invalid algorithm', withUser((t, user) => {
+    configStub.withArgs('authentication:jwt').returns({
+      algorithm: 'xyz',
+      secret: 'new secret',
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const options = Object.assign({}, requestOptions, {
+      json: {
+        email: user.email,
+        password: 'password'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 500)
+      t.end()
+    })
+  }))
+
+  t.test('should error when private key path is invalid - asymmetric algorithm', withUser((t, user) => {
+    configStub.withArgs('authentication:jwt').returns({
+      algorithm: 'RS256',
+      pubKey: `test/resources/jwt-certs/pubKey.pem`,
+      privKey: `test/resources/INVALID/privKey.pem`,
+      issuer: 'hearth',
+      setAudience: 'hearth:example-app1',
+      validateAudience: '^hearth:example-app\\d+$'
+    })
+    const options = Object.assign({}, requestOptions, {
+      json: {
+        email: user.email,
+        password: 'password'
+      }
+    })
+    request(options, (err, res, body) => {
+      t.error(err)
+      t.equal(res.statusCode, 500)
       t.end()
     })
   }))

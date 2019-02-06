@@ -10,7 +10,7 @@
   },
   "authentication": {
     "authWindowSeconds": 50,
-    "secret": "test secret"
+    "type": "openhim-style"
   },
   "logger": {
     "level": "error"

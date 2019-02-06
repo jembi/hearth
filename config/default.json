@@ -9,15 +9,23 @@
     "url": "mongodb://localhost/hearth"
   },
   "authentication": {
-    "authWindowSeconds": 10,
-    "type": "openhim-style",
+    "type": "disabled",
     "enablePublicUserCreation": false,
-    "secret": null
+    "jwt": {
+      "algorithm": "HS256",
+      "secret": null,
+      "privKey": null,
+      "pubKey": null,
+      "issuer": "Hearth",
+      "setAudience": "hearth/example-app1",
+      "validateAudience": null,
+      "expiresIn": "1d"
+    }
   },
   "logger": {
     "level": "info"
   },
-  "idGenerator": "uuidv1",
+  "idGenerator": "uuidv4",
   "atnaAudit": {
     "enabled": true,
     "interface": "udp",
@@ -30,7 +38,7 @@
     }
   },
   "matchingQueue": {
-    "numberOfWorkers": 2,
+    "numberOfWorkers": 0,
     "pollingInterval": 1000
   },
   "validation": {

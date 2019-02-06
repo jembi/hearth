@@ -367,4 +367,141 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
   })
+
+  t.test('Update function', { autoend: true }, (t) => {
+    t.test('should update the patient resource even when missing if-match header', (t) => {
+      basicCoreTest(t, (db, done) => {
+        const resource = Object.assign({}, testPatients.charlton.patient)
+        delete resource.id
+
+        // save
+        request.post({
+          url: 'http://localhost:3447/fhir/Patient',
+          headers: headers,
+          body: resource,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          // update
+          const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+          const initialVersionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+
+          // prep input object for update operation
+          const updatedPerson = Object.assign({}, testPatients.charlton.patient)
+          updatedPerson.meta = {}
+          updatedPerson.meta.versionId = initialVersionId
+          updatedPerson.id = id
+
+          request.put({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            body: updatedPerson,
+            json: true
+          }, (err, res) => {
+            t.error(err)
+
+            // pull versionId from location header to verify that the ETag header is being set properly
+            const versionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+            t.equal(res.headers.etag, `W/"${versionId}"`)
+
+            // pull id from location header and test that it matches original id
+            const resultId = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+            t.equal(resultId, id)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            done()
+          })
+        })
+      })
+    })
+
+    t.test('should fail to update the patient resource due to invalid if-match header', (t) => {
+      basicCoreTest(t, (db, done) => {
+        const resource = Object.assign({}, testPatients.charlton.patient)
+        delete resource.id
+
+        // save
+        request.post({
+          url: 'http://localhost:3447/fhir/Patient',
+          headers: headers,
+          body: resource,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          // update
+          const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+          const initialVersionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+
+          // prep headers and input object for update operation
+          const updatedPerson = Object.assign({}, testPatients.charlton.patient)
+          updatedPerson.meta = {}
+          updatedPerson.meta.versionId = initialVersionId
+          updatedPerson.id = id
+          headers['If-Match'] = `W/"invalid-test"`
+
+          request.put({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            body: updatedPerson,
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusMessage, 'Conflict')
+            t.equal(res.statusCode, 409, 'response status code should be 409')
+            done()
+          })
+        })
+      })
+    })
+
+    t.test('should update the patient resource and return etag header', (t) => {
+      basicCoreTest(t, (db, done) => {
+        const resource = Object.assign({}, testPatients.charlton.patient)
+        delete resource.id
+
+        // save
+        request.post({
+          url: 'http://localhost:3447/fhir/Patient',
+          headers: headers,
+          body: resource,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+
+          // update
+          const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+          const initialVersionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+
+          // prep headers and input for update operation
+          const updatedPerson = Object.assign({}, testPatients.charlton.patient)
+          updatedPerson.meta = {}
+          updatedPerson.meta.versionId = initialVersionId
+          updatedPerson.id = id
+          headers['If-Match'] = `W/"${initialVersionId}"`
+
+          request.put({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            body: updatedPerson,
+            json: true
+          }, (err, res) => {
+            t.error(err)
+
+            // pull versionId from location header to verify that the ETag header is being set properly
+            const versionId = res.headers.location.replace(/\/fhir\/Patient\/.*\/_history\//, '')
+            t.equal(res.headers.etag, `W/"${versionId}"`)
+
+            // pull id from location header and test that it matches original id
+            const resultId = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+            t.equal(resultId, id)
+
+            t.equal(res.statusCode, 200, 'response status code should be 200')
+            done()
+          })
+        })
+      })
+    })
+  })
 })
