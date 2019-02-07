@@ -561,6 +561,60 @@ tap.test('Core', { autoend: true }, (t) => {
       })
     })
 
+    t.test('should return the history for a particular resource id using the _since parameter', (t) => {
+      basicCoreTest(t, (db, done) => {
+        const resource = Object.assign({}, testPatients.charlton.patient)
+        delete resource.id
+
+        // save
+        request.post({
+          url: 'http://localhost:3447/fhir/Patient',
+          headers: headers,
+          body: resource,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+          t.equal(res.statusCode, 201, 'create response status code should be 201')
+
+          // update
+          const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
+          // prep input object for update operation
+          const updatedPerson = Object.assign({}, testPatients.charlton.patient)
+          updatedPerson.id = id
+          updatedPerson.birthDate = '1999-01-01'
+
+          const since = new Date().toISOString()
+
+          request.put({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            body: updatedPerson,
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 200, 'update response status code should be 200')
+
+            request.get({
+              url: `http://localhost:3447/fhir/Patient/${id}/_history?_since=${since}`,
+              headers: headers,
+              json: true
+            }, (err, res, body) => {
+              t.error(err)
+
+              t.equal(res.statusCode, 200, 'history response status code should be 200')
+
+              t.equals(body.entry.length, 1, 'should only return last entry')
+              t.equal(body.entry[0].resource.birthDate, '1999-01-01', 'new birthDate should be present in newest resource')
+              t.equal(body.entry[0].request.method, 'PUT', 'method should be PUT')
+
+              done()
+            })
+          })
+        })
+      })
+    })
+
     t.test('should return the history for an entire resource Type', (t) => {
       basicCoreTest(t, (db, done) => {
         const resource = Object.assign({}, testPatients.charlton.patient)
@@ -648,6 +702,101 @@ tap.test('Core', { autoend: true }, (t) => {
                     t.equal(body.entry[3].request.method, 'PUT', 'method should be PUT')
                     t.equal(body.entry[4].resource.name[0].given[0], 'Charlton')
                     t.equal(body.entry[4].request.method, 'POST', 'method should be POST')
+
+                    done()
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+
+    t.test('should return the partial history using the since parameter', (t) => {
+      basicCoreTest(t, (db, done) => {
+        const resource = Object.assign({}, testPatients.charlton.patient)
+        delete resource.id
+
+        // save
+        request.post({
+          url: 'http://localhost:3447/fhir/Patient',
+          headers: headers,
+          body: resource,
+          json: true
+        }, (err, res, body) => {
+          t.error(err)
+          t.equal(res.statusCode, 201, 'create response status code should be 201')
+
+          // update
+          const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
+          // prep input object for update operation
+          const updatedPerson = Object.assign({}, testPatients.charlton.patient)
+          updatedPerson.id = id
+          updatedPerson.birthDate = '1999-01-01'
+
+          request.put({
+            url: `http://localhost:3447/fhir/Patient/${id}`,
+            headers: headers,
+            body: updatedPerson,
+            json: true
+          }, (err, res) => {
+            t.error(err)
+            t.equal(res.statusCode, 200, 'update response status code should be 200')
+
+            const resource = Object.assign({}, testPatients.emmarentia.patient)
+            delete resource.id
+
+            // save
+            request.post({
+              url: 'http://localhost:3447/fhir/Patient',
+              headers: headers,
+              body: resource,
+              json: true
+            }, (err, res, body) => {
+              t.error(err)
+              t.equal(res.statusCode, 201, 'create response status code should be 201')
+              const resource = Object.assign({}, testPatients.nikita.patient)
+              delete resource.id
+
+              const since = new Date().toISOString()
+              console.log('SINCE = ', since)
+
+              // save
+              request.post({
+                url: 'http://localhost:3447/fhir/Patient',
+                headers: headers,
+                body: resource,
+                json: true
+              }, (err, res, body) => {
+                t.error(err)
+                t.equal(res.statusCode, 201, 'create response status code should be 201')
+
+                const nikitaId = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+
+                request.delete({
+                  url: `http://localhost:3447/fhir/Patient/${nikitaId}`,
+                  headers: headers,
+                  json: true
+                }, (err, res, body) => {
+                  t.error(err)
+                  t.equal(res.statusCode, 204, 'delete response status code should be 204')
+
+                  request.get({
+                    url: `http://localhost:3447/fhir/Patient/_history?_since=${since}`,
+                    headers: headers,
+                    json: true
+                  }, (err, res, body) => {
+                    t.error(err)
+
+                    t.equal(res.statusCode, 200, 'history response status code should be 200')
+
+                    t.equal(body.entry.length, 2, 'should have length 2')
+                    t.equal(body.entry[0].resource.id, nikitaId)
+                    t.equal(body.entry[0].request.method, 'DELETE', 'method should be DELETE')
+                    t.equal(body.entry[1].resource.name[0].given[0], 'Nikita')
+                    t.equal(body.entry[1].request.method, 'POST', 'method should be POST')
 
                     done()
                   })
