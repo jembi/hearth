@@ -761,7 +761,6 @@ tap.test('Core', { autoend: true }, (t) => {
               delete resource.id
 
               const since = new Date().toISOString()
-              console.log('SINCE = ', since)
 
               // save
               request.post({

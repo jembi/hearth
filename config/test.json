@@ -13,7 +13,7 @@
     "type": "openhim-style"
   },
   "logger": {
-    "level": "debug"
+    "level": "error"
   },
   "atnaAudit": {
     "enabled": true,
