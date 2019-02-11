@@ -1,6 +1,6 @@
 {
   "name": "hearth",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-beta.1",
   "description": "Hearth, a home for FHIR. A fast FHIR-compliant server.",
   "scripts": {
     "start": "node lib/server.js",
