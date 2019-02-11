@@ -12,7 +12,7 @@ Our high level plan for the project can be found [here](https://docs.google.com/
 * Supports both **DSTU2** and **STU3** - the current version can be set in config, see [here](https://github.com/jembi/hearth/blob/master/config/default.json#L6)
 * Supports both **JSON** and **XML** with conversion between the two using the [FHIR.js module](https://www.npmjs.com/package/fhir). Supports using both the `Accepts:` header and the `_format` parameter for defining the response format.
 * Supports read, vread, search, create, update, delete, _history and batch/transaction FHIR interactions for ALL resources
-* Supports ALL query parameters defined for ALL resources with the exception of parameters of type number or quantity - this is done by reading and processing the downloadable FHIR definitions files (only support the _since parm for _history)
+* Supports ALL query parameters defined for ALL resources with the exception of parameters of type number or quantity - this is done by reading and processing the downloadable FHIR definitions files (only support the _since param for _history)
 * Supports chained parameter queries to the nth degree
 * Supports query parameter modifiers for string types, including `exact` and `contains`
 * Supports query parameter prefixes for dates, including `eq`, `ne`, `lt`, `le`, `gt` and `ge`
