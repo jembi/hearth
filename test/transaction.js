@@ -251,9 +251,10 @@ tap.test('Transaction resource .revertDelete() should restore a newly deleted re
               t.error(err)
               t.notOk(doc, 'Resource should be deleted')
 
-              cHistory.findOne({ id: id }, (err, doc) => {
+              cHistory.find({ id: id }).toArray((err, docs) => {
                 t.error(err)
-                t.equals('' + doc.id, id, 'Deleted resource should be in history collection')
+                t.equals('' + docs[0].id, id, 'Delete entry should be in history collection')
+                t.equals('' + docs[1].id, id, 'Deleted resource should be in history collection')
 
                 // revert the deleted resource
                 transaction.revertDelete(resourceType, id, (err, success) => {
