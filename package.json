@@ -41,7 +41,6 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
-    "artillery": "^1.6.0-18",
     "chalk": "^2.4.1",
     "chance": "^1.0.16",
     "codecov": "^1.0.1",
