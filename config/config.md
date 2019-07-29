@@ -40,4 +40,5 @@ See an example file [here](default.json).
 * `matchingQueue.pollingInterval` e.g. 1000 - how often to poll for new record to be matched, in ms.
 * `validation.enabled` e.g. false - whether to enable basic resource validation.
 * `validation.additionProfilePaths` e.g. [ 'lib/fhir/profiles/mhd' ] - array of paths to profiles that you want to make the validation module aware of.
+* `operations.upserting` e.g. false(default) or true - whether to enable inserting if a record doesn't already exist for update operations.
 * `knownIdentityDomains` e.g. [ 'some:identity:domain' ] - an array of identify domains that are known to the PIXm profile. Only necessary if you are using this IHE profile.
