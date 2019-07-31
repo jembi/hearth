@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mongo:
-  container_name: perfomance_test_db
+    container_name: perfomance-test-db
     image: mongo:4.0
     ports:
       - "27017:27017"
@@ -11,7 +11,7 @@ services:
     container_name: hearth_perfomance_test
     image: jembi/hearth:latest
     environment:
-      - mongodb__url=mongodb://perfomance_test_db/hearth-dev
+      - mongodb__url=mongodb://perfomance-test-db/hearth-dev
       - logger__level=info
       - idGenerator=uuidv4
     ports:
