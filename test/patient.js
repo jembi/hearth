@@ -12,6 +12,7 @@ const server = require('../lib/server')
 const tap = require('tap')
 const request = require('request')
 const _ = require('lodash')
+const config = require('../lib/config')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
@@ -1931,6 +1932,69 @@ tap.test('patient should support standard _id parameter', (t) => {
             server.stop(() => {
               t.end()
             })
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('patient update should insert document when upsert true and document does not exist', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      config.setConf('operations:upserting', true)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+
+      request.put({
+        url: `http://localhost:3447/fhir/Patient/${pat.id}`,
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201, 'response status code should be 201')
+        t.ok(body)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
+            config.setConf('operations:upserting', false)
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('patient update should error when upsert false and document does not exist', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+
+      request.put({
+        url: `http://localhost:3447/fhir/Patient/${pat.id}`,
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 404, 'response status code should be 404')
+        t.ok(body)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
           })
         })
       })
