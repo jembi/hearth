@@ -1963,8 +1963,8 @@ tap.test('patient update should insert document when upsert true and document do
         env.clearDB((err) => {
           t.error(err)
           server.stop(() => {
-            t.end()
             config.setConf('operations:upserting', false)
+            t.end()
           })
         })
       })
