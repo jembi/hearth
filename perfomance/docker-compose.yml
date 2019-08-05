@@ -4,6 +4,8 @@ services:
   mongo:
     container_name: performance-mongo
     image: mongo:4.0
+    volumes:
+      - ./performance_data/mongo:/data/db/
     ports:
       - "27017:27017"
 
@@ -23,6 +25,8 @@ services:
   influxdb:
     container_name: performance-influxdb
     image: influxdb:1.5
+    volumes:
+      - ./performance_data/influxdb:/var/lib/influxdb/
     ports:
       - "8086:8086"
 
