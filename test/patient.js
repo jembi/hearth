@@ -1946,7 +1946,7 @@ tap.test('patient update should insert document when upsert true and document do
     server.start((err) => {
       t.error(err)
 
-      config.setConf('operations:upserting', true)
+      config.setConf('operations:upsert', true)
 
       const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
@@ -1963,7 +1963,7 @@ tap.test('patient update should insert document when upsert true and document do
         env.clearDB((err) => {
           t.error(err)
           server.stop(() => {
-            config.setConf('operations:upserting', false)
+            config.setConf('operations:upsert', false)
             t.end()
           })
         })
@@ -1978,6 +1978,8 @@ tap.test('patient update should error when upsert false and document does not ex
 
     server.start((err) => {
       t.error(err)
+
+      config.setConf('operations:upsert', false)
 
       const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 

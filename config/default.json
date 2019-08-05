@@ -48,7 +48,7 @@
     ]
   },
   "operations": {
-    "upserting": false
+    "upsert": false
   },
   "knownIdentityDomains": []
 }
