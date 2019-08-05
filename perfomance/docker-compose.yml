@@ -13,7 +13,7 @@ services:
     container_name: performance-hearth
     image: jembi/hearth:latest
     environment:
-      - mongodb__url=mongodb://perfomance-test-db/hearth-performance-test
+      - mongodb__url=mongodb://performance-mongo/hearth-performance-test
       - logger__level=info
       - idGenerator=uuidv4
     ports:
