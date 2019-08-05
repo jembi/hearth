@@ -2,13 +2,13 @@ version: '3'
 
 services:
   mongo:
-    container_name: perfomance-test-db
+    container_name: perfomance-mongo
     image: mongo:4.0
     ports:
       - "27017:27017"
 
   hearth:
-    container_name: hearth_perfomance_test
+    container_name: perfomance-hearth
     image: jembi/hearth:latest
     environment:
       - mongodb__url=mongodb://perfomance-test-db/hearth-dev
@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   influxdb:
-    container_name: influxdb
+    container_name: perfomance-influxdb
     image: influxdb:latest
     environment:
       - logger__level=error
@@ -30,7 +30,7 @@ services:
       - "8082:8082"
 
   chronograf:
-    container_name: chronograf
+    container_name: perfomance-chronograf
     image: chronograf:latest
     environment:
       - logger__level=error
