@@ -32,7 +32,7 @@ services:
 
   chronograf:
     container_name: performance-chronograf
-    image: chronograf:latest
+    image: chronograf:1.7
     environment:
       - logger__level=error
     ports:
