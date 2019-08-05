@@ -22,12 +22,9 @@ services:
 
   influxdb:
     container_name: performance-influxdb
-    image: influxdb:latest
-    environment:
-      - logger__level=error
+    image: influxdb:1.5
     ports:
       - "8086:8086"
-      - "8082:8082"
 
   chronograf:
     container_name: performance-chronograf
