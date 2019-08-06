@@ -5,7 +5,7 @@ import {check} from 'k6'
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
 // PATH - the path to the resource. Default is path to the patient resource
-const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/patient'
+const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/Patient'
 
 export const options = {
   stages: [
@@ -28,7 +28,7 @@ const makeGetRequest = () => {
         Accept: 'application/json'
       },
       tags: {
-        name: 'Get request'
+        name: 'Get resource request'
       }
     }
   )
