@@ -1939,7 +1939,7 @@ tap.test('patient should support standard _id parameter', (t) => {
   })
 })
 
-tap.test('patient update should insert document when updateCreate true and document does not exist', (t) => {
+tap.test('patient update should insert document when boolean updateCreate true and document does not exist', (t) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -1972,7 +1972,40 @@ tap.test('patient update should insert document when updateCreate true and docum
   })
 })
 
-tap.test('patient update should error when updateCreate false and document does not exist', (t) => {
+tap.test('patient update should insert document when string updateCreate true and document does not exist', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      config.setConf('operations:updateCreate', 'true')
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+
+      request.put({
+        url: `http://localhost:3447/fhir/Patient/${pat.id}`,
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 201, 'response status code should be 201')
+        t.ok(body)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            config.setConf('operations:updateCreate', false)
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('patient update should error when boolean updateCreate false and document does not exist', (t) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -1980,6 +2013,38 @@ tap.test('patient update should error when updateCreate false and document does 
       t.error(err)
 
       config.setConf('operations:updateCreate', false)
+
+      const pat = _.cloneDeep(require('./resources/Patient-1.json'))
+
+      request.put({
+        url: `http://localhost:3447/fhir/Patient/${pat.id}`,
+        headers: headers,
+        body: pat,
+        json: true
+      }, (err, res, body) => {
+        t.error(err)
+        t.equal(res.statusCode, 404, 'response status code should be 404')
+        t.ok(body)
+
+        env.clearDB((err) => {
+          t.error(err)
+          server.stop(() => {
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})
+
+tap.test('patient update should error when string updateCreate false and document does not exist', (t) => {
+  env.initDB((err, db) => {
+    t.error(err)
+
+    server.start((err) => {
+      t.error(err)
+
+      config.setConf('operations:updateCreate', 'false')
 
       const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
