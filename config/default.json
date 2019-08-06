@@ -47,5 +47,8 @@
       "lib/fhir/profiles/mhd"
     ]
   },
+  "operations": {
+    "upsert": false
+  },
   "knownIdentityDomains": []
 }
