@@ -1,13 +1,25 @@
 language: node_js
 node_js:
-  - "lts/boron"
   - "lts/carbon"
-dist: xenial
+  - "lts/dubnium"
+matrix:
+  allow_failures:
+    - node_js: "lts/dubnium"
+dist: bionic
 services:
   - mongodb
 after_success:
   - npm run test:upload-cov
   - npm run test:load
   - ".travis/build_docker.sh"
+before_install:
+  - export TZ=Africa/Johannesburg
 addon:
   srcclr: true
+notifications:
+  slack:
+    rooms:
+      - jembihealthsystems:6VZdEFjN6eL1ZXL4Totf8wOY#hearth-alerts
+    on_success: change
+    on_failure: always
+
