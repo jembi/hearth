@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: performance-mongo
+    image: mongo:4.0
+    volumes:
+      - ./performance_data/mongo:/data/db/
+    ports:
+      - "27017:27017"
+
+  hearth:
+    container_name: performance-hearth
+    image: jembi/hearth:latest
+    environment:
+      - mongodb__url=mongodb://performance-mongo/hearth-performance-test
+      - logger__level=info
+      - idGenerator=uuidv4
+    ports:
+      - "3447:3447"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  influxdb:
+    container_name: performance-influxdb
+    image: influxdb:1.5
+    volumes:
+      - ./performance_data/influxdb:/var/lib/influxdb/
+    ports:
+      - "8086:8086"
+
+  chronograf:
+    container_name: performance-chronograf
+    image: chronograf:1.7
+    environment:
+      - logger__level=error
+    ports:
+      - "8888:8888"
+    depends_on:
+      - influxdb
