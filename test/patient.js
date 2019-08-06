@@ -1939,14 +1939,14 @@ tap.test('patient should support standard _id parameter', (t) => {
   })
 })
 
-tap.test('patient update should insert document when upsert true and document does not exist', (t) => {
+tap.test('patient update should insert document when updateCreate true and document does not exist', (t) => {
   env.initDB((err, db) => {
     t.error(err)
 
     server.start((err) => {
       t.error(err)
 
-      config.setConf('operations:upsert', true)
+      config.setConf('operations:updateCreate', true)
 
       const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
@@ -1963,7 +1963,7 @@ tap.test('patient update should insert document when upsert true and document do
         env.clearDB((err) => {
           t.error(err)
           server.stop(() => {
-            config.setConf('operations:upsert', false)
+            config.setConf('operations:updateCreate', false)
             t.end()
           })
         })
@@ -1972,14 +1972,14 @@ tap.test('patient update should insert document when upsert true and document do
   })
 })
 
-tap.test('patient update should error when upsert false and document does not exist', (t) => {
+tap.test('patient update should error when updateCreate false and document does not exist', (t) => {
   env.initDB((err, db) => {
     t.error(err)
 
     server.start((err) => {
       t.error(err)
 
-      config.setConf('operations:upsert', false)
+      config.setConf('operations:updateCreate', false)
 
       const pat = _.cloneDeep(require('./resources/Patient-1.json'))
 
