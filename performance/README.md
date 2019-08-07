@@ -39,6 +39,14 @@ Test the routing overhead of Hearth under maximum throughput. Substitute the bas
 docker run -e 'BASE_URL=<Base_url>' -e 'PATH=<Path>' --network host -i -v $PWD:/src loadimpact/k6 run /src/stress.js
 ```
 
+## Patient, encounter and procedures create Test
+
+To test a realistic case where a patient, an encounter (for the patient) and procedures (for the encounter) are created sequentially, run the following:
+
+```bash
+docker run -e 'BASE_URL=http://localhost:3447' --network host -i -v $PWD:/src loadimpact/k6 run /src/patient-encounter-procedure-create.js
+```
+
 ## InfluxDB Output
 
 Ensure that influxdb and chronograf docker containers are running. Once they are up and running you can access Chronograf at <http://localhost:8888>. This is if the docker containers are hosted on a local machine. If not the ip address will be different but the ports are the same (same applies for the influxdb url).
