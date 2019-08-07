@@ -37,9 +37,14 @@ const createPatient = () => {
   check(response, {
     'status code for patient create is 201': r => r.status === 201
   })
+
+  // Return patient id
+  return response.headers.Location.split("/").pop()
 }
 
-const createEncounter = () => {
+const createEncounter = (patientId) => {
+  encounterResource.patient.reference = `Patient/${patientId}`
+  
   const response = http.post(
     `${BASE_URL}/fhir/Encounter`,
     JSON.stringify(encounterResource),
@@ -56,9 +61,15 @@ const createEncounter = () => {
   check(response, {
     'status code for encounter create is 201': r => r.status === 201
   })
+
+  // Return encounter id
+  return response.headers.Location.split("/").pop()
 }
 
-const createProcedure = () => {
+const createProcedure = (encounterId, patientId) => {
+  procedureResource.encounter.reference = `Encounter/${encounterId}`
+  procedureResource.subject.reference = `Patient/${patientId}`
+
   const response = http.post(
     `${BASE_URL}/fhir/Procedure`,
     JSON.stringify(procedureResource),
@@ -75,11 +86,14 @@ const createProcedure = () => {
   check(response, {
     'status code for procedure create is 201': r => r.status === 201
   })
+
+   // Return procedure id
+   return response.headers.Location.split("/").pop()
 }
 
-const getProcedure = () => {
+const getProcedure = (procedureId) => {
   const response = http.get(
-    `${BASE_URL}/fhir/Procedure`,
+    `${BASE_URL}/fhir/Procedure/?_id=${procedureId}`,
     {
       headers: {
         Accept: 'application/json'
@@ -99,15 +113,15 @@ const think = () => {
 }
 
 export default function () {
-  createPatient()
+  const patientId = createPatient()
   think()
-  createEncounter()
+  const encounterId = createEncounter(patientId)
   think()
-  createProcedure()
+  const procedureid_1 = createProcedure(encounterId, patientId)
   think()
-  createProcedure()
+  const procedureid_2 = createProcedure(encounterId, patientId)
   think()
-  getProcedure()
+  getProcedure(procedureid_1)
   think()
-  getProcedure()
+  getProcedure(procedureid_2)
 }
