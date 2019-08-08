@@ -20,7 +20,7 @@ const matchingConfig = require('../config/matching')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 const testPatients = env.testPatients()
 
-const sandbox = sinon.sandbox.create()
+const sandbox = sinon.createSandbox()
 
 const charlton = testPatients.charlton.patient
 charlton.id = '1111111111'

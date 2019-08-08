@@ -469,7 +469,7 @@ tap.test('Binary - postInteractionHandlers.search - should fetch searched binary
 })
 
 tap.test('Binary - postInteractionHandlers.create - should convert the binary to json when content-type is application/json', (t) => {
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   sandbox.stub(fhirRoot, 'processRootBundle').callsFake((ctx, jsonObject, callback) => {
     t.equals(jsonObject.resourceType, 'Bundle')
     t.equals(jsonObject.type, 'document')
@@ -500,7 +500,7 @@ tap.test('Binary - postInteractionHandlers.create - should convert the binary to
 })
 
 tap.test('Binary - postInteractionHandlers.create - should not convert the binary to json when content-type is not application/json', (t) => {
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   const stub = sandbox.stub(logger, 'debug')
 
   stub.onCall(1).callsFake((arg) => {
@@ -532,7 +532,7 @@ tap.test('Binary - postInteractionHandlers.create - should not convert the binar
 })
 
 tap.test('Binary - postInteractionHandlers.create - should log an error when the converted binary is not a valid fhir resource', (t) => {
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   sandbox.stub(logger, 'error').callsFake((arg) => {
     t.equals(arg.message, 'JSON content is not a valid FHIR resource')
   })
@@ -563,7 +563,7 @@ tap.test('Binary - postInteractionHandlers.create - should log an error when the
 })
 
 tap.test('Binary - postInteractionHandlers.create - should log an error if resource could not be added to db by core', (t) => {
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   sandbox.stub(logger, 'error').callsFake((arg) => {
     t.equals(arg.message, 'Non 2xx status code: 404 while trying to process binary bundle', 'Should log the correct error')
   })
@@ -689,7 +689,7 @@ tap.test('Binary - postInteractionHandlers.create - should successfully add a tr
 })
 
 tap.test('Binary - postInteractionHandlers.create - should successfully rollback a transaction if one entry fails', (t) => {
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
   sandbox.stub(logger, 'error').callsFake((arg) => {
     t.equals(arg.message, 'Non 2xx status code: 400 while trying to process binary bundle', 'Should log the correct error')
   })
