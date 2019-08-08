@@ -1,5 +1,5 @@
 import http from 'k6/http'
-import {check, sleep} from 'k6'
+import {check} from 'k6'
 import {patientResource} from './resources/patient.js'
 import {encounterResource} from './resources/encounter.js'
 import {heightObservation, weightObservation} from './resources/observation.js'
