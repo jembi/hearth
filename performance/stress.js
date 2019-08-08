@@ -21,9 +21,9 @@ const makeGetRequest = () => {
   const response = http.get(`${BASE_URL}${RESOURCE_PATH}`, { headers: {
     Accept: 'application/json'
   },
-    tags: {
-      name: 'Get request'
-    }
+  tags: {
+    name: 'Get request'
+  }
   })
   check(response, {
     'status code is 200': r => r.status === 200

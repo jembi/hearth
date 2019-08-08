@@ -1,163 +1,163 @@
 export const patientResource = {
-  "resourceType": "Patient",
-  "active": true,
-  "identifier": [
+  resourceType: 'Patient',
+  active: true,
+  identifier: [
     {
-      "use": "official",
-      "system": "pshr:sanid",
-      "value": "1007211154902",
-      "assigner": {
-        "display": "SA National"
+      use: 'official',
+      system: 'pshr:sanid',
+      value: '1007211154902',
+      assigner: {
+        display: 'SA National'
       }
     },
     {
-      "use": "official",
-      "system": "pshr:passport:za",
-      "value": "1001113333933",
-      "assigner": {
-        "display": "Passport South Africa"
+      use: 'official',
+      system: 'pshr:passport:za',
+      value: '1001113333933',
+      assigner: {
+        display: 'Passport South Africa'
       }
     },
     {
-      "use": "official",
-      "system": "pshr:passport:gbr",
-      "value": "1111111111111",
-      "assigner": {
-        "display": "Passport South Africa"
+      use: 'official',
+      system: 'pshr:passport:gbr',
+      value: '1111111111111',
+      assigner: {
+        display: 'Passport South Africa'
       }
     },
     {
-      "use": "official",
-      "value": "no-system-identifier",
-      "assigner": {
-        "display": "Identifier with no system specified"
+      use: 'official',
+      value: 'no-system-identifier',
+      assigner: {
+        display: 'Identifier with no system specified'
       }
     }
   ],
-  "name": [
+  name: [
     {
-      "use": "official",
-      "prefix": [
-        "Mr"
+      use: 'official',
+      prefix: [
+        'Mr'
       ],
-      "family": [
-        "Matinyana"
+      family: [
+        'Matinyana'
       ],
-      "given": [
-        "Charlton",
-        "Joseph"
+      given: [
+        'Charlton',
+        'Joseph'
       ]
     }
   ],
-  "gender": "male",
-  "birthDate": "1970-07-21",
-  "telecom": [
+  gender: 'male',
+  birthDate: '1970-07-21',
+  telecom: [
     {
-      "system": "email",
-      "value": "charlton@email.com"
+      system: 'email',
+      value: 'charlton@email.com'
     },
     {
-      "system": "phone",
-      "value": "27831234567",
-      "use": "mobile"
+      system: 'phone',
+      value: '27831234567',
+      use: 'mobile'
     }
   ],
-  "address": [
+  address: [
     {
-      "use": "home",
-      "type": "both",
-      "line": [
-        "2760 Mlosi Street",
-        "Wallacedene",
-        "Kraaifontein"
+      use: 'home',
+      type: 'both',
+      line: [
+        '2760 Mlosi Street',
+        'Wallacedene',
+        'Kraaifontein'
       ],
-      "state": "Western Cape",
-      "city": "Cape Town",
-      "postalCode": "7570",
-      "country": "South Africa"
+      state: 'Western Cape',
+      city: 'Cape Town',
+      postalCode: '7570',
+      country: 'South Africa'
     }
   ],
-  "communication": [
+  communication: [
     {
-      "language": {
-        "coding": [
+      language: {
+        coding: [
           {
-            "system": "urn:ietf:bcp:47",
-            "code": "en"
+            system: 'urn:ietf:bcp:47',
+            code: 'en'
           }
         ],
-        "text": "English"
+        text: 'English'
       },
-      "preferred": true
+      preferred: true
     }
   ],
-  "contact": [
+  contact: [
     {
-      "relationship": [
+      relationship: [
         {
-          "coding": [
+          coding: [
             {
-              "system": "http://hl7.org/fhir/patient-contact-relationship",
-              "code": "emergency"
+              system: 'http://hl7.org/fhir/patient-contact-relationship',
+              code: 'emergency'
             }
           ]
         },
         {
-          "coding": [
+          coding: [
             {
-              "system": "http://hl7.org/fhir/patient-contact-relationship",
-              "code": "family"
+              system: 'http://hl7.org/fhir/patient-contact-relationship',
+              code: 'family'
             }
           ]
         }
       ],
-      "name": [
+      name: [
         {
-          "use": "official",
-          "family": [
-            "Mqobhane"
+          use: 'official',
+          family: [
+            'Mqobhane'
           ],
-          "given": [
-            "Mamoya"
+          given: [
+            'Mamoya'
           ]
         }
       ],
-      "telecom": [
+      telecom: [
         {
-          "system": "phone",
-          "value": "27831234567",
-          "use": "mobile"
+          system: 'phone',
+          value: '27831234567',
+          use: 'mobile'
         },
         {
-          "system": "email",
-          "value": "mamoya@email.com"
+          system: 'email',
+          value: 'mamoya@email.com'
         }
       ]
     }
   ],
-  "extension": [
+  extension: [
     {
-      "url": "pshr:medicalaid:name",
-      "valueString": "Discovery"
+      url: 'pshr:medicalaid:name',
+      valueString: 'Discovery'
     },
     {
-      "url": "pshr:medicalaid:option",
-      "valueString": "Super Health Saver"
+      url: 'pshr:medicalaid:option',
+      valueString: 'Super Health Saver'
     },
     {
-      "url": "pshr:medicalaid:number",
-      "valueString": "123456"
+      url: 'pshr:medicalaid:number',
+      valueString: '123456'
     },
     {
-      "url": "pshr:gapcover",
-      "valueBoolean": true
+      url: 'pshr:gapcover',
+      valueBoolean: true
     },
     {
-      "url": "http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName",
-      "valueHumanName": {
-        "family": [ "Smith", "Mc", "extra" ],
-        "given": [ "Mary", "Jane" ]
+      url: 'http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName',
+      valueHumanName: {
+        family: ['Smith', 'Mc', 'extra'],
+        given: ['Mary', 'Jane']
       }
     }
   ]
-} 
+}

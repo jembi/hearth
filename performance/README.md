@@ -39,12 +39,12 @@ Test the routing overhead of Hearth under maximum throughput. Substitute the bas
 docker run -e 'BASE_URL=<Base_url>' -e 'PATH=<Path>' --network host -i -v $PWD:/src loadimpact/k6 run /src/stress.js
 ```
 
-## Patient, encounter and procedures create Test
+## Patient, encounter and observation create Test
 
 To test a realistic case where a patient, an encounter (for the patient) and procedures (for the encounter) are created sequentially, run the following:
 
 ```bash
-docker run -e 'BASE_URL=http://localhost:3447' --network host -i -v $PWD:/src loadimpact/k6 run /src/patient-encounter-procedure-create.js
+docker run -e 'BASE_URL=http://localhost:3447' --network host -i -v $PWD:/src loadimpact/k6 run /src/patient-encounter-observation-create.js
 ```
 
 ## InfluxDB Output

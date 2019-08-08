@@ -1,6 +1,6 @@
 export const weightObservation = {
-  resourceType: "Observation",
-  status: "preliminary",
+  resourceType: 'Observation',
+  status: 'preliminary',
   code: {
     coding: [
       {
@@ -19,8 +19,8 @@ export const weightObservation = {
 }
 
 export const heightObservation = {
-  resourceType: "Observation",
-  status: "preliminary",
+  resourceType: 'Observation',
+  status: 'preliminary',
   coding: {
     system: 'https://loinc.org',
     code: '8302-2'

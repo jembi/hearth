@@ -1,89 +1,89 @@
 export const encounterResource = {
-  "resourceType": "Encounter",
-  "status": "planned",
-  "class": "inpatient",
-  "type": [
+  resourceType: 'Encounter',
+  status: 'planned',
+  class: 'inpatient',
+  type: [
     {
-      "coding": [
+      coding: [
         {
-          "system": "pshr:encounter:type",
-          "code": "surgery"
+          system: 'pshr:encounter:type',
+          code: 'surgery'
         }
       ]
     }
   ],
-  "patient": {
-    "reference": "Patient/1"
+  patient: {
+    reference: 'Patient/1'
   },
-  "period": {
-    "start": "2014-09-01",
-    "end": "2014-09-14"
+  period: {
+    start: '2014-09-01',
+    end: '2014-09-14'
   },
-  "priority": {
-    "coding": [
+  priority: {
+    coding: [
       {
-        "system": "http://hl7.org/fhir/encounter-priority",
-        "code": "no-urg",
-        "display": "Elective"
+        system: 'http://hl7.org/fhir/encounter-priority',
+        code: 'no-urg',
+        display: 'Elective'
       }
     ]
   },
-  "reason": [
+  reason: [
     {
-      "coding": [
+      coding: [
         {
-          "system": "http://hl7.org/fhir/sid/icd-10",
-          "code": "B44.2",
-          "display": "Aspergillosis - Tonsillar aspergillosis"
+          system: 'http://hl7.org/fhir/sid/icd-10',
+          code: 'B44.2',
+          display: 'Aspergillosis - Tonsillar aspergillosis'
         }
       ]
     },
     {
-      "coding": [
+      coding: [
         {
-          "system": "http://hl7.org/fhir/sid/icd-10",
-          "code": "C09.0",
-          "display": "Malignant neoplasm of tonsil - Tonsillar fossa"
+          system: 'http://hl7.org/fhir/sid/icd-10',
+          code: 'C09.0',
+          display: 'Malignant neoplasm of tonsil - Tonsillar fossa'
         }
       ]
     }
   ],
-  "participant": [
+  participant: [
     {
-      "type": [
+      type: [
         {
-          "coding": [
+          coding: [
             {
-              "system": "pshr:role",
-              "code": "anaesthetist"
+              system: 'pshr:role',
+              code: 'anaesthetist'
             }
           ]
         }
       ],
-      "individual": {
-        "reference": "Practitioner/1"
+      individual: {
+        reference: 'Practitioner/1'
       }
     },
     {
-      "type": [
+      type: [
         {
-          "coding": [
+          coding: [
             {
-              "system": "pshr:role",
-              "code": "surgeon"
+              system: 'pshr:role',
+              code: 'surgeon'
             }
           ]
         }
       ],
-      "individual": {
-        "reference": "Practitioner/2"
+      individual: {
+        reference: 'Practitioner/2'
       }
     }
   ],
-  "location": [
+  location: [
     {
-      "location": {
-        "reference": "Location/1"
+      location: {
+        reference: 'Location/1'
       }
     }
   ]

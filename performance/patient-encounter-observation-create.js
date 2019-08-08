@@ -1,17 +1,17 @@
 import http from 'k6/http'
-import {check} from 'k6'
-import {patientResource} from './resources/patient.js'
-import {encounterResource} from './resources/encounter.js'
-import {heightObservation, weightObservation} from './resources/observation.js'
+import { check } from 'k6'
+import { patientResource } from './resources/patient.js'
+import { encounterResource } from './resources/encounter.js'
+import { heightObservation, weightObservation } from './resources/observation.js'
 
 /* global __ENV */
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
 export const options = {
   stages: [
-    {duration: '30s', target: 100},
-    {duration: '1m'},
-    {duration: '30s', target: 0}
+    { duration: '30s', target: 100 },
+    { duration: '1m' },
+    { duration: '30s', target: 0 }
   ],
   thresholds: {
     http_req_duration: ['p(95)<600']
@@ -39,12 +39,12 @@ const createPatient = () => {
   })
 
   // Return patient id
-  return response.headers.Location.split("/")[3]
+  return response.headers.Location.split('/')[3]
 }
 
 const createEncounter = (patientId) => {
   encounterResource.patient.reference = `Patient/${patientId}`
-  
+
   const response = http.post(
     `${BASE_URL}/fhir/Encounter`,
     JSON.stringify(encounterResource),
@@ -63,7 +63,7 @@ const createEncounter = (patientId) => {
   })
 
   // Return encounter id
-  return response.headers.Location.split("/")[3]
+  return response.headers.Location.split('/')[3]
 }
 
 const createObservation = (observation, patientId, encounterId) => {
@@ -89,7 +89,7 @@ const createObservation = (observation, patientId, encounterId) => {
 }
 
 // get observations performed for the patient in the encounter
-const getObservations = (patientId, encounterId) => {  
+const getObservations = (patientId, encounterId) => {
   const response = http.get(
     `${BASE_URL}/fhir/Observation?subject=Patient/${patientId}&encounter=Encounter/${encounterId}`,
     {
