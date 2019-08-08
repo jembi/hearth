@@ -2,7 +2,7 @@ import http from 'k6/http'
 import {check, sleep} from 'k6'
 import {patientResource} from './resources/patient.js'
 import {encounterResource} from './resources/encounter.js'
-import {procedureResource} from './resources/procedure.js'
+import {heightObservation, weightObservation} from './resources/observation.js'
 
 /* global __ENV */
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
@@ -39,7 +39,7 @@ const createPatient = () => {
   })
 
   // Return patient id
-  return response.headers.Location.split("/").pop()
+  return response.headers.Location.split("/")[3]
 }
 
 const createEncounter = (patientId) => {
@@ -63,65 +63,54 @@ const createEncounter = (patientId) => {
   })
 
   // Return encounter id
-  return response.headers.Location.split("/").pop()
+  return response.headers.Location.split("/")[3]
 }
 
-const createProcedure = (encounterId, patientId) => {
-  procedureResource.encounter.reference = `Encounter/${encounterId}`
-  procedureResource.subject.reference = `Patient/${patientId}`
+const createObservation = (observation, patientId, encounterId) => {
+  observation.context.reference = `Encounter/${encounterId}`
+  observation.subject.reference = `Patient/${patientId}`
 
   const response = http.post(
-    `${BASE_URL}/fhir/Procedure`,
-    JSON.stringify(procedureResource),
+    `${BASE_URL}/fhir/Observation`,
+    JSON.stringify(observation),
     {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json+fhir'
       },
       tags: {
-        name: `Create Procedure resource`
+        name: `Create Observation resource`
       }
     }
   )
   check(response, {
-    'status code for procedure create is 201': r => r.status === 201
+    'status code for observation create is 201': r => r.status === 201
   })
-
-   // Return procedure id
-   return response.headers.Location.split("/").pop()
 }
 
-const getProcedure = (procedureId) => {
+// get observations performed for the patient in the encounter
+const getObservations = (patientId, encounterId) => {  
   const response = http.get(
-    `${BASE_URL}/fhir/Procedure/?_id=${procedureId}`,
+    `${BASE_URL}/fhir/Observation?subject=Patient/${patientId}&encounter=Encounter/${encounterId}`,
     {
       headers: {
         Accept: 'application/json'
       },
       tags: {
-        name: 'Get procedure request'
+        name: 'Get Observations request'
       }
     }
   )
   check(response, {
-    'status code for procedure retrieval is 200': r => r.status === 200
+    'status code for observations retrieval is 200': r => r.status === 200
   })
-}
-
-const think = () => {
-  sleep(Math.random() * 0.5)
 }
 
 export default function () {
   const patientId = createPatient()
-  think()
   const encounterId = createEncounter(patientId)
-  think()
-  const procedureid_1 = createProcedure(encounterId, patientId)
-  think()
-  const procedureid_2 = createProcedure(encounterId, patientId)
-  think()
-  getProcedure(procedureid_1)
-  think()
-  getProcedure(procedureid_2)
+
+  createObservation(weightObservation, patientId, encounterId)
+  createObservation(heightObservation, patientId, encounterId)
+  getObservations(patientId, encounterId)
 }
