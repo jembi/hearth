@@ -23,7 +23,7 @@ export const options = {
 
 const makePostRequest = () => {
   const response = http.post(`${BASE_URL}${RESOURCE_PATH}`,
-    patient, 
+    patient,
     {
       headers: {
         Accept: 'application/json'
