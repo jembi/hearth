@@ -1,6 +1,10 @@
 import http from 'k6/http'
 import { check } from 'k6'
 
+const patientResource = require('./resources/patient.js')
+
+const patient = JSON.stringify(patientResource)
+
 /* global __ENV */
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
@@ -8,32 +12,31 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/Patient'
 
 export const options = {
-  vus: 10,
-  iterations: 1000,
+  vus: 100,
+  duration: '2m',
   thresholds: {
-    http_req_receiving: ['p(95)<100'],
-    http_req_duration: ['p(95)<100']
+    http_req_duration: ['p(95)<60']
   },
   noVUConnectionReuse: true,
   discardResponseBodies: true
 }
 
-const makeGetRequest = () => {
-  const response = http.get(`${BASE_URL}${RESOURCE_PATH}`,
+const makePostRequest = () => {
+  const response = http.post(`${BASE_URL}${RESOURCE_PATH}`,
+    patient,
     {
       headers: {
         Accept: 'application/json'
       },
       tags: {
-        name: 'Get resource request'
+        name: `Post request - ${RESOURCE_PATH} - Stress Test`
       }
     })
-
   check(response, {
-    'status code is 200': r => r.status === 200
+    'status code is 200': r => r.status === 201
   })
 }
 
 export default function () {
-  makeGetRequest()
+  makePostRequest()
 }

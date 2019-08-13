@@ -10,6 +10,7 @@
     "test:code": "cross-env NODE_ENV='test' tap --cov --reporter=list 'test/**/*.js'",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
+    "test:fix": "standard --fix -v | snazzy",
     "cov": "npm run test:code -- --coverage-report=lcov",
     "cov:these-files": "tap --reporter=spec --coverage-report=lcov",
     "test:upload-cov": "tap --coverage-report=lcov && codecov",
