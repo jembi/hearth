@@ -1,7 +1,7 @@
 import http from 'k6/http'
-import {check} from 'k6'
-import {patientResource} from './resources/patient.js'
-import {encounterResource} from './resources/encounter.js'
+import { check } from 'k6'
+import { patientResource } from './resources/patient.js'
+import { encounterResource } from './resources/encounter.js'
 import { heightObservation, weightObservation } from './resources/observation.js'
 
 /* global __ENV */
@@ -22,46 +22,46 @@ let patientResourceFullUrl
 let encounterResourceFullUrl
 
 const bundleResource = {
-  "resourceType": "Bundle",
-  "type": 'transaction',
-  "timestamp": Date.now(),
-  "entry": [
+  resourceType: 'Bundle',
+  type: 'transaction',
+  timestamp: Date.now(),
+  entry: [
     {
-      "fullUrl": patientResourceFullUrl,
-      "resource": patientResource,
-      "request": {
-        "method": "POST",
-        "url": `Patient`, 
+      fullUrl: patientResourceFullUrl,
+      resource: patientResource,
+      request: {
+        method: 'POST',
+        url: `Patient`
       }
     },
     {
-      "fullUrl": encounterResourceFullUrl,
-      "resource": encounterResource,
-      "request": {
-        "method": "POST",
-        "url": `Encounter`, 
+      fullUrl: encounterResourceFullUrl,
+      resource: encounterResource,
+      request: {
+        method: 'POST',
+        url: `Encounter`
       }
     },
     {
-      "resource": heightObservation,
-      "request": {
-        "method": "POST",
-        "url": `Observation`, 
+      resource: heightObservation,
+      request: {
+        method: 'POST',
+        url: `Observation`
       }
     },
     {
-      "resource": weightObservation,
-      "request": {
-        "method": "POST",
-        "url": `Observation`, 
+      resource: weightObservation,
+      request: {
+        method: 'POST',
+        url: `Observation`
       }
-    }, 
+    }
   ]
 }
 
 const makeBundleRequest = () => {
   // Create full urls for the resources so they can reference each other. THe math random method is used to ensure the urls are unique.
-  // The uuid npm library could have been used but K6 does not run in node, and the modules would have to be bundled. 
+  // The uuid npm library could have been used but K6 does not run in node, and the modules would have to be bundled.
   patientResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
   encounterResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
 
@@ -87,7 +87,7 @@ const makeBundleRequest = () => {
       }
     }
   )
-  
+
   check(response, {
     'status code for bundle creation is 200': r => r.status === 200
   })
