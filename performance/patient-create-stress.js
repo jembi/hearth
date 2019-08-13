@@ -1,3 +1,6 @@
+/* global open */
+/* eslint no-undef: "error" */
+
 import http from 'k6/http'
 import { check } from 'k6'
 
