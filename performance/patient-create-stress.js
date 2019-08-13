@@ -29,11 +29,11 @@ const makePostRequest = () => {
         Accept: 'application/json'
       },
       tags: {
-        name: 'Post request'
+        name: `Post request - ${RESOURCE_PATH} - Stress Test`
       }
     })
   check(response, {
-    'status code is 200': r => r.status === 200
+    'status code is 200': r => r.status === 201
   })
 }
 
