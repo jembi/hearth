@@ -42,8 +42,11 @@ const createPatient = () => {
     'status code for patient create is 201': r => r.status === 201
   })
 
-  // Return patient id
-  return response.headers.Location.split('/')[3]
+  if (response.status === 201) {
+    // Return patient id
+    return response.headers.Location.split('/')[3]
+  }
+  return null
 }
 
 const createEncounter = (patientId) => {
@@ -66,8 +69,11 @@ const createEncounter = (patientId) => {
     'status code for encounter create is 201': r => r.status === 201
   })
 
-  // Return encounter id
-  return response.headers.Location.split('/')[3]
+  if (response.status === 201) {
+    // Return encounter id
+    return response.headers.Location.split('/')[3]
+  }
+  return null
 }
 
 const createObservation = (observation, patientId, encounterId) => {
