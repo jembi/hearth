@@ -35,7 +35,7 @@ tap.test('Reverse include resources', t => {
   const moduleLoader = moduleLoaderFactory(mongo)
   moduleLoader.loadModules()
 
-  const sandbox = sinon.sandbox.create()
+  const sandbox = sinon.createSandbox()
 
   t.afterEach(next => {
     sandbox.restore()
