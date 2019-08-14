@@ -64,7 +64,7 @@ const bundleResource = {
 }
 
 const makeBundleRequest = () => {
-  // Create full urls for the resources so they can reference each other. THe math random method is used to ensure the urls are unique.
+  // Create full urls for the resources so they can reference each other. The math random method is used to ensure the urls are unique.
   // The uuid npm library could have been used but K6 does not run in node, and the modules would have to be bundled.
   patientResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
   encounterResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
