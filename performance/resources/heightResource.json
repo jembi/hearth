@@ -1,0 +1,14 @@
+{
+  "resourceType": "Observation",
+  "status": "preliminary",
+  "coding": {
+    "system": "https://loinc.org",
+    "code": "8302-2"
+  },
+  "subject": {},
+  "context": {},
+  "valueQuantity": {
+    "value": 170,
+    "unit": "cm"
+  }
+}

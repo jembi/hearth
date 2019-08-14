@@ -1,5 +1,10 @@
+/* global open */
+/* eslint no-undef: "error" */
+
 import http from 'k6/http'
 import { check } from 'k6'
+
+const patient = open('./resources/patient.json')
 
 /* global __ENV */
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
@@ -17,23 +22,22 @@ export const options = {
   discardResponseBodies: true
 }
 
-const makeGetRequest = () => {
-  const response = http.get(
-    `${BASE_URL}${RESOURCE_PATH}`,
+const makePostRequest = () => {
+  const response = http.post(`${BASE_URL}${RESOURCE_PATH}`,
+    patient,
     {
       headers: {
-        Accept: 'application/json'
+        'Content-Type': 'application/json'
       },
       tags: {
-        name: 'Get request'
+        name: `Post request - ${RESOURCE_PATH} - Stress Test`
       }
-    }
-  )
+    })
   check(response, {
-    'status code is 200': r => r.status === 200
+    'status code is 201': r => r.status === 201
   })
 }
 
 export default function () {
-  makeGetRequest()
+  makePostRequest()
 }
