@@ -1,10 +1,14 @@
+/* global open __ENV  */
+/* eslint no-undef: "error" */
+
 import http from 'k6/http'
 import { check } from 'k6'
-import { patientResource } from './resources/patient.js'
-import { encounterResource } from './resources/encounter.js'
-import { heightObservation, weightObservation } from './resources/observation.js'
 
-/* global __ENV */
+const patientResource = open('./resources/patient.json')
+const encounterResource = JSON.parse(open('./resources/encounter.json'))
+const heightObservation = JSON.parse(open('./resources/heightResource.json'))
+const weightObservation = JSON.parse(open('./resources/weightResource.json'))
+
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
 export const options = {
@@ -23,7 +27,7 @@ export const options = {
 const createPatient = () => {
   const response = http.post(
     `${BASE_URL}/fhir/Patient`,
-    JSON.stringify(patientResource),
+    patientResource,
     {
       headers: {
         Accept: 'application/json',
