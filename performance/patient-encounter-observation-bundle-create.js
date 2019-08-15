@@ -12,11 +12,13 @@ const weightObservation = JSON.parse(open('./resources/weightResource.json'))
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
 export const options = {
-  vus: 10,
-  iterations: 1000,
+  stages: [
+    { duration: '30s', target: 100 },
+    { duration: '1m' },
+    { duration: '30s', target: 0 }
+  ],
   thresholds: {
-    http_req_receiving: ['p(95)<100'],
-    http_req_duration: ['p(95)<100']
+    http_req_duration: ['p(95)<600']
   },
   noVUConnectionReuse: true
 }
