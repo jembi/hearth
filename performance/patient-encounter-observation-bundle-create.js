@@ -98,10 +98,15 @@ const makeBundleRequest = () => {
     }
   )
 
-  const totalObservations = JSON.parse(response.body).entry[4].resource.total
+  const responseBody = JSON.parse(response.body)
+  const totalObservations = responseBody.entry[4].resource.total
 
   check(response, {
     'status code for bundle creation is 200': r => r.status === 200,
+    'status code for patient creation is 201': () => responseBody.entry[0].response.status === '201',
+    'status code for encounter creation is 201': r => responseBody.entry[1].response.status === '201',
+    'status code for height observation creation is 201': r => responseBody.entry[2].response.status === '201',
+    'status code for weight observation creation is 201': r => responseBody.entry[3].response.status === '201',
     'number of observations created should be two': r => totalObservations === 2
   })
 }
