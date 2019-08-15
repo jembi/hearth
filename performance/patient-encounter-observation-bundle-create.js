@@ -18,12 +18,8 @@ export const options = {
     http_req_receiving: ['p(95)<100'],
     http_req_duration: ['p(95)<100']
   },
-  noVUConnectionReuse: true,
-  discardResponseBodies: true
+  noVUConnectionReuse: true
 }
-
-let patientResourceFullUrl
-let encounterResourceFullUrl
 
 const bundleResource = {
   resourceType: 'Bundle',
@@ -31,7 +27,6 @@ const bundleResource = {
   timestamp: Date.now(),
   entry: [
     {
-      fullUrl: patientResourceFullUrl,
       resource: patientResource,
       request: {
         method: 'POST',
@@ -39,7 +34,6 @@ const bundleResource = {
       }
     },
     {
-      fullUrl: encounterResourceFullUrl,
       resource: encounterResource,
       request: {
         method: 'POST',
@@ -59,6 +53,11 @@ const bundleResource = {
         method: 'POST',
         url: `Observation`
       }
+    },
+    {
+      request: {
+        method: 'GET'
+      }
     }
   ]
 }
@@ -66,17 +65,22 @@ const bundleResource = {
 const makeBundleRequest = () => {
   // Create full urls for the resources so they can reference each other. The math random method is used to ensure the urls are unique.
   // The uuid npm library could have been used but K6 does not run in node, and the modules would have to be bundled.
-  patientResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
-  encounterResourceFullUrl = `urn:uuid:${Date.now() + Math.floor(Math.random() * 1000)}`
+  const patientResourceFullUrl = `urn:uuid:${Date.now() + Math.random() * 1000}`
+  const encounterResourceFullUrl = `urn:uuid:${Date.now() + Math.random() * 1000}`
 
   bundleResource.entry[0].fullUrl = patientResourceFullUrl
   bundleResource.entry[1].fullUrl = encounterResourceFullUrl
 
+  // This is so we can retrieve the observations created.
+  const patientReference = `Patient/${Date.now() + Math.random() * 1000}`
+
+  bundleResource.entry[4].request.url = `Observation?subject=${patientReference}`
+
   encounterResource.patient.reference = patientResourceFullUrl
-  heightObservation.context.reference = patientResourceFullUrl
-  weightObservation.context.reference = patientResourceFullUrl
-  heightObservation.subject.reference = encounterResourceFullUrl
-  weightObservation.subject.reference = encounterResourceFullUrl
+  heightObservation.context.reference = encounterResourceFullUrl
+  weightObservation.context.reference = encounterResourceFullUrl
+  heightObservation.subject.reference = patientReference
+  weightObservation.subject.reference = patientReference
 
   const response = http.post(
     `${BASE_URL}/fhir`,
@@ -92,8 +96,11 @@ const makeBundleRequest = () => {
     }
   )
 
+  const totalObservations = JSON.parse(response.body).entry[4].resource.total
+
   check(response, {
-    'status code for bundle creation is 200': r => r.status === 200
+    'status code for bundle creation is 200': r => r.status === 200,
+    'number of observations created should be two': r => totalObservations === 2
   })
 }
 
