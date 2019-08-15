@@ -12,7 +12,7 @@ Test the number of concurrent users that can be handled by Hearth under
 realistic circumstances. To perform a load test, substitute `<BASE_URL>` with url of the running Hearth instance and `<RESOURCE_PATH>` with the resource path and then run the following command:
 
 ```bash
-docker run -e 'BASE_URL=<BASE_URL>' -e 'RESOURCE_PATH=<PATH>' --network host -i -v $PWD:/src loadimpact/k6 run /src/load.js
+docker run -e 'BASE_URL=<BASE_URL>' -e 'RESOURCE_PATH=<RESOURCE_PATH>' --network host -i -v $PWD:/src loadimpact/k6 run /src/load.js
 ```
 
 The default base url is `http://localhost:3447` and `fhir/Patient` for the path. Below are some examples of paths that can be used

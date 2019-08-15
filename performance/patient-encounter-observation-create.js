@@ -20,8 +20,7 @@ export const options = {
   thresholds: {
     http_req_duration: ['p(95)<600']
   },
-  noVUConnectionReuse: true,
-  discardResponseBodies: true
+  noVUConnectionReuse: true
 }
 
 const createPatient = () => {
@@ -96,15 +95,20 @@ const createObservation = (observation, patientId, encounterId) => {
   check(response, {
     'status code for observation create is 201': r => r.status === 201
   })
+
+  if (response.status === 201) {
+    return 'Success'
+  }
+  return null
 }
 
 // get observations performed for the patient in the encounter
-const getObservations = (patientId, encounterId) => {
+const getObservations = patientId => {
   const response = http.get(
-    `${BASE_URL}/fhir/Observation?subject=Patient/${patientId}&encounter=Encounter/${encounterId}`,
+    `${BASE_URL}/fhir/Observation?subject=Patient/${patientId}`,
     {
       headers: {
-        Accept: 'application/json'
+        'Content-Type': 'application/json'
       },
       tags: {
         name: 'Get Observations request'
@@ -112,15 +116,22 @@ const getObservations = (patientId, encounterId) => {
     }
   )
   check(response, {
-    'status code for observations retrieval is 200': r => r.status === 200
+    'number of observations created should be two': r => JSON.parse(r.body).total === 2
   })
 }
 
 export default function () {
   const patientId = createPatient()
-  const encounterId = createEncounter(patientId)
+  if (!patientId) return
 
-  createObservation(weightObservation, patientId, encounterId)
-  createObservation(heightObservation, patientId, encounterId)
-  getObservations(patientId, encounterId)
+  const encounterId = createEncounter(patientId)
+  if (!encounterId) return
+
+  const createWObservation = createObservation(weightObservation, patientId, encounterId)
+  if (!createWObservation) return
+
+  const createHObservation = createObservation(heightObservation, patientId, encounterId)
+  if (!createHObservation) return
+
+  getObservations(patientId)
 }
