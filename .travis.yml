@@ -8,10 +8,6 @@ matrix:
 dist: bionic
 services:
   - mongodb
-after_success:
-  - npm run test:upload-cov
-  - npm run test:load
-  - ".travis/build_docker.sh"
 before_install:
   - export TZ=Africa/Johannesburg
 addon:

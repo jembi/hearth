@@ -1,5 +1,5 @@
 import http from 'k6/http'
-import {check} from 'k6'
+import { check } from 'k6'
 
 /* global __ENV */
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
@@ -9,9 +9,9 @@ const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/Patient'
 
 export const options = {
   stages: [
-    {duration: '30s', target: 100},
-    {duration: '1m'},
-    {duration: '30s', target: 0}
+    { duration: '30s', target: 100 },
+    { duration: '1m' },
+    { duration: '30s', target: 0 }
   ],
   thresholds: {
     http_req_duration: ['p(95)<600']
