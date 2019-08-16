@@ -8,8 +8,6 @@ matrix:
 dist: bionic
 services:
   - mongodb
-after_success:
-  - ".travis/build_docker.sh"
 before_install:
   - export TZ=Africa/Johannesburg
 addon:
