@@ -9,7 +9,7 @@ const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/Patient'
 
 export const options = {
   vus: 10,
-  iterations: 1000,
+  iterations: 10000,
   thresholds: {
     http_req_receiving: ['p(95)<100'],
     http_req_duration: ['p(95)<100']

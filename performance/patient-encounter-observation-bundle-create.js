@@ -76,6 +76,7 @@ const makeBundleRequest = () => {
   // This is so we can retrieve the observations created.
   const patientReference = `Patient/${Date.now() + Math.random() * 1000}`
 
+  // set the request url to find the observations created for the Patient in the bundle
   bundleResource.entry[4].request.url = `Observation?subject=${patientReference}`
 
   encounterResource.patient.reference = patientResourceFullUrl
@@ -103,7 +104,7 @@ const makeBundleRequest = () => {
 
   check(response, {
     'status code for bundle creation is 200': r => r.status === 200,
-    'status code for patient creation is 201': () => responseBody.entry[0].response.status === '201',
+    'status code for patient creation is 201': r => responseBody.entry[0].response.status === '201',
     'status code for encounter creation is 201': r => responseBody.entry[1].response.status === '201',
     'status code for height observation creation is 201': r => responseBody.entry[2].response.status === '201',
     'status code for weight observation creation is 201': r => responseBody.entry[3].response.status === '201',
