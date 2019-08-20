@@ -10,7 +10,7 @@ const patient = open('./resources/patient.json')
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3447'
 
 // PATH - the path to the resource. Default is path to the patient resource
-const RESOURCE_PATH = __ENV.RESOURCE_PATH || '/fhir/Patient'
+const RESOURCE_PATH = '/fhir/Patient'
 
 export const options = {
   vus: 100,
@@ -30,7 +30,7 @@ const makePostRequest = () => {
         'Content-Type': 'application/json'
       },
       tags: {
-        name: `Post request - ${RESOURCE_PATH} - Stress Test`
+        name: `Create Patient Stress Test`
       }
     })
   check(response, {
