@@ -88,7 +88,7 @@ const createObservation = (observation, patientId, encounterId) => {
         'Content-Type': 'application/json+fhir'
       },
       tags: {
-        name: `Create Observation resource`
+        name: `Create Observation Resource`
       }
     }
   )
@@ -111,7 +111,7 @@ const getObservations = patientId => {
         'Content-Type': 'application/json'
       },
       tags: {
-        name: 'Get Observations request'
+        name: 'Get Observations Request'
       }
     }
   )
