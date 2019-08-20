@@ -65,4 +65,4 @@ Inorder to insert the results into the influxdb pass in the option `-o influxdb=
 docker run -e 'BASE_URL=<BASE_URL>' -e 'RESOURCE_PATH=<RESOURCE_PATH>' --network host -i -v $PWD:/src loadimpact/k6 -o influxdb=http://localhost:8086/k6 run /src/load.js
 ```
 
-A graph can then be created using the data in the influxdb on chronograf. A custom dashboard config file exists (in dashboards folder) and this can be modified to create different graphs. To use this file, import it on chronograf.
+A graph can then be created using the data in the influxdb on chronograf. Dashboard config files exist (in dashboards folder) and these can be used to create different graphs. To use the files, import them on the chronograf console.
