@@ -22,7 +22,7 @@ export const options = {
   discardResponseBodies: true
 }
 
-const makePostRequest = () => {
+const makePutRequest = () => {
   // The id being created here should be unique, otherwise an update will actually happen
   const id = `${Date.now() + Math.random()}`
   patient.id = id
@@ -42,5 +42,5 @@ const makePostRequest = () => {
 }
 
 export default function () {
-  makePostRequest()
+  makePutRequest()
 }
