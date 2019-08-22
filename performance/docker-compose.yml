@@ -16,6 +16,7 @@ services:
       - mongodb__url=mongodb://performance-mongo/hearth-performance-test
       - logger__level=info
       - idGenerator=uuidv4
+      - operations__updateCreate=true
     ports:
       - "3447:3447"
     depends_on:
