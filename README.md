@@ -3,14 +3,26 @@
 # Hearth
 HEARTH (noun): the floor of a '[FHIR](http://hl7.org/fhir/)'place. A fast FHIR-compliant server focused on longitudinal data stores.
 
-This project aims to provide a fast and lightweight FHIR server that also supports some of the FHIR-based IHE profiles. It is still in the early stages of development, follow the project to stay informed. Any contributions are welcomed!
+This project aims to provide a fast and lightweight FHIR server that also supports some of the FHIR-based IHE profiles. It is still in the early stages of development, follow the project to stay informed.
 
-Our high level plan for the project can be found [here](https://docs.google.com/document/d/1wJr-A0xJFEwwR9y5c5tVGb0_rH7IQFBJRhMNRU31Fis/edit?usp=sharing).
+We do our best to update this project when we have projects with funding that are using it. Any contributions are welcomed and encouraged! Help us make this something great.
 
 # Documentation
 For more information regarding the capabilities of Hearth and how to get working with it please refer to the [wiki documentation](https://github.com/jembi/hearth/wiki)
 
 # Usage
+
+## Using docker compose
+
+**Note:** Requires docker and docker-compose to be installed
+
+Download the [docker compose file from here](./docker-compose.yml), then execute to following in the directory you downloaded it to:
+
+`docker-compose up`
+
+Once started the fhir endpoint will be available on your system at this url: `http://localhost:3447/fhir/`
+
+## For devlopment
 To run in development mode use the following commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
 
 **Note:** Requires mongo 3.6+
@@ -31,9 +43,9 @@ otherwise for production just run:
 yarn start
 ```
 
-The default FHIR version is DSTU2 as set in the config files, to change this either change the config files or make use of overriding config variable via environment variables:
+The default FHIR version is STU3 as set in the config files (we don't yet support R4), to change this either change the config files or make use of overriding config variable via environment variables:
 ```
-server__fhirVersion=stu3 yarn start
+server__fhirVersion=dstu2 yarn start
 ```
 
 To run the tests:
