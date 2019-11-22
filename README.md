@@ -14,7 +14,7 @@ For more information regarding the capabilities of Hearth and how to get working
 
 ## Using docker compose
 
-**Note:** Requires docker and docker-compose to be installed
+**Note:** Requires [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) to be installed
 
 Download the [docker compose file from here](./docker-compose.yml), then execute to following in the directory you downloaded it to:
 
@@ -22,7 +22,7 @@ Download the [docker compose file from here](./docker-compose.yml), then execute
 
 Once started the fhir endpoint will be available on your system at this url: `http://localhost:3447/fhir/`
 
-## For devlopment
+## For development
 To run in development mode use the following commands. First Mongo needs to be available on your system. The easiest way to do this is through docker:
 
 **Note:** Requires mongo 3.6+
