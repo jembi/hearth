@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mongo-db:
+    container_name: mongo-db
+    image: mongo:4.2
+    volumes:
+      - "./data/mongo:/data/db"
+
+  hearth:
+    container_name: hearth
+    image: jembi/hearth:latest
+    environment:
+      mongodb__url: "mongodb://mongo-db/hearth"
+    ports:
+      - "3447:3447"

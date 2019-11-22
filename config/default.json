@@ -3,7 +3,7 @@
     "hostname": "0.0.0.0",
     "publicFhirBase": "http://localhost:3447/fhir",
     "port": 3447,
-    "fhirVersion": "dstu2"
+    "fhirVersion": "stu3"
   },
   "mongodb": {
     "url": "mongodb://localhost/hearth"
