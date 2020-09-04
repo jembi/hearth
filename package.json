@@ -31,7 +31,7 @@
     "jsonwebtoken": "^8.2.2",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "mongodb": "^2.2.22",
+    "mongodb": "^3.1.13",
     "mongodb-queue": "^3.1.0",
     "nconf": "^0.10.0",
     "request": "^2.87.0",
