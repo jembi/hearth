@@ -21,6 +21,8 @@
     "licenses:generate": "license-checker --production --json --customPath license-format.json --relativeLicensePath --out licenses.json"
   },
   "dependencies": {
+    "@sentry/node": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "async": "^2.6.1",
     "atna-audit": "^1.0.1",
     "body-parser": "^1.18.3",
