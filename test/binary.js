@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -278,21 +278,21 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
           let data = ''
 
           bucket.openDownloadStream(doc._transforms.content)
-          .on('data', (chunk) => {
-            data += chunk
-          })
-          .on('error', (err) => {
-            t.error(err)
-          })
-          .on('end', () => {
-            t.equal(data, binaryResource.content, 'GridFS returns expected binary data')
-            env.clearDB((err) => {
+            .on('data', (chunk) => {
+              data += chunk
+            })
+            .on('error', (err) => {
               t.error(err)
-              server.stop(() => {
-                t.end()
+            })
+            .on('end', () => {
+              t.equal(data, binaryResource.content, 'GridFS returns expected binary data')
+              env.clearDB((err) => {
+                t.error(err)
+                server.stop(() => {
+                  t.end()
+                })
               })
             })
-          })
         })
       })
     })
