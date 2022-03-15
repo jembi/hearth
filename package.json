@@ -55,7 +55,7 @@
     "sinon": "^7.5.0",
     "snazzy": "^8.0.0",
     "standard": "^8.6.0",
-    "tap": "^10.1.0"
+    "tap": "12.6"
   },
   "main": "server.js",
   "directories": {
