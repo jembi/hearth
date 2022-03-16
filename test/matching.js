@@ -81,7 +81,7 @@ const basicMatchingTest = (testPatients, t, test) => {
       c.insertMany(testPatients, { forceServerObjectId: true }, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, testPatients.length)
+        t.equal(Object.keys(doc.insertedIds).length, testPatients.length)
 
         test(db, () => {
           env.clearDB((err) => {
