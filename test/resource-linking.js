@@ -52,7 +52,7 @@ const resourceLinkingTestEnv = (t, test) => {
       c.insertMany(patients, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, patients.length)
+        t.equal(Object.keys(doc.insertedIds).length, patients.length)
 
         test(db, () => {
           env.clearDB((err) => {
