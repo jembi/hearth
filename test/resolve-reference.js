@@ -141,7 +141,7 @@ tap.test('resolve reference', (t) => {
 
   function createTestPatient (db, callback) {
     const referencedPatient = Object.assign({}, testPatient)
-    db.collection('Patient').remove({id: referencedPatient.id}, (err) => {
+    db.collection('Patient').remove({ id: referencedPatient.id }, (err) => {
       if (err) {
         return callback(err)
       }
@@ -160,7 +160,7 @@ tap.test('resolve reference', (t) => {
         versionId: '5feb29f6-349a-4537-b620-0188cd30087a'
       })
     })
-    db.collection('Patient_history').remove({id: referencedPatient.id}, (err) => {
+    db.collection('Patient_history').remove({ id: referencedPatient.id }, (err) => {
       if (err) {
         return callback(err)
       }

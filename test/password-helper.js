@@ -25,7 +25,7 @@ tap.test('Password helper', (t) => {
   t.test('generateSaltedHash', (t) => {
     const password = 'aen6uShieyohcheiphaithah8Euhipung5yoorol'
 
-    const {hash, salt} = passwordHelper.generateSaltedHash(password)
+    const { hash, salt } = passwordHelper.generateSaltedHash(password)
 
     const expectedHash = crypto.createHash('sha512').update(`${salt}${password}`).digest('hex')
     t.equal(hash, expectedHash, 'should generate the correct hash')

@@ -16,7 +16,7 @@ const jwtAuthentication = require('../lib/security/jwt-authentication')()
 const request = require('request')
 const session = require('../lib/custom-api/session')
 const tap = require('tap')
-const {ObjectId} = require('mongodb')
+const { ObjectId } = require('mongodb')
 
 function withServer (test) {
   return (t) => {
@@ -35,7 +35,7 @@ function withServer (test) {
 }
 
 tap.test('JWT Authentication', withServer((t, server) => {
-  const {port} = server.address()
+  const { port } = server.address()
   const requestOptions = {
     method: 'GET',
     url: {
