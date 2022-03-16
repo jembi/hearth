@@ -69,11 +69,9 @@
   ],
   "author": "Jembi Health Systems NPC",
   "license": "MPL-2.0",
-  "engines": {
-    "node": ">= 6.9.0 <9.0.0"
-  },
   "resolutions": {
     "lodash": "4.17.21",
-    "xmlbuilder": "9.0.7"
+    "xmlbuilder": "9.0.7",
+    "libxmljs": "0.19.7"
   }
 }
