@@ -7,7 +7,7 @@
     "stop": "pkill -SIGINT Hearth",
     "dev:start": "cross-env NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
-    "test:code": "cross-env NODE_ENV='test' tap --cov --reporter=list 'test/**/*.js'",
+    "test:code": "cross-env NODE_ENV='test' tap -j1 --cov --reporter=list 'test/**/*.js'",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "test:fix": "standard --fix -v | snazzy",
