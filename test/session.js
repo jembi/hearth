@@ -24,7 +24,7 @@ tap.test('Create session', withServer((t, server) => {
     hearth.mongo.closeDB(logError)
   })
 
-  const {port} = server.address()
+  const { port } = server.address()
   const requestOptions = {
     method: 'POST',
     url: {
@@ -210,7 +210,7 @@ function withUser (test) {
         const newUser = res.ops[0]
 
         t.tearDown(() => {
-          db.collection('user').remove({_id: newUser._id}, logError)
+          db.collection('user').remove({ _id: newUser._id }, logError)
         })
 
         test(t, newUser)

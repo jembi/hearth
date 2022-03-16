@@ -3,7 +3,7 @@ const sinon = require('sinon')
 
 const cli = require('../../scripts/util/cli')
 
-const autoend = {autoend: true}
+const autoend = { autoend: true }
 
 const fakeArgv = args => [null, null, ...args]
 

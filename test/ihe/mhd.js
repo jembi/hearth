@@ -158,7 +158,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti65ProvideDocumentBundle = (t, callback) => {
-    t.test('ITI-65 Provide Document Bundle', {bail: true}, (t) => {
+    t.test('ITI-65 Provide Document Bundle', { bail: true }, (t) => {
       request.post({
         url: host,
         body: documentBundle,
@@ -221,7 +221,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti66FindDocumentManifests = (t, callback) => {
-    t.test('ITI-66 Find Document Manifests', {bail: true}, (t) => {
+    t.test('ITI-66 Find Document Manifests', { bail: true }, (t) => {
       const promises = []
 
       promises.push(searchManifest(t, `DocumentManifest?patient=${conf.patientRef}`))
@@ -270,7 +270,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti67FindDocumentReferences = (t, callback) => {
-    t.test('ITI-67 Find Document References', {bail: true}, (t) => {
+    t.test('ITI-67 Find Document References', { bail: true }, (t) => {
       const promises = []
 
       promises.push(searchReferences(t, `DocumentReference?patient=${conf.patientRef}`))
@@ -339,7 +339,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti68RetrieveDocument = (t, callback) => {
-    t.test('ITI-68 Retrieve Document', {bail: true}, (t) => {
+    t.test('ITI-68 Retrieve Document', { bail: true }, (t) => {
       const promises = []
 
       promises.push(fetchBinary(t, conf.binaryResource1, conf.cdaBase64))

@@ -504,7 +504,7 @@ tap.test('Binary - postInteractionHandlers.create - should not convert the binar
   const stub = sandbox.stub(logger, 'debug')
 
   stub.onCall(1).callsFake((arg) => {
-    t.equals(arg, 'Cannot convert Binary with content type application/xml to Bundle', 'Should log a debug message', {skip: true})
+    t.equals(arg, 'Cannot convert Binary with content type application/xml to Bundle', 'Should log a debug message', { skip: true })
   })
 
   env.initDB((err, db) => {

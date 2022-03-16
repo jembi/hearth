@@ -59,7 +59,7 @@ tap.test('Reverse include resources', t => {
   t.test('should return an error when the _revincude parameter is invalid', t => {
     return common
       .reverseIncludeResources('Encounter.patient', [
-        {resourceType: 'Patient', id: '1'}
+        { resourceType: 'Patient', id: '1' }
       ])
       .then(() => t.fail('Expected an error'))
       .catch(err => {
@@ -74,7 +74,7 @@ tap.test('Reverse include resources', t => {
   t.test('should return an error when the _revincude parameter is for an unsupported resource', t => {
     return common
       .reverseIncludeResources('Unsupported:patient', [
-        {resourceType: 'Patient', id: '1'}
+        { resourceType: 'Patient', id: '1' }
       ])
       .then(() => t.fail('Expected an error'))
       .catch(err => {
@@ -89,7 +89,7 @@ tap.test('Reverse include resources', t => {
   t.test('should return an error when the _revincude query parameter is invalid', t => {
     return common
       .reverseIncludeResources('Encounter:patients', [
-        {resourceType: 'Patient', id: '1'}
+        { resourceType: 'Patient', id: '1' }
       ])
       .then(() => t.fail('Expected an error'))
       .catch(err => {
@@ -116,7 +116,7 @@ tap.test('Reverse include resources', t => {
     sandbox.stub(cursor, 'toArray').returns(Promise.resolve(expectedResources))
     return common
       .reverseIncludeResources('Encounter:patient', [
-        {resourceType: 'Patient', id: '1'}
+        { resourceType: 'Patient', id: '1' }
       ])
       .then(resources => {
         t.ok(db.collection.calledWith('Encounter'))
@@ -152,7 +152,7 @@ tap.test('Reverse include resources', t => {
     return common
       .reverseIncludeResources(
         ['Encounter:patient', 'Procedure:patient'],
-        [{resourceType: 'Patient', id: '1'}]
+        [{ resourceType: 'Patient', id: '1' }]
       )
       .then(resources => {
         t.equal(db.collection.callCount, 2)

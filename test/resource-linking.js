@@ -94,7 +94,7 @@ tap.test('Resource Linking - .addLinkToMatches() - Should update an array of Pat
     const resource = charlton
 
     let c = db.collection('Patient')
-    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
+    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({ id: 1 }).toArray((err, results) => {
       t.error(err)
 
       t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
@@ -111,7 +111,7 @@ tap.test('Resource Linking - .addLinkToMatches() - Should update an array of Pat
         // then
         t.error(err)
 
-        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
+        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({ id: 1 }).toArray((err, results) => {
           t.error(err)
 
           t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
