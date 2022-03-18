@@ -14,36 +14,36 @@ const matchingPlugin = require('../lib/plugins/matching')()
 const matchingConfig = require('../config/matching.json')
 
 const testResourceTemplate = {
-  'resourceType': 'Patient',
-  'id': '1',
-  'active': true,
-  'identifier': [
+  resourceType: 'Patient',
+  id: '1',
+  active: true,
+  identifier: [
     {
-      'use': 'official',
-      'system': 'pshr:passport:za',
-      'value': '1001113333933',
-      'assigner': {
-        'display': 'Passport South Africa'
+      use: 'official',
+      system: 'pshr:passport:za',
+      value: '1001113333933',
+      assigner: {
+        display: 'Passport South Africa'
       }
     }
   ],
-  'name': [
+  name: [
     {
-      'use': 'official',
-      'prefix': [
+      use: 'official',
+      prefix: [
         'Mr'
       ],
-      'family': [
+      family: [
         'Matinyana'
       ],
-      'given': [
+      given: [
         'Charlton',
         'Joseph'
       ]
     }
   ],
-  'gender': 'male',
-  'birthDate': '1970-07-21'
+  gender: 'male',
+  birthDate: '1970-07-21'
 }
 
 tap.test('Matching Plugin', { autoend: true }, (t) => {
@@ -62,8 +62,8 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching.name.given, [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
-      t.same(resource._transforms.matching.name.family, [ ['MTNN', 'MTNN'] ])
+      t.same(resource._transforms.matching.name.given, [['XRLT', 'XRLT'], ['JSF', 'HSF']])
+      t.same(resource._transforms.matching.name.family, [['MTNN', 'MTNN']])
 
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.family'].algorithm = oldFamilyAlgorithm
@@ -86,7 +86,7 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching.name.given, [ ['XRLT', 'XRLT'], ['JSF', 'HSF'] ])
+      t.same(resource._transforms.matching.name.given, [['XRLT', 'XRLT'], ['JSF', 'HSF']])
       t.notOk(resource._transforms.matching.name.family, 'there should be no transform for a null family name')
 
       matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
@@ -109,7 +109,7 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching['gender'], [ [ 'ML', 'ML' ] ])
+      t.same(resource._transforms.matching['gender'], [['ML', 'ML']])
 
       delete matchingConfig.resourceConfig.Patient.matchingProperties.gender
 

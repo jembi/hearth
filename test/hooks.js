@@ -149,7 +149,7 @@ tap.test('Hooks module', { autoend: true }, (t) => {
             function: incorrectMatchFunc
           },
           {
-            interactions: [ 'create', 'update', 'delete' ],
+            interactions: ['create', 'update', 'delete'],
             userType: '*',
             resourceType: '*',
             function: correctMatchFunc
@@ -176,7 +176,7 @@ tap.test('Hooks module', { autoend: true }, (t) => {
         before: [
           {
             interactions: '*',
-            userType: [ 'another', 'test' ],
+            userType: ['another', 'test'],
             resourceType: '*',
             function: correctMatchFunc
           },
@@ -215,7 +215,7 @@ tap.test('Hooks module', { autoend: true }, (t) => {
           {
             interactions: '*',
             userType: '*',
-            resourceType: [ 'Patient', 'Observation' ],
+            resourceType: ['Patient', 'Observation'],
             function: correctMatchFunc
           },
           {

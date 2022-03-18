@@ -93,7 +93,7 @@ tap.test('Resource Linking - .addLinkToMatches() - Should update an array of Pat
     const testMatchesArray = _.cloneDeep(matchesArray)
     const resource = charlton
 
-    let c = db.collection('Patient')
+    const c = db.collection('Patient')
     c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({ id: 1 }).toArray((err, results) => {
       t.error(err)
 
@@ -151,7 +151,7 @@ tap.test('Resource Linking - .addMatchesLinksToResource() - Should update a Pati
       t.error(err)
 
       // then
-      let c = db.collection('Patient')
+      const c = db.collection('Patient')
       c.findOne({ id: resource.id }, (err, resource) => {
         t.error(err)
 

@@ -15,7 +15,7 @@ const config = require('../lib/config')
 
 const validator = require('../lib/plugins/validator.js')()
 const profileLoader = require('../lib/fhir/profile-loader')()
-profileLoader.loadProfiles([ 'lib/fhir/profiles/mhd' ])
+profileLoader.loadProfiles(['lib/fhir/profiles/mhd'])
 
 tap.test('FHIR validator', { autoend: true }, (t) => {
   t.test('should called next with no errors on a valid resource', (t) => {

@@ -19,40 +19,40 @@ const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 const locationResource = require('./resources/Location-1.json')
 
 const testResourceTemplate = {
-  'resourceType': 'Patient',
-  'id': '1',
-  'active': true,
-  'identifier': [
+  resourceType: 'Patient',
+  id: '1',
+  active: true,
+  identifier: [
     {
-      'use': 'official',
-      'system': 'pshr:passport:za',
-      'value': '1001113333933',
-      'assigner': {
-        'display': 'Passport South Africa'
+      use: 'official',
+      system: 'pshr:passport:za',
+      value: '1001113333933',
+      assigner: {
+        display: 'Passport South Africa'
       }
     }
   ],
-  'name': [
+  name: [
     {
-      'use': 'official',
-      'prefix': [
+      use: 'official',
+      prefix: [
         'Mr'
       ],
-      'family': [
+      family: [
         'Matinyana'
       ],
-      'given': [
+      given: [
         'Charlton',
         'Joseph'
       ]
     }
   ],
-  'gender': 'male',
-  'birthDate': '1970-07-21'
+  gender: 'male',
+  birthDate: '1970-07-21'
 }
 
 let matchingQueuePlugin
-let matchingQueuePluginTestEnv = (t, test) => {
+const matchingQueuePluginTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -84,7 +84,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       t.error(err)
       t.error(badRequest)
 
-      let c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
+      const c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
       c.findOne({}, (err, doc) => {
         t.error(err)
 
@@ -123,7 +123,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
 
       const patientId = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
-      let c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
+      const c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
       c.findOne({ 'payload.id': patientId }, (err, doc) => {
         t.error(err)
 
@@ -187,7 +187,7 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
           t.equal(body.resourceType, 'Patient', 'result should be a patient')
           t.equal(body.name[0].given[0], 'Update', 'body should contain the latest patient')
 
-          let c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
+          const c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
           c.find().toArray((err, results) => {
             t.error(err)
 
@@ -252,7 +252,7 @@ tap.test('Matching Queue Plugin - should add the location resource to the matchi
 
       const locationId = res.headers.location.replace('/fhir/Location/', '').replace(/\/_history\/.*/, '')
 
-      let c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
+      const c = db.collection(constants.MATCHING_QUEUE_COLLECTION)
       c.findOne({ 'payload.id': locationId }, (err, doc) => {
         t.error(err)
 

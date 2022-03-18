@@ -15,7 +15,7 @@ const _ = require('lodash')
 
 const QuestionnaireResponse = require('./resources/QuestionnaireResponse-1.json')
 
-let basicQuestionnaireResponseTest = (t, test) => {
+const basicQuestionnaireResponseTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -201,7 +201,7 @@ tap.test('QuestionnaireResponse should be saved correctly', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
+      const questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
       delete questionnaireresponse.id
 
       request.post({
@@ -216,7 +216,7 @@ tap.test('QuestionnaireResponse should be saved correctly', (t) => {
         t.ok(res.headers['location'], 'should have a location header set')
         t.match(res.headers['location'], /\/fhir\/QuestionnaireResponse\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
-        let c = db.collection('QuestionnaireResponse')
+        const c = db.collection('QuestionnaireResponse')
         c.findOne((err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in the mongo')
@@ -249,7 +249,7 @@ tap.test('QuestionnaireResponse endpoint should return an error for incorrect PO
     server.start((err) => {
       t.error(err)
 
-      let questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
+      const questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
 
       request.post({
         url: 'http://localhost:3447/fhir/QuestionnaireResponse',
@@ -275,7 +275,7 @@ tap.test('QuestionnaireResponse endpoint should return an error for incorrect PO
 
 tap.test('QuestionnaireResponse should be read correctly', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
-    let c = db.collection('QuestionnaireResponse')
+    const c = db.collection('QuestionnaireResponse')
     c.findOne((err, result) => {
       t.error(err)
       t.ok(result, 'result should exist in the mongo')
@@ -305,7 +305,7 @@ tap.test('QuestionnaireResponse should be read correctly', (t) => {
 
 tap.test('QuestionnaireResponse should be read correctly, and summarized when parameter supplied', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
-    let c = db.collection('QuestionnaireResponse')
+    const c = db.collection('QuestionnaireResponse')
     c.findOne((err, result) => {
       t.error(err)
       t.ok(result, 'result should exist in the mongo')
