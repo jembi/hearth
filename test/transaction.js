@@ -20,7 +20,7 @@ tap.test('Transaction resource .sortTransactionBundle() should sort interactions
   // given
   const transaction = Transaction()
   // when
-  let sortedBundle = transaction.sortTransactionBundle(testBundle)
+  const sortedBundle = transaction.sortTransactionBundle(testBundle)
   // then
   t.ok(sortedBundle)
   t.equals(sortedBundle.entry.length, testBundle.entry.length, 'should have the same number of entries as the original bundle')
@@ -41,7 +41,7 @@ tap.test('Transaction resource .sortTransactionBundle() should do nothing on an 
   // given
   const transaction = Transaction()
   // when
-  let sortedBundle = transaction.sortTransactionBundle({
+  const sortedBundle = transaction.sortTransactionBundle({
     type: 'transaction',
     entry: []
   })
@@ -142,7 +142,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
         const idToUpdate = patients.charlton.patient.id
         const transaction = Transaction(env.mongo())
 
-        let c = db.collection(resourceType)
+        const c = db.collection(resourceType)
         c.findOne({ id: idToUpdate }, { fields: { id: 1 } }, (err, doc) => {
           t.error(err)
           t.equals('' + doc.id, idToUpdate, 'Patient has been created')

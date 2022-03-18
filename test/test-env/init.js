@@ -320,8 +320,8 @@ module.exports = () => {
       testPatients.emmarentia.patient.extension[4] = {
         url: 'http://pdqm-sample:8080/ITI-78/Profile/pdqm#mothersMaidenName',
         valueHumanName: {
-          family: [ 'Cook', 'Smit' ],
-          given: [ 'Mom' ]
+          family: ['Cook', 'Smit'],
+          given: ['Mom']
         }
       }
       testPatients.emmarentia.encounter.period.start = moment().format('YYYY-MM-DD')

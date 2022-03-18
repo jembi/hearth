@@ -13,7 +13,7 @@ const tap = require('tap')
 const request = require('request')
 const _ = require('lodash')
 
-let basicPractitionerTest = (t, test) => {
+const basicPractitionerTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -264,7 +264,7 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
       server.start((err) => {
         t.error(err)
 
-        let prac = _.cloneDeep(require('./resources/Practitioner-1.json'))
+        const prac = _.cloneDeep(require('./resources/Practitioner-1.json'))
         delete prac.id
 
         request.post({
@@ -279,7 +279,7 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
           t.ok(res.headers['location'], 'should have a location header set')
           t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
-          let c = db.collection('Practitioner')
+          const c = db.collection('Practitioner')
           c.findOne((err, result) => {
             t.error(err)
             t.ok(result, 'result should exist in the mongo')
@@ -313,7 +313,7 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
       server.start((err) => {
         t.error(err)
 
-        let prac = _.cloneDeep(require('./resources/Practitioner-1.json'))
+        const prac = _.cloneDeep(require('./resources/Practitioner-1.json'))
 
         request.post({
           url: 'http://localhost:3447/fhir/Practitioner',

@@ -42,7 +42,7 @@ const basicPatientTest = (t, test) => {
 
 tap.test('server should reject requests that arent apart of the accepted contentTypes list', (t) => {
   basicPatientTest(t, (db, done) => {
-    const updatedHeaders = _.assign({ 'accept': ['text/turtle'] }, headers) // not yet supported
+    const updatedHeaders = _.assign({ accept: ['text/turtle'] }, headers) // not yet supported
 
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902',
@@ -61,7 +61,7 @@ tap.test('server should reject requests that arent apart of the accepted content
 
 tap.test('patient should support searches on identifier and return the payload in XML', (t) => {
   basicPatientTest(t, (db, done) => {
-    const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
+    const updatedHeaders = _.assign({ accept: ['application/xml', 'application/xml+fhir'] }, headers)
 
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=1007211154902',
@@ -94,7 +94,7 @@ tap.test('patient should support searches on identifier and return the payload i
 
 tap.test('patient should respond with en empty searchset if no matches and return the payload in XML', (t) => {
   basicPatientTest(t, (db, done) => {
-    const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'] }, headers)
+    const updatedHeaders = _.assign({ accept: ['application/xml', 'application/xml+fhir'] }, headers)
 
     request({
       url: 'http://localhost:3447/fhir/Patient?identifier=NOTTHERE',
@@ -134,7 +134,7 @@ tap.test('patient should be saved correctly when body is in XML format', (t) => 
       const fhir = new FHIR(FHIR.DSTU2)
       const patientXML = fhir.JsonToXml(JSON.stringify(pat))
 
-      const updatedHeaders = _.assign({ 'accept': ['application/xml', 'application/xml+fhir'], 'Content-Type': 'application/xml' }, headers)
+      const updatedHeaders = _.assign({ accept: ['application/xml', 'application/xml+fhir'], 'Content-Type': 'application/xml' }, headers)
 
       request.post({
         url: 'http://localhost:3447/fhir/Patient',

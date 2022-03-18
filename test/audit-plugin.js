@@ -44,52 +44,52 @@ const testServerInit = (t, test) => {
 }
 
 const testResourceTemplate = {
-  'resourceType': 'Patient',
-  'id': '1',
-  'active': true,
-  'identifier': [
+  resourceType: 'Patient',
+  id: '1',
+  active: true,
+  identifier: [
     {
-      'use': 'official',
-      'system': 'pshr:passport:za',
-      'value': '1001113333933',
-      'assigner': {
-        'display': 'Passport South Africa'
+      use: 'official',
+      system: 'pshr:passport:za',
+      value: '1001113333933',
+      assigner: {
+        display: 'Passport South Africa'
       }
     }
   ],
-  'name': [
+  name: [
     {
-      'use': 'official',
-      'prefix': [
+      use: 'official',
+      prefix: [
         'Mr'
       ],
-      'family': [
+      family: [
         'Matinyana'
       ],
-      'given': [
+      given: [
         'Charlton',
         'Joseph'
       ]
     }
   ],
-  'gender': 'male',
-  'birthDate': '1970-07-21'
+  gender: 'male',
+  birthDate: '1970-07-21'
 }
 
 const testBundleTemplate = {
-  'resourceType': 'Bundle',
-  'total': 2,
-  'entry': [
+  resourceType: 'Bundle',
+  total: 2,
+  entry: [
     {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '1234567890'
+      resource: {
+        resourceType: 'Questionnaire',
+        id: '1234567890'
       }
     },
     {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '0987654321'
+      resource: {
+        resourceType: 'Questionnaire',
+        id: '0987654321'
       }
     }
   ]
@@ -115,7 +115,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // given
       const resource = {
         resourceType: 'OperationOutcome',
-        issue: [{ 'severity': 'information', 'code': 'gone', 'details': { 'text': 'Gone' } }]
+        issue: [{ severity: 'information', code: 'gone', details: { text: 'Gone' } }]
       }
 
       // when

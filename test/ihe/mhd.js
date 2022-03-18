@@ -171,7 +171,7 @@ const MHDScenario = (headers, t) => {
         t.equals(body.resourceType, 'Bundle', 'resource type should be Bundle')
         t.equals(body.type, 'transaction-response', 'bundle type should be \'transaction-response\'')
         t.equals(body.entry.length, 7, 'response should contain 7 entries')
-        for (let e of body.entry) {
+        for (const e of body.entry) {
           // response.status is unbounded, so responses like '201 Created' are possible
           t.equals(e.response.status.substr(0, 3), '201', 'entry response status should be 201')
 

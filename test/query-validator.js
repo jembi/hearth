@@ -117,7 +117,7 @@ const testFHIRResourcesSearchParams = () => {
     tap.test(`.validateQueryParams() for resource: ${resourceType}`, (t) => {
       // All valid parameters should return a 200 with queryObject
       let queryParams = setupQueryParams(resourceParamsObj)
-      let expected = setupExpected(resourceParamsObj)
+      const expected = setupExpected(resourceParamsObj)
 
       queryValidator.validateQueryParams(resourceType, queryParams, {}, (badRequest, queryObject) => {
         t.ok(queryObject)

@@ -25,7 +25,7 @@ tap.test('.tokenToSystemValue should match token to system and value according t
   let actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Single system|value token')
 
-  token = [ 'test:assigning:auth|123456', 'another:assigning:auth|111111' ]
+  token = ['test:assigning:auth|123456', 'another:assigning:auth|111111']
   split = []
   token.forEach((t) => {
     split = split.concat(t.split('|'))
@@ -42,7 +42,7 @@ tap.test('.tokenToSystemValue should match token to system and value according t
   actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Single value without system token')
 
-  token = [ '123456', '111111' ]
+  token = ['123456', '111111']
   expected = { $and: [
     { identifier: { $elemMatch: { value: token[0] } } },
     { identifier: { $elemMatch: { value: token[1] } } }
@@ -70,13 +70,13 @@ tap.test('.removeIdentifiersFromTokens should remove identifier part of token qu
   actual = queryUtils.removeIdentifiersFromTokens(token)
   t.deepEqual(actual, expected)
 
-  token = [ 'domain1|,domain2|', 'test1|1111' ]
-  expected = [ 'domain1|,domain2|', 'test1|' ]
+  token = ['domain1|,domain2|', 'test1|1111']
+  expected = ['domain1|,domain2|', 'test1|']
   actual = queryUtils.removeIdentifiersFromTokens(token)
   t.deepEqual(actual, expected)
 
-  token = [ '11111', 'test1|1111', 'test2|2222' ]
-  expected = [ 'test1|', 'test2|' ]
+  token = ['11111', 'test1|1111', 'test2|2222']
+  expected = ['test1|', 'test2|']
   actual = queryUtils.removeIdentifiersFromTokens(token)
   t.deepEqual(actual, expected)
 

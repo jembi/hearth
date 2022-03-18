@@ -532,9 +532,9 @@ tap.test('should discriminate using a exact match on representation', (t) => {
   testBody.parameter[0].resource.name[0].family = 'Smith'
   testBody.parameter[0].resource.name[0].given = 'John'
 
-  const pat1 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
-  const pat2 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
-  const pat3 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
+  const pat1 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
+  const pat2 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
+  const pat3 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
   pat1.name[0].family = 'Smith'
   pat2.name[0].family = 'Smyth'
   pat3.name[0].family = 'Jmith'

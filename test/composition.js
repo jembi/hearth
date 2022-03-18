@@ -16,7 +16,7 @@ const server = require('../lib/server')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let CompositionTestEnv = (t, test) => {
+const CompositionTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 

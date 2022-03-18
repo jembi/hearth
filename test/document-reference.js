@@ -13,7 +13,7 @@ const tap = require('tap')
 const request = require('request')
 const _ = require('lodash')
 
-let docRefTestEnv = (t, test) => {
+const docRefTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 

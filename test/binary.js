@@ -22,7 +22,7 @@ const fhirRoot = require('../lib/fhir/root')()
 const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let binaryTestEnv = (t, test) => {
+const binaryTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -265,7 +265,7 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
 
         t.equal(res.statusCode, 201, 'response status code should be 200')
 
-        let c = db.collection('Binary')
+        const c = db.collection('Binary')
         c.findOne({}, {}, (err, doc) => {
           t.error(err)
 
@@ -326,8 +326,8 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
           c.findOne({}, {}, (err, doc) => {
             t.error(err)
 
-            let idToUpdate = doc.id
-            let br = JSON.parse(JSON.stringify(binaryResource))
+            const idToUpdate = doc.id
+            const br = JSON.parse(JSON.stringify(binaryResource))
             br.id = idToUpdate
             br.contentType = 'image/jpeg'
             request.put({
@@ -382,7 +382,7 @@ tap.test('Binary - preInteractionHandlers writeToGridFS - should return bad requ
       t.error(err)
 
       // when
-      let testResource = JSON.parse(JSON.stringify(binaryResource))
+      const testResource = JSON.parse(JSON.stringify(binaryResource))
       delete testResource.content
       request.post({
         url: 'http://localhost:3447/fhir/Binary',
