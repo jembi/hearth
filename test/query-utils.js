@@ -30,10 +30,12 @@ tap.test('.tokenToSystemValue should match token to system and value according t
   token.forEach((t) => {
     split = split.concat(t.split('|'))
   })
-  expected = { $and: [
-    { identifier: { $elemMatch: { system: split[0], value: split[1] } } },
-    { identifier: { $elemMatch: { system: split[2], value: split[3] } } }
-  ] }
+  expected = {
+    $and: [
+      { identifier: { $elemMatch: { system: split[0], value: split[1] } } },
+      { identifier: { $elemMatch: { system: split[2], value: split[3] } } }
+    ]
+  }
   actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Multiple system|value tokens')
 
@@ -43,10 +45,12 @@ tap.test('.tokenToSystemValue should match token to system and value according t
   t.deepEqual(actual, expected, 'Single value without system token')
 
   token = ['123456', '111111']
-  expected = { $and: [
-    { identifier: { $elemMatch: { value: token[0] } } },
-    { identifier: { $elemMatch: { value: token[1] } } }
-  ] }
+  expected = {
+    $and: [
+      { identifier: { $elemMatch: { value: token[0] } } },
+      { identifier: { $elemMatch: { value: token[1] } } }
+    ]
+  }
   actual = queryUtils.tokenToSystemValue('identifier', token, propertyDefObj)
   t.deepEqual(actual, expected, 'Multiple value without system tokens')
 

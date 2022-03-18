@@ -56,10 +56,10 @@ const MHDScenario = (headers, t) => {
     docId: uuid(),
     manifestMID: uuid(),
     docManifestRef: `urn:uuid:${uuid()}`,
-    docManifestTypeCodingSystem: `http://hl7.org/fhir/ValueSet/c80-doc-typecodes`,
-    docManifestTypeCodingCode: `34117-2`,
-    docManifestSource: `urn:oid:1.3.6.1.4.1.21367.2009.1.2.1`,
-    docManifestStatus: `current`,
+    docManifestTypeCodingSystem: 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes',
+    docManifestTypeCodingCode: '34117-2',
+    docManifestSource: 'urn:oid:1.3.6.1.4.1.21367.2009.1.2.1',
+    docManifestStatus: 'current',
     docRefMID1: uuid(),
     docRef1: `urn:uuid:${uuid()}`,
     docRefMID2: uuid(),
@@ -275,21 +275,21 @@ const MHDScenario = (headers, t) => {
 
       promises.push(searchReferences(t, `DocumentReference?patient=${conf.patientRef}`))
       promises.push(searchReferences(t, `DocumentReference?patient.identifier=${conf.sourcePatId}`))
-      promises.push(searchReferences(t, `DocumentReference?status=current`))
+      promises.push(searchReferences(t, 'DocumentReference?status=current'))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${conf.timeNow}`))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${moment(conf.timeNow).format('YYYY')}`))
       promises.push(searchReferences(t, `DocumentReference?author.given=${conf.providerFirstName}`))
       promises.push(searchReferences(t, `DocumentReference?author.family=${conf.providerLastName}`))
-      promises.push(searchReferences(t, `DocumentReference?class=34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?type=34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?setting=General%20Medicine`))
-      promises.push(searchReferences(t, `DocumentReference?period=ge2016-12-23`))
-      promises.push(searchReferences(t, `DocumentReference?facility=225732001`))
-      promises.push(searchReferences(t, `DocumentReference?event=ANNGEN`))
-      promises.push(searchReferences(t, `DocumentReference?securitylabel=N`))
-      promises.push(searchReferences(t, `DocumentReference?related-id=other-doc-1`))
-      promises.push(searchReferences(t, `DocumentReference?related-id=hearth:tests|other-doc-1`))
+      promises.push(searchReferences(t, 'DocumentReference?class=34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?type=34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?setting=General%20Medicine'))
+      promises.push(searchReferences(t, 'DocumentReference?period=ge2016-12-23'))
+      promises.push(searchReferences(t, 'DocumentReference?facility=225732001'))
+      promises.push(searchReferences(t, 'DocumentReference?event=ANNGEN'))
+      promises.push(searchReferences(t, 'DocumentReference?securitylabel=N'))
+      promises.push(searchReferences(t, 'DocumentReference?related-id=other-doc-1'))
+      promises.push(searchReferences(t, 'DocumentReference?related-id=hearth:tests|other-doc-1'))
 
       Promise.all(promises).then(() => {
         t.end()

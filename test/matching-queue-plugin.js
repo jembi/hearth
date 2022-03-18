@@ -88,15 +88,15 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       c.findOne({}, (err, doc) => {
         t.error(err)
 
-        t.equal(doc.payload.active, true, `should return a queued document with a status of: active`)
-        t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
-        t.equal(doc.payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
-        t.equal(doc.payload.name[0].prefix[0], 'Mr', `should return a queued document with a name prefix of: Mr`)
-        t.equal(doc.payload.name[0].given[0], 'Charlton', `should return a queued document with a given name of: Charlton`)
-        t.equal(doc.payload.name[0].given[1], 'Joseph', `should return a queued document with a given name of: Joseph`)
-        t.equal(doc.payload.name[0].family[0], 'Matinyana', `should return a queued document with a family name of: Matinyana`)
-        t.equal(doc.payload.gender, 'male', `should return a queued document with a gender of: male`)
-        t.equal(doc.payload.birthDate, '1970-07-21', `should return a queued document with a birthDate of: 1970-07-21`)
+        t.equal(doc.payload.active, true, 'should return a queued document with a status of: active')
+        t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', 'should return a queued document with a identifier system of: pshr:passport:za')
+        t.equal(doc.payload.identifier[0].value, '1001113333933', 'should return a queued document with a identifier value of: 1001113333933')
+        t.equal(doc.payload.name[0].prefix[0], 'Mr', 'should return a queued document with a name prefix of: Mr')
+        t.equal(doc.payload.name[0].given[0], 'Charlton', 'should return a queued document with a given name of: Charlton')
+        t.equal(doc.payload.name[0].given[1], 'Joseph', 'should return a queued document with a given name of: Joseph')
+        t.equal(doc.payload.name[0].family[0], 'Matinyana', 'should return a queued document with a family name of: Matinyana')
+        t.equal(doc.payload.gender, 'male', 'should return a queued document with a gender of: male')
+        t.equal(doc.payload.birthDate, '1970-07-21', 'should return a queued document with a birthDate of: 1970-07-21')
 
         done()
       })
@@ -127,9 +127,9 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
       c.findOne({ 'payload.id': patientId }, (err, doc) => {
         t.error(err)
 
-        t.equal(doc.payload.active, true, `should return a queued document with a status of: active`)
-        t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
-        t.equal(doc.payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
+        t.equal(doc.payload.active, true, 'should return a queued document with a status of: active')
+        t.equal(doc.payload.identifier[0].system, 'pshr:passport:za', 'should return a queued document with a identifier system of: pshr:passport:za')
+        t.equal(doc.payload.identifier[0].value, '1001113333933', 'should return a queued document with a identifier value of: 1001113333933')
 
         done()
       })
@@ -191,12 +191,12 @@ tap.test('Matching Queue Plugin - should add the patient resource to the matchin
           c.find().toArray((err, results) => {
             t.error(err)
 
-            t.equal(results.length, 2, `should return a results array with 2 resources`)
-            t.equal(results[0].payload.active, true, `should return a queued document with a status of: active`)
-            t.equal(results[0].payload.identifier[0].system, 'pshr:passport:za', `should return a queued document with a identifier system of: pshr:passport:za`)
-            t.equal(results[0].payload.identifier[0].value, '1001113333933', `should return a queued document with a identifier value of: 1001113333933`)
-            t.equal(results[0].payload.name[0].given[0], 'Charlton', `should return a queued document with a given name value of: Charlton`)
-            t.equal(results[1].payload.name[0].given[0], 'Update', `should return a queued document with a given name value of: Update`)
+            t.equal(results.length, 2, 'should return a results array with 2 resources')
+            t.equal(results[0].payload.active, true, 'should return a queued document with a status of: active')
+            t.equal(results[0].payload.identifier[0].system, 'pshr:passport:za', 'should return a queued document with a identifier system of: pshr:passport:za')
+            t.equal(results[0].payload.identifier[0].value, '1001113333933', 'should return a queued document with a identifier value of: 1001113333933')
+            t.equal(results[0].payload.name[0].given[0], 'Charlton', 'should return a queued document with a given name value of: Charlton')
+            t.equal(results[1].payload.name[0].given[0], 'Update', 'should return a queued document with a given name value of: Update')
 
             done()
           })
@@ -256,7 +256,7 @@ tap.test('Matching Queue Plugin - should add the location resource to the matchi
       c.findOne({ 'payload.id': locationId }, (err, doc) => {
         t.error(err)
 
-        t.equal(doc.payload.status, 'active', `should return a queued document with a status of: active`)
+        t.equal(doc.payload.status, 'active', 'should return a queued document with a status of: active')
         t.equal(doc.payload.name, resource.name, `should return a queued document with a name of: ${resource.name}`)
         t.equal(doc.payload.position.longitude, resource.position.longitude, `should return a queued document with a longitude position of: ${resource.position.longitude}`)
         t.equal(doc.payload.position.latitude, resource.position.latitude, `should return a queued document with a latitude position of: ${resource.position.latitude}`)

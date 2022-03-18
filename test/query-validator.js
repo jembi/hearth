@@ -64,7 +64,7 @@ tap.test('.validateQueryParams should validate searchParams', (t) => {
 
   queryValidator.validateQueryParams('Patient', queryParams, customSupported, (badRequest, queryObject) => {
     t.ok(badRequest)
-    t.equal(badRequest.message, `This endpoint has the following required query parameters: ["test1","test2"]`, 'Should return error message if required params are missing')
+    t.equal(badRequest.message, 'This endpoint has the following required query parameters: ["test1","test2"]', 'Should return error message if required params are missing')
   })
 
   queryParams = { 'test1:exact': '1' }
@@ -126,7 +126,7 @@ const testFHIRResourcesSearchParams = () => {
 
       // One invalid parameter should return a 400 Bad Request response
       queryParams = setupQueryParams(resourceParamsObj)
-      queryParams['unsupported'] = 'SomeRandomValue'
+      queryParams.unsupported = 'SomeRandomValue'
 
       queryValidator.validateQueryParams(resourceType, queryParams, {}, (badRequest, queryObject) => {
         t.ok(badRequest)

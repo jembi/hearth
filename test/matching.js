@@ -99,7 +99,7 @@ const basicMatchingTest = (testPatients, t, test) => {
 const requestAndAssertResponseBundle = (tp, t, done) => {
   // When
   request({
-    url: `http://localhost:3447/fhir/Patient/$match`,
+    url: 'http://localhost:3447/fhir/Patient/$match',
     headers: headers,
     method: 'POST',
     body: tp.body,
@@ -137,7 +137,7 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
-      url: `http://localhost:3447/fhir/Patient/$match`,
+      url: 'http://localhost:3447/fhir/Patient/$match',
       method: 'POST',
       body: testBody,
       headers: headers,
@@ -171,7 +171,7 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
-      url: `http://localhost:3447/fhir/Patient/$match`,
+      url: 'http://localhost:3447/fhir/Patient/$match',
       method: 'POST',
       body: testBody,
       headers: headers,
@@ -204,7 +204,7 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
       t.error(err)
       // When
       request({
-        url: `http://localhost:3447/fhir/Patient/$match`,
+        url: 'http://localhost:3447/fhir/Patient/$match',
         method: 'POST',
         body: testBody,
         headers: headers,
@@ -337,7 +337,7 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
       env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           headers: headers,
           method: 'POST',
           body: testBody,
@@ -375,7 +375,7 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
       env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           headers: headers,
           method: 'POST',
           body: testBody,
@@ -401,7 +401,7 @@ tap.test('should discriminate using an exact match', (t) => {
   // Given
   const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 1 }
-  testMatchingConfig.resourceConfig.Patient.discriminatorProperties['birthDate'] = { algorithm: 'exact' }
+  testMatchingConfig.resourceConfig.Patient.discriminatorProperties.birthDate = { algorithm: 'exact' }
 
   stubMatchingConfig(testMatchingConfig)
 
@@ -551,7 +551,7 @@ tap.test('should discriminate using a exact match on representation', (t) => {
           env.createPatient(t, { patient: pat3 }, () => {
             // When
             request({
-              url: `http://localhost:3447/fhir/Patient/$match`,
+              url: 'http://localhost:3447/fhir/Patient/$match',
               headers: headers,
               method: 'POST',
               body: testBody,
@@ -598,7 +598,7 @@ tap.test('should return an error when an invalid algorithm is used for in the di
       t.error(err)
       // When
       request({
-        url: `http://localhost:3447/fhir/Patient/$match`,
+        url: 'http://localhost:3447/fhir/Patient/$match',
         headers: headers,
         method: 'POST',
         body: testBody,

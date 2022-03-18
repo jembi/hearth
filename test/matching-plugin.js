@@ -51,10 +51,10 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
     // given
     const resource = JSON.parse(JSON.stringify(testResourceTemplate))
 
-    const oldGivenAlgorithm = matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm
-    matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = 'double-metaphone'
-    const oldFamilyAlgorithm = matchingConfig.resourceConfig['Patient'].matchingProperties['name.family'].algorithm
-    matchingConfig.resourceConfig['Patient'].matchingProperties['name.family'].algorithm = 'double-metaphone'
+    const oldGivenAlgorithm = matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm
+    matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'double-metaphone'
+    const oldFamilyAlgorithm = matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm
+    matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm = 'double-metaphone'
 
     // when
     matchingPlugin.hooks.before[0].function('create', {}, 'Patient', resource, (err, badRequest) => {
@@ -65,8 +65,8 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.same(resource._transforms.matching.name.given, [['XRLT', 'XRLT'], ['JSF', 'HSF']])
       t.same(resource._transforms.matching.name.family, [['MTNN', 'MTNN']])
 
-      matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
-      matchingConfig.resourceConfig['Patient'].matchingProperties['name.family'].algorithm = oldFamilyAlgorithm
+      matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = oldGivenAlgorithm
+      matchingConfig.resourceConfig.Patient.matchingProperties['name.family'].algorithm = oldFamilyAlgorithm
 
       t.end()
     })
@@ -77,8 +77,8 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
     const resource = JSON.parse(JSON.stringify(testResourceTemplate))
     delete resource.name[0].family
 
-    const oldGivenAlgorithm = matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm
-    matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = 'double-metaphone'
+    const oldGivenAlgorithm = matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm
+    matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = 'double-metaphone'
 
     // when
     matchingPlugin.hooks.before[0].function('create', {}, 'Patient', resource, (err, badRequest) => {
@@ -89,7 +89,7 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.same(resource._transforms.matching.name.given, [['XRLT', 'XRLT'], ['JSF', 'HSF']])
       t.notOk(resource._transforms.matching.name.family, 'there should be no transform for a null family name')
 
-      matchingConfig.resourceConfig['Patient'].matchingProperties['name.given'].algorithm = oldGivenAlgorithm
+      matchingConfig.resourceConfig.Patient.matchingProperties['name.given'].algorithm = oldGivenAlgorithm
       t.end()
     })
   })
@@ -109,7 +109,7 @@ tap.test('Matching Plugin', { autoend: true }, (t) => {
       t.error(err)
       t.notOk(badRequest, 'should not return badRequest')
 
-      t.same(resource._transforms.matching['gender'], [['ML', 'ML']])
+      t.same(resource._transforms.matching.gender, [['ML', 'ML']])
 
       delete matchingConfig.resourceConfig.Patient.matchingProperties.gender
 

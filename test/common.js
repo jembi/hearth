@@ -75,7 +75,7 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should return an error when results parameter is undefined', (t) => {
-    t.rejects(common.includeResources({ test: true }, void 0), 'Invalid results parameter "undefined"')
+    t.rejects(common.includeResources({ test: true }, void 0), 'Invalid results parameter "undefined"') // eslint-disable-line no-void
     t.end()
   })
 
@@ -165,7 +165,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = [void 0]
+      const testContext = [void 0] // eslint-disable-line no-void
 
       const results = []
       results.push(referencedPatient.allergy)
@@ -302,7 +302,7 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = void 0
+      const testContext = void 0 // eslint-disable-line no-void
       const results = []
       results.push(referencedPatient.allergy)
 
@@ -425,7 +425,7 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should return nothing since search parameter undefined', (t) => {
-    common.mapSearchNameToPath(void 0)
+    common.mapSearchNameToPath(void 0) // eslint-disable-line no-void
       .then((data) => {
         t.true(!data)
         t.end()

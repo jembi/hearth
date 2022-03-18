@@ -54,7 +54,7 @@
     "neo-async": "^2.5.1",
     "sinon": "^7.5.0",
     "snazzy": "^8.0.0",
-    "standard": "13.1.0",
+    "standard": "^14.3.4",
     "tap": "14.10"
   },
   "main": "server.js",
