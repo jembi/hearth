@@ -116,8 +116,8 @@ tap.test('Create session', withServer((t, server) => {
   t.test('should return 201 status when a session is created with new jwt config - asymmetric algorithm', withUser((t, user) => {
     configStub.withArgs('authentication:jwt').returns({
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/jwt-certs/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/jwt-certs/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'
@@ -160,8 +160,8 @@ tap.test('Create session', withServer((t, server) => {
   t.test('should error when private key path is invalid - asymmetric algorithm', withUser((t, user) => {
     configStub.withArgs('authentication:jwt').returns({
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/INVALID/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/INVALID/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'

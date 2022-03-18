@@ -33,7 +33,7 @@ const makePutRequest = () => {
         'Content-Type': 'application/json'
       },
       tags: {
-        name: `Patient Update-Create Stress Test`
+        name: 'Patient Update-Create Stress Test'
       }
     })
   check(response, {

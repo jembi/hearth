@@ -53,7 +53,7 @@ const basicQuestionnaireResponseTest = (t, test) => {
 tap.test('QuestionnaireResponse should return all QuestionnaireResponse documents when no search parameters supplied', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -75,7 +75,7 @@ tap.test('QuestionnaireResponse should return all QuestionnaireResponse document
 tap.test('QuestionnaireResponse should support searches on patient', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?patient=Patient/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?patient=Patient/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -97,7 +97,7 @@ tap.test('QuestionnaireResponse should support searches on patient', (t) => {
 tap.test('QuestionnaireResponse should support searches on questionnaire', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?questionnaire=Questionnaire/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?questionnaire=Questionnaire/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -117,7 +117,7 @@ tap.test('QuestionnaireResponse should support searches on questionnaire', (t) =
 tap.test('QuestionnaireResponse should support searches on encounter', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -137,7 +137,7 @@ tap.test('QuestionnaireResponse should support searches on encounter', (t) => {
 tap.test('QuestionnaireResponse should support multiple search parameters on encounter', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&patient=Patient/1&questionnaire=Questionnaire/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&patient=Patient/1&questionnaire=Questionnaire/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -157,7 +157,7 @@ tap.test('QuestionnaireResponse should support multiple search parameters on enc
 tap.test('QuestionnaireResponse should the _summary parameter and return summarized data', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&_summary=true`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&_summary=true',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -213,8 +213,8 @@ tap.test('QuestionnaireResponse should be saved correctly', (t) => {
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
-        t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/QuestionnaireResponse\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
+        t.ok(res.headers.location, 'should have a location header set')
+        t.match(res.headers.location, /\/fhir\/QuestionnaireResponse\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
         const c = db.collection('QuestionnaireResponse')
         c.findOne((err, result) => {

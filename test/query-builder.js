@@ -159,14 +159,16 @@ tap.test('.buildQueryForString(): ', { autoend: true }, (t) => {
   t.test('should return a valid string clause when address query string is supplied', (t) => {
     queryParam = 'address'
     value = 'SomeAddressValue'
-    expected = { $or: [
-      { address: { $elemMatch: { line: { $options: 'i', $regex: '^SomeAddressValue' } } } },
-      { address: { $elemMatch: { city: { $options: 'i', $regex: '^SomeAddressValue' } } } },
-      { address: { $elemMatch: { state: { $options: 'i', $regex: '^SomeAddressValue' } } } },
-      { address: { $elemMatch: { country: { $options: 'i', $regex: '^SomeAddressValue' } } } },
-      { address: { $elemMatch: { postalCode: { $options: 'i', $regex: '^SomeAddressValue' } } } },
-      { address: { $elemMatch: { text: { $options: 'i', $regex: '^SomeAddressValue' } } } }
-    ] }
+    expected = {
+      $or: [
+        { address: { $elemMatch: { line: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { city: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { state: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { country: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { postalCode: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { text: { $options: 'i', $regex: '^SomeAddressValue' } } } }
+      ]
+    }
     executeQueryBuilderTest(t, 'buildQueryForString', 'Patient', queryParam, expected, value)
   })
 })
@@ -248,10 +250,12 @@ tap.test('.buildQueryForReference(): ', { autoend: true }, (t) => {
   t.test('should return a valid token clause when reference supplied with full reference - Array', (t) => {
     queryParam = 'episodeofcare'
     value = ['EpisodeOfCare/1234567890', 'EpisodeOfCare/0987654321']
-    expected = { $and: [
-      { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' },
-      { 'episodeOfCare.reference': 'EpisodeOfCare/0987654321' }
-    ] }
+    expected = {
+      $and: [
+        { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' },
+        { 'episodeOfCare.reference': 'EpisodeOfCare/0987654321' }
+      ]
+    }
     executeQueryBuilderTest(t, 'buildQueryForReference', 'Encounter', queryParam, expected, value)
   })
 })

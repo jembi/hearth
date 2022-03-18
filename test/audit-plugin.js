@@ -104,7 +104,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, '0', `should return a success/fail value of 0 - Success`)
+      t.equal(successOrFailValue, '0', 'should return a success/fail value of 0 - Success')
 
       done()
     })
@@ -121,7 +121,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, '4', `should return a success/fail value of 4 - Minor Failure`)
+      t.equal(successOrFailValue, '4', 'should return a success/fail value of 4 - Minor Failure')
 
       done()
     })
@@ -242,7 +242,7 @@ tap.test('Audit Plugin - buildObjectArray()', { autoend: true }, (t) => {
 
       t.ok(objectArray)
 
-      t.equals(objectArray[0].query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', `should have a value of '/fhir/Questionnaire?identifier=preoperative-questionnaire'`)
+      t.equals(objectArray[0].query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', 'should have a value of \'/fhir/Questionnaire?identifier=preoperative-questionnaire\'')
       t.equals(objectArray[0].reference.reference, 'Questionnaire/1234567890', 'should have a value of \'Questionnaire/1234567890\'')
       t.equals(objectArray[1].reference.reference, 'Questionnaire/0987654321', 'should have a value of \'Questionnaire/0987654321\'')
 

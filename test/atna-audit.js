@@ -96,9 +96,9 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   const ParticipantObjectDetailAuthToken = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/auth-token')
   t.equals(ParticipantObjectDetailAuthToken.text(), ctx.headers['auth-token'], `ParticipantObjectDetailAuthToken: should have a value of "${ctx.headers['auth-token']}"`)
   const ParticipantObjectDetailAuthHost = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/host')
-  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers['host'], `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers['host']}"`)
+  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers.host, `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers.host}"`)
   const ParticipantObjectDetailAccept = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/accept')
-  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers['accept'], `ParticipantObjectDetailAccept: should have a value of "${ctx.headers['accept']}"`)
+  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers.accept, `ParticipantObjectDetailAccept: should have a value of "${ctx.headers.accept}"`)
 
   t.end()
 })
@@ -184,9 +184,9 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
   const ParticipantObjectDetailAuthToken = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/auth-token')
   t.equals(ParticipantObjectDetailAuthToken.text(), ctx.headers['auth-token'], `ParticipantObjectDetailAuthToken: should have a value of "${ctx.headers['auth-token']}"`)
   const ParticipantObjectDetailAuthHost = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/host')
-  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers['host'], `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers['host']}"`)
+  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers.host, `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers.host}"`)
   const ParticipantObjectDetailAccept = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/accept')
-  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers['accept'], `ParticipantObjectDetailAccept: should have a value of "${ctx.headers['accept']}"`)
+  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers.accept, `ParticipantObjectDetailAccept: should have a value of "${ctx.headers.accept}"`)
 
   t.end()
 })

@@ -276,8 +276,8 @@ tap.test('Practitioner resource tests', { autoend: true }, (t) => {
           t.error(err)
           t.equal(res.statusCode, 201, 'response status code should be 201')
 
-          t.ok(res.headers['location'], 'should have a location header set')
-          t.match(res.headers['location'], /\/fhir\/Practitioner\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
+          t.ok(res.headers.location, 'should have a location header set')
+          t.match(res.headers.location, /\/fhir\/Practitioner\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
           const c = db.collection('Practitioner')
           c.findOne((err, result) => {

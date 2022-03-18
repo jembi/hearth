@@ -43,7 +43,7 @@ tap.test('Reverse include resources', t => {
   })
 
   t.test('should return an empty array when there is no _revincude', t => {
-    return common.reverseIncludeResources(void 0, []).then(results => {
+    return common.reverseIncludeResources(void 0, []).then(results => { // eslint-disable-line no-void
       t.deepEqual(results, [])
     })
   })

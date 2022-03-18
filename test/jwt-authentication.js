@@ -157,8 +157,8 @@ tap.test('JWT Authentication', withServer((t, server) => {
   t.test('should have 200 status when the token is valid using new jwt config and asymmetric algorithms', (t) => {
     conf.setConf('authentication:jwt', {
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/jwt-certs/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/jwt-certs/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'
@@ -188,8 +188,8 @@ tap.test('JWT Authentication', withServer((t, server) => {
   t.test('should have 500 status when public key path is invalid using new jwt config and asymmetric algorithms', (t) => {
     conf.setConf('authentication:jwt', {
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/jwt-certs/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/jwt-certs/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'
@@ -286,7 +286,7 @@ tap.test('JWT Authentication', withServer((t, server) => {
     })
     const options = Object.assign({}, requestOptions, {
       headers: {
-        Authorization: `Bearer xyz`
+        Authorization: 'Bearer xyz'
       }
     })
 

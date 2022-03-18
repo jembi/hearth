@@ -23,7 +23,7 @@ tap.test('resolve reference', (t) => {
   })
 
   t.test('should return an error when the reference is undefined', (t) => {
-    common.resolveReference(void 0, (err) => {
+    common.resolveReference(void 0, (err) => { // eslint-disable-line no-void
       t.type(err, Error)
       t.equal(err.message, 'Invalid resource reference "undefined"')
       t.end()
