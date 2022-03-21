@@ -7,7 +7,7 @@
     "stop": "pkill -SIGINT Hearth",
     "dev:start": "cross-env NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
-    "test:code": "cross-env NODE_ENV='test' tap -j1 --cov --reporter=list 'test/**/*.js'",
+    "test:code": "cross-env NODE_ENV='test' tap -j1 --cov --no-check-coverage --reporter=list 'test/**/*.js'",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "test:fix": "standard --fix -v | snazzy",
@@ -55,7 +55,7 @@
     "sinon": "^7.5.0",
     "snazzy": "^9.0.0",
     "standard": "^16.0.4",
-    "tap": "14.10"
+    "tap": "^15.2.3"
   },
   "main": "server.js",
   "directories": {

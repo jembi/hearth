@@ -118,9 +118,8 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
   })
 }
 
-tap.afterEach((done) => {
+tap.afterEach(() => {
   sandbox.restore()
-  done()
 })
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
