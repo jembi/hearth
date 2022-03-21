@@ -176,6 +176,7 @@ const MHDScenario = (headers, t) => {
           t.equals(e.response.status.substr(0, 3), '201', 'entry response status should be 201')
 
           if (e.response.location.indexOf('Binary') > -1) {
+            // eslint-disable-next-line prefer-regex-literals
             const ref = e.response.location.replace(new RegExp('.*(Binary/[\\w\\-]+)/_history/.*'), '$1')
 
             if (conf.binaryResource1 && conf.binaryResource2 && !conf.binaryResource3) {
