@@ -274,7 +274,7 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
           t.equal(doc.content, undefined)
           t.ok(doc._transforms.content, 'Binary resource successfully inserted')
 
-          var bucket = new mongodb.GridFSBucket(db)
+          const bucket = new mongodb.GridFSBucket(db)
           let data = ''
 
           bucket.openDownloadStream(doc._transforms.content)
