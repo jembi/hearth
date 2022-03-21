@@ -37,9 +37,8 @@ tap.test('Reverse include resources', t => {
 
   const sandbox = sinon.createSandbox()
 
-  t.afterEach(next => {
+  t.afterEach(() => {
     sandbox.restore()
-    next()
   })
 
   t.test('should return an empty array when there is no _revincude', t => {
