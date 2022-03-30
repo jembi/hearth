@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -16,12 +16,12 @@ tap.test('should walk the path and return an array of all values', (t) => {
   const result = walk('name.given', {
     name: [
       {
-        family: [ 'Family1' ],
-        given: [ 'Given1', 'Given2' ]
+        family: ['Family1'],
+        given: ['Given1', 'Given2']
       },
       {
-        family: [ 'Family2' ],
-        given: [ 'Given3' ]
+        family: ['Family2'],
+        given: ['Given3']
       }
     ]
   })
@@ -37,12 +37,12 @@ tap.test('should walk the path and return an array of all values', (t) => {
   const result = walk('name.family', {
     name: [
       {
-        family: [ 'Family1' ],
-        given: [ 'Given1', 'Given2' ]
+        family: ['Family1'],
+        given: ['Given1', 'Given2']
       },
       {
-        family: [ 'Family2' ],
-        given: [ 'Given3' ]
+        family: ['Family2'],
+        given: ['Given3']
       }
     ]
   })
@@ -63,7 +63,7 @@ tap.test('should walk the path over multiple levels', (t) => {
       },
       {
         y: {
-          z: [ 'z2', 'z3' ]
+          z: ['z2', 'z3']
         }
       }
     ]

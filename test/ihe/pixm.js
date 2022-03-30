@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -133,7 +133,7 @@ const requestAndAssertParameters = (tp, t, done) => {
     t.ok(body.parameter)
     t.equal(body.resourceType, 'Parameters', 'Should return a parameters resource')
 
-    let actualParameters = hashAndSortParameters(body.parameter)
+    const actualParameters = hashAndSortParameters(body.parameter)
 
     t.deepEqual(actualParameters, tp.expectedParameters, 'Parameters resource should contain expected parameters')
     done()

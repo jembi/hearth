@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -81,7 +81,7 @@ const basicMatchingTest = (testPatients, t, test) => {
       c.insertMany(testPatients, { forceServerObjectId: true }, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, testPatients.length)
+        t.equal(Object.keys(doc.insertedIds).length, testPatients.length)
 
         test(db, () => {
           env.clearDB((err) => {
@@ -99,7 +99,7 @@ const basicMatchingTest = (testPatients, t, test) => {
 const requestAndAssertResponseBundle = (tp, t, done) => {
   // When
   request({
-    url: `http://localhost:3447/fhir/Patient/$match`,
+    url: 'http://localhost:3447/fhir/Patient/$match',
     headers: headers,
     method: 'POST',
     body: tp.body,
@@ -118,9 +118,8 @@ const requestAndAssertResponseBundle = (tp, t, done) => {
   })
 }
 
-tap.afterEach((done) => {
+tap.afterEach(() => {
   sandbox.restore()
-  done()
 })
 
 tap.test('should return 404 if no certain matches found and onlyCertainMatches parameter true', (t) => {
@@ -137,7 +136,7 @@ tap.test('should return 404 if no certain matches found and onlyCertainMatches p
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
-      url: `http://localhost:3447/fhir/Patient/$match`,
+      url: 'http://localhost:3447/fhir/Patient/$match',
       method: 'POST',
       body: testBody,
       headers: headers,
@@ -171,7 +170,7 @@ tap.test('should return 409 if multiple certain matches found and onlyCertainMat
   basicMatchingTest(testPatients, t, (db, done) => {
     // When
     request({
-      url: `http://localhost:3447/fhir/Patient/$match`,
+      url: 'http://localhost:3447/fhir/Patient/$match',
       method: 'POST',
       body: testBody,
       headers: headers,
@@ -204,7 +203,7 @@ tap.test('should return 200 if no matches are found and onlyCertainMatches not t
       t.error(err)
       // When
       request({
-        url: `http://localhost:3447/fhir/Patient/$match`,
+        url: 'http://localhost:3447/fhir/Patient/$match',
         method: 'POST',
         body: testBody,
         headers: headers,
@@ -337,7 +336,7 @@ tap.test('should return 200 and a bundle of patients exactly matching the phonet
       env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           headers: headers,
           method: 'POST',
           body: testBody,
@@ -375,7 +374,7 @@ tap.test('should return 200 and a bundle of patients matching the phonetic repre
       env.createPatient(t, _.cloneDeep(testPatients.mwawi), () => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           headers: headers,
           method: 'POST',
           body: testBody,
@@ -401,7 +400,7 @@ tap.test('should discriminate using an exact match', (t) => {
   // Given
   const testMatchingConfig = getCleanMatchingConfig()
   testMatchingConfig.resourceConfig.Patient.matchingProperties['name.given'] = { algorithm: 'exact', weight: 1 }
-  testMatchingConfig.resourceConfig.Patient.discriminatorProperties['birthDate'] = { algorithm: 'exact' }
+  testMatchingConfig.resourceConfig.Patient.discriminatorProperties.birthDate = { algorithm: 'exact' }
 
   stubMatchingConfig(testMatchingConfig)
 
@@ -532,9 +531,9 @@ tap.test('should discriminate using a exact match on representation', (t) => {
   testBody.parameter[0].resource.name[0].family = 'Smith'
   testBody.parameter[0].resource.name[0].given = 'John'
 
-  const pat1 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
-  const pat2 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
-  const pat3 = { resourceType: 'Patient', name: [ { given: 'John', family: 'Smith' } ] }
+  const pat1 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
+  const pat2 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
+  const pat3 = { resourceType: 'Patient', name: [{ given: 'John', family: 'Smith' }] }
   pat1.name[0].family = 'Smith'
   pat2.name[0].family = 'Smyth'
   pat3.name[0].family = 'Jmith'
@@ -551,7 +550,7 @@ tap.test('should discriminate using a exact match on representation', (t) => {
           env.createPatient(t, { patient: pat3 }, () => {
             // When
             request({
-              url: `http://localhost:3447/fhir/Patient/$match`,
+              url: 'http://localhost:3447/fhir/Patient/$match',
               headers: headers,
               method: 'POST',
               body: testBody,
@@ -598,7 +597,7 @@ tap.test('should return an error when an invalid algorithm is used for in the di
       t.error(err)
       // When
       request({
-        url: `http://localhost:3447/fhir/Patient/$match`,
+        url: 'http://localhost:3447/fhir/Patient/$match',
         headers: headers,
         method: 'POST',
         body: testBody,

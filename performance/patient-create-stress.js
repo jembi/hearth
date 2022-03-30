@@ -30,7 +30,7 @@ const makePostRequest = () => {
         'Content-Type': 'application/json'
       },
       tags: {
-        name: `Create Patient Stress Test`
+        name: 'Create Patient Stress Test'
       }
     })
   check(response, {

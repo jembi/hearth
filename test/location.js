@@ -18,7 +18,7 @@ const locationTemplate = require('./resources/Location-1.json')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let setupTestEnv = (t, test) => {
+const setupTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 

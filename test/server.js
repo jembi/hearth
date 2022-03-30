@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -16,7 +16,7 @@ let server = require('../lib/server')
 const config = require('../lib/config')
 let basic
 
-let serverTestEnv = (t, test) => {
+const serverTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -96,7 +96,7 @@ const runAcceptTest = (t, accept, expectAccept) => {
         headers: _.extend(
           env.getTestAuthHeaders(env.users.sysadminUser.email),
           {
-            'accept': accept
+            accept: accept
           }
         )
       }, (err, res, body) => {
@@ -161,7 +161,7 @@ tap.test('server - should respond with 406 Not Acceptable when accept not suppor
         headers: _.extend(
           env.getTestAuthHeaders(env.users.sysadminUser.email),
           {
-            'accept': 'application/turtle'
+            accept: 'application/turtle'
           }
         )
       }, (err, res, body) => {
@@ -192,7 +192,7 @@ tap.test('server - should respond with 406 Not Acceptable when accept not suppor
         headers: _.extend(
           env.getTestAuthHeaders(env.users.sysadminUser.email),
           {
-            'accept': 'text/html, application/xhtml+xml, application/turtle'
+            accept: 'text/html, application/xhtml+xml, application/turtle'
           }
         )
       }, (err, res, body) => {

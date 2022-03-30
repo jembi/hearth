@@ -32,11 +32,11 @@ Arguments:
 -u --audience\t\t(Optional) The audience of the token, if you have configured Hearth to validate Audience then set this to the appropriate value`
 
   console.log(
-      message
-        .split('\n')
-        .map(line => `\t${line}`)
-        .join('\n')
-    )
+    message
+      .split('\n')
+      .map(line => `\t${line}`)
+      .join('\n')
+  )
 
   process.exit()
 }

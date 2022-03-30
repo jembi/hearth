@@ -7,7 +7,7 @@
     "stop": "pkill -SIGINT Hearth",
     "dev:start": "cross-env NODE_ENV='development' npm run start",
     "test": "npm run test:code && npm -s run test:style",
-    "test:code": "cross-env NODE_ENV='test' tap --cov --reporter=list 'test/**/*.js'",
+    "test:code": "cross-env NODE_ENV='test' tap -j1 --cov --no-check-coverage --reporter=list 'test/**/*.js'",
     "test:these-files": "tap --reporter=spec",
     "test:style": "standard -v | snazzy",
     "test:fix": "standard --fix -v | snazzy",
@@ -31,12 +31,12 @@
     "jsonwebtoken": "^8.2.2",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "mongodb": "^2.2.22",
+    "mongodb": "3.5.4",
     "mongodb-queue": "^3.1.0",
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.3",
     "request": "^2.87.0",
     "stdio": "^0.2.7",
-    "talisman": "^0.21.0",
+    "talisman": "^1.1.4",
     "urijs": "^1.19.2",
     "uuid": "^3.3.3",
     "winston": "^2.4.2"
@@ -44,7 +44,7 @@
   "devDependencies": {
     "chalk": "^2.4.1",
     "chance": "^1.1.3",
-    "codecov": "^3.6.1",
+    "codecov": "^3.8.3",
     "cross-env": "^5.1.6",
     "faker": "^4.1.0",
     "glossy": "^0.1.7",
@@ -53,9 +53,9 @@
     "mustache": "^3.1.0",
     "neo-async": "^2.5.1",
     "sinon": "^7.5.0",
-    "snazzy": "^8.0.0",
-    "standard": "^8.6.0",
-    "tap": "^10.1.0"
+    "snazzy": "^9.0.0",
+    "standard": "^16.0.4",
+    "tap": "^15.2.3"
   },
   "main": "server.js",
   "directories": {
@@ -69,7 +69,10 @@
   ],
   "author": "Jembi Health Systems NPC",
   "license": "MPL-2.0",
-  "engines": {
-    "node": ">= 6.9.0 <9.0.0"
+  "resolutions": {
+    "lodash": "4.17.21",
+    "xmlbuilder": "9.0.7",
+    "libxmljs": "0.19.7",
+    "tar": "4.4.19"
   }
 }

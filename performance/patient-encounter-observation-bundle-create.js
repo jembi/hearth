@@ -32,28 +32,28 @@ const bundleResource = {
       resource: patientResource,
       request: {
         method: 'POST',
-        url: `Patient`
+        url: 'Patient'
       }
     },
     {
       resource: encounterResource,
       request: {
         method: 'POST',
-        url: `Encounter`
+        url: 'Encounter'
       }
     },
     {
       resource: heightObservation,
       request: {
         method: 'POST',
-        url: `Observation`
+        url: 'Observation'
       }
     },
     {
       resource: weightObservation,
       request: {
         method: 'POST',
-        url: `Observation`
+        url: 'Observation'
       }
     },
     {

@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -19,7 +19,7 @@ const common = commonFactory(env.mongo())
 
 tap.test('should resolve references', (t) => {
   // given
-  let testResource = {
+  const testResource = {
     resourceType: 'Test',
     patient: {
       reference: 'Test/123'
@@ -75,7 +75,7 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should return an error when results parameter is undefined', (t) => {
-    t.rejects(common.includeResources({ test: true }, void 0), 'Invalid results parameter "undefined"')
+    t.rejects(common.includeResources({ test: true }, void 0), 'Invalid results parameter "undefined"') // eslint-disable-line no-void
     t.end()
   })
 
@@ -111,7 +111,7 @@ tap.test('testing include resources', (t) => {
 
       const testContext = 'lastOccurrence'
 
-      let results = []
+      const results = []
       results.push(referencedPatient.allergy)
 
       t.rejects(common.includeResources(testContext, results), 'Invalid format for include parameter')
@@ -153,7 +153,7 @@ tap.test('testing include resources', (t) => {
 
       const testContext = [null]
 
-      let results = []
+      const results = []
       results.push(referencedPatient.allergy)
 
       t.rejects(common.includeResources(testContext, results), 'Undefined include parameter')
@@ -165,9 +165,9 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      const testContext = [void 0]
+      const testContext = [void 0] // eslint-disable-line no-void
 
-      let results = []
+      const results = []
       results.push(referencedPatient.allergy)
 
       t.rejects(common.includeResources(testContext, results), 'Undefined include parameter')
@@ -181,7 +181,7 @@ tap.test('testing include resources', (t) => {
 
       const testContext = 'Patient.managingOrganization'
 
-      let results = []
+      const results = []
       results.push(referencedPatient.patient)
 
       common.includeResources(testContext, results)
@@ -201,7 +201,7 @@ tap.test('testing include resources', (t) => {
 
       const testContext = 'AllergyIntolerance.patient'
 
-      let results = []
+      const results = []
       results.push(referencedPatient.allergy)
 
       common.includeResources(testContext, results)
@@ -225,7 +225,7 @@ tap.test('testing include resources', (t) => {
 
         const testContext = 'Encounter.location.location'
 
-        let results = []
+        const results = []
         results.push(referencedPatient.encounter)
 
         common.includeResources(testContext, results)
@@ -250,7 +250,7 @@ tap.test('testing include resources', (t) => {
 
         const testContext = 'Patient.link.other'
 
-        let results = []
+        const results = []
         results.push(referencedPatients[0].patient)
 
         common.includeResources(testContext, results)
@@ -270,8 +270,8 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      let testContext = ''
-      let results = []
+      const testContext = ''
+      const results = []
       results.push(referencedPatient.allergy)
 
       common.includeResources(testContext, results)
@@ -286,8 +286,8 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      let testContext = []
-      let results = []
+      const testContext = []
+      const results = []
       results.push(referencedPatient.allergy)
 
       common.includeResources(testContext, results)
@@ -302,8 +302,8 @@ tap.test('testing include resources', (t) => {
     createTestPatient(db, (err, referencedPatient) => {
       t.error(err)
 
-      let testContext = void 0
-      let results = []
+      const testContext = void 0 // eslint-disable-line no-void
+      const results = []
       results.push(referencedPatient.allergy)
 
       common.includeResources(testContext, results)
@@ -323,7 +323,7 @@ tap.test('testing include resources', (t) => {
         'Encounter.location.location'
       ]
 
-      let results = []
+      const results = []
       results.push(referencedPatients[0].encounter)
 
       common.includeResources(testContext, results)
@@ -346,7 +346,7 @@ tap.test('testing include resources', (t) => {
         'Encounter.patient'
       ]
 
-      let results = []
+      const results = []
       results.push(referencedPatients[0].encounter)
 
       common.includeResources(testContext, results)
@@ -425,7 +425,7 @@ tap.test('testing include resources', (t) => {
   })
 
   t.test('should return nothing since search parameter undefined', (t) => {
-    common.mapSearchNameToPath(void 0)
+    common.mapSearchNameToPath(void 0) // eslint-disable-line no-void
       .then((data) => {
         t.true(!data)
         t.end()
@@ -478,7 +478,7 @@ tap.test('testing include resources', (t) => {
   }
 
   function createTestPatient (db, callback) {
-    let testPatient = testPatients.charlton
+    const testPatient = testPatients.charlton
     testPatient.id = '1'
     const referencedPatient = Object.assign({}, testPatient)
     db.collection('Patient').remove({ id: referencedPatient.id }, (err) => {
@@ -511,8 +511,8 @@ tap.test('testing include resources', (t) => {
   }
 
   function createTestPatients (db, callback) {
-    let referencedPatients = []
-    let promises = []
+    const referencedPatients = []
+    const promises = []
 
     referencedPatients.push(testPatients.charlton)
     referencedPatients.push(testPatients.emmarentia)

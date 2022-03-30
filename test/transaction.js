@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -20,7 +20,7 @@ tap.test('Transaction resource .sortTransactionBundle() should sort interactions
   // given
   const transaction = Transaction()
   // when
-  let sortedBundle = transaction.sortTransactionBundle(testBundle)
+  const sortedBundle = transaction.sortTransactionBundle(testBundle)
   // then
   t.ok(sortedBundle)
   t.equals(sortedBundle.entry.length, testBundle.entry.length, 'should have the same number of entries as the original bundle')
@@ -41,7 +41,7 @@ tap.test('Transaction resource .sortTransactionBundle() should do nothing on an 
   // given
   const transaction = Transaction()
   // when
-  let sortedBundle = transaction.sortTransactionBundle({
+  const sortedBundle = transaction.sortTransactionBundle({
     type: 'transaction',
     entry: []
   })
@@ -135,19 +135,19 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
     server.start((err) => {
       t.error(err)
 
-       // create a new resource
+      // create a new resource
       const resourceType = 'Patient'
       const patients = env.testPatients()
       env.createPatient(t, patients.charlton, () => {
         const idToUpdate = patients.charlton.patient.id
         const transaction = Transaction(env.mongo())
 
-        let c = db.collection(resourceType)
+        const c = db.collection(resourceType)
         c.findOne({ id: idToUpdate }, { fields: { id: 1 } }, (err, doc) => {
           t.error(err)
           t.equals('' + doc.id, idToUpdate, 'Patient has been created')
 
-           // update the created resource
+          // update the created resource
           patients.charlton.patient.telecom[0].value = 'charliebrown@fanmail.com'
           request.put({
             url: `http://localhost:3447/fhir/${resourceType}/${idToUpdate}`,
@@ -164,7 +164,7 @@ tap.test('Transaction resource .revertUpdate() should remove a newly updated res
               t.equals(doc.telecom[0].value, 'charliebrown@fanmail.com', 'Resource latest has been updated')
               t.equals(doc._request.method, 'PUT', 'Resource request has been updated')
 
-               // revert the updated resource
+              // revert the updated resource
               const idToRevert = idToUpdate
               transaction.revertUpdate(resourceType, idToRevert, (err, success) => {
                 t.error(err)
@@ -223,7 +223,7 @@ tap.test('Transaction resource .revertDelete() should restore a newly deleted re
     server.start((err) => {
       t.error(err)
 
-       // create a new resource
+      // create a new resource
       const resourceType = 'Patient'
       const patients = env.testPatients()
       env.createPatient(t, patients.charlton, () => {

@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -14,7 +14,7 @@ const env = require('./test-env/init')()
 const server = require('../lib/server')
 const config = require('../lib/config')
 
-let createWorkersTest = (t, test) => {
+const createWorkersTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 

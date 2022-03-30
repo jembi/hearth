@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -39,19 +39,19 @@ tap.test('PDQm Query parameters: ', { autoend: true }, (t) => {
     // Given
     basicPDQmTest(t, (db, done) => {
       const queryParams = {}
-      queryParams['_id'] = 'randomvalue'
-      queryParams['active'] = 'randomvalue'
-      queryParams['identifier'] = 'randomvalue'
-      queryParams['family'] = 'randomvalue'
-      queryParams['given'] = 'randomvalue'
-      queryParams['telecom'] = 'randomvalue'
-      queryParams['birthdate'] = 'randomvalue'
-      queryParams['address'] = 'randomvalue'
+      queryParams._id = 'randomvalue'
+      queryParams.active = 'randomvalue'
+      queryParams.identifier = 'randomvalue'
+      queryParams.family = 'randomvalue'
+      queryParams.given = 'randomvalue'
+      queryParams.telecom = 'randomvalue'
+      queryParams.birthdate = 'randomvalue'
+      queryParams.address = 'randomvalue'
       queryParams['address-city'] = 'randomvalue'
       queryParams['address-country'] = 'randomvalue'
       queryParams['address-postalcode'] = 'randomvalue'
       queryParams['address-state'] = 'randomvalue'
-      queryParams['gender'] = 'randomvalue'
+      queryParams.gender = 'randomvalue'
 
       request({
         url: `http://localhost:3447/fhir/Patient?${querystring.stringify(queryParams)}`,
@@ -73,7 +73,7 @@ tap.test('PDQm Query parameters: ', { autoend: true }, (t) => {
     // Given
     basicPDQmTest(t, (db, done) => {
       const queryParams = {}
-      queryParams['unsupportedQueryParam'] = 'randomvalue'
+      queryParams.unsupportedQueryParam = 'randomvalue'
 
       request({
         url: `http://localhost:3447/fhir/Patient?${querystring.stringify(queryParams)}`,

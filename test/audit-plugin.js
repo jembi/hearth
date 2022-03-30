@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -44,52 +44,52 @@ const testServerInit = (t, test) => {
 }
 
 const testResourceTemplate = {
-  'resourceType': 'Patient',
-  'id': '1',
-  'active': true,
-  'identifier': [
+  resourceType: 'Patient',
+  id: '1',
+  active: true,
+  identifier: [
     {
-      'use': 'official',
-      'system': 'pshr:passport:za',
-      'value': '1001113333933',
-      'assigner': {
-        'display': 'Passport South Africa'
+      use: 'official',
+      system: 'pshr:passport:za',
+      value: '1001113333933',
+      assigner: {
+        display: 'Passport South Africa'
       }
     }
   ],
-  'name': [
+  name: [
     {
-      'use': 'official',
-      'prefix': [
+      use: 'official',
+      prefix: [
         'Mr'
       ],
-      'family': [
+      family: [
         'Matinyana'
       ],
-      'given': [
+      given: [
         'Charlton',
         'Joseph'
       ]
     }
   ],
-  'gender': 'male',
-  'birthDate': '1970-07-21'
+  gender: 'male',
+  birthDate: '1970-07-21'
 }
 
 const testBundleTemplate = {
-  'resourceType': 'Bundle',
-  'total': 2,
-  'entry': [
+  resourceType: 'Bundle',
+  total: 2,
+  entry: [
     {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '1234567890'
+      resource: {
+        resourceType: 'Questionnaire',
+        id: '1234567890'
       }
     },
     {
-      'resource': {
-        'resourceType': 'Questionnaire',
-        'id': '0987654321'
+      resource: {
+        resourceType: 'Questionnaire',
+        id: '0987654321'
       }
     }
   ]
@@ -104,7 +104,7 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, '0', `should return a success/fail value of 0 - Success`)
+      t.equal(successOrFailValue, '0', 'should return a success/fail value of 0 - Success')
 
       done()
     })
@@ -115,13 +115,13 @@ tap.test('Audit Plugin - getSuccessOrFailed()', { autoend: true }, (t) => {
       // given
       const resource = {
         resourceType: 'OperationOutcome',
-        issue: [{ 'severity': 'information', 'code': 'gone', 'details': { 'text': 'Gone' } }]
+        issue: [{ severity: 'information', code: 'gone', details: { text: 'Gone' } }]
       }
 
       // when
       const successOrFailValue = auditPlugin.getSuccessOrFailed(resource)
 
-      t.equal(successOrFailValue, '4', `should return a success/fail value of 4 - Minor Failure`)
+      t.equal(successOrFailValue, '4', 'should return a success/fail value of 4 - Minor Failure')
 
       done()
     })
@@ -242,7 +242,7 @@ tap.test('Audit Plugin - buildObjectArray()', { autoend: true }, (t) => {
 
       t.ok(objectArray)
 
-      t.equals(objectArray[0].query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', `should have a value of '/fhir/Questionnaire?identifier=preoperative-questionnaire'`)
+      t.equals(objectArray[0].query, '/fhir/Questionnaire?identifier=preoperative-questionnaire', 'should have a value of \'/fhir/Questionnaire?identifier=preoperative-questionnaire\'')
       t.equals(objectArray[0].reference.reference, 'Questionnaire/1234567890', 'should have a value of \'Questionnaire/1234567890\'')
       t.equals(objectArray[1].reference.reference, 'Questionnaire/0987654321', 'should have a value of \'Questionnaire/0987654321\'')
 

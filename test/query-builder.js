@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -87,54 +87,54 @@ tap.test('.buildQueryForURI(): ', { autoend: true }, (t) => {
 })
 
 tap.test('.buildQueryForDate(): ', { autoend: true }, (t) => {
-  let queryParam, expected, value
-  queryParam = 'birthdate'
+  let expected, value
+  const queryParam = 'birthdate'
 
   t.test('should return a valid date clause when date is supplied', (t) => {
     value = '2010-01-01'
-    expected = { birthDate: { '$regex': '^2010-01-01' } }
+    expected = { birthDate: { $regex: '^2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date should equal to', (t) => {
     value = 'eq2010-01-01'
-    expected = { birthDate: { '$regex': '^2010-01-01' } }
+    expected = { birthDate: { $regex: '^2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date should not equal to', (t) => {
     value = 'ne2010-01-01'
-    expected = { birthDate: { '$ne': '2010-01-01' } }
+    expected = { birthDate: { $ne: '2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date needs to be less than or equal to', (t) => {
     value = 'le2010-01-01'
-    expected = { birthDate: { '$lte': '2010-01-01' } }
+    expected = { birthDate: { $lte: '2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when partial date (YYYY-MM) is supplied', (t) => {
     value = '2010-01'
-    expected = { birthDate: { '$regex': '^2010-01' } }
+    expected = { birthDate: { $regex: '^2010-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date needs to be greater than', (t) => {
     value = 'gt2010-01-01'
-    expected = { birthDate: { '$gt': '2010-01-01' } }
+    expected = { birthDate: { $gt: '2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date needs to be greater than or equal to', (t) => {
     value = 'ge2010-01-01'
-    expected = { birthDate: { '$gte': '2010-01-01' } }
+    expected = { birthDate: { $gte: '2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid date clause when date needs to be less than', (t) => {
     value = 'lt2010-01-01'
-    expected = { birthDate: { '$lt': '2010-01-01' } }
+    expected = { birthDate: { $lt: '2010-01-01' } }
     executeQueryBuilderTest(t, 'buildQueryForDate', 'Patient', queryParam, expected, value)
   })
 })
@@ -145,28 +145,30 @@ tap.test('.buildQueryForString(): ', { autoend: true }, (t) => {
   t.test('should return a valid string clause when string is supplied', (t) => {
     queryParam = 'family'
     value = 'Jane'
-    expected = { 'name.family': { '$options': 'i', '$regex': '^Jane' } }
+    expected = { 'name.family': { $options: 'i', $regex: '^Jane' } }
     executeQueryBuilderTest(t, 'buildQueryForString', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid string clause when string is supplied', (t) => {
     queryParam = 'address-country'
     value = 'South Africa'
-    expected = { 'address.country': { '$options': 'i', '$regex': '^South Africa' } }
+    expected = { 'address.country': { $options: 'i', $regex: '^South Africa' } }
     executeQueryBuilderTest(t, 'buildQueryForString', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid string clause when address query string is supplied', (t) => {
     queryParam = 'address'
     value = 'SomeAddressValue'
-    expected = { '$or': [
-      { 'address': { '$elemMatch': { 'line': { '$options': 'i', '$regex': '^SomeAddressValue' } } } },
-      { 'address': { '$elemMatch': { 'city': { '$options': 'i', '$regex': '^SomeAddressValue' } } } },
-      { 'address': { '$elemMatch': { 'state': { '$options': 'i', '$regex': '^SomeAddressValue' } } } },
-      { 'address': { '$elemMatch': { 'country': { '$options': 'i', '$regex': '^SomeAddressValue' } } } },
-      { 'address': { '$elemMatch': { 'postalCode': { '$options': 'i', '$regex': '^SomeAddressValue' } } } },
-      { 'address': { '$elemMatch': { 'text': { '$options': 'i', '$regex': '^SomeAddressValue' } } } }
-    ] }
+    expected = {
+      $or: [
+        { address: { $elemMatch: { line: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { city: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { state: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { country: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { postalCode: { $options: 'i', $regex: '^SomeAddressValue' } } } },
+        { address: { $elemMatch: { text: { $options: 'i', $regex: '^SomeAddressValue' } } } }
+      ]
+    }
     executeQueryBuilderTest(t, 'buildQueryForString', 'Patient', queryParam, expected, value)
   })
 })
@@ -177,35 +179,35 @@ tap.test('.buildQueryForToken(): ', { autoend: true }, (t) => {
   t.test('should return a valid token clause when token of type "id/code/string" is supplied', (t) => {
     queryParam = 'gender'
     value = 'male'
-    expected = { 'gender': 'male' }
+    expected = { gender: 'male' }
     executeQueryBuilderTest(t, 'buildQueryForToken', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid token clause when token of type "boolean" is supplied', (t) => {
     queryParam = 'active'
     value = 'true'
-    expected = { 'active': true }
+    expected = { active: true }
     executeQueryBuilderTest(t, 'buildQueryForToken', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid token clause when token of type "Identifier/ContactPoint" is supplied', (t) => {
     queryParam = 'identifier'
     value = 'some:domain|some-value'
-    expected = { 'identifier': { '$elemMatch': { 'system': 'some:domain', 'value': 'some-value' } } }
+    expected = { identifier: { $elemMatch: { system: 'some:domain', value: 'some-value' } } }
     executeQueryBuilderTest(t, 'buildQueryForToken', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid token clause when token of type "Identifier/ContactPoint" is supplied - no domain', (t) => {
     queryParam = 'identifier'
     value = 'some-value'
-    expected = { 'identifier': { '$elemMatch': { 'value': 'some-value' } } }
+    expected = { identifier: { $elemMatch: { value: 'some-value' } } }
     executeQueryBuilderTest(t, 'buildQueryForToken', 'Patient', queryParam, expected, value)
   })
 
   t.test('should return a valid token clause when token of type "CodeableConcept" is supplied', (t) => {
     queryParam = 'communication'
     value = 'some-system|some-code'
-    expected = { 'communication.coding': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
+    expected = { 'communication.coding': { $elemMatch: { system: 'some-system', code: 'some-code' } } }
     executeQueryBuilderTest(t, 'buildQueryForToken', 'Practitioner', queryParam, expected, value)
   })
 
@@ -213,7 +215,7 @@ tap.test('.buildQueryForToken(): ', { autoend: true }, (t) => {
     t.test('should return a valid token clause when token of type "Coding" is supplied', (t) => {
       queryParam = 'type'
       value = 'some-system|some-code'
-      expected = { 'event.type': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
+      expected = { 'event.type': { $elemMatch: { system: 'some-system', code: 'some-code' } } }
       executeQueryBuilderTest(t, 'buildQueryForToken', 'AuditEvent', queryParam, expected, value)
     })
   }
@@ -222,7 +224,7 @@ tap.test('.buildQueryForToken(): ', { autoend: true }, (t) => {
     t.test('should return a valid token clause when token of type "Coding" is supplied', (t) => {
       queryParam = 'type'
       value = 'some-system|some-code'
-      expected = { 'type': { '$elemMatch': { 'system': 'some-system', 'code': 'some-code' } } }
+      expected = { type: { $elemMatch: { system: 'some-system', code: 'some-code' } } }
       executeQueryBuilderTest(t, 'buildQueryForToken', 'AuditEvent', queryParam, expected, value)
     })
   }
@@ -247,11 +249,13 @@ tap.test('.buildQueryForReference(): ', { autoend: true }, (t) => {
 
   t.test('should return a valid token clause when reference supplied with full reference - Array', (t) => {
     queryParam = 'episodeofcare'
-    value = [ 'EpisodeOfCare/1234567890', 'EpisodeOfCare/0987654321' ]
-    expected = { '$and': [
-      { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' },
-      { 'episodeOfCare.reference': 'EpisodeOfCare/0987654321' }
-    ] }
+    value = ['EpisodeOfCare/1234567890', 'EpisodeOfCare/0987654321']
+    expected = {
+      $and: [
+        { 'episodeOfCare.reference': 'EpisodeOfCare/1234567890' },
+        { 'episodeOfCare.reference': 'EpisodeOfCare/0987654321' }
+      ]
+    }
     executeQueryBuilderTest(t, 'buildQueryForReference', 'Encounter', queryParam, expected, value)
   })
 })
@@ -263,10 +267,10 @@ tap.test('Conditional Paths: ', { autoend: true }, (t) => {
     queryParam = 'email'
     value = 'mailaddress@hearth.org'
     expected = {
-      'telecom': {
-        '$elemMatch': {
-          'value': 'mailaddress@hearth.org',
-          'system': 'email'
+      telecom: {
+        $elemMatch: {
+          value: 'mailaddress@hearth.org',
+          system: 'email'
         }
       }
     }
@@ -277,10 +281,10 @@ tap.test('Conditional Paths: ', { autoend: true }, (t) => {
     queryParam = 'phone'
     value = '0210000000'
     expected = {
-      'telecom': {
-        '$elemMatch': {
-          'value': '0210000000',
-          'system': 'phone'
+      telecom: {
+        $elemMatch: {
+          value: '0210000000',
+          system: 'phone'
         }
       }
     }
@@ -293,9 +297,9 @@ tap.test('Conditional Paths: ', { autoend: true }, (t) => {
       value = '0210000000'
       expected = {
         'relatedArtifact.resource': {
-          '$elemMatch': {
-            'value': '0210000000',
-            'type': 'composed-of'
+          $elemMatch: {
+            value: '0210000000',
+            type: 'composed-of'
           }
         }
       }

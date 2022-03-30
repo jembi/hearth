@@ -56,10 +56,10 @@ const MHDScenario = (headers, t) => {
     docId: uuid(),
     manifestMID: uuid(),
     docManifestRef: `urn:uuid:${uuid()}`,
-    docManifestTypeCodingSystem: `http://hl7.org/fhir/ValueSet/c80-doc-typecodes`,
-    docManifestTypeCodingCode: `34117-2`,
-    docManifestSource: `urn:oid:1.3.6.1.4.1.21367.2009.1.2.1`,
-    docManifestStatus: `current`,
+    docManifestTypeCodingSystem: 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes',
+    docManifestTypeCodingCode: '34117-2',
+    docManifestSource: 'urn:oid:1.3.6.1.4.1.21367.2009.1.2.1',
+    docManifestStatus: 'current',
     docRefMID1: uuid(),
     docRef1: `urn:uuid:${uuid()}`,
     docRefMID2: uuid(),
@@ -158,7 +158,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti65ProvideDocumentBundle = (t, callback) => {
-    t.test('ITI-65 Provide Document Bundle', {bail: true}, (t) => {
+    t.test('ITI-65 Provide Document Bundle', { bail: true }, (t) => {
       request.post({
         url: host,
         body: documentBundle,
@@ -171,11 +171,12 @@ const MHDScenario = (headers, t) => {
         t.equals(body.resourceType, 'Bundle', 'resource type should be Bundle')
         t.equals(body.type, 'transaction-response', 'bundle type should be \'transaction-response\'')
         t.equals(body.entry.length, 7, 'response should contain 7 entries')
-        for (let e of body.entry) {
+        for (const e of body.entry) {
           // response.status is unbounded, so responses like '201 Created' are possible
           t.equals(e.response.status.substr(0, 3), '201', 'entry response status should be 201')
 
           if (e.response.location.indexOf('Binary') > -1) {
+            // eslint-disable-next-line prefer-regex-literals
             const ref = e.response.location.replace(new RegExp('.*(Binary/[\\w\\-]+)/_history/.*'), '$1')
 
             if (conf.binaryResource1 && conf.binaryResource2 && !conf.binaryResource3) {
@@ -221,7 +222,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti66FindDocumentManifests = (t, callback) => {
-    t.test('ITI-66 Find Document Manifests', {bail: true}, (t) => {
+    t.test('ITI-66 Find Document Manifests', { bail: true }, (t) => {
       const promises = []
 
       promises.push(searchManifest(t, `DocumentManifest?patient=${conf.patientRef}`))
@@ -270,26 +271,26 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti67FindDocumentReferences = (t, callback) => {
-    t.test('ITI-67 Find Document References', {bail: true}, (t) => {
+    t.test('ITI-67 Find Document References', { bail: true }, (t) => {
       const promises = []
 
       promises.push(searchReferences(t, `DocumentReference?patient=${conf.patientRef}`))
       promises.push(searchReferences(t, `DocumentReference?patient.identifier=${conf.sourcePatId}`))
-      promises.push(searchReferences(t, `DocumentReference?status=current`))
+      promises.push(searchReferences(t, 'DocumentReference?status=current'))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${conf.timeNow}`))
       promises.push(searchReferences(t, `DocumentReference?indexed=eq${moment(conf.timeNow).format('YYYY')}`))
       promises.push(searchReferences(t, `DocumentReference?author.given=${conf.providerFirstName}`))
       promises.push(searchReferences(t, `DocumentReference?author.family=${conf.providerLastName}`))
-      promises.push(searchReferences(t, `DocumentReference?class=34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?type=34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2`))
-      promises.push(searchReferences(t, `DocumentReference?setting=General%20Medicine`))
-      promises.push(searchReferences(t, `DocumentReference?period=ge2016-12-23`))
-      promises.push(searchReferences(t, `DocumentReference?facility=225732001`))
-      promises.push(searchReferences(t, `DocumentReference?event=ANNGEN`))
-      promises.push(searchReferences(t, `DocumentReference?securitylabel=N`))
-      promises.push(searchReferences(t, `DocumentReference?related-id=other-doc-1`))
-      promises.push(searchReferences(t, `DocumentReference?related-id=hearth:tests|other-doc-1`))
+      promises.push(searchReferences(t, 'DocumentReference?class=34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?type=34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?type=http://hl7.org/fhir/ValueSet/c80-doc-typecodes|34117-2'))
+      promises.push(searchReferences(t, 'DocumentReference?setting=General%20Medicine'))
+      promises.push(searchReferences(t, 'DocumentReference?period=ge2016-12-23'))
+      promises.push(searchReferences(t, 'DocumentReference?facility=225732001'))
+      promises.push(searchReferences(t, 'DocumentReference?event=ANNGEN'))
+      promises.push(searchReferences(t, 'DocumentReference?securitylabel=N'))
+      promises.push(searchReferences(t, 'DocumentReference?related-id=other-doc-1'))
+      promises.push(searchReferences(t, 'DocumentReference?related-id=hearth:tests|other-doc-1'))
 
       Promise.all(promises).then(() => {
         t.end()
@@ -339,7 +340,7 @@ const MHDScenario = (headers, t) => {
   }
 
   const iti68RetrieveDocument = (t, callback) => {
-    t.test('ITI-68 Retrieve Document', {bail: true}, (t) => {
+    t.test('ITI-68 Retrieve Document', { bail: true }, (t) => {
       const promises = []
 
       promises.push(fetchBinary(t, conf.binaryResource1, conf.cdaBase64))

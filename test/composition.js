@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -16,7 +16,7 @@ const server = require('../lib/server')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let CompositionTestEnv = (t, test) => {
+const CompositionTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -124,7 +124,7 @@ tap.test('Composition - should fetch Composition for valid resource ID', (t) => 
 tap.test('composition should be found with matching status', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?status=final`,
+      url: 'http://localhost:3447/fhir/Composition?status=final',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -144,7 +144,7 @@ tap.test('composition should be found with matching status', (t) => {
 tap.test('composition should not find any result with an unknown status', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?status=invalid`,
+      url: 'http://localhost:3447/fhir/Composition?status=invalid',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -163,7 +163,7 @@ tap.test('composition should not find any result with an unknown status', (t) =>
 tap.test('composition should be found with matching section.entry reference', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?entry=Condition/stroke`,
+      url: 'http://localhost:3447/fhir/Composition?entry=Condition/stroke',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -184,7 +184,7 @@ tap.test('composition should be found with matching section.entry reference', (t
 tap.test('composition should not find any result with an unknown section.entry reference', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?entry=invalid`,
+      url: 'http://localhost:3447/fhir/Composition?entry=invalid',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -203,7 +203,7 @@ tap.test('composition should not find any result with an unknown section.entry r
 tap.test('composition should be found matching multiple section.entry reference', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?entry=Condition/example-one&entry=Condition/example-two&entry=Condition/example-three`,
+      url: 'http://localhost:3447/fhir/Composition?entry=Condition/example-one&entry=Condition/example-two&entry=Condition/example-three',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -224,7 +224,7 @@ tap.test('composition should be found matching multiple section.entry reference'
 tap.test('multiple compositions should be found matching section.entry reference', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?entry=Condition/example-1`,
+      url: 'http://localhost:3447/fhir/Composition?entry=Condition/example-1',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -247,7 +247,7 @@ tap.test('multiple compositions should be found matching section.entry reference
 tap.test('composition should not be found when section.entry does not match both entry query parameters', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?entry=Condition/stroke&entry=undefined`,
+      url: 'http://localhost:3447/fhir/Composition?entry=Condition/stroke&entry=undefined',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -266,7 +266,7 @@ tap.test('composition should not be found when section.entry does not match both
 tap.test('composition should be found with matching patient', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?patient=Patient/example-patient-id`,
+      url: 'http://localhost:3447/fhir/Composition?patient=Patient/example-patient-id',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -286,7 +286,7 @@ tap.test('composition should be found with matching patient', (t) => {
 tap.test('composition should be found with matching subject', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?subject=Patient/example-patient-id`,
+      url: 'http://localhost:3447/fhir/Composition?subject=Patient/example-patient-id',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -306,7 +306,7 @@ tap.test('composition should be found with matching subject', (t) => {
 tap.test('composition should not be found when subject.reference does not match the query parameter patient', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?patient=123`,
+      url: 'http://localhost:3447/fhir/Composition?patient=123',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -325,7 +325,7 @@ tap.test('composition should not be found when subject.reference does not match 
 tap.test('composition should not be found when subject.reference does not match the query parameter subject', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?subject=123`,
+      url: 'http://localhost:3447/fhir/Composition?subject=123',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -344,7 +344,7 @@ tap.test('composition should not be found when subject.reference does not match 
 tap.test('composition should find some results with a specific type', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?type=abc123def`,
+      url: 'http://localhost:3447/fhir/Composition?type=abc123def',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -362,7 +362,7 @@ tap.test('composition should find some results with a specific type', (t) => {
 tap.test('composition should find zero results when type does not exist', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?type=noneexisting`,
+      url: 'http://localhost:3447/fhir/Composition?type=noneexisting',
       headers: headers,
       json: true
     }, (err, res, body) => {
@@ -378,7 +378,7 @@ tap.test('composition should find zero results when type does not exist', (t) =>
 tap.test('composition should find results with \'system\' and \'code\' being supplied in the type parameter', (t) => {
   CompositionTestEnv(t, (db, refs, done) => {
     request({
-      url: `http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def`,
+      url: 'http://localhost:3447/fhir/Composition?type=http://loinc.org|abc123def',
       headers: headers,
       json: true
     }, (err, res, body) => {

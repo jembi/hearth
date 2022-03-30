@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -81,7 +81,7 @@ process.argv[2] = JSON.stringify(workerContext)
 const matchingWorkerProcess = require('../../../lib/fhir/services/matching-worker/matching-worker-process')
 
 tap.test('should execute processResourceScore() and return a object', { skip: true }, (t) => {
-  let matchesMap = {}
+  const matchesMap = {}
   const charltonTemp = {}
   charltonTemp.id = charlton.id
   charltonTemp.name = charlton.name

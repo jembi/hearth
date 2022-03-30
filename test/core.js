@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -214,7 +214,7 @@ tap.test('Core', { autoend: true }, (t) => {
     t.test('should return 204 - no content when a non existent patient is deleted', (t) => {
       basicCoreTest(t, (db, done) => {
         request({
-          url: `http://localhost:3447/fhir/Patient/non-existent-id`,
+          url: 'http://localhost:3447/fhir/Patient/non-existent-id',
           method: 'DELETE',
           headers: headers,
           json: true
@@ -251,7 +251,7 @@ tap.test('Core', { autoend: true }, (t) => {
       basicCoreTest(t, (db, done) => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           method: 'POST',
           body: testBody,
           headers: headers,
@@ -276,7 +276,7 @@ tap.test('Core', { autoend: true }, (t) => {
       basicCoreTest(t, (db, done) => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           method: 'POST',
           body: testBody,
           headers: headers,
@@ -301,7 +301,7 @@ tap.test('Core', { autoend: true }, (t) => {
       basicCoreTest(t, (db, done) => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           method: 'POST',
           body: testBody,
           headers: headers,
@@ -325,7 +325,7 @@ tap.test('Core', { autoend: true }, (t) => {
       basicCoreTest(t, (db, done) => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Patient/$match`,
+          url: 'http://localhost:3447/fhir/Patient/$match',
           method: 'POST',
           body: testBody,
           headers: headers,
@@ -349,7 +349,7 @@ tap.test('Core', { autoend: true }, (t) => {
       basicCoreTest(t, (db, done) => {
         // When
         request({
-          url: `http://localhost:3447/fhir/Binary/$match`,
+          url: 'http://localhost:3447/fhir/Binary/$match',
           method: 'POST',
           body: testBody,
           headers: headers,
@@ -439,7 +439,7 @@ tap.test('Core', { autoend: true }, (t) => {
           updatedPerson.meta = {}
           updatedPerson.meta.versionId = initialVersionId
           updatedPerson.id = id
-          headers['If-Match'] = `W/"invalid-test"`
+          headers['If-Match'] = 'W/"invalid-test"'
 
           request.put({
             url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -683,7 +683,7 @@ tap.test('Core', { autoend: true }, (t) => {
                   t.equal(res.statusCode, 204, 'delete response status code should be 204')
 
                   request.get({
-                    url: `http://localhost:3447/fhir/Patient/_history`,
+                    url: 'http://localhost:3447/fhir/Patient/_history',
                     headers: headers,
                     json: true
                   }, (err, res, body) => {

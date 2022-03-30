@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -13,7 +13,7 @@ const tap = require('tap')
 const request = require('request')
 const _ = require('lodash')
 
-let docRefTestEnv = (t, test) => {
+const docRefTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -345,7 +345,7 @@ tap.test('document reference should support searches on related-id', (t) => {
 tap.test('document reference should support searches on indexed date (ymd)', (t) => {
   docRefTestEnv(t, (db, patients, pracs, orgs, docRefs, done) => {
     request({
-      url: 'http://localhost:3447/fhir/DocumentReference?indexed=2013-07-01',
+      url: 'http://localhost:3447/fhir/DocumentReference?indexed=2013-07-01T23%3A11%3A33%2B02%3A00',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {

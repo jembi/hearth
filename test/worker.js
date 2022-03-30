@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -12,6 +12,7 @@ const mongoDbQueue = require('mongodb-queue')
 const tap = require('tap')
 const cp = require('child_process')
 const doubleMetaphone = require('talisman/phonetics/double-metaphone')
+const path = require('path')
 
 const env = require('./test-env/init')()
 const config = require('../lib/config')
@@ -133,7 +134,7 @@ tap.test('should successfully update score of patient links', { skip: true }, (t
         matchingQueue.add(testPatient2, (err) => {
           t.error(err)
 
-          const testWorker = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, ['testWorker'])
+          const testWorker = cp.fork(path.join(__dirname, '/../lib/matching-queue/worker.js'), ['testWorker'])
           const messages = []
           testWorker.on('message', (msg) => {
             t.error(msg.error)
@@ -172,7 +173,7 @@ tap.test('should create a size one queue and start one worker to read off the qu
   const queueSize = 1
 
   matchingQueueTest(queueSize, t, (db, done) => {
-    const testWorker = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, ['testWorker'])
+    const testWorker = cp.fork(path.join(__dirname, '/../lib/matching-queue/worker.js'), ['testWorker'])
     const messages = []
     testWorker.on('message', (msg) => {
       messages.push(msg)
@@ -209,7 +210,7 @@ tap.test('should create a size 10 queue and start 5 workers to read off the queu
   matchingQueueTest(queueSize, t, (db, done) => {
     const startWorker = (testWorkers, workerName) => {
       return new Promise((resolve, reject) => {
-        testWorkers[workerName] = cp.fork(`${__dirname}/../lib/matching-queue/worker.js`, [workerName])
+        testWorkers[workerName] = cp.fork(path.join(__dirname, '/../lib/matching-queue/worker.js'), [workerName])
 
         const messages = []
         testWorkers[workerName].on('message', (msg) => {

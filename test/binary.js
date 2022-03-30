@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -22,7 +22,7 @@ const fhirRoot = require('../lib/fhir/root')()
 const binaryResource = require('./resources/Binary-1')
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let binaryTestEnv = (t, test) => {
+const binaryTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -265,7 +265,7 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
 
         t.equal(res.statusCode, 201, 'response status code should be 200')
 
-        let c = db.collection('Binary')
+        const c = db.collection('Binary')
         c.findOne({}, {}, (err, doc) => {
           t.error(err)
 
@@ -274,25 +274,25 @@ tap.test('Binary - preInteractionHandlers.create - should insert binary data', (
           t.equal(doc.content, undefined)
           t.ok(doc._transforms.content, 'Binary resource successfully inserted')
 
-          var bucket = new mongodb.GridFSBucket(db)
+          const bucket = new mongodb.GridFSBucket(db)
           let data = ''
 
           bucket.openDownloadStream(doc._transforms.content)
-          .on('data', (chunk) => {
-            data += chunk
-          })
-          .on('error', (err) => {
-            t.error(err)
-          })
-          .on('end', () => {
-            t.equal(data, binaryResource.content, 'GridFS returns expected binary data')
-            env.clearDB((err) => {
+            .on('data', (chunk) => {
+              data += chunk
+            })
+            .on('error', (err) => {
               t.error(err)
-              server.stop(() => {
-                t.end()
+            })
+            .on('end', () => {
+              t.equal(data, binaryResource.content, 'GridFS returns expected binary data')
+              env.clearDB((err) => {
+                t.error(err)
+                server.stop(() => {
+                  t.end()
+                })
               })
             })
-          })
         })
       })
     })
@@ -326,8 +326,8 @@ tap.test('Binary - preInteractionHandlers.update - should update reference to bi
           c.findOne({}, {}, (err, doc) => {
             t.error(err)
 
-            let idToUpdate = doc.id
-            let br = JSON.parse(JSON.stringify(binaryResource))
+            const idToUpdate = doc.id
+            const br = JSON.parse(JSON.stringify(binaryResource))
             br.id = idToUpdate
             br.contentType = 'image/jpeg'
             request.put({
@@ -382,7 +382,7 @@ tap.test('Binary - preInteractionHandlers writeToGridFS - should return bad requ
       t.error(err)
 
       // when
-      let testResource = JSON.parse(JSON.stringify(binaryResource))
+      const testResource = JSON.parse(JSON.stringify(binaryResource))
       delete testResource.content
       request.post({
         url: 'http://localhost:3447/fhir/Binary',
@@ -504,7 +504,7 @@ tap.test('Binary - postInteractionHandlers.create - should not convert the binar
   const stub = sandbox.stub(logger, 'debug')
 
   stub.onCall(1).callsFake((arg) => {
-    t.equals(arg, 'Cannot convert Binary with content type application/xml to Bundle', 'Should log a debug message', {skip: true})
+    t.equals(arg, 'Cannot convert Binary with content type application/xml to Bundle', 'Should log a debug message', { skip: true })
   })
 
   env.initDB((err, db) => {

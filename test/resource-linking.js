@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -52,7 +52,7 @@ const resourceLinkingTestEnv = (t, test) => {
       c.insertMany(patients, (err, doc) => {
         t.error(err)
         t.ok(doc)
-        t.equal(doc.insertedIds.length, patients.length)
+        t.equal(Object.keys(doc.insertedIds).length, patients.length)
 
         test(db, () => {
           env.clearDB((err) => {
@@ -76,9 +76,9 @@ tap.test('Resource Linking - .addLinkToResource() - Should update a Patient reso
     // when
     const doc = resourceLinking.addLinkToResource(resource, referenceLink, 'certain-duplicate-source', '0.95')
 
-    t.equal(doc.link.length, 3, `should have a link total of: 3`)
+    t.equal(doc.link.length, 3, 'should have a link total of: 3')
     // newly added link at index 2
-    t.equal(doc.link[2].type, 'certain-duplicate-source', `should have a link type of: certain-duplicate-source`)
+    t.equal(doc.link[2].type, 'certain-duplicate-source', 'should have a link type of: certain-duplicate-source')
     t.equal(doc.link[2].other.reference, referenceLink, `should have a reference link of: ${referenceLink}`)
     t.equals(doc.link[2].extension[0].url, 'http://hearth.org/link-matching-score', 'should add correct extension')
     t.equals(doc.link[2].extension[0].valueDecimal, '0.95', 'should add correct score')
@@ -93,37 +93,37 @@ tap.test('Resource Linking - .addLinkToMatches() - Should update an array of Pat
     const testMatchesArray = _.cloneDeep(matchesArray)
     const resource = charlton
 
-    let c = db.collection('Patient')
-    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
+    const c = db.collection('Patient')
+    c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({ id: 1 }).toArray((err, results) => {
       t.error(err)
 
-      t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
-      t.equal(results[0].link.length, 2, `should have a link total of: 2`)
-      t.equal(results[1].id, '2222222222', `should have a resource id of: 2222222222`)
-      t.equal(results[1].link.length, 1, `should have a link total of: 1`)
-      t.equal(results[2].id, '3333333333', `should have a resource id of: 3333333333`)
-      t.notOk(results[2].link, 0, `should not have a link property`)
-      t.equal(results[3].id, '4444444444', `should have a resource id of: 4444444444`)
-      t.notOk(results[3].link, 0, `should not have a link property`)
+      t.equal(results[0].id, '1111111111', 'should have a resource id of: 1111111111')
+      t.equal(results[0].link.length, 2, 'should have a link total of: 2')
+      t.equal(results[1].id, '2222222222', 'should have a resource id of: 2222222222')
+      t.equal(results[1].link.length, 1, 'should have a link total of: 1')
+      t.equal(results[2].id, '3333333333', 'should have a resource id of: 3333333333')
+      t.notOk(results[2].link, 0, 'should not have a link property')
+      t.equal(results[3].id, '4444444444', 'should have a resource id of: 4444444444')
+      t.notOk(results[3].link, 0, 'should not have a link property')
 
       // when
       resourceLinking.addLinkToMatches(testMatchesArray, resource, (err) => {
         // then
         t.error(err)
 
-        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({id: 1}).toArray((err, results) => {
+        c.find({ id: { $in: ['1111111111', '2222222222', '3333333333', '4444444444'] } }).sort({ id: 1 }).toArray((err, results) => {
           t.error(err)
 
-          t.equal(results[0].id, '1111111111', `should have a resource id of: 1111111111`)
-          t.equal(results[0].link.length, 3, `should have a link total of: 3`)
-          t.equal(results[0].link[2].type, 'certain-duplicate-source', `should have a link type of: certain-duplicate-source`)
-          t.equal(results[1].id, '2222222222', `should have a resource id of: 2222222222`)
-          t.equal(results[1].link.length, 1, `should have a link total of 1 - Link already exists`)
-          t.equal(results[2].id, '3333333333', `should have a resource id of: 3333333333`)
-          t.equal(results[2].link.length, 1, `should have a link total of: 1`)
-          t.equal(results[2].link[0].type, 'probable-duplicate-source', `should have a link type of: probable-duplicate-source`)
-          t.equal(results[3].id, '4444444444', `should have a resource id of: 4444444444`)
-          t.notOk(results[3].link, 0, `should not have a link property`)
+          t.equal(results[0].id, '1111111111', 'should have a resource id of: 1111111111')
+          t.equal(results[0].link.length, 3, 'should have a link total of: 3')
+          t.equal(results[0].link[2].type, 'certain-duplicate-source', 'should have a link type of: certain-duplicate-source')
+          t.equal(results[1].id, '2222222222', 'should have a resource id of: 2222222222')
+          t.equal(results[1].link.length, 1, 'should have a link total of 1 - Link already exists')
+          t.equal(results[2].id, '3333333333', 'should have a resource id of: 3333333333')
+          t.equal(results[2].link.length, 1, 'should have a link total of: 1')
+          t.equal(results[2].link[0].type, 'probable-duplicate-source', 'should have a link type of: probable-duplicate-source')
+          t.equal(results[3].id, '4444444444', 'should have a resource id of: 4444444444')
+          t.notOk(results[3].link, 0, 'should not have a link property')
 
           done()
         })
@@ -151,7 +151,7 @@ tap.test('Resource Linking - .addMatchesLinksToResource() - Should update a Pati
       t.error(err)
 
       // then
-      let c = db.collection('Patient')
+      const c = db.collection('Patient')
       c.findOne({ id: resource.id }, (err, resource) => {
         t.error(err)
 

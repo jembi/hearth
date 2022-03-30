@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -16,11 +16,11 @@ tap.test('test-env/init.initDB should create a mongo connection', (t) => {
   env.initDB((err, db) => {
     t.error(err)
     t.ok(db)
-    let c = db.collection('tmp')
-    c.insert({test: 'test'}, (err) => {
+    const c = db.collection('tmp')
+    c.insert({ test: 'test' }, (err) => {
       t.error(err)
 
-      c.findOne({test: 'test'}, (err, obj) => {
+      c.findOne({ test: 'test' }, (err, obj) => {
         t.error(err)
 
         t.ok(obj)
@@ -38,8 +38,8 @@ tap.test('test-env/init.initDB should create a mongo connection', (t) => {
 tap.test('test-env/init.clearDB should drop the test db', (t) => {
   env.initDB((err, db) => {
     t.error(err)
-    let c = db.collection('tmp')
-    c.insert({test: 'test'}, (err) => {
+    const c = db.collection('tmp')
+    c.insert({ test: 'test' }, (err) => {
       t.error(err)
 
       env.clearDB((err) => {
@@ -47,9 +47,9 @@ tap.test('test-env/init.clearDB should drop the test db', (t) => {
 
         env.initDB((err, db) => {
           t.error(err)
-          let c2 = db.collection('tmp')
+          const c2 = db.collection('tmp')
 
-          c2.findOne({test: 'test'}, (err, obj) => {
+          c2.findOne({ test: 'test' }, (err, obj) => {
             t.error(err)
 
             t.notOk(obj)

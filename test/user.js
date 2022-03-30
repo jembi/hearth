@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -17,7 +17,7 @@ const config = require('../lib/config')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let basicUserTest = (t, test) => {
+const basicUserTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 

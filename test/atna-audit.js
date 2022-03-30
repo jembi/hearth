@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -49,7 +49,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   t.equals(EventIdentificationEventTypeCode.attr('originalText').value(), 'Mobile Patient Identifier Cross-reference Query', 'EventIdentificationEventTypeCode: originalText should have a value of "Mobile Patient Identifier Cross-reference Query"')
   t.equals(EventIdentificationEventTypeCode.attr('codeSystemName').value(), 'IHE Transactions', 'EventIdentificationEventTypeCode: codeSystemName should have a value of "IHE Transactions"')
 
-  const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]')  // Source is the PIXm consumer
+  const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]') // Source is the PIXm consumer
   t.equals(ActiveParticipant1.attr('UserID').value(), ctx.authenticatedUser, `ActiveParticipant1: UserID should have a value of "${ctx.authenticatedUser}"`)
   t.equals(ActiveParticipant1.attr('AlternativeUserID').value(), '', 'ActiveParticipant1: AlternativeUserID should have a value of ""')
   t.equals(ActiveParticipant1.attr('UserIsRequestor').value(), 'false', 'ActiveParticipant1: UserIsRequestor should have a value of "false"')
@@ -96,9 +96,9 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PIXm message', (t) =>
   const ParticipantObjectDetailAuthToken = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/auth-token')
   t.equals(ParticipantObjectDetailAuthToken.text(), ctx.headers['auth-token'], `ParticipantObjectDetailAuthToken: should have a value of "${ctx.headers['auth-token']}"`)
   const ParticipantObjectDetailAuthHost = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/host')
-  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers['host'], `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers['host']}"`)
+  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers.host, `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers.host}"`)
   const ParticipantObjectDetailAccept = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/accept')
-  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers['accept'], `ParticipantObjectDetailAccept: should have a value of "${ctx.headers['accept']}"`)
+  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers.accept, `ParticipantObjectDetailAccept: should have a value of "${ctx.headers.accept}"`)
 
   t.end()
 })
@@ -137,7 +137,7 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
   t.equals(EventIdentificationEventTypeCode.attr('originalText').value(), 'Mobile Patient Demographics Query', 'EventIdentificationEventTypeCode: originalText should have a value of "Mobile Patient Demographics Query"')
   t.equals(EventIdentificationEventTypeCode.attr('codeSystemName').value(), 'IHE Transactions', 'EventIdentificationEventTypeCode: codeSystemName should have a value of "IHE Transactions"')
 
-  const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]')  // Source is the PDQm consumer
+  const ActiveParticipant1 = xmlDoc.get('//ActiveParticipant[1]') // Source is the PDQm consumer
   t.equals(ActiveParticipant1.attr('UserID').value(), ctx.authenticatedUser, `ActiveParticipant1: UserID should have a value of "${ctx.authenticatedUser}"`)
   t.equals(ActiveParticipant1.attr('AlternativeUserID').value(), '', 'ActiveParticipant1: AlternativeUserID should have a value of ""')
   t.equals(ActiveParticipant1.attr('UserIsRequestor').value(), 'false', 'ActiveParticipant1: UserIsRequestor should have a value of ""')
@@ -184,9 +184,9 @@ tap.test('ATNA Audit - should construct a valid ATNA audit PDQm message', (t) =>
   const ParticipantObjectDetailAuthToken = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/auth-token')
   t.equals(ParticipantObjectDetailAuthToken.text(), ctx.headers['auth-token'], `ParticipantObjectDetailAuthToken: should have a value of "${ctx.headers['auth-token']}"`)
   const ParticipantObjectDetailAuthHost = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/host')
-  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers['host'], `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers['host']}"`)
+  t.equals(ParticipantObjectDetailAuthHost.text(), ctx.headers.host, `ParticipantObjectDetailAuthHost: should have a value of "${ctx.headers.host}"`)
   const ParticipantObjectDetailAccept = xmlDoc.get('//ParticipantObjectIdentification/ParticipantObjectDetail/accept')
-  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers['accept'], `ParticipantObjectDetailAccept: should have a value of "${ctx.headers['accept']}"`)
+  t.equals(ParticipantObjectDetailAccept.text(), ctx.headers.accept, `ParticipantObjectDetailAccept: should have a value of "${ctx.headers.accept}"`)
 
   t.end()
 })

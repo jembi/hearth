@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -15,7 +15,7 @@ const _ = require('lodash')
 
 const QuestionnaireResponse = require('./resources/QuestionnaireResponse-1.json')
 
-let basicQuestionnaireResponseTest = (t, test) => {
+const basicQuestionnaireResponseTest = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -53,7 +53,7 @@ let basicQuestionnaireResponseTest = (t, test) => {
 tap.test('QuestionnaireResponse should return all QuestionnaireResponse documents when no search parameters supplied', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -75,7 +75,7 @@ tap.test('QuestionnaireResponse should return all QuestionnaireResponse document
 tap.test('QuestionnaireResponse should support searches on patient', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?patient=Patient/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?patient=Patient/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -97,7 +97,7 @@ tap.test('QuestionnaireResponse should support searches on patient', (t) => {
 tap.test('QuestionnaireResponse should support searches on questionnaire', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?questionnaire=Questionnaire/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?questionnaire=Questionnaire/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -117,7 +117,7 @@ tap.test('QuestionnaireResponse should support searches on questionnaire', (t) =
 tap.test('QuestionnaireResponse should support searches on encounter', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -137,7 +137,7 @@ tap.test('QuestionnaireResponse should support searches on encounter', (t) => {
 tap.test('QuestionnaireResponse should support multiple search parameters on encounter', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&patient=Patient/1&questionnaire=Questionnaire/1`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&patient=Patient/1&questionnaire=Questionnaire/1',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -157,7 +157,7 @@ tap.test('QuestionnaireResponse should support multiple search parameters on enc
 tap.test('QuestionnaireResponse should the _summary parameter and return summarized data', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
     request({
-      url: `http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&_summary=true`,
+      url: 'http://localhost:3447/fhir/QuestionnaireResponse?encounter=Encounter/1&_summary=true',
       headers: env.getTestAuthHeaders(env.users.sysadminUser.email),
       json: true
     }, (err, res, body) => {
@@ -201,7 +201,7 @@ tap.test('QuestionnaireResponse should be saved correctly', (t) => {
     server.start((err) => {
       t.error(err)
 
-      let questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
+      const questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
       delete questionnaireresponse.id
 
       request.post({
@@ -213,10 +213,10 @@ tap.test('QuestionnaireResponse should be saved correctly', (t) => {
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
-        t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/QuestionnaireResponse\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
+        t.ok(res.headers.location, 'should have a location header set')
+        t.match(res.headers.location, /\/fhir\/QuestionnaireResponse\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
-        let c = db.collection('QuestionnaireResponse')
+        const c = db.collection('QuestionnaireResponse')
         c.findOne((err, result) => {
           t.error(err)
           t.ok(result, 'result should exist in the mongo')
@@ -249,7 +249,7 @@ tap.test('QuestionnaireResponse endpoint should return an error for incorrect PO
     server.start((err) => {
       t.error(err)
 
-      let questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
+      const questionnaireresponse = _.cloneDeep(QuestionnaireResponse)
 
       request.post({
         url: 'http://localhost:3447/fhir/QuestionnaireResponse',
@@ -275,7 +275,7 @@ tap.test('QuestionnaireResponse endpoint should return an error for incorrect PO
 
 tap.test('QuestionnaireResponse should be read correctly', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
-    let c = db.collection('QuestionnaireResponse')
+    const c = db.collection('QuestionnaireResponse')
     c.findOne((err, result) => {
       t.error(err)
       t.ok(result, 'result should exist in the mongo')
@@ -305,7 +305,7 @@ tap.test('QuestionnaireResponse should be read correctly', (t) => {
 
 tap.test('QuestionnaireResponse should be read correctly, and summarized when parameter supplied', (t) => {
   basicQuestionnaireResponseTest(t, (db, done) => {
-    let c = db.collection('QuestionnaireResponse')
+    const c = db.collection('QuestionnaireResponse')
     c.findOne((err, result) => {
       t.error(err)
       t.ok(result, 'result should exist in the mongo')

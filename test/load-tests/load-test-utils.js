@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -51,7 +51,7 @@ module.exports = {
     patient.contact[0].telecom[0].value = chance.phone({ formatted: false })
     patient.contact[0].telecom[1].value = chance.email()
 
-    patient.extension = [ { url: 'rcbs:profession', valueString: chance.suffix({ full: true }) } ]
+    patient.extension = [{ url: 'rcbs:profession', valueString: chance.suffix({ full: true }) }]
 
     requestParams.json = patient
     next()

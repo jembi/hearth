@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -1346,8 +1346,8 @@ tap.test('patient should be saved correctly', (t) => {
         t.error(err)
         t.equal(res.statusCode, 201, 'response status code should be 201')
 
-        t.ok(res.headers['location'], 'should have a location header set')
-        t.match(res.headers['location'], /\/fhir\/Patient\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
+        t.ok(res.headers.location, 'should have a location header set')
+        t.match(res.headers.location, /\/fhir\/Patient\/[\w-]+\/_history\/[\w-]+/, 'should return a location with both id and vid present')
 
         const c = db.collection('Patient')
         c.findOne((err, result) => {
@@ -1424,7 +1424,7 @@ tap.test('patient should support read', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}`,
@@ -1533,7 +1533,7 @@ tap.test('vread should respond with 404 if version not found', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient/${id}/_history/2222`,
@@ -1575,8 +1575,8 @@ tap.test('patient should support update', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const originalLocation = res.headers['location']
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const originalLocation = res.headers.location
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
         const update = {
           resourceType: 'Patient',
           id: id,
@@ -1658,8 +1658,8 @@ tap.test('patient should support multiple updates', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const originalLocation = res.headers['location']
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const originalLocation = res.headers.location
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
         const update = {
           resourceType: 'Patient',
           id: id,
@@ -1682,7 +1682,7 @@ tap.test('patient should support multiple updates', (t) => {
 
           t.equal(res.statusCode, 200, 'response status code should be 200')
 
-          const updateLocation = res.headers['location']
+          const updateLocation = res.headers.location
 
           // read
           request({
@@ -1808,7 +1808,7 @@ tap.test('update should replace existing documents', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
         const update = {
           resourceType: 'Patient',
           id: id,
@@ -1912,7 +1912,7 @@ tap.test('patient should support standard _id parameter', (t) => {
       }, (err, res, body) => {
         t.error(err)
 
-        const id = res.headers['location'].replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
+        const id = res.headers.location.replace('/fhir/Patient/', '').replace(/\/_history\/.*/, '')
 
         request({
           url: `http://localhost:3447/fhir/Patient?_id=${id}`,
@@ -2101,7 +2101,7 @@ tap.test('patient should support complex chained parameters', (t) => {
 
           env.createResource(t, pat, 'Patient', () => {
             request({
-              url: `http://localhost:3447/fhir/Patient?careprovider.location.name=Greenwood`,
+              url: 'http://localhost:3447/fhir/Patient?careprovider.location.name=Greenwood',
               headers: headers,
               json: true
             }, (err, res, body) => {

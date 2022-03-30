@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC. All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -24,7 +24,7 @@ tap.test('Create session', withServer((t, server) => {
     hearth.mongo.closeDB(logError)
   })
 
-  const {port} = server.address()
+  const { port } = server.address()
   const requestOptions = {
     method: 'POST',
     url: {
@@ -116,8 +116,8 @@ tap.test('Create session', withServer((t, server) => {
   t.test('should return 201 status when a session is created with new jwt config - asymmetric algorithm', withUser((t, user) => {
     configStub.withArgs('authentication:jwt').returns({
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/jwt-certs/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/jwt-certs/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'
@@ -160,8 +160,8 @@ tap.test('Create session', withServer((t, server) => {
   t.test('should error when private key path is invalid - asymmetric algorithm', withUser((t, user) => {
     configStub.withArgs('authentication:jwt').returns({
       algorithm: 'RS256',
-      pubKey: `test/resources/jwt-certs/pubKey.pem`,
-      privKey: `test/resources/INVALID/privKey.pem`,
+      pubKey: 'test/resources/jwt-certs/pubKey.pem',
+      privKey: 'test/resources/INVALID/privKey.pem',
       issuer: 'hearth',
       setAudience: 'hearth:example-app1',
       validateAudience: '^hearth:example-app\\d+$'
@@ -210,7 +210,7 @@ function withUser (test) {
         const newUser = res.ops[0]
 
         t.tearDown(() => {
-          db.collection('user').remove({_id: newUser._id}, logError)
+          db.collection('user').remove({ _id: newUser._id }, logError)
         })
 
         test(t, newUser)

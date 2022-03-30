@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2017-present, Jembi Health Systems NPC.
  * All rights reserved.
  *
@@ -17,7 +17,7 @@ const testDocManifest = require('./resources/DocumentManifest-1.json')
 
 const headers = env.getTestAuthHeaders(env.users.sysadminUser.email)
 
-let docManifestTestEnv = (t, test) => {
+const docManifestTestEnv = (t, test) => {
   env.initDB((err, db) => {
     t.error(err)
 
@@ -490,7 +490,7 @@ tap.test('DocumentManifest - should search by type', (t) => {
 tap.test('DocumentManifest - should perform chained search by patient.identifier', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    let testPatients = env.testPatients()
+    const testPatients = env.testPatients()
     const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
     const skipMe = _.cloneDeep(testDocManifest)
@@ -524,7 +524,7 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 tap.test('DocumentManifest - should perform chained search by patient.identifier and return multiple documents for multiple matching patients', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    let testPatients = env.testPatients()
+    const testPatients = env.testPatients()
     const findMe1 = _.cloneDeep(testDocManifest)
     delete findMe1.id
     const findMe2 = _.cloneDeep(testDocManifest)
@@ -587,8 +587,8 @@ tap.test('DocumentManifest - should perform chained search by patient.identifier
 tap.test('DocumentManifest - should perform chained search by author.given', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    let testPractitioners = env.testPractitioners()
-    let testOrganizations = env.testOrganizations()
+    const testPractitioners = env.testPractitioners()
+    const testOrganizations = env.testOrganizations()
     const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
     const skipMe = _.cloneDeep(testDocManifest)
@@ -622,8 +622,8 @@ tap.test('DocumentManifest - should perform chained search by author.given', (t)
 tap.test('DocumentManifest - should perform chained search by author.family', (t) => {
   // given
   docManifestTestEnv(t, (db, done) => {
-    let testPractitioners = env.testPractitioners()
-    let testOrganizations = env.testOrganizations()
+    const testPractitioners = env.testPractitioners()
+    const testOrganizations = env.testOrganizations()
     const findMe = _.cloneDeep(testDocManifest)
     delete findMe.id
     const skipMe = _.cloneDeep(testDocManifest)
