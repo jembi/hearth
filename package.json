@@ -21,7 +21,7 @@
     "licenses:generate": "license-checker --production --json --customPath license-format.json --relativeLicensePath --out licenses.json"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "atna-audit": "^1.0.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.1",
